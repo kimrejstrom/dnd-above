@@ -1,0 +1,203 @@
+/* purgecss start ignore */
+@tailwind base;
+
+@font-face {
+  font-display: swap;
+  font-family: 'dnd_condensedbold';
+  src: url('fonts/dndcondensed-bold-webfont.woff2') format('woff2'),
+    url('fonts/dndcondensed-bold-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'dnd_condensedbold', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.modal {
+  transition: opacity 0.25s ease;
+}
+body.modal-active {
+  overflow-x: hidden;
+  overflow-y: visible !important;
+}
+
+.custom-bg {
+  background-color: #393232;
+  background-image: url(./images/background.svg);
+}
+
+.desktop-bg {
+  background-color: #393232;
+  background-attachment: fixed;
+  background-image: url(./images/background-desktop.svg);
+}
+
+.custom-border {
+  border-style: solid;
+  border-width: 1rem;
+  border-image-slice: 50;
+  border-image-repeat: round;
+}
+
+.custom-border-dark {
+  border-image-source: url(./images/border-image.png);
+}
+
+.custom-border-light {
+  border-image-source: url(./images/border-image-light.png);
+}
+
+/* Headings */
+.heading {
+  @apply font-bold tracking-tighter text-yellow-200;
+}
+
+h1 {
+  @apply heading text-3xl;
+}
+
+h2 {
+  @apply heading text-2xl;
+}
+
+h3 {
+  @apply heading text-xl;
+}
+
+h1,
+h2,
+h3 {
+  @apply text-yellow-200;
+}
+
+/* Code blocks */
+pre {
+  @apply bg-primary-dark p-4 rounded mt-4 mb-4;
+}
+
+.mdx {
+  @apply font-sans;
+}
+
+.mdx h1,
+.mdx h2,
+.mdx h3 {
+  @apply mt-2;
+}
+
+.mdx a {
+  @apply underline;
+}
+
+.mdx a:hover {
+  @apply text-yellow-200;
+}
+
+.mdx code {
+  @apply bg-primary-dark text-yellow-300;
+}
+
+.mdx pre code {
+  @apply text-sm bg-primary-dark text-yellow-300;
+}
+
+/* Spinner */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+.spinner {
+  @apply border-4 rounded-full border-yellow-300 w-16 h-16;
+  border-top-color: theme('colors.yellow.500');
+}
+
+/* Nicer Dicer */
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 4rem solid transparent;
+  border-right: 4rem solid transparent;
+  border-top: 5rem solid #393232;
+}
+
+.shape-shadow {
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
+}
+
+.shadow-xxl {
+  box-shadow: 0px 0px 40px 15px rgba(0, 0, 0, 0.5);
+}
+
+.text-shadow {
+  text-shadow: 0 0px 8px rgba(0, 0, 0, 0.8), 0 0px 14px rgba(0, 0, 0, 0.8);
+}
+
+.hidden-scroll {
+  overflow-y: scroll;
+  overflow-x: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.hidden-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Slider */
+.slides {
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slides > div {
+  scroll-snap-align: start;
+}
+
+.slider::before {
+  @apply absolute left-0 h-8 w-8 -mt-8 bg-black opacity-50 rounded-full text-white text-2xl leading-8;
+  content: '<';
+  top: 50%;
+  z-index: 1;
+}
+
+.slider::after {
+  @apply absolute right-0 h-8 w-8 -mt-8 bg-black opacity-50 rounded-full text-white text-2xl leading-8;
+  content: '>';
+  top: 50%;
+  z-index: 1;
+}
+
+.breathe {
+  transform-origin: center;
+  animation: breathe 1.6s infinite;
+}
+
+@tailwind components;
+/* purgecss end ignore */
+
+@tailwind utilities;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  33% {
+    transform: scale(0.2);
+  }
+}
