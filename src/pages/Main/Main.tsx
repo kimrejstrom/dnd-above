@@ -1,7 +1,6 @@
 import React from 'react';
 import shield from 'images/shield.svg';
 import { About } from 'pages/About/About';
-import { Info } from 'pages/Info/Info';
 
 interface Props {}
 
@@ -91,8 +90,14 @@ export const Main: React.FC<Props> = () => {
         </div>
       </div>
       {/* Main content */}
-      <div className="flex-auto flex flex-col bg-primary-dark overflow-y-scroll">
-        <div className="custom-border custom-border-light m-20">
+      <div className="flex-auto flex flex-wrap bg-primary-dark overflow-y-scroll p-4">
+        <div className="custom-border custom-border-light w-1/3">
+          <About />
+        </div>
+        <div className="custom-border custom-border-light w-2/3">
+          <About />
+        </div>
+        <div className="custom-border custom-border-light w-full">
           <About />
         </div>
       </div>
