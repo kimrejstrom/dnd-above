@@ -1,14 +1,15 @@
 import React from 'react';
 import shield from 'images/shield.svg';
 import { About } from 'pages/About/About';
+import { Roller } from 'pages/Roller/Roller';
 
 interface Props {}
 
 export const Main: React.FC<Props> = () => {
   return (
-    <div className="h-screen flex">
+    <div className="h-body flex">
       {/* Sidebar / channel list */}
-      <div className="bg-black text-purple-lighter flex-none w-24 p-6 hidden md:block font-sans">
+      <div className="bg-tertiary-dark flex-none w-24 p-6 hidden md:block font-sans">
         <div className="cursor-pointer mb-4">
           <div className="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
             <img className="p-2" src={shield} alt="" />
@@ -37,72 +38,78 @@ export const Main: React.FC<Props> = () => {
           </div>
         </div>
       </div>
-      {/* Left main menu */}
-      <div className="bg-secondary-dark text-gray-200 flex-none w-64 pb-6 hidden md:block">
-        <div className="text-white mb-2 mt-3 px-4 flex justify-between">
-          <div className="flex-auto">
-            <h1 className="font-semibold text-3xl truncate">Moe Glee</h1>
-            <div className="flex items-center mb-6">
-              <span className="text-white opacity-50 text-sm">
-                Halfling Shepherd Druid
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="mb-8 font-sans">
-          <div className="px-4 mb-2 text-white flex justify-between items-center">
-            <div className="opacity-75 font-bold">Character Info</div>
-          </div>
-          <div className="bg-yellow-900 py-1 flex items-center py-1 px-4">
-            <span className="text-white">Stats</span>
-            <span className="bg-green-400 rounded-full block w-2 h-2 ml-2"></span>
-          </div>
-          <div className="flex items-center py-1 px-4">
-            <span className="text-white opacity-75">Background</span>
-          </div>
-          <div className="flex items-center py-1 px-4">
-            <span className="text-white opacity-75">Spells</span>
-          </div>
-          <div className="flex items-center py-1 px-4">
-            <span className="text-white opacity-75">Inventory</span>
-          </div>
-        </div>
-        <div className="mb-8 font-sans">
-          <div className="px-4 mb-2 text-white flex justify-between items-center">
-            <div className="opacity-75 font-bold">Additional info</div>
-            <div>
-              <svg
-                className="fill-current h-4 w-4 opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
-              </svg>
-            </div>
-          </div>
-          <div className="flex items-center py-1 px-4">
-            <span className="text-white opacity-75">Notes (Session 1)</span>
-            <span className="bg-green-400 rounded-full block w-2 h-2 ml-2"></span>
-          </div>
-          <div className="flex items-center py-1 px-4">
-            <span className="text-white opacity-75">Ratings and comments</span>
-          </div>
-        </div>
-      </div>
       {/* Main content */}
-      <div className="flex-auto flex flex-wrap bg-primary-dark overflow-y-scroll p-4">
-        <div className="custom-border custom-border-light w-1/3">
+      <div className="flex-auto flex flex-wrap bg-yellow-100 dark:bg-primary-dark overflow-y-scroll p-4">
+        <div className="custom-border w-1/3">
           <About />
         </div>
-        <div className="custom-border custom-border-light w-2/3">
+        <div className="custom-border w-2/3 px-5">
+          <ul className="flex justify-between text-center">
+            <li>
+              <a
+                className="dark:text-yellow-500 dark:border-yellow-500 border-b-2 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Actions
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Spells
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Equipment
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Features &amp; Traits
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Description
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Notes
+              </a>
+            </li>
+            <li>
+              <a
+                className="dark:text-yellow-200 dark-hover:text-yellow-800"
+                href="#"
+              >
+                Extras
+              </a>
+            </li>
+          </ul>
           <About />
         </div>
-        <div className="custom-border custom-border-light w-full">
+        <div className="custom-border w-full">
           <About />
         </div>
       </div>
       {/* Right side */}
-      <div className="flex flex-auto max-w-md flex-col bg-black overflow-hidden">
+      <div className="flex flex-auto max-w-md flex-col bg-primary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
         <div className="flex p-4 items-center">
           <div className="w-full">
             <div className="relative">
@@ -125,7 +132,7 @@ export const Main: React.FC<Props> = () => {
         </div>
         {/* <!-- Chat messages --> */}
         <div className="px-6 py-4 flex-1 overflow-y-scroll">
-          <About />
+          <Roller />
         </div>
       </div>
     </div>

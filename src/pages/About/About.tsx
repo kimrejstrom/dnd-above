@@ -6,7 +6,7 @@ import ios from 'images/ios.svg';
 
 export const About: React.FC = () => (
   <div className="container mx-auto mt-8 max-w-xs pt-4">
-    <div className="text-center text-white font-sans">
+    <div className="text-center font-sans">
       <img
         src={logo}
         className="m-auto rounded-lg bg-secondary-dark w-24 p-4 shape-shadow"

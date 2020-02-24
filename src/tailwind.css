@@ -10,10 +10,16 @@
   font-style: normal;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Pangolin&display=swap');
+
 body {
   font-family: 'dnd_condensedbold', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.h-body {
+  height: calc(100vh - 5rem);
 }
 
 .modal {
@@ -40,14 +46,40 @@ body.modal-active {
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;
-}
-
-.custom-border-dark {
   border-image-source: url(./images/border-image.png);
 }
 
-.custom-border-light {
+.mode-dark .custom-border {
+  border-style: solid;
+  border-width: 1rem;
+  border-image-slice: 50;
+  border-image-repeat: round;
   border-image-source: url(./images/border-image-light.png);
+}
+
+.mode-dark .custom-border-t,
+.custom-border-t {
+  border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.mode-dark .custom-border-l,
+.custom-border-l {
+  border-bottom: 0;
+  border-top: 0;
+  border-right: 0;
+}
+.mode-dark .custom-border-r,
+.custom-border-r {
+  border-bottom: 0;
+  border-left: 0;
+  border-top: 0;
+}
+.mode-dark .custom-border-b,
+.custom-border-b {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
 }
 
 /* Headings */
