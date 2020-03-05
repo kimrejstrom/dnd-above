@@ -13,6 +13,7 @@ import { About } from 'pages/About/About';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
 import { ThemeMode } from 'features/theme/themeSlice';
+import { Spells } from 'pages/Spells/Spells';
 
 // Google Analytics
 initializeGA();
@@ -39,6 +40,7 @@ const App: React.FC = () => {
             <Switch>
               <Route path="/info" component={withTracker(Info)} />
               <Route path="/about" component={withTracker(About)} />
+              <Route path="/spells" component={withTracker(Spells)} />
               <Route path="/roller" component={withTracker(Roller)} />
               <Route path="/home" component={withTracker(Home)} />
               <Route path="/" component={withTracker(Main)} />

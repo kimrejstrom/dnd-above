@@ -25,6 +25,7 @@ body {
 .modal {
   transition: opacity 0.25s ease;
 }
+
 body.modal-active {
   overflow-x: hidden;
   overflow-y: visible !important;
@@ -55,6 +56,12 @@ body.modal-active {
   border-image-slice: 50;
   border-image-repeat: round;
   border-image-source: url(./images/border-image-light.png);
+}
+
+.mode-dark .custom-border-thin,
+.custom-border-thin {
+  border-image-slice: 45;
+  border-width: 0.5rem;
 }
 
 .mode-dark .custom-border-t,
