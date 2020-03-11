@@ -99,10 +99,8 @@ export const Spells: React.FC = () => {
     );
 
   return (
-    <div className="container mx-auto m-8">
-      <div>
-        <Table columns={tableColumns} data={tableData} />
-      </div>
+    <div className="text-left mx-auto">
+      <Table columns={tableColumns} data={tableData} />
     </div>
   );
 };
