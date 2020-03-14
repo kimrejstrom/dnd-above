@@ -10,12 +10,16 @@
   font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Pangolin&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Patrick+Hand&display=swap');
 
 body {
   font-family: 'dnd_condensedbold', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+.dnd-body {
+  font-family: 'Patrick Hand', sans-serif;
 }
 
 .h-body {
@@ -184,6 +188,43 @@ pre {
 .hidden-scroll::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+
+/* Tabs */
+.react-tabs__tab {
+  @apply text-secondary-dark cursor-pointer;
+}
+
+.react-tabs__tab:hover {
+  @apply text-gray-600;
+}
+
+.react-tabs__tab--selected {
+  @apply border-b-2 border-primary-dark text-primary-dark;
+}
+
+.react-tabs__tab--selected:hover {
+  @apply text-tertiary-dark;
+}
+
+.react-tabs__tab-panel--selected {
+  height: 53rem;
+}
+
+.mode-dark .react-tabs__tab {
+  @apply text-primary-light;
+}
+
+.mode-dark .react-tabs__tab:hover {
+  @apply text-yellow-500;
+}
+
+.mode-dark .react-tabs__tab--selected {
+  @apply text-yellow-500 border-yellow-500 border-b-2;
+}
+
+.mode-dark .react-tabs__tab--selected:hover {
+  @apply text-yellow-800;
 }
 
 /* Slider */

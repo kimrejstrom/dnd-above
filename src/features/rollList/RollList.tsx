@@ -11,8 +11,8 @@ export const RollList: React.FC = () => {
   return (
     <details className="m-auto text-center">
       <summary>View history</summary>
-      <div className="rounded bg-secondary-dark mt-4 p-4">
-        <div className="text-center text-xl text-yellow-200 mb-2">
+      <div className="rounded bg-yellow-100 dark:bg-secondary-dark mt-4 p-4">
+        <div className="text-center text-xl dark:text-primary-light mb-2">
           Previous Rolls
         </div>
         {rollsState.rolls.length ? (
@@ -21,7 +21,7 @@ export const RollList: React.FC = () => {
               <button
                 key={index}
                 onClick={() => dispatch(setCurrentRoll(roll))}
-                className="m-1 p-2 rounded-full bg-primary-dark"
+                className="m-1 p-2 rounded-full bg-primary-light dark:bg-primary-dark"
               >
                 {roll}
               </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable, useExpanded } from 'react-table';
-import { data } from 'utils/data';
+import { SPELLS } from 'utils/data';
 import { startCase } from 'lodash/fp';
 
 const isValidCellValue = (value: any) =>
@@ -66,7 +66,7 @@ const Table = ({ columns, data }: { columns: any; data: any }) => {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr className="text-sm" {...row.getRowProps()}>
               {row.cells.map(cell => {
                 return isValidCellValue(cell.value) ? (
                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
@@ -83,7 +83,7 @@ const Table = ({ columns, data }: { columns: any; data: any }) => {
 };
 
 export const Spells: React.FC = () => {
-  const allSpells = data.spells;
+  const allSpells = SPELLS;
   const tableData = Object.values(allSpells)
     .map(spell => spell['spell'])
     .flat();

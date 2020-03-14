@@ -62,7 +62,7 @@ export const PresetForm: React.FC<{
         <label>
           Title
           <input
-            className="w-full text-lg appearance-none font-mono flex bg-primary-dark text-white text-center font-bold py-2 px-4 rounded mb-2 border border-yellow-700 focus:outline-none focus:border-yellow-400"
+            className="w-full text-lg appearance-none font-mono flex dark:bg-primary-dark text-center font-bold py-2 px-4 rounded mb-2 border dark:border-primary-light focus:outline-none focus:border-yellow-400"
             type="text"
             name="title"
             required={true}
@@ -73,7 +73,7 @@ export const PresetForm: React.FC<{
         <label>
           Formula
           <input
-            className="w-full text-lg appearance-none font-mono flex bg-primary-dark text-white text-center font-bold py-2 px-4 rounded mb-2 border border-yellow-700 focus:outline-none focus:border-yellow-400"
+            className="w-full text-lg appearance-none font-mono flex dark:bg-primary-dark text-center font-bold py-2 px-4 rounded mb-2 border dark:border-primary-light focus:outline-none focus:border-yellow-400"
             type="text"
             name="formula"
             required={true}
@@ -85,7 +85,7 @@ export const PresetForm: React.FC<{
           Dice type
           <div className="inline-block relative w-full">
             <select
-              className="relative w-full appearance-none text-lg font-mono flex bg-primary-dark text-white text-center font-bold py-2 px-4 rounded border border-yellow-700 focus:outline-none focus:border-yellow-400"
+              className="relative w-full appearance-none text-lg font-mono flex dark:bg-primary-dark text-center font-bold py-2 px-4 rounded border dark:border-primary-light focus:outline-none focus:border-yellow-400"
               name="diceType"
               value={inputs?.diceType}
               onChange={handleInputChange}
@@ -110,7 +110,7 @@ export const PresetForm: React.FC<{
         </label>
         <div className="flex justify-end mt-4 pt-2">
           <input
-            className="bg-transparent text-yellow-200 py-1 hover:bg-primary-dark px-4 border border-yellow-700 rounded"
+            className="bg-transparent text-yellow-200 py-1 hover:dark:bg-primary-dark px-4 border dark:border-primary-light rounded"
             type="submit"
             value="Save"
           />

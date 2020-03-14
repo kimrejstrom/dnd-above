@@ -27,20 +27,23 @@ export const RollResult: React.FC<{ result: DiceResult }> = ({ result }) => {
             <>
               <div className="p-2">
                 Successes:{' '}
-                <b className="text-2xl text-green-300">{result.successes}</b>
+                <b className="text-2xl text-green-600 dark:text-green-300">
+                  {result.successes}
+                </b>
               </div>
-              ,
               <div className="p-2">
                 Failures:{' '}
-                <b className="text-2xl text-red-300">{result.failures}</b>
+                <b className="text-2xl text-red-600 dark:text-red-300">
+                  {result.failures}
+                </b>
               </div>
             </>
           )}
         </div>
-        <div className="m-auto text-center tracking-tight font-mono p-4 bg-secondary-dark rounded">
+        <div className="m-auto text-center tracking-tight font-mono p-4 dark:bg-secondary-dark rounded">
           {difficulty.hasDifficulty && (
             <div key="target" className="font-bold mb-4">
-              <span className="border-b-2 border-yellow-200">
+              <span className="border-b-2 dark:border-primary-light">
                 {difficulty.expression}
               </span>
             </div>

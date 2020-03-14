@@ -14,7 +14,7 @@ const Loader: React.FC = () => {
           className="breathe"
           points="66.92 154.13 131.55 116.12 66.92 108.51 66.92 154.13"
           style={{
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -26,7 +26,7 @@ const Loader: React.FC = () => {
           className="breathe"
           points="66.92 154.13 66.92 108.51 2.3 116.12 66.92 154.13"
           style={{
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -37,7 +37,7 @@ const Loader: React.FC = () => {
           className="breathe"
           points="2.3 116.12 36.51 55.3 2.3 40.09 2.3 116.12"
           style={{
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -49,7 +49,7 @@ const Loader: React.FC = () => {
           className="breathe"
           points="36.51 55.3 2.3 40.09 66.92 2.08 36.51 55.3"
           style={{
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -61,7 +61,7 @@ const Loader: React.FC = () => {
           points="97.33 55.3 131.55 40.09 66.92 2.08 97.33 55.3"
           style={{
             animationDelay: '0.8s',
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -72,7 +72,7 @@ const Loader: React.FC = () => {
           points="97.33 55.3 131.55 116.12 131.55 40.09 97.33 55.3"
           style={{
             animationDelay: '0.8s',
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -84,7 +84,7 @@ const Loader: React.FC = () => {
           points="66.92 108.51 131.55 116.12 97.33 55.3 66.92 108.51"
           style={{
             animationDelay: '0.2s',
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -95,7 +95,7 @@ const Loader: React.FC = () => {
           points="36.51 55.3 2.3 116.12 66.92 108.51 36.51 55.3"
           style={{
             animationDelay: '0.2s',
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -106,7 +106,7 @@ const Loader: React.FC = () => {
           points="36.51 55.3 66.92 2.08 97.33 55.3 36.51 55.3"
           style={{
             animationDelay: '0.2s',
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',
@@ -116,7 +116,7 @@ const Loader: React.FC = () => {
           className="breathe"
           points="66.92 108.51 97.33 55.3 36.51 55.3 66.92 108.51"
           style={{
-            fill: '#252020',
+            fill: '#393232',
             stroke: '#fefcbf',
             strokeMiterlimit: 0,
             strokeWidth: '4px',

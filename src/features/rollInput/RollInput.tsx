@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactGA from 'react-ga';
-import { useHistory } from 'react-router-dom';
 import { Dice, DiceResult } from 'vendor/nicer-dicer-engine';
 import { Alert } from 'components/Alert/Alert';
 import { RollResult } from 'features/rollResult/RollResult';
@@ -32,7 +30,6 @@ export const RollInput = () => {
   const { currentRoll, rolls } = useSelector((state: RootState) => state.rolls);
   const { animations } = useSelector((state: RootState) => state.settings);
   const query = useQuery();
-  const history = useHistory();
 
   useEffect(() => {
     const rollQuery = query.get('roll');
@@ -57,12 +54,6 @@ export const RollInput = () => {
       setResult(rollResult);
       setError(undefined);
       dispatch(addRoll(currentRoll));
-      ReactGA.event({
-        category: 'Roll',
-        action: 'Roll Submit',
-        transport: 'beacon',
-      });
-      history.push(`/roller?roll=${encodeURIComponent(currentRoll)}`);
     } catch (error) {
       setError(error);
     }
@@ -102,7 +93,7 @@ export const RollInput = () => {
             }
           >
             <svg
-              className="text-white fill-current"
+              className="fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               width="24"
@@ -113,14 +104,14 @@ export const RollInput = () => {
           </button>
           <input
             id="formula-input"
-            className="text-lg w-full appearance-none text-sm font-mono flex bg-secondary-dark text-white text-center font-bold py-2 px-4 rounded mt-2 border border-yellow-700 focus:outline-none focus:border-yellow-400"
+            className="text-lg w-full appearance-none text-sm font-mono flex bg-yellow-100 dark:bg-primary-dark text-center font-bold py-2 px-4 rounded mt-2 border border-primary-dark dark:border-primary-light focus:outline-none focus:border-yellow-400"
             type="text"
             value={currentRoll}
             onChange={e => dispatch(setCurrentRoll(e.target.value))}
           />
 
           <input
-            className="hover:bg-secondary-dark bg-transparent w-full text-2xl text-white py-1 mt-2 px-4 border border-yellow-700 rounded"
+            className="dark-hover:bg-primary-dark bg-yellow-100 dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-primary-dark dark:border-primary-light rounded"
             type="submit"
             value="Roll"
             disabled={loading}
