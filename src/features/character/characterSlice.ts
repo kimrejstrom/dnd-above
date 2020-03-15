@@ -27,8 +27,8 @@ export interface CharacterState {
 
 const initialState: CharacterState = {
   name: 'Moe Glee The Minionmancer',
-  class: CLASSES.druid.class[0],
-  subClass: 'Shepherd',
+  class: CLASSES.warlock.class[0],
+  subClass: 'Archfey',
   level: 5,
   race: RACES.find(race => race.name === 'Halfling')!,
   subRace: RACES.find(race => race.name === 'Halfling')!.subraces?.find(

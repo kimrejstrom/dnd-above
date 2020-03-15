@@ -24,7 +24,7 @@ export const RollInput = () => {
 
   const [result, setResult] = useState<DiceResult>();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState<Error>();
 
   // Get currentRoll from Redux
   const { currentRoll, rolls } = useSelector((state: RootState) => state.rolls);

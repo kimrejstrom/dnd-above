@@ -5,6 +5,7 @@ import presetsReducer from 'features/presets/presetsSlice';
 import settingsReducer from 'features/settings/settingsSlice';
 import themeReducer from 'features/theme/themeSlice';
 import characterReducer from 'features/character/characterSlice';
+import mainTabsReducer from 'features/mainTabs/mainTabsSlice';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   presets: presetsReducer,
   settings: settingsReducer,
   character: characterReducer,
+  mainTabs: mainTabsReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

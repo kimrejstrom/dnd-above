@@ -1,7 +1,7 @@
 import React from 'react';
 import { Roller } from 'pages/Roller/Roller';
 import { Spells } from 'pages/Spells/Spells';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { CharacterState } from 'features/character/characterSlice';
 import Name from 'features/character/Name';
@@ -16,13 +16,22 @@ import Proficiencies from 'features/character/Proficiencies';
 import Skills from 'features/character/Skills';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import Sidebar from 'components/Sidebar/Sidebar';
+import { setSelectIndex } from 'features/mainTabs/mainTabsSlice';
+import FeaturesTraits from 'features/character/FeaturesTraits';
 
 interface Props {}
 
 export const Main: React.FC<Props> = () => {
+  const dispatch = useDispatch();
   const character: CharacterState = useSelector(
     (state: RootState) => state.character,
   );
+  const { selectedIndex } = useSelector((state: RootState) => state.mainTabs);
+
+  const handleTabChange = (tabIndex: number) => {
+    dispatch(setSelectIndex(tabIndex));
+  };
+
   return (
     <div className="flex w-full">
       <Sidebar character={character} />
@@ -50,7 +59,10 @@ export const Main: React.FC<Props> = () => {
         </div>
         <div className="w-6/12 h-full">
           <div className="custom-border h-full pb-6">
-            <Tabs>
+            <Tabs
+              selectedIndex={selectedIndex}
+              onSelect={tabIndex => handleTabChange(tabIndex)}
+            >
               <TabList className="flex justify-between text-center">
                 <Tab>Actions</Tab>
                 <Tab>Spells</Tab>
@@ -71,7 +83,8 @@ export const Main: React.FC<Props> = () => {
                 <div>Equipment</div>
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
-                <div>Features &amp; Traits</div>
+                <div className="text-2xl">Features &amp; Traits</div>
+                <FeaturesTraits character={character} />
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
                 <div>Description</div>

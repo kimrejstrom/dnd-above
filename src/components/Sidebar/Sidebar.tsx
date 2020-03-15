@@ -13,8 +13,8 @@ const Sidebar = ({ character }: Props) => {
         <div className="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
           <img className="p-2" src={shield} alt="" />
         </div>
-        <div className="uppercase text-center text-white opacity-50 text-sm">
-          {character.name.substr(0, 1)}
+        <div className="text-center text-white opacity-50 text-sm">
+          {character.name.substr(0, 3)}
         </div>
       </div>
       <div className="cursor-pointer">

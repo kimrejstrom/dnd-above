@@ -49,7 +49,7 @@ export interface ClassFeature {
 }
 
 export interface PurpleEntry {
-  type?: PurpleType;
+  type?: ClassFeatureType;
   name?: string;
   entries?: Array<FluffyEntry | string>;
   items?: string[];
@@ -99,23 +99,13 @@ export interface FluffyEntry {
 }
 
 export interface TentacledEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   name?: string;
   entries?: string[];
   caption?: string;
   colLabels?: string[];
   colStyles?: PurpleColStyle[];
   rows?: Array<string[]>;
-}
-
-export enum PurpleType {
-  AbilityDc = 'abilityDc',
-  Entries = 'entries',
-  InlineBlock = 'inlineBlock',
-  Inset = 'inset',
-  List = 'list',
-  Options = 'options',
-  Table = 'table',
 }
 
 export enum EntrySource {
@@ -137,6 +127,9 @@ export enum ClassFeatureType {
   Inset = 'inset',
   List = 'list',
   Patron = 'patron',
+  InlineBlock = 'inlineBlock',
+  Options = 'options',
+  Table = 'table',
 }
 
 export interface ClassTableGroup {
@@ -181,7 +174,7 @@ export interface StickyEntry {
 }
 
 export interface IndigoEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   name?: string;
   entries?: Array<IndecentEntry | string>;
   caption?: string;
@@ -191,7 +184,7 @@ export interface IndigoEntry {
 }
 
 export interface IndecentEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   caption?: string;
   colLabels?: string[];
   colStyles?: PurpleColStyle[];
@@ -299,7 +292,7 @@ export interface SubclassFeature {
 }
 
 export interface HilariousEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   name?: string;
   entries?: Array<AmbitiousEntry | string>;
   caption?: string;
@@ -321,7 +314,7 @@ export enum FluffyColStyle {
 }
 
 export interface AmbitiousEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   caption?: string;
   colLabels?: string[];
   colStyles?: PurpleColStyle[];
@@ -340,7 +333,7 @@ export interface Data {
 }
 
 export interface CunningEntry {
-  type: PurpleType;
+  type: ClassFeatureType;
   name?: string;
   entries?: Array<MagentaEntry | string>;
   style?: string;

@@ -1,10 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-// import { Navigation } from 'components/Navigation/Navigation';
 import { Header } from 'components/Header/Header';
-import { Home } from 'pages/Home/Home';
-import { Info } from 'pages/Info/Info';
-import { Roller } from 'pages/Roller/Roller';
 import { Modal } from 'components/Modal/Modal';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -13,7 +9,6 @@ import { About } from 'pages/About/About';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
 import { ThemeMode } from 'features/theme/themeSlice';
-import { Spells } from 'pages/Spells/Spells';
 
 // Google Analytics
 initializeGA();
@@ -38,11 +33,7 @@ const App: React.FC = () => {
             <UpdateNotification />
             <Header />
             <Switch>
-              <Route path="/info" component={withTracker(Info)} />
               <Route path="/about" component={withTracker(About)} />
-              <Route path="/spells" component={withTracker(Spells)} />
-              <Route path="/roller" component={withTracker(Roller)} />
-              <Route path="/home" component={withTracker(Home)} />
               <Route path="/" component={withTracker(Main)} />
             </Switch>
             <Modal title={title} content={content} />

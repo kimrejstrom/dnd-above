@@ -66,7 +66,10 @@ const Table = ({ columns, data }: { columns: any; data: any }) => {
         {rows.map((row, i) => {
           prepareRow(row);
           return (
-            <tr className="text-sm" {...row.getRowProps()}>
+            <tr
+              className="odd:bg-secondary-light dark-odd:bg-secondary-dark text-sm"
+              {...row.getRowProps()}
+            >
               {row.cells.map(cell => {
                 return isValidCellValue(cell.value) ? (
                   <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
