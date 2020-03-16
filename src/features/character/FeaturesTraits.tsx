@@ -1,7 +1,7 @@
 import React from 'react';
 import { CharacterState } from 'features/character/characterSlice';
 import { PurpleEntry, ClassFeature } from 'models/class';
-import { RaceEntry } from 'models/races';
+import { RaceEntry } from 'models/race';
 import Entry from 'components/Entry/Entry';
 
 interface Props {
@@ -14,7 +14,7 @@ const renderClassFeatures = (classFeatures: ClassFeature[][]) => {
       <div className="font-sans">
         {feature.map(feat => {
           return (
-            <div className="custom-border custom-border-thin dark:bg-secondary-dark p-4 my-2">
+            <div className="custom-border custom-border-thin p-4 my-2">
               <div className="font-bold">{`Level ${level + 1} – ${
                 feat.name
               }:`}</div>

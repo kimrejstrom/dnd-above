@@ -22,9 +22,15 @@ import warlock from 'data/class/class-warlock.json';
 import wizard from 'data/class/class-wizard.json';
 // Races
 import races from 'data/races.json';
+// Backgrounds
+import backgrounds from 'data/backgrounds.json';
+// Items
+import items from 'data/items-base.json';
 
 import { ClassTypes } from 'models/class';
-import { Race } from 'models/races';
+import { Race } from 'models/race';
+import { BackgroundElement } from 'models/background';
+import { BaseItem } from 'models/item';
 
 export const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
 export const CLASSES = {
@@ -44,3 +50,6 @@ export const CLASSES = {
   wizard,
 } as ClassTypes;
 export const RACES = races.race as Race[];
+export const BACKGROUNDS = backgrounds.background as BackgroundElement[];
+export const ITEMS = items.baseitem as BaseItem[];
+export const WEAPONS = ITEMS.filter((item: BaseItem) => item.weaponCategory);

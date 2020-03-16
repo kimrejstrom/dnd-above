@@ -52,7 +52,7 @@ const Table = ({ columns, data }: { columns: any; data: any }) => {
 
   // Render the UI for your table
   return (
-    <table {...getTableProps()} className="table-auto">
+    <table {...getTableProps()} className="table-auto w-full">
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -67,7 +67,7 @@ const Table = ({ columns, data }: { columns: any; data: any }) => {
           prepareRow(row);
           return (
             <tr
-              className="odd:bg-secondary-light dark-odd:bg-secondary-dark text-sm"
+              className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
               {...row.getRowProps()}
             >
               {row.cells.map(cell => {

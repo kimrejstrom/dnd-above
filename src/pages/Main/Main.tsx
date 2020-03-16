@@ -1,6 +1,5 @@
 import React from 'react';
-import { Roller } from 'pages/Roller/Roller';
-import { Spells } from 'pages/Spells/Spells';
+import { Spells } from 'components/Spells/Spells';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { CharacterState } from 'features/character/characterSlice';
@@ -16,8 +15,10 @@ import Proficiencies from 'features/character/Proficiencies';
 import Skills from 'features/character/Skills';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import Sidebar from 'components/Sidebar/Sidebar';
-import { setSelectIndex } from 'features/mainTabs/mainTabsSlice';
+import { setSelectedIndex, TAB_PANELS } from 'features/tabs/tabsSlice';
 import FeaturesTraits from 'features/character/FeaturesTraits';
+import Entry from 'components/Entry/Entry';
+import RightPanel from 'components/RightPanel/RightPanel';
 
 interface Props {}
 
@@ -26,10 +27,14 @@ export const Main: React.FC<Props> = () => {
   const character: CharacterState = useSelector(
     (state: RootState) => state.character,
   );
-  const { selectedIndex } = useSelector((state: RootState) => state.mainTabs);
+  const { tabPanels } = useSelector((state: RootState) => state.tabs);
+  const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
 
   const handleTabChange = (tabIndex: number) => {
-    dispatch(setSelectIndex(tabIndex));
+    const updatedPanel = {
+      [TAB_PANELS.CHARACTER]: { selectedIndex: tabIndex },
+    };
+    dispatch(setSelectedIndex(updatedPanel));
   };
 
   return (
@@ -60,7 +65,7 @@ export const Main: React.FC<Props> = () => {
         <div className="w-6/12 h-full">
           <div className="custom-border h-full pb-6">
             <Tabs
-              selectedIndex={selectedIndex}
+              selectedIndex={characterTabPanel.selectedIndex}
               onSelect={tabIndex => handleTabChange(tabIndex)}
             >
               <TabList className="flex justify-between text-center">
@@ -87,7 +92,15 @@ export const Main: React.FC<Props> = () => {
                 <FeaturesTraits character={character} />
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
-                <div>Description</div>
+                <div>
+                  <div className="text-2xl">Background</div>
+                  <div className="text-xl">{character.background.name}</div>
+                  {character.background.entries?.map(entry => (
+                    <div className="font-sans my-2 custom-border custom-border-thin">
+                      <Entry entry={entry} />
+                    </div>
+                  ))}
+                </div>
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
                 <div>Notes</div>
@@ -101,29 +114,7 @@ export const Main: React.FC<Props> = () => {
       </div>
       {/* Right side */}
       <div className="flex w-4/12 flex-col bg-secondary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
-        <div className="flex p-4 items-center">
-          <div className="w-full">
-            <div className="relative">
-              <input
-                type="search"
-                placeholder="Search"
-                className="appearance-none bg-yellow-100 border border-gray-400 text-primary-dark rounded pl-8 pr-4 py-2 w-full"
-              />
-              <div className="absolute top-0 left-0 p-3 flex items-center justify-center">
-                <svg
-                  className="fill-current text-primary-dark h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="px-6 py-4 flex-1 overflow-y-scroll">
-          <Roller />
-        </div>
+        <RightPanel />
       </div>
     </div>
   );

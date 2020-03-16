@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CLASSES } from 'utils/data';
+import { CLASSES, BACKGROUNDS } from 'utils/data';
 import { RACES } from 'utils/data';
 import { ClassElement } from 'models/class';
-import { Race, Subrace } from 'models/races';
+import { Race, Subrace } from 'models/race';
+import { BackgroundElement } from 'models/background';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -22,17 +23,21 @@ export interface CharacterState {
   level: number;
   race: Race;
   subRace: Subrace;
+  background: BackgroundElement;
   stats: Record<StatsTypes, number>;
 }
 
 const initialState: CharacterState = {
   name: 'Moe Glee The Minionmancer',
-  class: CLASSES.warlock.class[0],
-  subClass: 'Archfey',
+  class: CLASSES.druid.class[0],
+  subClass: 'Shepherd',
   level: 5,
   race: RACES.find(race => race.name === 'Halfling')!,
   subRace: RACES.find(race => race.name === 'Halfling')!.subraces?.find(
     subrace => subrace.name === 'Ghostwise',
+  )!,
+  background: BACKGROUNDS.find(
+    background => background.name === 'Far Traveler',
   )!,
   stats: {
     str: 8,

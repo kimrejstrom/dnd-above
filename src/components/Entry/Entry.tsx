@@ -1,13 +1,31 @@
 import React from 'react';
-import { PurpleEntry } from 'models/class';
+import { PurpleEntry as ClassEntry } from 'models/class';
+import { PurpleEntry as RaceEntry } from 'models/race';
+import { BackgroundEntry, FluffyItem } from 'models/background';
+
+type CombinedEntry = ClassEntry & RaceEntry & BackgroundEntry;
 
 interface Props {
-  entry: string | PurpleEntry;
+  entry: ClassEntry | RaceEntry | BackgroundEntry | string;
 }
 
-const renderEntry = (entry: string | PurpleEntry) => {
+const renderItem = (item: FluffyItem | string) => {
+  if (item !== typeof 'string') {
+    const additionalInfoItem = item as FluffyItem;
+    return (
+      <div className="my-2">
+        <div className="font-bold">{additionalInfoItem.name}</div>
+        <div>{additionalInfoItem.entry}</div>
+      </div>
+    );
+  } else {
+    return <div>{item}</div>;
+  }
+};
+
+const renderEntry = (entry: CombinedEntry | string) => {
   if (entry !== typeof 'string') {
-    const additionalInfo = entry as PurpleEntry;
+    const additionalInfo = entry as CombinedEntry;
     switch (additionalInfo.type) {
       case 'abilityDc':
         return (
@@ -29,14 +47,14 @@ const renderEntry = (entry: string | PurpleEntry) => {
         return (
           <ul className="my-2">
             {additionalInfo.items?.map(item => (
-              <li>{item}</li>
+              <li>{renderItem(item)}</li>
             ))}
           </ul>
         );
       case 'table':
         return (
           <div className="my-2">
-            {additionalInfo.caption}
+            <div className="font-bold">{additionalInfo.caption}</div>
             <table>
               <thead>
                 {additionalInfo.colLabels?.map(label => (
@@ -45,7 +63,7 @@ const renderEntry = (entry: string | PurpleEntry) => {
               </thead>
               <tbody>
                 {additionalInfo.rows?.map(row => (
-                  <tr>
+                  <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark">
                     {row.map(col => (
                       <td>{col}</td>
                     ))}
@@ -58,10 +76,10 @@ const renderEntry = (entry: string | PurpleEntry) => {
       case 'entries':
         return (
           <div className="my-2">
-            {additionalInfo.name}
+            <div className="font-bold">{additionalInfo.name}</div>
             <ul>
               {additionalInfo.entries?.map(entry => (
-                <li>{renderEntry(entry)}</li>
+                <li>{renderEntry(entry as CombinedEntry)}</li>
               ))}
             </ul>
           </div>
@@ -71,7 +89,7 @@ const renderEntry = (entry: string | PurpleEntry) => {
         return (
           <div>
             {additionalInfo.entries?.map(entry => (
-              <div>{renderEntry(entry)}</div>
+              <div>{renderEntry(entry as CombinedEntry)}</div>
             ))}
           </div>
         );
@@ -81,11 +99,12 @@ const renderEntry = (entry: string | PurpleEntry) => {
             {additionalInfo.name}
             <ul>
               {additionalInfo.entries?.map(entry => (
-                <li>{renderEntry(entry)}</li>
+                <li>{renderEntry(entry as CombinedEntry)}</li>
               ))}
             </ul>
           </div>
         );
+      case 'section':
       case 'inset':
         // TODO
         return <div>{additionalInfo.toString()}</div>;
@@ -95,7 +114,9 @@ const renderEntry = (entry: string | PurpleEntry) => {
             <div>
               <div>{additionalInfo.name}</div>
               <div>
-                {additionalInfo.entries.map(entry => renderEntry(entry))}
+                {additionalInfo.entries.map(entry =>
+                  renderEntry(entry as CombinedEntry),
+                )}
               </div>
             </div>
           );
@@ -108,7 +129,7 @@ const renderEntry = (entry: string | PurpleEntry) => {
 };
 
 const Entry = ({ entry }: Props) => {
-  return <div>{renderEntry(entry)}</div>;
+  return <div>{renderEntry(entry as CombinedEntry)}</div>;
 };
 
 export default Entry;

@@ -25,11 +25,11 @@ const App: React.FC = () => {
         theme === ThemeMode.LIGHT ? 'mode-light' : 'mode-dark'
       }`}
     >
-      <div className="m-auto bg-primary-dark w-full shadow-xxl relative min-h-screen">
+      <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
         <Router>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <main className="text-primary-dark dark:text-yellow-100 bg-primary-dark flex-grow">
+          <main className="text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
             <UpdateNotification />
             <Header />
             <Switch>
