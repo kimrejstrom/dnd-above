@@ -9,6 +9,10 @@ import { About } from 'pages/About/About';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
 import { ThemeMode } from 'features/theme/themeSlice';
+import Create from 'pages/Create/Create';
+import { CharacterState } from 'features/character/characterSlice';
+import Sidebar from 'components/Sidebar/Sidebar';
+import RightPanel from 'components/RightPanel/RightPanel';
 
 // Google Analytics
 initializeGA();
@@ -17,6 +21,9 @@ const App: React.FC = () => {
   // Global Modal state
   const { title, content } = useSelector(
     (state: RootState) => state.modalVisibility,
+  );
+  const character: CharacterState = useSelector(
+    (state: RootState) => state.character,
   );
   const theme = useSelector((state: RootState) => state.theme);
   return (
@@ -32,11 +39,19 @@ const App: React.FC = () => {
           <main className="text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
             <UpdateNotification />
             <Header />
-            <Switch>
-              <Route path="/about" component={withTracker(About)} />
-              <Route path="/" component={withTracker(Main)} />
-            </Switch>
-            <Modal title={title} content={content} />
+            <div className="flex w-full">
+              <Sidebar character={character} />
+              {/* Main content */}
+              <div className="flex w-10/12 flex-wrap bg-yellow-100 dark:bg-primary-dark p-4 h-full">
+                <Switch>
+                  <Route exact path="/" component={withTracker(Main)} />
+                  <Route path="/about" component={withTracker(About)} />
+                  <Route path="/create" component={withTracker(Create)} />
+                </Switch>
+              </div>
+              <Modal title={title} content={content} />
+              <RightPanel />
+            </div>
           </main>
         </Router>
       </div>

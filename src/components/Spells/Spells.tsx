@@ -1,12 +1,10 @@
 import React from 'react';
-import { useTable, useExpanded } from 'react-table';
 import { SPELLS } from 'utils/data';
 import { startCase } from 'lodash/fp';
+import Table from 'components/Table/Table';
+import { Cell } from 'react-table';
 
-const isValidCellValue = (value: any) =>
-  typeof value === 'number' || typeof value === 'string';
-
-const handleSpecialCell = (cell: any) => {
+const handleSpecialCell = (cell: Cell<object>) => {
   const cellType = cell.column.id;
 
   switch (cellType) {
@@ -34,57 +32,6 @@ const handleSpecialCell = (cell: any) => {
   }
 };
 
-const Table = ({ columns, data }: { columns: any; data: any }) => {
-  // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-    },
-    useExpanded, // Use the useExpanded plugin hook
-  );
-
-  // Render the UI for your table
-  return (
-    <table {...getTableProps()} className="table-auto w-full">
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr
-              className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
-              {...row.getRowProps()}
-            >
-              {row.cells.map(cell => {
-                return isValidCellValue(cell.value) ? (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                ) : (
-                  <td {...cell.getCellProps()}>{handleSpecialCell(cell)}</td>
-                );
-              })}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
-};
-
 export const Spells: React.FC = () => {
   const allSpells = SPELLS;
   const tableData = Object.values(allSpells)
@@ -103,7 +50,10 @@ export const Spells: React.FC = () => {
 
   return (
     <div className="text-left mx-auto">
-      <Table columns={tableColumns} data={tableData} />
+      <Table
+        cellRenderer={handleSpecialCell}
+        tableData={{ columns: tableColumns, data: tableData }}
+      />
     </div>
   );
 };

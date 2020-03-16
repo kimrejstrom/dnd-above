@@ -95,7 +95,7 @@ body.modal-active {
 
 /* Headings */
 .heading {
-  @apply font-bold tracking-tighter text-yellow-200;
+  @apply font-bold tracking-tighter;
 }
 
 h1 {
@@ -108,12 +108,6 @@ h2 {
 
 h3 {
   @apply heading text-xl;
-}
-
-h1,
-h2,
-h3 {
-  @apply text-yellow-200;
 }
 
 /* Code blocks */

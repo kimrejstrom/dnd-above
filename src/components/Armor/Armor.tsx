@@ -1,6 +1,6 @@
 import React from 'react';
 import { Cell } from 'react-table';
-import { WEAPONS } from 'utils/data';
+import { ARMOR } from 'utils/data';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
 
@@ -12,26 +12,18 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-export const Weapons: React.FC = () => {
-  const allWeapons = WEAPONS;
-  const tableData = Object.values(allWeapons).filter(weapon => !weapon.age);
+export const Armor: React.FC = () => {
+  const allArmor = ARMOR;
+  const tableData = Object.values(allArmor);
   const tableColumns = Object.keys(tableData[0])
     .map(key => ({
       accessor: key,
       Header: startCase(key),
     }))
     .filter(column =>
-      [
-        'name',
-        'type',
-        'weaponCategory',
-        'age',
-        'dmg1',
-        'dngType',
-        'property',
-        'range',
-        'source',
-      ].includes(column.accessor),
+      ['name', 'type', 'ac', 'stealth', 'strength', 'source'].includes(
+        column.accessor,
+      ),
     );
 
   return (

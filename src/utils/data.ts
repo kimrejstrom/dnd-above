@@ -52,4 +52,5 @@ export const CLASSES = {
 export const RACES = races.race as Race[];
 export const BACKGROUNDS = backgrounds.background as BackgroundElement[];
 export const ITEMS = items.baseitem as BaseItem[];
+export const ARMOR = ITEMS.filter((item: BaseItem) => item.armor);
 export const WEAPONS = ITEMS.filter((item: BaseItem) => item.weaponCategory);

@@ -6,6 +6,7 @@ import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import { Weapons } from 'components/Weapons/Weapons';
+import { Armor } from 'components/Armor/Armor';
 // import { Navigation } from 'components/Navigation/Navigation';
 
 interface Props {}
@@ -22,7 +23,7 @@ const RightPanel = (props: Props) => {
     dispatch(setSelectedIndex(updatedPanel));
   };
   return (
-    <>
+    <div className="flex w-4/12 flex-col bg-secondary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
       {/* Search bar */}
       <div className="flex pl-1 pr-3 py-4 items-center">
         <div className="w-full">
@@ -53,6 +54,7 @@ const RightPanel = (props: Props) => {
           <Tab>Roller</Tab>
           <Tab>Spells</Tab>
           <Tab>Weapons</Tab>
+          <Tab>Armor</Tab>
         </TabList>
         <div className="my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
           <TabPanel className="overflow-y-scroll px-2">
@@ -64,9 +66,12 @@ const RightPanel = (props: Props) => {
           <TabPanel className="overflow-y-scroll px-2">
             <Weapons />
           </TabPanel>
+          <TabPanel className="overflow-y-scroll px-2">
+            <Armor />
+          </TabPanel>
         </div>
       </Tabs>
-    </>
+    </div>
   );
 };
 

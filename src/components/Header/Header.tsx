@@ -62,6 +62,12 @@ export const Header: React.FC = () => {
               Home
             </Link>
             <Link
+              to="/create"
+              className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
+            >
+              Create
+            </Link>
+            <Link
               to="/about"
               className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
             >
