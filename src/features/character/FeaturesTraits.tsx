@@ -11,7 +11,7 @@ interface Props {
 const renderClassFeatures = (classFeatures: ClassFeature[][]) => {
   return classFeatures.map((feature, level) => {
     return (
-      <div className="font-sans">
+      <div className="dnd-body">
         {feature.map(feat => {
           return (
             <div className="custom-border custom-border-thin p-4 my-2">
@@ -32,7 +32,7 @@ const renderClassFeatures = (classFeatures: ClassFeature[][]) => {
 const renderRaceTraits = (raceTraits: RaceEntry[] = []) => {
   return raceTraits.map(trait => {
     return (
-      <ul className="font-sans">
+      <ul className="dnd-body">
         {trait.entries.map(entry => {
           return (
             <li>

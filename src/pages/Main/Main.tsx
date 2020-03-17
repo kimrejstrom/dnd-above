@@ -89,9 +89,9 @@ export const Main: React.FC<Props> = () => {
             <TabPanel className="overflow-y-scroll px-2">
               <div>
                 <div className="text-2xl">Background</div>
-                <div className="text-xl">{character.background.name}</div>
+                <div className="text-xl">{`${character.background.name}, ${character.background.source}  ${character.background.page}`}</div>
                 {character.background.entries?.map(entry => (
-                  <div className="font-sans my-2 custom-border custom-border-thin">
+                  <div className="dnd-body my-2 custom-border custom-border-thin">
                     <Entry entry={entry} />
                   </div>
                 ))}
