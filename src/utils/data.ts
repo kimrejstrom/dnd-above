@@ -27,10 +27,21 @@ import backgrounds from 'data/backgrounds.json';
 // Items
 import items from 'data/items-base.json';
 
-import { ClassTypes } from 'models/class';
+import { ClassTypes, Class } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/item';
+import { SourceUtil } from 'vendor/5e-tools/renderer';
+import { sortBy, uniqBy } from 'lodash';
+import mainRenderer from 'utils/mainRenderer';
+
+export const filterSources = (item: any) => {
+  return SourceUtil.isCoreOrSupplement(item.source) &&
+    !SourceUtil.isNonstandardSource(item.source) &&
+    item.source !== 'DMG'
+    ? 1
+    : 0;
+};
 
 export const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
 export const CLASSES = {
@@ -49,7 +60,26 @@ export const CLASSES = {
   warlock,
   wizard,
 } as ClassTypes;
-export const RACES = races.race as Race[];
+
+export const PLAYABLE_CLASSES = Object.values(CLASSES)
+  .map((classEntry: Class) => classEntry.class[0])
+  .filter(entry => filterSources(entry));
+
+export const RACES = sortBy(
+  races.race.filter(race => filterSources(race)),
+  ['name'],
+) as Race[];
+
+export const PLAYABLE_RACES = uniqBy(
+  sortBy(
+    mainRenderer.race
+      .mergeSubraces(races.race)
+      .filter(race => filterSources(race)),
+    ['name'],
+  ),
+  'name',
+) as Race[];
+
 export const BACKGROUNDS = backgrounds.background as BackgroundElement[];
 export const ITEMS = items.baseitem as BaseItem[];
 export const ARMOR = ITEMS.filter((item: BaseItem) => item.armor);

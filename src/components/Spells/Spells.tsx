@@ -5,6 +5,7 @@ import Table from 'components/Table/Table';
 import { Cell } from 'react-table';
 import mainRenderer from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
+import { SpellElement } from 'models/spells';
 
 const handleSpecialCell = (cell: Cell<object>) => {
   const cellType = cell.column.id;
@@ -36,8 +37,8 @@ const handleSpecialCell = (cell: Cell<object>) => {
 
 export const Spells: React.FC = () => {
   const allSpells = SPELLS;
-  const tableData = Object.values(allSpells)
-    .map(spell => spell['spell'])
+  const tableData: SpellElement[] = Object.values(allSpells)
+    .map(spell => spell.spell)
     .flat();
   const tableColumns = Object.keys(tableData[0])
     .map(key => ({
@@ -56,8 +57,11 @@ export const Spells: React.FC = () => {
         cellRenderer={handleSpecialCell}
         tableData={{ columns: tableColumns, data: tableData }}
       />
-      {tableData.map(sp => (
-        <DangerousHtml data={mainRenderer.spell.getCompactRenderedString(sp)} />
+      {tableData.map((sp, index) => (
+        <DangerousHtml
+          key={index}
+          data={mainRenderer.spell.getCompactRenderedString(sp)}
+        />
       ))}
     </div>
   );

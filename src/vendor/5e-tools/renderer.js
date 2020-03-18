@@ -680,15 +680,17 @@ function Renderer() {
 
   this._renderOptions = function(entry, textStack, meta, options) {
     if (entry.entries) {
-      entry.entries = entry.entries.sort((a, b) =>
-        a.name && b.name
-          ? SortUtil.ascSort(a.name, b.name)
-          : a.name
-          ? -1
-          : b.name
-          ? 1
-          : 0,
-      );
+      entry.entries = entry.entries
+        .slice()
+        .sort((a, b) =>
+          a.name && b.name
+            ? SortUtil.ascSort(a.name, b.name)
+            : a.name
+            ? -1
+            : b.name
+            ? 1
+            : 0,
+        );
       this._renderEntriesSubtypes(entry, textStack, meta, options, false);
     }
   };
@@ -2901,7 +2903,7 @@ Renderer.reward = {
   },
 };
 
-Renderer.race = {
+Renderer.prototype.race = {
   getCompactRenderedString(race) {
     const renderer = Renderer.get();
     const renderStack = [];
@@ -2954,6 +2956,7 @@ Renderer.race = {
    */
   mergeSubraces(races, opts) {
     opts = opts || {};
+    const renderer = Renderer.get();
 
     const out = [];
     races.forEach(r => {
@@ -3014,7 +3017,7 @@ Renderer.race = {
         out.push(baseRace);
       }
 
-      out.push(...Renderer.race._mergeSubrace(r));
+      out.push(...renderer.race._mergeSubrace(r));
     });
 
     return out;
@@ -4092,7 +4095,9 @@ Renderer.monster = {
       trait = trait ? trait.concat(spellTraits) : spellTraits;
     }
     if (trait)
-      return trait.sort((a, b) => SortUtil.monTraitSort(a.name, b.name));
+      return trait
+        .slice()
+        .sort((a, b) => SortUtil.monTraitSort(a.name, b.name));
   },
 
   getSkillsString(renderer, mon) {
@@ -5397,11 +5402,6 @@ Renderer.HEAD_2 = 'rd__b--3';
 Renderer.HEAD_2_SUB_VARIANT = 'rd__b--4';
 Renderer.DATA_NONE = 'data-none';
 
-if (typeof module !== 'undefined') {
-  module.exports.Renderer = Renderer;
-  global.Renderer = Renderer;
-}
-
 // ************************************************************************* //
 // Strict mode should not be used, as the roll20 script depends on this file //
 // Do not use classes                                                        //
@@ -5934,7 +5934,7 @@ Parser.attFullToAbv = function(full) {
 };
 
 Parser.sizeAbvToFull = function(abv) {
-  return Parser._parse_aToB(Parser.SIZE_ABV_TO_FULL, abv);
+  return Parser._parse_aToB(Parser.SIZE_ABV_TO_FULL, abv || '');
 };
 
 Parser.getAbilityModNumber = function(abilityScore) {
@@ -9000,6 +9000,65 @@ Parser.NUMBERS_TEENS = [
   'eighteen',
   'nineteen',
 ];
+
+// SOURCES =============================================================================================================
+SourceUtil = {
+  _subclassReprintLookup: {},
+  async pInitSubclassReprintLookup() {
+    SourceUtil._subclassReprintLookup = await DataUtil.loadJSON(
+      `${Renderer.get().baseUrl}data/generated/gendata-subclass-lookup.json`,
+    );
+  },
+
+  isSubclassReprinted(
+    className,
+    classSource,
+    subclassShortName,
+    subclassSource,
+  ) {
+    const fromLookup = MiscUtil.get(
+      SourceUtil._subclassReprintLookup,
+      classSource,
+      className,
+      subclassSource,
+      subclassShortName,
+    );
+    return fromLookup ? fromLookup.isReprinted : false;
+  },
+
+  isAdventure(source) {
+    // if (source instanceof FilterItem) source = source.item;
+    return Parser.SOURCES_ADVENTURES.has(source);
+  },
+
+  isCoreOrSupplement(source) {
+    // if (source instanceof FilterItem) source = source.item;
+    return Parser.SOURCES_CORE_SUPPLEMENTS.has(source);
+  },
+
+  isNonstandardSource(source) {
+    return (
+      source != null &&
+      // !BrewUtil.hasSourceJson(source) &&
+      SourceUtil._isNonstandardSourceWiz(source)
+    );
+  },
+
+  _isNonstandardSourceWiz(source) {
+    return (
+      source.startsWith(SRC_UA_PREFIX) ||
+      source.startsWith(SRC_PS_PREFIX) ||
+      source.startsWith(SRC_AL_PREFIX) ||
+      Parser.SOURCES_NON_STANDARD_WOTC.has(source)
+    );
+  },
+
+  getFilterGroup(source) {
+    // if (source instanceof FilterItem) source = source.item;
+    if (BrewUtil.hasSourceJson(source)) return 2;
+    return Number(SourceUtil.isNonstandardSource(source));
+  },
+};
 
 // CONVENIENCE/ELEMENTS ================================================================================================
 Math.sum =
@@ -12205,3 +12264,8 @@ ExcludeUtil = {
     ExcludeUtil.pSave();
   },
 };
+
+if (typeof module !== 'undefined') {
+  module.exports.Renderer = Renderer;
+  module.exports.SourceUtil = SourceUtil;
+}

@@ -26,6 +26,7 @@ export interface Race {
   srd?: boolean;
   otherSources?: OtherSource[];
   _copy?: Copy;
+  _isBaseRace?: boolean;
 }
 
 export interface Copy {

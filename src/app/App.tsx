@@ -36,7 +36,7 @@ const App: React.FC = () => {
         <Router>
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-          <main className="text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
+          <main className="min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
             <UpdateNotification />
             <Header />
             <div className="flex w-full">

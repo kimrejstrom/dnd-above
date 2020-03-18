@@ -1,4 +1,4 @@
-import { Renderer } from 'vendor/5e-tools-renderer/renderer';
+import { Renderer } from 'vendor/5e-tools/renderer';
 
 const mainRenderer = new Renderer();
 
