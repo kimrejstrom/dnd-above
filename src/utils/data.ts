@@ -22,6 +22,7 @@ import warlock from 'data/class/class-warlock.json';
 import wizard from 'data/class/class-wizard.json';
 // Races
 import races from 'data/races.json';
+import raceFluff from 'data/fluff-races.json';
 // Backgrounds
 import backgrounds from 'data/backgrounds.json';
 // Items
@@ -34,6 +35,7 @@ import { BaseItem } from 'models/item';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import { sortBy, uniqBy } from 'lodash';
 import mainRenderer from 'utils/mainRenderer';
+import { RaceFluffElement } from 'models/race-fluff';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -79,6 +81,10 @@ export const PLAYABLE_RACES = uniqBy(
   ),
   'name',
 ) as Race[];
+
+export const PLAYABLE_RACES_FLUFF = raceFluff.raceFluff.filter(fluff =>
+  filterSources(fluff),
+) as RaceFluffElement[];
 
 export const BACKGROUNDS = backgrounds.background as BackgroundElement[];
 export const ITEMS = items.baseitem as BaseItem[];

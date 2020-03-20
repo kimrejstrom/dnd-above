@@ -14,38 +14,38 @@ const Alignment = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
     <div
-      className="mx-4 relative bg-contain bg-center bg-no-repeat"
+      className="mx-4 my-2 relative bg-contain bg-center bg-no-repeat"
       style={{
-        width: '24rem',
-        height: '7rem',
+        width: '17rem',
+        height: '4rem',
         backgroundImage: `url(${
           theme === ThemeMode.DARK ? alignmentLight : alignmentDark
         })`,
       }}
     >
       <p
-        className="text-3xl absolute inset-0 text-center"
+        className="text-2xl absolute inset-0 text-center"
         style={{
-          top: '1.75rem',
-          left: '-6rem',
+          top: '0.55rem',
+          left: '-4.1rem',
         }}
       >
         {character.level}
       </p>
       <p
-        className="text-3xl absolute inset-0 text-center"
+        className="text-2xl absolute inset-0 text-center"
         style={{
-          top: '1.75rem',
-          left: '6.25rem',
+          top: '0.6rem',
+          left: '4.25rem',
         }}
       >
         {character.race.speed}
       </p>
       <p
-        className="text-3xl absolute inset-0 text-center"
+        className="text-2xl absolute inset-0 text-center"
         style={{
-          top: '1.75rem',
-          left: '19rem',
+          top: '0.55rem',
+          left: '13rem',
         }}
       >
         {`d${character.class.hd.faces}`}

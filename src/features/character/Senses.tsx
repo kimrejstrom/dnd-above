@@ -38,7 +38,7 @@ const Senses = ({ character }: Props) => {
               <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full">
                 <div className="text-lg leading-none ml-3 flex-grow">{key}</div>
                 <div className="text-md leading-none ml-1">({value})</div>
-                <div className="ml-2 border-2 border-primary-dark dark:border-primary-light rounded-full text-xl w-6 h-6 text-center leading-tight">
+                <div className="mx-2 text-2xl leading-none text-center">
                   {passiveMod}
                 </div>
               </div>

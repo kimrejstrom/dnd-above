@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { PLAYABLE_RACES, PLAYABLE_CLASSES, filterSources } from 'utils/data';
+import {
+  PLAYABLE_RACES,
+  PLAYABLE_CLASSES,
+  filterSources,
+  PLAYABLE_RACES_FLUFF,
+} from 'utils/data';
 import {
   Route,
   useRouteMatch,
@@ -16,6 +21,7 @@ import mainRenderer from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { ClassElement, ClassSubclass } from 'models/class';
 import Entry from 'components/Entry/Entry';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 interface Props {}
 
@@ -95,10 +101,30 @@ const Step1 = ({ url }: { url: string }) => {
               </button>
             </summary>
             <div className="dnd-body p-2">
-              <DangerousHtml
-                key={index}
-                data={mainRenderer.race.getCompactRenderedString(race)}
-              />
+              <Tabs>
+                <TabList className="flex text-center">
+                  <Tab className="mr-2">Traits</Tab>
+                  <Tab>Info</Tab>
+                </TabList>
+
+                <TabPanel className="overflow-y-scroll px-2">
+                  <DangerousHtml
+                    key={index}
+                    data={mainRenderer.race.getCompactRenderedString(race)}
+                  />
+                </TabPanel>
+                <TabPanel className="overflow-y-scroll px-2">
+                  {
+                    <Entry
+                      entry={
+                        PLAYABLE_RACES_FLUFF.find(
+                          fluff => fluff.name === race.name,
+                        ) || 'No info available'
+                      }
+                    />
+                  }
+                </TabPanel>
+              </Tabs>
             </div>
           </details>
         ))}

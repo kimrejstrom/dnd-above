@@ -58,10 +58,11 @@ export const Main: React.FC<Props> = () => {
         <Skills character={character} />
       </div>
       <div className="w-6/12 h-full">
-        <div className="custom-border h-full pb-6">
+        <div className="custom-border pb-10" style={{ height: '58rem' }}>
           <Tabs
             selectedIndex={characterTabPanel.selectedIndex}
             onSelect={tabIndex => handleTabChange(tabIndex)}
+            className="h-full"
           >
             <TabList className="flex justify-between text-center">
               <Tab>Actions</Tab>

@@ -16,8 +16,8 @@ const Name = ({ character }: Props) => {
     <div
       className="bg-contain bg-left bg-no-repeat mb-2"
       style={{
-        width: '30rem',
-        height: '7rem',
+        width: '22rem',
+        height: '5rem',
         backgroundImage: `url(${
           theme === ThemeMode.DARK ? nameLight : nameDark
         })`,

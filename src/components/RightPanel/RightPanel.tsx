@@ -45,32 +45,34 @@ const RightPanel = (props: Props) => {
           </div>
         </div>
       </div>
-      <Tabs
-        selectedIndex={rightPanelTabPanel.selectedIndex}
-        onSelect={tabIndex => handleTabChange(tabIndex)}
-        className="pl-1 pr-3"
-      >
-        <TabList className="flex justify-between text-center">
-          <Tab>Roller</Tab>
-          <Tab>Spells</Tab>
-          <Tab>Weapons</Tab>
-          <Tab>Armor</Tab>
-        </TabList>
-        <div className="my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
-          <TabPanel className="overflow-y-scroll px-2">
-            <Roller />
-          </TabPanel>
-          <TabPanel className="overflow-y-scroll px-2">
-            <Spells />
-          </TabPanel>
-          <TabPanel className="overflow-y-scroll px-2">
-            <Weapons />
-          </TabPanel>
-          <TabPanel className="overflow-y-scroll px-2">
-            <Armor />
-          </TabPanel>
-        </div>
-      </Tabs>
+      <div style={{ height: '70rem' }}>
+        <Tabs
+          selectedIndex={rightPanelTabPanel.selectedIndex}
+          onSelect={tabIndex => handleTabChange(tabIndex)}
+          className="pl-1 pr-3"
+        >
+          <TabList className="flex justify-between text-center">
+            <Tab>Roller</Tab>
+            <Tab>Spells</Tab>
+            <Tab>Weapons</Tab>
+            <Tab>Armor</Tab>
+          </TabList>
+          <div className="my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+            <TabPanel className="overflow-y-scroll px-2">
+              <Roller />
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
+              <Spells />
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
+              <Weapons />
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
+              <Armor />
+            </TabPanel>
+          </div>
+        </Tabs>
+      </div>
     </div>
   );
 };

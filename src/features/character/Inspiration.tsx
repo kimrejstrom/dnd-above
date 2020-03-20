@@ -16,11 +16,11 @@ interface Props {
 const Inspiration = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-2">
       <div
-        className="my-2 h-full relative bg-contain bg-center bg-no-repeat"
+        className="relative bg-contain bg-center bg-no-repeat"
         style={{
-          width: '12rem',
+          width: '9em',
           height: '2.5rem',
           backgroundImage: `url(${
             theme === ThemeMode.DARK ? inspirationLight : inspirationDark
@@ -29,13 +29,13 @@ const Inspiration = ({ character }: Props) => {
       >
         <div
           className="absolute rounded-full w-4 h-4 bg-primary-dark dark:bg-primary-light"
-          style={{ right: '2.25rem', top: '0.75rem' }}
+          style={{ right: '1rem', top: '0.75rem' }}
         ></div>
       </div>
       <div
-        className="my-2 h-full relative bg-contain bg-center bg-no-repeat"
+        className="relative bg-contain bg-center bg-no-repeat"
         style={{
-          width: '12rem',
+          width: '9em',
           height: '2.75rem',
           backgroundImage: `url(${
             theme === ThemeMode.DARK ? proficiencyLight : proficiencyDark
@@ -44,7 +44,7 @@ const Inspiration = ({ character }: Props) => {
       >
         <p
           className="text-2xl text-center absolute"
-          style={{ right: '2.25rem', top: '0.4rem' }}
+          style={{ right: '1rem', top: '0.4rem' }}
         >
           {getProficiencyBonus(character.level)}
         </p>

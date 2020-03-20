@@ -203,7 +203,7 @@ pre {
 }
 
 .react-tabs__tab-panel--selected {
-  height: 53rem;
+  @apply h-full;
 }
 
 .mode-dark .react-tabs__tab {
