@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
@@ -55,24 +55,24 @@ export const Header: React.FC = () => {
           } w-full block flex-grow lg:flex lg:items-center lg:w-auto`}
         >
           <div className="text-lg font-medium lg:flex-grow">
-            <Link
+            <NavLink
               to="/"
               className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/create"
               className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Create
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/about"
               className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
             >
               About
-            </Link>
+            </NavLink>
           </div>
           <div className="flex">
             {theme === ThemeMode.DARK ? (

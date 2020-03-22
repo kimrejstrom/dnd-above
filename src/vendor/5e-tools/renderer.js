@@ -1840,7 +1840,7 @@ Renderer.parseScaleDice = function(tag, text) {
   return out;
 };
 
-Renderer.getAbilityData = function(abArr) {
+Renderer.prototype.getAbilityData = function(abArr) {
   function doRenderOuter(abObj) {
     const mainAbs = [];
     const asCollection = [];
@@ -2908,7 +2908,7 @@ Renderer.prototype.race = {
     const renderer = Renderer.get();
     const renderStack = [];
 
-    const ability = Renderer.getAbilityData(race.ability);
+    const ability = renderer.getAbilityData(race.ability);
     renderStack.push(`
 			${Renderer.utils.getExcludedTr(race, 'race')}
 			${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
@@ -8171,6 +8171,21 @@ Parser.XP_CHART = [
   120000,
   135000,
   155000,
+];
+
+Parser.TOOL_PROFICIENCY = [
+  "artisan's tools",
+  "cartographer's tools",
+  'disguise kit',
+  'forgery kit',
+  'gaming set',
+  'herbalism kit',
+  'musical instrument',
+  "navigator's tools",
+  "thieves' tools",
+  'vehicles (land)',
+  'vehicles (water)',
+  "alchemist's supplies",
 ];
 
 Parser.XP_CHART_ALT = {

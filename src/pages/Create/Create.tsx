@@ -1,138 +1,80 @@
 import React, { useState } from 'react';
-import {
-  PLAYABLE_RACES,
-  PLAYABLE_CLASSES,
-  filterSources,
-  PLAYABLE_RACES_FLUFF,
-} from 'utils/data';
+import { PLAYABLE_CLASSES, filterSources } from 'utils/data';
 import {
   Route,
   useRouteMatch,
   Switch,
   Link,
   useHistory,
+  NavLink,
 } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
-import { Race } from 'models/race';
 import mainRenderer from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { ClassElement, ClassSubclass } from 'models/class';
 import Entry from 'components/Entry/Entry';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import RaceBuilder from 'pages/Create/RaceBuilder';
 
 interface Props {}
 
 const Create = (props: Props) => {
   let { path, url } = useRouteMatch();
   return (
-    <div className="m-auto w-9/12 flex flex-col justify-center">
-      <h1 className="text-center">Character Builder</h1>
-      <ul className="my-3 flex justify-around">
-        <li>1. Race</li>
-        <li>2. Class</li>
-        <li>3. Abilities</li>
-        <li>4. Description</li>
-        <li>5. Equipmemnt</li>
-      </ul>
+    <>
+      <div className="m-auto w-9/12 flex flex-col justify-center">
+        <h1 className="text-center">Character Builder</h1>
+        <ul className="my-3 flex justify-around">
+          <li>
+            <NavLink to={`${url}/step-1`}>1. Race</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/step-2`}>2. Class</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/step-3`}>3. Abilities</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/step-4`}>4. Description</NavLink>
+          </li>
+          <li>
+            <NavLink to={`${url}/step-5`}>5. Equipmemnt</NavLink>
+          </li>
+        </ul>
 
-      <div className="custom-border p-2">
-        <Switch>
-          <Route exact path={path}>
-            <Step1 url={url} />
-          </Route>
-          <Route path={`${path}/step-1`}>
-            <Step1 url={url} />
-          </Route>
-          <Route path={`${path}/step-2`}>
-            <Step2 url={url} />
-          </Route>
-          <Route path={`${path}/step-3`}>
-            <Step3 url={url} />
-          </Route>
-          <Route path={`${path}/step-4`}>
-            <Step4 url={url} />
-          </Route>
-          <Route path={`${path}/step-5`}>
-            <Step5 url={url} />
-          </Route>
-          <Route path={`${path}/summary`}>
-            <Summary />
-          </Route>
-        </Switch>
+        <div className="custom-border p-2">
+          <Switch>
+            <Route exact path={path}>
+              <div>TODO Character list / new choice</div>
+            </Route>
+            <Route path={`${path}/step-1`}>
+              <RaceBuilder url={url} />
+            </Route>
+            <Route path={`${path}/step-2`}>
+              <Step2 url={url} />
+            </Route>
+            <Route path={`${path}/step-3`}>
+              <Step3 url={url} />
+            </Route>
+            <Route path={`${path}/step-4`}>
+              <Step4 url={url} />
+            </Route>
+            <Route path={`${path}/step-5`}>
+              <Step5 url={url} />
+            </Route>
+            <Route path={`${path}/summary`}>
+              <Summary />
+            </Route>
+          </Switch>
+        </div>
       </div>
-    </div>
-  );
-};
-
-const Step1 = ({ url }: { url: string }) => {
-  const dispatch = useDispatch();
-  const formState = useSelector(
-    (state: RootState) => state.createCharacterForm,
-  );
-  const history = useHistory();
-  const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData(data));
-    history.push(`${url}/step-2`);
-  };
-
-  const isCurrent = (race: Race) => race.name === formState.data.race?.name;
-
-  type FormData = {
-    race: Race;
-  };
-
-  return (
-    <div>
-      <div>
-        {PLAYABLE_RACES.map((race: Race, index) => (
-          <details>
-            <summary className="relative custom-border custom-border-thin p-2 my-2">
-              <span className="text-xl">
-                {race.name} {isCurrent(race) && '(Your current Race)'}
-              </span>
-              <button
-                onClick={e => onSubmit({ race }, e)}
-                className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
-              >
-                Select
-              </button>
-            </summary>
-            <div className="dnd-body p-2">
-              <Tabs>
-                <TabList className="flex text-center">
-                  <Tab className="mr-2">Traits</Tab>
-                  <Tab>Info</Tab>
-                </TabList>
-
-                <TabPanel className="overflow-y-scroll px-2">
-                  <DangerousHtml
-                    key={index}
-                    data={mainRenderer.race.getCompactRenderedString(race)}
-                  />
-                </TabPanel>
-                <TabPanel className="overflow-y-scroll px-2">
-                  {
-                    <Entry
-                      entry={
-                        PLAYABLE_RACES_FLUFF.find(
-                          fluff => fluff.name === race.name,
-                        ) || 'No info available'
-                      }
-                    />
-                  }
-                </TabPanel>
-              </Tabs>
-            </div>
-          </details>
-        ))}
-      </div>
-      <div className="flex justify-between">
-        <Link to={`${url}/step-2`}>Next</Link>
-      </div>
-    </div>
+      {/* <div className="w-3/12 flex flex-col">
+        <h1 className="text-center">Character Summary</h1>
+        <div className="custom-border p-2"></div>
+      </div> */}
+    </>
   );
 };
 

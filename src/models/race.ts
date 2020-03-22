@@ -186,7 +186,7 @@ export interface RaceSkillProficiency {
 
 export interface SkillProficiencyChoose {
   from: Array<FromClass | string>;
-  count?: number;
+  count: number;
 }
 
 export interface FromClass {

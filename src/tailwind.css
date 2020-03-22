@@ -185,6 +185,15 @@ pre {
   height: 0;
 }
 
+/* Nav */
+a.active {
+  @apply border-b-2 border-primary-dark text-primary-dark;
+}
+
+.mode-dark a.active {
+  @apply text-yellow-500 border-yellow-500 border-b-2;
+}
+
 /* Tabs */
 .react-tabs__tab {
   @apply text-secondary-dark cursor-pointer;

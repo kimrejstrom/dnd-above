@@ -49,7 +49,7 @@ const RightPanel = (props: Props) => {
         <Tabs
           selectedIndex={rightPanelTabPanel.selectedIndex}
           onSelect={tabIndex => handleTabChange(tabIndex)}
-          className="pl-1 pr-3"
+          className="pl-1 pr-3 h-full"
         >
           <TabList className="flex justify-between text-center">
             <Tab>Roller</Tab>
@@ -57,7 +57,7 @@ const RightPanel = (props: Props) => {
             <Tab>Weapons</Tab>
             <Tab>Armor</Tab>
           </TabList>
-          <div className="my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+          <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
             <TabPanel className="overflow-y-scroll px-2">
               <Roller />
             </TabPanel>
