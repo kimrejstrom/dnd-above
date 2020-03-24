@@ -57,5 +57,8 @@ module.exports = {
       'dark-focus-within',
     ],
   },
-  plugins: [require('tailwindcss-dark-mode')()],
+  plugins: [
+    require('tailwindcss-dark-mode')(),
+    require('@tailwindcss/custom-forms'),
+  ],
 };

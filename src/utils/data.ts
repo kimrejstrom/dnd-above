@@ -27,15 +27,16 @@ import raceFluff from 'data/fluff-races.json';
 import backgrounds from 'data/backgrounds.json';
 // Items
 import items from 'data/items-base.json';
-
-import { ClassTypes, Class } from 'models/class';
+// Models
+import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/item';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
-import { sortBy, uniqBy } from 'lodash';
-import mainRenderer from 'utils/mainRenderer';
 import { RaceFluffElement } from 'models/race-fluff';
+// Utils
+import { sortBy, uniqBy, last } from 'lodash';
+import mainRenderer from 'utils/mainRenderer';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -64,8 +65,8 @@ export const CLASSES = {
 } as ClassTypes;
 
 export const PLAYABLE_CLASSES = Object.values(CLASSES)
-  .map((classEntry: Class) => classEntry.class[0])
-  .filter(entry => filterSources(entry));
+  .map((classEntry: Class) => last(classEntry.class))
+  .filter(entry => filterSources(entry)) as ClassElement[];
 
 export const RACES = sortBy(
   races.race.filter(race => filterSources(race)),

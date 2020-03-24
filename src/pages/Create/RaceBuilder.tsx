@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { Race } from 'models/race';
 import { PLAYABLE_RACES, PLAYABLE_RACES_FLUFF } from 'utils/data';
@@ -26,7 +26,7 @@ const RaceBuilder = ({ url }: Props) => {
 
   const RaceDetails = () => {
     const history = useHistory();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
       dispatch(updateFormData(data));
       history.push(`${url}/step-2`);
@@ -62,130 +62,174 @@ const RaceBuilder = ({ url }: Props) => {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col"
           >
-            <>
-              <h2>Ability Scores</h2>
-              {mainRenderer.getAbilityData(abilities).asText}
-              {abilities.map(ab => {
-                if (ab.choose) {
-                  const count = ab.choose.count || 1;
-                  return (
-                    <label>
-                      {`Choose ability (${count}):`}
-                      <select
-                        multiple={count > 1}
-                        name="abilities"
-                        ref={register({ required: true })}
-                      >
-                        {ab.choose.from.map(abil => (
-                          <option value={abil}>
-                            {CHARACTER_STATS[abil as StatsTypes]}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  );
-                } else {
-                  return <></>;
+            <h2>Ability Scores</h2>
+            {mainRenderer.getAbilityData(abilities).asText}
+            {abilities.map(ab => {
+              if (ab.choose) {
+                const count = ab.choose.count || 1;
+                return (
+                  <label className="block">
+                    {`Choose ability (${count}):`}
+                    <select
+                      multiple={count > 1}
+                      name="abilities"
+                      ref={register({
+                        required: true,
+                        validate: data =>
+                          Array.isArray(data) ? data.length === count : true,
+                      })}
+                      className={`${
+                        count > 1 ? 'form-multiselect' : 'form-select'
+                      } block w-full mt-1`}
+                    >
+                      {ab.choose.from.map(abil => (
+                        <option value={abil}>
+                          {CHARACTER_STATS[abil as StatsTypes]}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.abilities && (
+                      <span>{`You must choose ${count} skills`}</span>
+                    )}
+                  </label>
+                );
+              } else {
+                return <></>;
+              }
+            })}
+
+            <h2>Skill Proficiencies</h2>
+            {proficiencies.map(prof => {
+              if (prof.choose) {
+                const hasToolOption =
+                  typeof _.last(prof.choose.from) !== 'string';
+                let count = prof.choose.count || 1;
+                if (hasToolOption) {
+                  count = count - 1;
                 }
-              })}
-            </>
-            <>
-              <h2>Skill Proficiencies</h2>
-              {proficiencies.map(prof => {
-                if (prof.choose) {
-                  const hasToolOption =
-                    typeof _.last(prof.choose.from) !== 'string';
-                  let count = prof.choose.count || 1;
-                  if (hasToolOption) {
-                    count = count - 1;
-                  }
-                  return (
-                    <>
-                      {count > 0 && (
-                        <label>
-                          {`Choose skill proficiency (${count}):`}
-                          <select
-                            multiple={count > 1}
-                            name="proficiencies"
-                            ref={register({ required: true })}
-                          >
-                            {prof.choose.from.map(pr => {
-                              if (typeof pr === 'string') {
-                                return (
-                                  <option className="uppercase" value={pr}>
-                                    {pr}
-                                  </option>
-                                );
-                              } else {
-                                return <></>;
-                              }
-                            })}
-                          </select>
-                        </label>
-                      )}
-                      {hasToolOption && (
-                        <label htmlFor="tools">
-                          {`Choose tool proficiency (1):`}
-                          <select
-                            name="tools"
-                            ref={register({ required: true })}
-                          >
-                            {Parser.TOOL_PROFICIENCY.map(pr => (
-                              <option className="uppercase" value={pr}>
-                                {pr}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      )}
-                    </>
-                  );
-                } else {
-                  return (
-                    <div>
-                      {_.keys(_.pickBy(prof, key => isBoolean(key))).join(', ')}
-                    </div>
-                  );
-                }
-              })}
-            </>
-            <>
-              <h2>Languages</h2>
-              {languages.map(lang => {
-                if (lang.anyStandard) {
-                  return (
-                    <>
-                      {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
-                      <label>
-                        {`Choose language (${lang.anyStandard}):`}
+                return (
+                  <>
+                    {count > 0 && (
+                      <label className="block">
+                        {`Choose skill proficiency (${count}):`}
                         <select
-                          multiple={lang.anyStandard > 1}
-                          name={`languages`}
-                          ref={register({ required: true })}
+                          multiple={count > 1}
+                          name="raceProficiencies"
+                          ref={register({
+                            required: true,
+                            validate: data =>
+                              Array.isArray(data)
+                                ? data.length === count
+                                : true,
+                          })}
+                          className={`${
+                            count > 1 ? 'form-multiselect' : 'form-select'
+                          } block w-full mt-1`}
                         >
-                          {Parser.LANGUAGES_STANDARD.concat(
-                            Parser.LANGUAGES_EXOTIC,
-                          ).map(allLang => (
-                            <option
-                              className="uppercase"
-                              value={allLang.toLowerCase()}
-                            >
-                              {allLang}
+                          {prof.choose.from.map(pr => {
+                            if (typeof pr === 'string') {
+                              return (
+                                <option className="uppercase" value={pr}>
+                                  {pr}
+                                </option>
+                              );
+                            } else {
+                              return <></>;
+                            }
+                          })}
+                        </select>
+                        {errors.raceProficiencies && (
+                          <span>{`You must choose ${count} skills`}</span>
+                        )}
+                      </label>
+                    )}
+                    {hasToolOption && (
+                      <label className="block">
+                        {`Choose tool proficiency (1):`}
+                        <select
+                          className={`${
+                            count > 1 ? 'form-multiselect' : 'form-select'
+                          } block w-full mt-1`}
+                          name="tools"
+                          ref={register({
+                            required: true,
+                            validate: data =>
+                              Array.isArray(data)
+                                ? data.length === count
+                                : true,
+                          })}
+                        >
+                          {Parser.TOOL_PROFICIENCY.map(pr => (
+                            <option className="uppercase" value={pr}>
+                              {pr}
                             </option>
                           ))}
                         </select>
+                        {errors.tools && (
+                          <span>{`You must choose ${count} skills`}</span>
+                        )}
                       </label>
-                    </>
-                  );
-                } else {
-                  return (
-                    <div>
-                      {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
-                    </div>
-                  );
-                }
-              })}
-            </>
+                    )}
+                  </>
+                );
+              } else {
+                return (
+                  <div>
+                    {_.keys(_.pickBy(prof, key => isBoolean(key))).join(', ')}
+                  </div>
+                );
+              }
+            })}
+
+            <h2>Languages</h2>
+            {languages.map(lang => {
+              if (lang.anyStandard) {
+                return (
+                  <>
+                    {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
+                    <label className="block">
+                      {`Choose language (${lang.anyStandard}):`}
+                      <select
+                        className={`${
+                          lang.anyStandard > 1
+                            ? 'form-multiselect'
+                            : 'form-select'
+                        } block w-full mt-1`}
+                        multiple={lang.anyStandard > 1}
+                        name={`languages`}
+                        ref={register({
+                          required: true,
+                          validate: data =>
+                            Array.isArray(data)
+                              ? data.length === lang.anyStandard
+                              : true,
+                        })}
+                      >
+                        {Parser.LANGUAGES_STANDARD.concat(
+                          Parser.LANGUAGES_EXOTIC,
+                        ).map(allLang => (
+                          <option
+                            className="uppercase"
+                            value={allLang.toLowerCase()}
+                          >
+                            {allLang}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.languages && (
+                        <span>{`You must choose ${lang.anyStandard} skills`}</span>
+                      )}
+                    </label>
+                  </>
+                );
+              } else {
+                return (
+                  <div>
+                    {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
+                  </div>
+                );
+              }
+            })}
 
             <input type="submit" />
           </form>
