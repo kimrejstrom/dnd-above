@@ -49,6 +49,7 @@ body.modal-active {
 
 .custom-border {
   border-style: solid;
+  border-radius: 10px 10px 15px 10px;
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;

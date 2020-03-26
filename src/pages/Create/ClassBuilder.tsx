@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
+import ClassTable from 'pages/Create/ClassTable';
 
 const ClassBuilder = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -56,13 +57,13 @@ const ClassBuilder = ({ url }: { url: string }) => {
         <div className="flex relative">
           <h1>{`${formState.data.classElement?.name} – ${formState.data.subClass?.name}`}</h1>
         </div>
-        <div className="custom-border custom-border-thin">
+        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col"
+            className="flex flex-col dnd-body"
           >
-            <h2>Skill Proficiencies</h2>
+            <h3>Skill Proficiencies</h3>
             {classProficiencies.map(prof => {
               const count = prof.choose.count || 1;
               return (
@@ -71,7 +72,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                   <select
                     className={`${
                       count > 1 ? 'form-multiselect' : 'form-select'
-                    } block w-full mt-1`}
+                    } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                     multiple={count > 1}
                     name="classProficiencies"
                     ref={register({
@@ -83,7 +84,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                     {prof.choose.from.map(pr => {
                       if (typeof pr === 'string') {
                         return (
-                          <option key={pr} className="uppercase" value={pr}>
+                          <option key={pr} className="capitalize" value={pr}>
                             {pr}
                           </option>
                         );
@@ -98,9 +99,12 @@ const ClassBuilder = ({ url }: { url: string }) => {
                 </label>
               );
             })}
-            <input type="submit" />
           </form>
         </div>
+        <ClassTable
+          cls={formState.data.classElement!}
+          subcls={formState.data.subClass!}
+        />
         <ClassBase cls={formState.data.classElement!} />
       </div>
     );
@@ -129,7 +133,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
               .filter(subclass => filterSources(subclass))
               .map(feature => (
                 <details key={feature.name}>
-                  <summary className="relative custom-border custom-border-thin p-2 my-2">
+                  <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
                     <span className="text-xl">{feature.name}</span>
                     <button
                       onClick={e =>
@@ -161,8 +165,20 @@ const ClassBuilder = ({ url }: { url: string }) => {
           <div>
             {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="relative custom-border custom-border-thin p-2 my-2">
-                  <span className="text-xl">{classElement.name}</span>
+                <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+                  <span className="text-xl">
+                    <img
+                      className="inline w-8 mr-2 rounded bg-contain"
+                      src={`${
+                        process.env.PUBLIC_URL
+                      }/img/${classElement.name.toLowerCase()}.jpeg`}
+                      alt={classElement.name}
+                      style={{
+                        filter: 'grayscale(80%)',
+                      }}
+                    />
+                    {classElement.name}
+                  </span>
                   <button
                     onClick={e => setselectedClass(classElement)}
                     className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"

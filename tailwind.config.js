@@ -6,7 +6,8 @@ module.exports = {
       'secondary-dark': '#393232',
       'tertiary-dark': '#1b1616',
       'primary-light': '#f8f8ba',
-      'secondary-light': '#ffffd6',
+      'secondary-light': '#efefe6',
+      'tertiary-light': '#efeee9',
     }),
     textColor: theme => ({
       ...theme('colors'),
@@ -14,7 +15,8 @@ module.exports = {
       'secondary-dark': '#393232',
       'tertiary-dark': '#1b1616',
       'primary-light': '#f8f8ba',
-      'secondary-light': '#ffffd6',
+      'secondary-light': '#efefe6',
+      'tertiary-light': '#efeee9',
     }),
     borderColor: theme => ({
       ...theme('colors'),
@@ -22,7 +24,8 @@ module.exports = {
       'secondary-dark': '#393232',
       'tertiary-dark': '#1b1616',
       'primary-light': '#f8f8ba',
-      'secondary-light': '#ffffd6',
+      'secondary-light': '#efefe6',
+      'tertiary-light': '#efeee9',
     }),
   },
   variants: {

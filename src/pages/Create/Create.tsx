@@ -39,7 +39,7 @@ const Create = (props: Props) => {
         </li>
       </ul>
 
-      <div className="custom-border p-2">
+      <div className="custom-border bg-secondary-light dark:bg-secondary-dark dar p-2">
         <Switch>
           <Route exact path={path}>
             <div>TODO Character list / new choice</div>
@@ -67,110 +67,6 @@ const Create = (props: Props) => {
     </div>
   );
 };
-
-// const Step2 = ({ url }: { url: string }) => {
-//   const dispatch = useDispatch();
-//   const formState = useSelector(
-//     (state: RootState) => state.createCharacterForm,
-//   );
-//   const history = useHistory();
-//   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-//     dispatch(updateFormData(data));
-//     history.push(`${url}/step-3`);
-//   };
-//   const [selectedClass, setselectedClass] = useState(
-//     formState.data.classElement,
-//   );
-
-//   const isCurrent = (classElement: ClassElement) =>
-//     classElement.name === formState.data.classElement?.name;
-
-//   type FormData = {
-//     classElement: ClassElement;
-//     subClass: ClassSubclass;
-//   };
-
-//   return (
-//     <div>
-//       {selectedClass && (
-//         <div>
-//           <h2>Select Sub Class: {selectedClass.subclassTitle}</h2>
-//           {selectedClass.subclasses
-//             .filter(subclass => filterSources(subclass))
-//             .map(feature => (
-//               <div className="custom-border custom-border-thin p-4 my-2">
-//                 <div className="flex justify-between">
-//                   <div className="text-2xl font-bold">{feature.name}</div>
-//                   <button
-//                     onClick={e =>
-//                       onSubmit(
-//                         { classElement: selectedClass, subClass: feature },
-//                         e,
-//                       )
-//                     }
-//                     className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-//                   >
-//                     Select
-//                   </button>
-//                 </div>
-//                 {feature.subclassFeatures.map(feat =>
-//                   feat.map(entry => (
-//                     <div>
-//                       {entry.entries.map(innerEntry => (
-//                         <div className="dnd-body">
-//                           <Entry entry={innerEntry} />
-//                         </div>
-//                       ))}
-//                     </div>
-//                   )),
-//                 )}
-//               </div>
-//             ))}
-//         </div>
-//       )}
-//       <div>
-//         {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
-//           <details key={index}>
-//             <summary className="relative custom-border custom-border-thin p-2 my-2">
-//               <span className="text-xl">
-//                 {classElement.name}{' '}
-//                 {isCurrent(classElement) && '(Your current class)'}
-//               </span>
-//               <button
-//                 onClick={e => setselectedClass(classElement)}
-//                 className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
-//               >
-//                 Select
-//               </button>
-//             </summary>
-//             <div className="dnd-body p-2">
-//               <Entry entry={classElement} />
-//               <ClassBase cls={classElement} />
-//               {classElement.classFeatures.map((feature, level) =>
-//                 feature.map(feat => {
-//                   return (
-//                     <div className="custom-border custom-border-thin p-4 my-2">
-//                       <div className="font-bold">{`Level ${level + 1} – ${
-//                         feat.name
-//                       }:`}</div>
-//                       {feat.entries.map(entry => {
-//                         return <Entry entry={entry} />;
-//                       })}
-//                     </div>
-//                   );
-//                 }),
-//               )}
-//             </div>
-//           </details>
-//         ))}
-//       </div>
-//       <div className="flex justify-between my-4">
-//         <Link to={`${url}/step-1`}>Previous</Link>
-//         <Link to={`${url}/step-3`}>Next</Link>
-//       </div>
-//     </div>
-//   );
-// };
 
 const Step3 = ({ url }: { url: string }) => {
   const dispatch = useDispatch();

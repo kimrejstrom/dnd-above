@@ -35,7 +35,7 @@ import { BaseItem } from 'models/item';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import { RaceFluffElement } from 'models/race-fluff';
 // Utils
-import { sortBy, uniqBy, last } from 'lodash';
+import { sortBy, uniqBy, flatten } from 'lodash';
 import mainRenderer from 'utils/mainRenderer';
 
 export const filterSources = (item: any) => {
@@ -64,9 +64,11 @@ export const CLASSES = {
   wizard,
 } as ClassTypes;
 
-export const PLAYABLE_CLASSES = Object.values(CLASSES)
-  .map((classEntry: Class) => last(classEntry.class))
-  .filter(entry => filterSources(entry)) as ClassElement[];
+export const PLAYABLE_CLASSES = flatten(
+  Object.values(CLASSES).map((classEntry: Class) =>
+    classEntry.class.filter(entry => filterSources(entry)),
+  ),
+) as ClassElement[];
 
 export const RACES = sortBy(
   races.race.filter(race => filterSources(race)),

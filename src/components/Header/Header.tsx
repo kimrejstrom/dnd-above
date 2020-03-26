@@ -56,6 +56,7 @@ export const Header: React.FC = () => {
         >
           <div className="text-lg font-medium lg:flex-grow">
             <NavLink
+              exact
               to="/"
               className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >

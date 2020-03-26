@@ -56,13 +56,13 @@ const RaceBuilder = ({ url }: Props) => {
           <h1>{formState.data.race?.name}</h1>
         </div>
 
-        <div className="custom-border custom-border-thin">
+        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col"
           >
-            <h2>Ability Scores</h2>
+            <h3>Ability Scores</h3>
             {mainRenderer.getAbilityData(abilities).asText}
             {abilities.map(ab => {
               if (ab.choose) {
@@ -80,7 +80,7 @@ const RaceBuilder = ({ url }: Props) => {
                       })}
                       className={`${
                         count > 1 ? 'form-multiselect' : 'form-select'
-                      } block w-full mt-1`}
+                      } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                     >
                       {ab.choose.from.map(abil => (
                         <option value={abil}>
@@ -98,7 +98,7 @@ const RaceBuilder = ({ url }: Props) => {
               }
             })}
 
-            <h2>Skill Proficiencies</h2>
+            <h3>Skill Proficiencies</h3>
             {proficiencies.map(prof => {
               if (prof.choose) {
                 const hasToolOption =
@@ -124,7 +124,7 @@ const RaceBuilder = ({ url }: Props) => {
                           })}
                           className={`${
                             count > 1 ? 'form-multiselect' : 'form-select'
-                          } block w-full mt-1`}
+                          } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                         >
                           {prof.choose.from.map(pr => {
                             if (typeof pr === 'string') {
@@ -149,7 +149,7 @@ const RaceBuilder = ({ url }: Props) => {
                         <select
                           className={`${
                             count > 1 ? 'form-multiselect' : 'form-select'
-                          } block w-full mt-1`}
+                          } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                           name="tools"
                           ref={register({
                             required: true,
@@ -181,7 +181,7 @@ const RaceBuilder = ({ url }: Props) => {
               }
             })}
 
-            <h2>Languages</h2>
+            <h3>Languages</h3>
             {languages.map(lang => {
               if (lang.anyStandard) {
                 return (
@@ -194,7 +194,7 @@ const RaceBuilder = ({ url }: Props) => {
                           lang.anyStandard > 1
                             ? 'form-multiselect'
                             : 'form-select'
-                        } block w-full mt-1`}
+                        } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                         multiple={lang.anyStandard > 1}
                         name={`languages`}
                         ref={register({
@@ -230,17 +230,15 @@ const RaceBuilder = ({ url }: Props) => {
                 );
               }
             })}
-
-            <input type="submit" />
           </form>
         </div>
 
         <div>
-          <h2>Racial Traits</h2>
+          <h3>Racial Traits</h3>
           {formState.data.race?.traitTags?.join(', ')}
         </div>
 
-        <h2>Racial Abilities</h2>
+        <h3>Racial Abilities</h3>
         <DangerousHtml
           data={mainRenderer.render(
             {
@@ -264,49 +262,72 @@ const RaceBuilder = ({ url }: Props) => {
     const onSelect = (data: { race: Race }, e?: React.BaseSyntheticEvent) => {
       dispatch(updateFormData(data));
     };
+
+    const addDefaultImageSrc = (ev: any, name: string) => {
+      ev.target.src = `${process.env.PUBLIC_URL}/img/races/${
+        name.split(' ')[0]
+      }.png`;
+    };
+
     return (
       <div>
-        <div>
-          {PLAYABLE_RACES.map((race: Race, index) => (
-            <details>
-              <summary className="relative custom-border custom-border-thin p-2 my-2">
-                <span className="text-xl">{race.name}</span>
-                <button
-                  onClick={e => onSelect({ race }, e)}
-                  className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
-                >
-                  Select
-                </button>
-              </summary>
-              <div className="dnd-body p-2">
-                <Tabs>
-                  <TabList className="flex text-center">
-                    <Tab className="mr-2">Traits</Tab>
-                    <Tab>Info</Tab>
-                  </TabList>
+        {PLAYABLE_RACES.map((race: Race, index) => (
+          <details>
+            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+              <span className="text-xl">{race.name}</span>
+              <button
+                onClick={e => onSelect({ race }, e)}
+                className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
+              >
+                Select
+              </button>
+            </summary>
+            <div className="dnd-body p-2">
+              <Tabs>
+                <TabList className="flex text-center">
+                  <Tab className="mr-2">Traits</Tab>
+                  <Tab>Info</Tab>
+                </TabList>
 
-                  <TabPanel className="overflow-y-scroll px-2">
-                    <DangerousHtml
-                      key={index}
-                      data={mainRenderer.race.getCompactRenderedString(race)}
+                <TabPanel className="overflow-y-scroll px-2">
+                  <div className="flex w-full"></div>
+                  <div>
+                    <img
+                      src={`${
+                        process.env.PUBLIC_URL
+                      }/img/races/${race.name.toLowerCase()}.png`}
+                      onError={(ev: any) =>
+                        addDefaultImageSrc(ev, race.name.toLowerCase())
+                      }
+                      alt={race.name.toLowerCase()}
+                      className="custom-border custom-border-thin shadow float-right ml-2"
+                      style={{
+                        width: '20rem',
+                      }}
                     />
-                  </TabPanel>
-                  <TabPanel className="overflow-y-scroll px-2">
-                    {
-                      <Entry
-                        entry={
-                          PLAYABLE_RACES_FLUFF.find(
-                            fluff => fluff.name === race.name,
-                          ) || 'No info available'
-                        }
+                    <p>
+                      <DangerousHtml
+                        key={index}
+                        data={mainRenderer.race.getCompactRenderedString(race)}
                       />
-                    }
-                  </TabPanel>
-                </Tabs>
-              </div>
-            </details>
-          ))}
-        </div>
+                    </p>
+                  </div>
+                </TabPanel>
+                <TabPanel className="overflow-y-scroll px-2">
+                  {
+                    <Entry
+                      entry={
+                        PLAYABLE_RACES_FLUFF.find(
+                          fluff => fluff.name === race.name,
+                        ) || 'No info available'
+                      }
+                    />
+                  }
+                </TabPanel>
+              </Tabs>
+            </div>
+          </details>
+        ))}
       </div>
     );
   };

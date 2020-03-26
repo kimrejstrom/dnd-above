@@ -23,7 +23,7 @@ const RightPanel = (props: Props) => {
     dispatch(setSelectedIndex(updatedPanel));
   };
   return (
-    <div className="flex w-4/12 flex-col bg-secondary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
+    <div className="flex w-4/12 flex-shrink-0 flex-col bg-secondary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
       {/* Search bar */}
       <div className="flex pl-1 pr-3 py-4 items-center">
         <div className="w-full">
