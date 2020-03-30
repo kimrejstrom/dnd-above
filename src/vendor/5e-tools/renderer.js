@@ -426,7 +426,7 @@ function Renderer() {
     bodyStack[0] += '<tbody>';
     const len = entry.rows.length;
     for (let ixRow = 0; ixRow < len; ++ixRow) {
-      bodyStack[0] += '<tr>';
+      bodyStack[0] += '<tr class="odd:bg-gray-100 dark-odd:bg-secondary-dark">';
       const r = entry.rows[ixRow];
       let roRender = r.type === 'row' ? r.row : r;
 
@@ -7583,6 +7583,39 @@ Parser.optFeatureTypeToFull = function(type) {
   )
     return BrewUtil.homebrewMeta.optionalFeatureTypes[type];
   return type;
+};
+
+Parser.ALIGNMENTS = {
+  CG: 'Chaotic good',
+  CN: 'Chaotic neutral',
+  CE: 'Chaotic evil',
+  LG: 'Lawful good',
+  LN: 'Lawful neutral',
+  LE: 'Lawful evil',
+  NG: 'Neutral good',
+  N: 'Neutral',
+  NE: 'Neutral evil',
+};
+
+Parser.ALIGNMENTS_DESC = {
+  LG:
+    'Lawful good creatures can be counted on to do the right thing as expected by society. Gold dragons, paladins, and most dwarves are lawful good.',
+  NG:
+    'Neutral good folk do the best they can to help others according to their needs. Many celestials, some cloud giants, and most gnomes are neutral good.',
+  CG:
+    'Chaotic good creatures act as their conscience directs, with little regard for what others expect. Copper dragons, many elves, and unicorns are chaotic good.',
+  LN:
+    'Lawful neutral individuals act in accordance with law, tradition, or personal codes. Many monks and some wizards are lawful neutral.',
+  N:
+    "Neutral is the alignment of those who prefer to steer clear of moral questions and don't take sides, doing what seems best at the time. Lizardfolk, most druids, and many humans are neutral.",
+  CN:
+    'Chaotic neutral creatures follow their whims, holding their personal freedom above all else. Many barbarians and rogues, and some bards, are chaotic neutral.',
+  LE:
+    'Lawful evil creatures methodically take what they want, within the limits of a code of tradition, loyalty, or order. Devils, blue dragons, and hobgoblins are lawful evil.',
+  NE:
+    'Neutral evil is the alignment of those who do whatever they can get away with, without compassion or qualms. Many drow, some cloud giants, and yugoloths are neutral evil.',
+  CE:
+    'Chaotic evil creatures act with arbitrary violence, spurred by their greed, hatred, or bloodlust. Demons, red dragons, and orcs are chaotic evil.',
 };
 
 Parser.alignmentAbvToFull = function(alignment) {

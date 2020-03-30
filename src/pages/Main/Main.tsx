@@ -17,6 +17,7 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { setSelectedIndex, TAB_PANELS } from 'features/tabs/tabsSlice';
 import FeaturesTraits from 'features/character/FeaturesTraits';
 import Entry from 'components/Entry/Entry';
+import Background from 'pages/Create/Background';
 
 interface Props {}
 
@@ -90,12 +91,7 @@ export const Main: React.FC<Props> = () => {
             <TabPanel className="overflow-y-scroll px-2">
               <div>
                 <div className="text-2xl">Background</div>
-                <div className="text-xl">{`${character.background.name}, ${character.background.source}  ${character.background.page}`}</div>
-                {character.background.entries?.map(entry => (
-                  <div className="dnd-body my-2 custom-border custom-border-thin">
-                    <Entry entry={entry} />
-                  </div>
-                ))}
+                <Background background={character.background} />
               </div>
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">

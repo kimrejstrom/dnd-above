@@ -25,6 +25,7 @@ import races from 'data/races.json';
 import raceFluff from 'data/fluff-races.json';
 // Backgrounds
 import backgrounds from 'data/backgrounds.json';
+import backgroundsFluff from 'data/fluff-backgrounds.json';
 // Items
 import items from 'data/items-base.json';
 // Models
@@ -37,6 +38,7 @@ import { RaceFluffElement } from 'models/race-fluff';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import mainRenderer from 'utils/mainRenderer';
+import { BackgroundFluffElement } from 'models/background-fluff';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -89,7 +91,33 @@ export const PLAYABLE_RACES_FLUFF = raceFluff.raceFluff.filter(fluff =>
   filterSources(fluff),
 ) as RaceFluffElement[];
 
-export const BACKGROUNDS = backgrounds.background as BackgroundElement[];
+export const BACKGROUNDS = backgrounds.background
+  .filter(bg => filterSources(bg))
+  .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
+export const BACKGROUNDS_FLUFF = backgroundsFluff.backgroundFluff.filter(bg =>
+  filterSources(bg),
+) as BackgroundFluffElement[];
+
+export const CHARACTERISTICS = BACKGROUNDS.map(bg => ({
+  name: bg.name,
+  tables: bg.entries
+    ? bg.entries
+        .map(entry => {
+          if (entry.name && entry.name === 'Suggested Characteristics') {
+            return entry.entries?.map(item => {
+              return item;
+            });
+          } else {
+            return undefined;
+          }
+        })
+        .filter(x => x)
+    : [],
+})).map(characteristic => ({
+  ...characteristic,
+  tables: flatten(characteristic.tables),
+}));
+
 export const ITEMS = items.baseitem as BaseItem[];
 export const ARMOR = ITEMS.filter((item: BaseItem) => item.armor);
 export const WEAPONS = ITEMS.filter((item: BaseItem) => item.weaponCategory);

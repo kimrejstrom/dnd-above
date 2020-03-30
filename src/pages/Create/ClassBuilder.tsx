@@ -57,7 +57,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
         <div className="flex relative">
           <h1>{`${formState.data.classElement?.name} – ${formState.data.subClass?.name}`}</h1>
         </div>
-        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark">
+        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark my-2">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}

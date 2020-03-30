@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Race } from 'models/race';
 import { ClassElement, ClassSubclass } from 'models/class';
+import { BackgroundElement } from 'models/background';
 
 export interface CreateCharacterFormState {
   data: {
@@ -10,7 +11,9 @@ export interface CreateCharacterFormState {
     firstName?: string;
     lastName?: string;
     name?: string;
-    background?: any;
+    background?: BackgroundElement;
+    abilities?: string[];
+    abilityScores?: any;
   };
 }
 

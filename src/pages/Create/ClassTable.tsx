@@ -51,10 +51,10 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
       it => it.name && it.type !== 'inset',
     );
     return (
-      <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+      <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm text-center">
         <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
         <td>+{pb}</td>
-        <td>
+        <td className="text-left">
           {lvlFeaturesFilt.length
             ? lvlFeaturesFilt.map(it => it.name).join(', ')
             : `\u2014`}
@@ -74,36 +74,35 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
 
 const ClassTable = ({ cls, subcls }: Props) => {
   return (
-    <table className="w-full dnd-body">
-      <tbody>
-        <tr>
-          <th className="border" colSpan={15}></th>
-        </tr>
-        <tr>
-          <th colSpan={15}>{cls.name}</th>
-        </tr>
-        <tr>
-          <th colSpan={3} />
-          {cls.classTableGroups &&
-            renderTableGroupsHeaderTitle(cls.classTableGroups)}
-          {subcls.subclassTableGroups &&
-            renderTableGroupsHeaderTitle(subcls.subclassTableGroups)}
-        </tr>
-        <tr>
-          <th>Level</th>
-          <th>Proficiency Bonus</th>
-          <th>Features</th>
-          {cls.classTableGroups &&
-            renderTableGroupsHeader(cls.classTableGroups)}
-          {subcls.subclassTableGroups &&
-            renderTableGroupsHeader(subcls.subclassTableGroups)}
-        </tr>
-        {renderTableRows(cls, subcls)}
-        <tr>
-          <th className="border" colSpan={15}></th>
-        </tr>
-      </tbody>
-    </table>
+    <div className="my-1">
+      <table className="w-full dnd-body">
+        <tbody>
+          <tr>
+            <th className="border" colSpan={15}></th>
+          </tr>
+          <tr className="leading-tight">
+            <th colSpan={3} />
+            {cls.classTableGroups &&
+              renderTableGroupsHeaderTitle(cls.classTableGroups)}
+            {subcls.subclassTableGroups &&
+              renderTableGroupsHeaderTitle(subcls.subclassTableGroups)}
+          </tr>
+          <tr className="leading-none">
+            <th>Level</th>
+            <th>Proficiency Bonus</th>
+            <th className="text-left">Features</th>
+            {cls.classTableGroups &&
+              renderTableGroupsHeader(cls.classTableGroups)}
+            {subcls.subclassTableGroups &&
+              renderTableGroupsHeader(subcls.subclassTableGroups)}
+          </tr>
+          {renderTableRows(cls, subcls)}
+          <tr>
+            <th className="border" colSpan={15}></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 

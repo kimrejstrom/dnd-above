@@ -13,6 +13,8 @@ import { RootState } from 'app/rootReducer';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import RaceBuilder from 'pages/Create/RaceBuilder';
 import ClassBuilder from 'pages/Create/ClassBuilder';
+import Abilities from 'pages/Create/Abilities';
+import Description from 'pages/Create/Description';
 
 interface Props {}
 
@@ -51,10 +53,10 @@ const Create = (props: Props) => {
             <ClassBuilder url={url} />
           </Route>
           <Route path={`${path}/step-3`}>
-            <Step3 url={url} />
+            <Abilities url={url} />
           </Route>
           <Route path={`${path}/step-4`}>
-            <Step4 url={url} />
+            <Description url={url} />
           </Route>
           <Route path={`${path}/step-5`}>
             <Step5 url={url} />
@@ -63,54 +65,6 @@ const Create = (props: Props) => {
             <Summary />
           </Route>
         </Switch>
-      </div>
-    </div>
-  );
-};
-
-const Step3 = ({ url }: { url: string }) => {
-  const dispatch = useDispatch();
-  const formState = useSelector(
-    (state: RootState) => state.createCharacterForm,
-  );
-  const history = useHistory();
-  const { register, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData(data));
-    history.push(`${url}/step-2`);
-  };
-
-  type FormData = {
-    firstName: string;
-    lastName: string;
-  };
-
-  return (
-    <div>
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Ability Scores</h2>
-        <label>
-          First Name:
-          <input
-            name="firstName"
-            ref={register({ required: true })}
-            defaultValue={formState.data.firstName}
-          />
-          {errors.firstName && 'First name is required'}
-        </label>
-        <label>
-          Last Name:
-          <input
-            name="lastName"
-            ref={register}
-            defaultValue={formState.data.lastName}
-          />
-        </label>
-        <input type="submit" />
-      </form>
-      <div className="flex justify-between">
-        <Link to={`${url}/step-2`}>Previous</Link>
-        <Link to={`${url}/step-4`}>Next</Link>
       </div>
     </div>
   );
@@ -145,22 +99,6 @@ const Step4 = ({ url }: { url: string }) => {
             defaultValue={formState.data.name}
           />
           {errors.firstName && 'First name is required'}
-        </label>
-        <label>
-          Background
-          <input
-            name="background"
-            ref={register}
-            defaultValue={formState.data.background}
-          />
-        </label>
-        <label>
-          Background
-          <input
-            name="background"
-            ref={register}
-            defaultValue={formState.data.background}
-          />
         </label>
         <input type="submit" />
       </form>
@@ -201,22 +139,6 @@ const Step5 = ({ url }: { url: string }) => {
             defaultValue={formState.data.name}
           />
           {errors.firstName && 'First name is required'}
-        </label>
-        <label>
-          Background
-          <input
-            name="background"
-            ref={register}
-            defaultValue={formState.data.background}
-          />
-        </label>
-        <label>
-          Background
-          <input
-            name="background"
-            ref={register}
-            defaultValue={formState.data.background}
-          />
         </label>
         <input type="submit" />
       </form>

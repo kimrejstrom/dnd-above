@@ -56,11 +56,11 @@ const RaceBuilder = ({ url }: Props) => {
           <h1>{formState.data.race?.name}</h1>
         </div>
 
-        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark">
+        <div className="custom-border custom-border-thin bg-yellow-100 dark:bg-primary-dark">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col"
+            className="flex flex-col dnd-body"
           >
             <h3>Ability Scores</h3>
             {mainRenderer.getAbilityData(abilities).asText}
@@ -129,7 +129,7 @@ const RaceBuilder = ({ url }: Props) => {
                           {prof.choose.from.map(pr => {
                             if (typeof pr === 'string') {
                               return (
-                                <option className="uppercase" value={pr}>
+                                <option className="capitalize" value={pr}>
                                   {pr}
                                 </option>
                               );
@@ -160,7 +160,7 @@ const RaceBuilder = ({ url }: Props) => {
                           })}
                         >
                           {Parser.TOOL_PROFICIENCY.map(pr => (
-                            <option className="uppercase" value={pr}>
+                            <option className="capitalize" value={pr}>
                               {pr}
                             </option>
                           ))}
@@ -209,7 +209,7 @@ const RaceBuilder = ({ url }: Props) => {
                           Parser.LANGUAGES_EXOTIC,
                         ).map(allLang => (
                           <option
-                            className="uppercase"
+                            className="capitalize"
                             value={allLang.toLowerCase()}
                           >
                             {allLang}
@@ -232,28 +232,29 @@ const RaceBuilder = ({ url }: Props) => {
             })}
           </form>
         </div>
+        <div className="dnd-body p-2">
+          <div>
+            <h3>Racial Traits</h3>
+            {formState.data.race?.traitTags?.join(', ')}
+          </div>
 
-        <div>
-          <h3>Racial Traits</h3>
-          {formState.data.race?.traitTags?.join(', ')}
+          <h3>Racial Abilities</h3>
+          <DangerousHtml
+            data={mainRenderer.render(
+              {
+                type: 'entries',
+                entries: formState.data.race?.entries?.filter(
+                  item =>
+                    !_.includes(
+                      ['Age', 'Size', 'Alignment', 'Languages'],
+                      item.name,
+                    ),
+                ),
+              },
+              1,
+            )}
+          />
         </div>
-
-        <h3>Racial Abilities</h3>
-        <DangerousHtml
-          data={mainRenderer.render(
-            {
-              type: 'entries',
-              entries: formState.data.race?.entries?.filter(
-                item =>
-                  !_.includes(
-                    ['Age', 'Size', 'Alignment', 'Languages'],
-                    item.name,
-                  ),
-              ),
-            },
-            1,
-          )}
-        />
       </div>
     );
   };
