@@ -8,6 +8,7 @@ import { BackgroundElement } from 'models/background';
 import _, { isBoolean } from 'lodash';
 import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
+import TextBox from 'components/TextBox/TextBox';
 
 const Description = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -17,19 +18,26 @@ const Description = ({ url }: { url: string }) => {
   const history = useHistory();
   const { register, handleSubmit, getValues, errors } = useForm<FormData>();
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    console.log('TODO: MAP THESE: ' + JSON.stringify(getValues()));
-    dispatch(updateFormData({ description: data }));
-    history.push(`${url}/step-4`);
+    dispatch(
+      updateFormData({
+        description: {
+          ...data,
+          background: selectedBackground,
+        },
+      }),
+    );
+    history.push(`${url}/step-5`);
   };
 
   type FormData = {
     name: string;
     background: BackgroundElement;
-    backgroundSkillProficiencies: string[];
-    backgroundToolProficiencies: string[];
-    backgroundLanguageProficiencies: any;
-    backgroundAlignment: string;
-    backgroundCharacteristics: string;
+    chosenBackgroundSkillProficiencies: string[];
+    chosenBackgroundToolProficiencies: string[];
+    chosenBackgroundLanguageProficiencies: string[];
+    alignment: string;
+    characteristicsSource: string;
+    imageUrl: string;
   };
 
   // Local state
@@ -37,10 +45,12 @@ const Description = ({ url }: { url: string }) => {
     BackgroundElement
   >();
   const [selectedAlignment, setSelectedAlignment] = useState<string>();
-  const [
-    selectedBackgroundCharacteristics,
-    setSelectedBackgroundCharacteristics,
-  ] = useState<string>('');
+  const [characteristicsSource, setCharacteristicsSource] = useState<string>(
+    '',
+  );
+  const [charaterImageURL, setCharaterImageURL] = useState<string>(
+    `${process.env.PUBLIC_URL}/img/races/default.png`,
+  );
 
   const handleBackgroundSelect = (
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
@@ -50,11 +60,12 @@ const Description = ({ url }: { url: string }) => {
       bg => bg.name === e.currentTarget.value,
     );
     setSelectedBackground(background);
-    setSelectedBackgroundCharacteristics(background?.name || '');
+    setCharacteristicsSource(background?.name || '');
   };
 
   return (
     <div>
+      <h1>Step 4: Description</h1>
       <div className="flex justify-between my-4">
         <Link
           className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
@@ -78,7 +89,6 @@ const Description = ({ url }: { url: string }) => {
               name="name"
               className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
               ref={register({ required: true })}
-              defaultValue={formState.data.name}
             />
             {errors.name && 'Name is required'}
           </label>
@@ -121,7 +131,7 @@ const Description = ({ url }: { url: string }) => {
                               {`Choose skill proficiency (${count}):`}
                               <select
                                 multiple={count > 1}
-                                name="backgroundSkillProficiencies"
+                                name="chosenBackgroundSkillProficiencies"
                                 ref={register({
                                   required: true,
                                   validate: data =>
@@ -145,7 +155,7 @@ const Description = ({ url }: { url: string }) => {
                                   }
                                 })}
                               </select>
-                              {errors.backgroundSkillProficiencies && (
+                              {errors.chosenBackgroundSkillProficiencies && (
                                 <span>{`You must choose ${count} skills`}</span>
                               )}
                             </label>
@@ -174,7 +184,7 @@ const Description = ({ url }: { url: string }) => {
                               {`Choose language proficiency (${count}):`}
                               <select
                                 multiple={count > 1}
-                                name="backgroundToolProficiencies"
+                                name="chosenBackgroundToolProficiencies"
                                 ref={register({
                                   required: true,
                                   validate: data =>
@@ -198,7 +208,7 @@ const Description = ({ url }: { url: string }) => {
                                   }
                                 })}
                               </select>
-                              {errors.backgroundToolProficiencies && (
+                              {errors.chosenBackgroundToolProficiencies && (
                                 <span>{`You must choose ${count} languages`}</span>
                               )}
                             </label>
@@ -233,7 +243,7 @@ const Description = ({ url }: { url: string }) => {
                                   : 'form-select'
                               } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                               multiple={lang.anyStandard > 1}
-                              name="backgroundLanguageProficiencies"
+                              name="chosenBackgroundLanguageProficiencies"
                               ref={register({
                                 required: true,
                                 validate: data =>
@@ -253,7 +263,7 @@ const Description = ({ url }: { url: string }) => {
                                 </option>
                               ))}
                             </select>
-                            {errors.backgroundLanguageProficiencies && (
+                            {errors.chosenBackgroundLanguageProficiencies && (
                               <span>{`You must choose ${lang.anyStandard} skills`}</span>
                             )}
                           </label>
@@ -285,7 +295,7 @@ const Description = ({ url }: { url: string }) => {
               <span className="text-xl">Character Details</span>
             </summary>
             <div>
-              <div className="shadow dnd-body mx-1 my-4 p-4 rounded bg-tertiary-light dark:bg-primary-dark">
+              <TextBox>
                 <h3>Alignment</h3>
                 <p>
                   A typical creature in the worlds of Dungeons &amp; Dragons has
@@ -300,7 +310,7 @@ const Description = ({ url }: { url: string }) => {
                   combinations:{' '}
                   <strong>{Object.values(Parser.ALIGNMENTS).join(', ')}</strong>
                 </p>
-              </div>
+              </TextBox>
 
               <div>
                 {(formState.data.race?.entries || []).map(entry =>
@@ -312,9 +322,9 @@ const Description = ({ url }: { url: string }) => {
                 {`Choose Alignment`}
                 <select
                   className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
-                  name="backgroundAlignment"
+                  name="alignment"
                   onChange={() => {
-                    setSelectedAlignment(getValues().backgroundAlignment);
+                    setSelectedAlignment(getValues().alignment);
                   }}
                   ref={register({
                     required: true,
@@ -328,7 +338,7 @@ const Description = ({ url }: { url: string }) => {
                     </option>
                   ))}
                 </select>
-                {errors.backgroundAlignment && (
+                {errors.alignment && (
                   <span>{`You must choose an alignment`}</span>
                 )}
               </label>
@@ -344,15 +354,15 @@ const Description = ({ url }: { url: string }) => {
             </summary>
             <div>
               <label className="block">
-                {`From Background ${selectedBackgroundCharacteristics}`}
+                {`From Background ${characteristicsSource}`}
                 <select
                   className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
-                  name="backgroundCharacteristics"
+                  name="characteristicsSource"
                   onChange={e => {
-                    setSelectedBackgroundCharacteristics(e.currentTarget.value);
+                    setCharacteristicsSource(e.currentTarget.value);
                   }}
                   ref={register}
-                  value={selectedBackgroundCharacteristics}
+                  value={characteristicsSource}
                 >
                   <option value="initial">-</option>
                   {CHARACTERISTICS.map(entry => (
@@ -361,15 +371,15 @@ const Description = ({ url }: { url: string }) => {
                     </option>
                   ))}
                 </select>
-                {errors.backgroundCharacteristics && (
+                {errors.characteristicsSource && (
                   <span>{`You must choose a background`}</span>
                 )}
               </label>
-              {selectedBackgroundCharacteristics && (
+              {characteristicsSource && (
                 <div>
                   {_.find(
                     CHARACTERISTICS,
-                    item => item.name === selectedBackgroundCharacteristics,
+                    item => item.name === characteristicsSource,
                   )
                     ?.tables.map(x => x)
                     .map(item => {
@@ -386,7 +396,7 @@ const Description = ({ url }: { url: string }) => {
                               {heading}
                               <select
                                 className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
-                                name={`backgroundCharacteristics${heading
+                                name={`characteristics${heading
                                   .split(' ')
                                   .join('')}`}
                                 ref={register({
@@ -404,7 +414,7 @@ const Description = ({ url }: { url: string }) => {
                                     </option>
                                   ))}
                               </select>
-                              {errors.backgroundAlignment && (
+                              {errors.alignment && (
                                 <span>{`You must choose one`}</span>
                               )}
                             </label>
@@ -422,6 +432,45 @@ const Description = ({ url }: { url: string }) => {
               <span className="text-xl">Physical Characteristics</span>
             </summary>
             <div className="flex w-full">
+              <div className="w-1/2 px-1">
+                <img
+                  src={charaterImageURL}
+                  onError={(ev: any) => {
+                    ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+                  }}
+                  alt="character-portait"
+                  className="custom-border custom-border-thin"
+                  style={{
+                    width: '20rem',
+                  }}
+                />
+                <label className="block">
+                  Character Image
+                  <input
+                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    name="imageUrl"
+                    ref={register}
+                    defaultValue="/img/races/default.png"
+                  />
+                  <button
+                    type="button"
+                    className="w-full mt-2 text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
+                    onClick={() => setCharaterImageURL(getValues().imageUrl)}
+                  >
+                    Load image
+                  </button>
+                </label>
+                <TextBox>
+                  {(formState.data.race?.entries || []).map(entry =>
+                    entry.name === 'Size' ? entry.entries.join(', ') : '',
+                  )}
+                </TextBox>
+                <TextBox>
+                  {(formState.data.race?.entries || []).map(entry =>
+                    entry.name === 'Age' ? entry.entries.join(', ') : '',
+                  )}
+                </TextBox>
+              </div>
               <div className="w-1/2 px-1">
                 <label className="block">
                   Hair
@@ -447,11 +496,6 @@ const Description = ({ url }: { url: string }) => {
                     ref={register}
                   />
                 </label>
-              </div>
-              <div className="w-1/2 px-1">
-                {(formState.data.race?.entries || []).map(entry =>
-                  entry.name === 'Size' ? entry.entries.join(', ') : '',
-                )}
                 <label className="block">
                   Height
                   <input
@@ -468,9 +512,6 @@ const Description = ({ url }: { url: string }) => {
                     ref={register}
                   />
                 </label>
-                {(formState.data.race?.entries || []).map(entry =>
-                  entry.name === 'Age' ? entry.entries.join(', ') : '',
-                )}
                 <label className="block">
                   Age
                   <input

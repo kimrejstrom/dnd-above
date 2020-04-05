@@ -6,6 +6,11 @@ import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import * as _ from 'lodash';
 import { Dice } from 'vendor/nicer-dicer-engine';
+import TextBox from 'components/TextBox/TextBox';
+import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
+import mainRenderer from 'utils/mainRenderer';
+import { getClassQuickBuild } from 'utils/character';
+import { StatsTypes } from 'features/character/characterSlice';
 
 const Abilities = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -42,8 +47,8 @@ const Abilities = ({ url }: { url: string }) => {
         ? (formState.data.race?.ability[0] as any)[key]
         : 0
       : 0;
-    const chosenBonus = formState.data.abilities
-      ? formState.data.abilities.includes(key)
+    const chosenBonus = formState.data.chosenRaceAbilities
+      ? formState.data.chosenRaceAbilities.includes(key as StatsTypes)
         ? 1
         : 0
       : 0;
@@ -104,6 +109,7 @@ const Abilities = ({ url }: { url: string }) => {
 
   return (
     <div>
+      <h1>Step 3: Abilities</h1>
       <div className="flex justify-between my-4">
         <Link
           className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
@@ -120,6 +126,19 @@ const Abilities = ({ url }: { url: string }) => {
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <h2>Ability Scores</h2>
+        {formState.data.classElement && (
+          <TextBox>
+            <DangerousHtml
+              data={mainRenderer.render(
+                {
+                  type: 'entries',
+                  entries: getClassQuickBuild(formState.data.classElement),
+                },
+                1,
+              )}
+            />
+          </TextBox>
+        )}
         <div className="w-full">
           <label className="block">
             {`Method`}

@@ -1,8 +1,10 @@
 import React from 'react';
+import { BASE_ITEMS } from 'utils/data';
 import { Cell } from 'react-table';
-import { WEAPONS } from 'utils/data';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
+
+interface Props {}
 
 const handleSpecialCell = (cell: Cell<object>) => {
   if (cell.value instanceof Array) {
@@ -12,26 +14,18 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-export const Weapons: React.FC = () => {
-  const allWeapons = WEAPONS;
-  const tableData = Object.values(allWeapons).filter(weapon => !weapon.age);
+const Items = (props: Props) => {
+  const allItems = BASE_ITEMS;
+  const tableData = Object.values(allItems);
   const tableColumns = Object.keys(tableData[0])
     .map(key => ({
       accessor: key,
       Header: startCase(key),
     }))
     .filter(column =>
-      [
-        'name',
-        'type',
-        'weaponCategory',
-        'age',
-        'dmg1',
-        'dmgType',
-        'property',
-        'range',
-        'source',
-      ].includes(column.accessor),
+      ['name', 'type', 'age', 'rarity', 'property', 'source'].includes(
+        column.accessor,
+      ),
     );
 
   return (
@@ -43,3 +37,5 @@ export const Weapons: React.FC = () => {
     </div>
   );
 };
+
+export default Items;

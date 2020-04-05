@@ -27,18 +27,20 @@ import raceFluff from 'data/fluff-races.json';
 import backgrounds from 'data/backgrounds.json';
 import backgroundsFluff from 'data/fluff-backgrounds.json';
 // Items
-import items from 'data/items-base.json';
+import baseItems from 'data/items-base.json';
+import items from 'data/items.json';
 // Models
 import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
-import { BaseItem } from 'models/item';
+import { BaseItem } from 'models/base-item';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import { RaceFluffElement } from 'models/race-fluff';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import mainRenderer from 'utils/mainRenderer';
 import { BackgroundFluffElement } from 'models/background-fluff';
+import { Item } from 'models/item';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -118,6 +120,22 @@ export const CHARACTERISTICS = BACKGROUNDS.map(bg => ({
   tables: flatten(characteristic.tables),
 }));
 
-export const ITEMS = items.baseitem as BaseItem[];
-export const ARMOR = ITEMS.filter((item: BaseItem) => item.armor);
-export const WEAPONS = ITEMS.filter((item: BaseItem) => item.weaponCategory);
+export const OTHER_ITEMS = items.item.filter(i => filterSources(i)) as Item[];
+export const BASE_ITEMS = baseItems.baseitem.filter(i =>
+  filterSources(i),
+) as BaseItem[];
+export const ARMOR = BASE_ITEMS.filter((item: BaseItem) => item.armor);
+export const WEAPONS = BASE_ITEMS.filter(
+  (item: BaseItem) => item.weaponCategory,
+);
+export const BASE_ITEMS_OTHER = BASE_ITEMS.filter(
+  item => !(item.armor || item.weaponCategory),
+);
+export const ALL_OTHER_ITEMS = sortBy(
+  (OTHER_ITEMS as any).concat(BASE_ITEMS_OTHER) as (Item | BaseItem)[],
+  'name',
+);
+export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
+  | Item
+  | BaseItem
+)[];

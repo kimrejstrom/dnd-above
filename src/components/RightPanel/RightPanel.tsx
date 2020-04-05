@@ -7,6 +7,7 @@ import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import { Weapons } from 'components/Weapons/Weapons';
 import { Armor } from 'components/Armor/Armor';
+import Items from 'components/Items/Items';
 // import { Navigation } from 'components/Navigation/Navigation';
 
 interface Props {}
@@ -54,6 +55,7 @@ const RightPanel = (props: Props) => {
           <TabList className="flex justify-between text-center">
             <Tab>Roller</Tab>
             <Tab>Spells</Tab>
+            <Tab>Items</Tab>
             <Tab>Weapons</Tab>
             <Tab>Armor</Tab>
           </TabList>
@@ -63,6 +65,9 @@ const RightPanel = (props: Props) => {
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Spells />
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
+              <Items />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Weapons />

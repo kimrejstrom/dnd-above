@@ -1,5 +1,7 @@
 import { CharacterState, StatsTypes } from 'features/character/characterSlice';
 import { mapValues, random } from 'lodash';
+import { ClassElement } from 'models/class';
+import _ from 'lodash';
 
 export const getRaceAbilityMod = (
   character: CharacterState,
@@ -60,3 +62,14 @@ export const getProficiencyBonus = (level: number) => {
 };
 
 export const isProficient = (stat: string) => random(0, 1);
+
+export const getClassQuickBuild = (classElement: ClassElement) =>
+  _.flatten(
+    classElement.fluff?.map(entry =>
+      entry.entries.filter(
+        en =>
+          typeof en !== 'string' &&
+          en.name === `Creating a ${classElement.name}`,
+      ),
+    ),
+  );

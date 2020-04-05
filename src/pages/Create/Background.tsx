@@ -21,12 +21,14 @@ const Background = ({ background }: Props) => {
           <Entry entry={entry} />
         </div>
       ))}
-      {fluff &&
-        fluff.entries?.map(entry => (
-          <div className="dnd-body my-2 custom-border custom-border-thin">
+      {fluff && (
+        <div className="dnd-body my-2 custom-border custom-border-thin">
+          <h3>Additional Info</h3>
+          {fluff.entries?.map(entry => (
             <Entry entry={entry} />
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
     </div>
   );
 };

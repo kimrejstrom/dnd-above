@@ -45,7 +45,7 @@
     "typescript": "^3.8.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run watch:styles & sleep 2 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -54,8 +54,8 @@
     "lint:fix": "eslint --fix --ignore-path .eslintignore . --ext ts --ext tsx --ext js --ext jsx",
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "build:styles": "postcss src/tailwind.css -o src/styles.css",
-    "prebuild": "NODE_ENV=production npm run build:styles",
-    "prestart": "npm run build:styles"
+    "watch:styles": "postcss -w src/tailwind.css -o src/styles.css",
+    "prebuild": "NODE_ENV=production npm run build:styles"
   },
   "scriptsComments": {
     "start": "Runs development build on a local server configured by server.js",

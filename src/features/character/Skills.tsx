@@ -28,6 +28,8 @@ const CHARACTER_ABILITIES = {
   persuasion: 'cha',
 };
 
+export type SkillTypes = keyof typeof CHARACTER_ABILITIES;
+
 interface Props {
   character: CharacterState;
 }

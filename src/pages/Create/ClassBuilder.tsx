@@ -13,6 +13,7 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
+import _ from 'lodash';
 
 const ClassBuilder = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       count > 1 ? 'form-multiselect' : 'form-select'
                     } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                     multiple={count > 1}
-                    name="classProficiencies"
+                    name="chosenClassProficiencies"
                     ref={register({
                       required: true,
                       validate: data =>
@@ -85,7 +86,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       if (typeof pr === 'string') {
                         return (
                           <option key={pr} className="capitalize" value={pr}>
-                            {pr}
+                            {_.capitalize(pr)}
                           </option>
                         );
                       } else {
@@ -93,7 +94,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       }
                     })}
                   </select>
-                  {errors.classProficiencies && (
+                  {errors.chosenClassProficiencies && (
                     <span>{`You must choose ${count} skills`}</span>
                   )}
                 </label>

@@ -16,7 +16,6 @@ import Skills from 'features/character/Skills';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { setSelectedIndex, TAB_PANELS } from 'features/tabs/tabsSlice';
 import FeaturesTraits from 'features/character/FeaturesTraits';
-import Entry from 'components/Entry/Entry';
 import Background from 'pages/Create/Background';
 
 interface Props {}

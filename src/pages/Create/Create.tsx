@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  Route,
-  useRouteMatch,
-  Switch,
-  Link,
-  useHistory,
-  NavLink,
-} from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { Route, useRouteMatch, Switch, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import RaceBuilder from 'pages/Create/RaceBuilder';
 import ClassBuilder from 'pages/Create/ClassBuilder';
 import Abilities from 'pages/Create/Abilities';
 import Description from 'pages/Create/Description';
+import Equipment from 'pages/Create/Equipment';
 
 interface Props {}
 
@@ -59,92 +51,12 @@ const Create = (props: Props) => {
             <Description url={url} />
           </Route>
           <Route path={`${path}/step-5`}>
-            <Step5 url={url} />
+            <Equipment url={url} />
           </Route>
           <Route path={`${path}/summary`}>
             <Summary />
           </Route>
         </Switch>
-      </div>
-    </div>
-  );
-};
-
-const Step4 = ({ url }: { url: string }) => {
-  const dispatch = useDispatch();
-  const formState = useSelector(
-    (state: RootState) => state.createCharacterForm,
-  );
-  const history = useHistory();
-  const { register, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData(data));
-    history.push(`${url}/step-2`);
-  };
-
-  type FormData = {
-    firstName: string;
-    lastName: string;
-  };
-
-  return (
-    <div>
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Description</h2>
-        <label>
-          Name
-          <input
-            name="name"
-            ref={register({ required: true })}
-            defaultValue={formState.data.name}
-          />
-          {errors.firstName && 'First name is required'}
-        </label>
-        <input type="submit" />
-      </form>
-      <div className="flex justify-between">
-        <Link to={`${url}/step-3`}>Previous</Link>
-        <Link to={`${url}/step-5`}>Next</Link>
-      </div>
-    </div>
-  );
-};
-
-const Step5 = ({ url }: { url: string }) => {
-  const dispatch = useDispatch();
-  const formState = useSelector(
-    (state: RootState) => state.createCharacterForm,
-  );
-  const history = useHistory();
-  const { register, handleSubmit, errors } = useForm<FormData>();
-  const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData(data));
-    history.push(`${url}/step-6`);
-  };
-
-  type FormData = {
-    firstName: string;
-    lastName: string;
-  };
-
-  return (
-    <div>
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Equipment</h2>
-        <label>
-          Name
-          <input
-            name="name"
-            ref={register({ required: true })}
-            defaultValue={formState.data.name}
-          />
-          {errors.firstName && 'First name is required'}
-        </label>
-        <input type="submit" />
-      </form>
-      <div className="flex justify-between">
-        <Link to={`${url}/step-5`}>Previous</Link>
-        <Link to={`${url}/summary`}>Finalize</Link>
       </div>
     </div>
   );

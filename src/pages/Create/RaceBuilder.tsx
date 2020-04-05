@@ -72,7 +72,7 @@ const RaceBuilder = ({ url }: Props) => {
                     {`Choose ability (${count}):`}
                     <select
                       multiple={count > 1}
-                      name="abilities"
+                      name="chosenRaceAbilities"
                       ref={register({
                         required: true,
                         validate: data =>
@@ -88,7 +88,7 @@ const RaceBuilder = ({ url }: Props) => {
                         </option>
                       ))}
                     </select>
-                    {errors.abilities && (
+                    {errors.chosenRaceAbilities && (
                       <span>{`You must choose ${count} skills`}</span>
                     )}
                   </label>
@@ -99,137 +99,147 @@ const RaceBuilder = ({ url }: Props) => {
             })}
 
             <h3>Skill Proficiencies</h3>
-            {proficiencies.map(prof => {
-              if (prof.choose) {
-                const hasToolOption =
-                  typeof _.last(prof.choose.from) !== 'string';
-                let count = prof.choose.count || 1;
-                if (hasToolOption) {
-                  count = count - 1;
-                }
-                return (
-                  <>
-                    {count > 0 && (
-                      <label className="block">
-                        {`Choose skill proficiency (${count}):`}
-                        <select
-                          multiple={count > 1}
-                          name="raceProficiencies"
-                          ref={register({
-                            required: true,
-                            validate: data =>
-                              Array.isArray(data)
-                                ? data.length === count
-                                : true,
-                          })}
-                          className={`${
-                            count > 1 ? 'form-multiselect' : 'form-select'
-                          } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                        >
-                          {prof.choose.from.map(pr => {
-                            if (typeof pr === 'string') {
-                              return (
+            {proficiencies.length
+              ? proficiencies.map(prof => {
+                  if (prof.choose) {
+                    const hasToolOption =
+                      typeof _.last(prof.choose.from) !== 'string';
+                    let count = prof.choose.count || 1;
+                    if (hasToolOption) {
+                      count = count - 1;
+                    }
+                    return (
+                      <>
+                        {count > 0 && (
+                          <label className="block">
+                            {`Choose skill proficiency (${count}):`}
+                            <select
+                              multiple={count > 1}
+                              name="chosenRaceProficiencies"
+                              ref={register({
+                                required: true,
+                                validate: data =>
+                                  Array.isArray(data)
+                                    ? data.length === count
+                                    : true,
+                              })}
+                              className={`${
+                                count > 1 ? 'form-multiselect' : 'form-select'
+                              } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                            >
+                              {prof.choose.from.map(pr => {
+                                if (typeof pr === 'string') {
+                                  return (
+                                    <option className="capitalize" value={pr}>
+                                      {_.capitalize(pr)}
+                                    </option>
+                                  );
+                                } else {
+                                  return <></>;
+                                }
+                              })}
+                            </select>
+                            {errors.chosenRaceProficiencies && (
+                              <span>{`You must choose ${count} skills`}</span>
+                            )}
+                          </label>
+                        )}
+                        {hasToolOption && (
+                          <label className="block">
+                            {`Choose tool proficiency (1):`}
+                            <select
+                              className={`${
+                                count > 1 ? 'form-multiselect' : 'form-select'
+                              } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                              name="chosenRaceTools"
+                              ref={register({
+                                required: true,
+                                validate: data =>
+                                  Array.isArray(data)
+                                    ? data.length === count
+                                    : true,
+                              })}
+                            >
+                              {Parser.TOOL_PROFICIENCY.map(pr => (
                                 <option className="capitalize" value={pr}>
                                   {pr}
                                 </option>
-                              );
-                            } else {
-                              return <></>;
-                            }
-                          })}
-                        </select>
-                        {errors.raceProficiencies && (
-                          <span>{`You must choose ${count} skills`}</span>
+                              ))}
+                            </select>
+                            {errors.chosenRaceTools && (
+                              <span>{`You must choose ${count} skills`}</span>
+                            )}
+                          </label>
                         )}
-                      </label>
-                    )}
-                    {hasToolOption && (
-                      <label className="block">
-                        {`Choose tool proficiency (1):`}
-                        <select
-                          className={`${
-                            count > 1 ? 'form-multiselect' : 'form-select'
-                          } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                          name="tools"
-                          ref={register({
-                            required: true,
-                            validate: data =>
-                              Array.isArray(data)
-                                ? data.length === count
-                                : true,
-                          })}
-                        >
-                          {Parser.TOOL_PROFICIENCY.map(pr => (
-                            <option className="capitalize" value={pr}>
-                              {pr}
-                            </option>
-                          ))}
-                        </select>
-                        {errors.tools && (
-                          <span>{`You must choose ${count} skills`}</span>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <div>
+                        {_.keys(_.pickBy(prof, key => isBoolean(key))).join(
+                          ', ',
                         )}
-                      </label>
-                    )}
-                  </>
-                );
-              } else {
-                return (
-                  <div>
-                    {_.keys(_.pickBy(prof, key => isBoolean(key))).join(', ')}
-                  </div>
-                );
-              }
-            })}
+                      </div>
+                    );
+                  }
+                })
+              : 'None'}
 
             <h3>Languages</h3>
-            {languages.map(lang => {
-              if (lang.anyStandard) {
-                return (
-                  <>
-                    {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
-                    <label className="block">
-                      {`Choose language (${lang.anyStandard}):`}
-                      <select
-                        className={`${
-                          lang.anyStandard > 1
-                            ? 'form-multiselect'
-                            : 'form-select'
-                        } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                        multiple={lang.anyStandard > 1}
-                        name={`languages`}
-                        ref={register({
-                          required: true,
-                          validate: data =>
-                            Array.isArray(data)
-                              ? data.length === lang.anyStandard
-                              : true,
-                        })}
-                      >
-                        {Parser.LANGUAGES_STANDARD.concat(
-                          Parser.LANGUAGES_EXOTIC,
-                        ).map(allLang => (
-                          <option
-                            className="capitalize"
-                            value={allLang.toLowerCase()}
+            {languages.length
+              ? languages.map(lang => {
+                  if (lang.anyStandard) {
+                    return (
+                      <>
+                        {_.keys(_.pickBy(lang, key => isBoolean(key))).join(
+                          ', ',
+                        )}
+                        <label className="block">
+                          {`Choose language (${lang.anyStandard}):`}
+                          <select
+                            className={`${
+                              lang.anyStandard > 1
+                                ? 'form-multiselect'
+                                : 'form-select'
+                            } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                            multiple={lang.anyStandard > 1}
+                            name={`chosenRaceLanguages`}
+                            ref={register({
+                              required: true,
+                              validate: data =>
+                                Array.isArray(data)
+                                  ? data.length === lang.anyStandard
+                                  : true,
+                            })}
                           >
-                            {allLang}
-                          </option>
-                        ))}
-                      </select>
-                      {errors.languages && (
-                        <span>{`You must choose ${lang.anyStandard} skills`}</span>
-                      )}
-                    </label>
-                  </>
-                );
-              } else {
-                return (
-                  <div>
-                    {_.keys(_.pickBy(lang, key => isBoolean(key))).join(', ')}
-                  </div>
-                );
-              }
-            })}
+                            {Parser.LANGUAGES_STANDARD.concat(
+                              Parser.LANGUAGES_EXOTIC,
+                            ).map(allLang => (
+                              <option
+                                className="capitalize"
+                                value={allLang.toLowerCase()}
+                              >
+                                {allLang}
+                              </option>
+                            ))}
+                          </select>
+                          {errors.chosenRaceLanguages && (
+                            <span>{`You must choose ${lang.anyStandard} skills`}</span>
+                          )}
+                        </label>
+                      </>
+                    );
+                  } else {
+                    return (
+                      <div className="capitalize">
+                        {_.keys(_.pickBy(lang, key => isBoolean(key))).join(
+                          ', ',
+                        )}
+                      </div>
+                    );
+                  }
+                })
+              : 'None'}
           </form>
         </div>
         <div className="dnd-body p-2">
