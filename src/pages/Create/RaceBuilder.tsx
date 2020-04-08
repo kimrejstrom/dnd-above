@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { CHARACTER_STATS, StatsTypes } from 'features/character/characterSlice';
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
+import { getRace } from 'utils/character';
 
 interface Props {
   url: string;
@@ -23,6 +24,7 @@ const RaceBuilder = ({ url }: Props) => {
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
+  const race = getRace(formState.data.race);
 
   const RaceDetails = () => {
     const history = useHistory();
@@ -31,10 +33,9 @@ const RaceBuilder = ({ url }: Props) => {
       dispatch(updateFormData(data));
       history.push(`${url}/step-2`);
     };
-
-    const abilities = formState.data.race!.ability || [];
-    const proficiencies = formState.data.race!.skillProficiencies || [];
-    const languages = formState.data.race!.languageProficiencies || [];
+    const abilities = race?.ability || [];
+    const proficiencies = race?.skillProficiencies || [];
+    const languages = race?.languageProficiencies || [];
 
     return (
       <div>
@@ -53,7 +54,7 @@ const RaceBuilder = ({ url }: Props) => {
           </button>
         </div>
         <div className="flex relative">
-          <h1>{formState.data.race?.name}</h1>
+          <h1>{race?.name}</h1>
         </div>
 
         <div className="custom-border custom-border-thin bg-yellow-100 dark:bg-primary-dark">
@@ -245,7 +246,7 @@ const RaceBuilder = ({ url }: Props) => {
         <div className="dnd-body p-2">
           <div>
             <h3>Racial Traits</h3>
-            {formState.data.race?.traitTags?.join(', ')}
+            {race?.traitTags?.join(', ')}
           </div>
 
           <h3>Racial Abilities</h3>
@@ -253,7 +254,7 @@ const RaceBuilder = ({ url }: Props) => {
             data={mainRenderer.render(
               {
                 type: 'entries',
-                entries: formState.data.race?.entries?.filter(
+                entries: race?.entries?.filter(
                   item =>
                     !_.includes(
                       ['Age', 'Size', 'Alignment', 'Languages'],
@@ -270,7 +271,7 @@ const RaceBuilder = ({ url }: Props) => {
   };
 
   const RaceInfo = () => {
-    const onSelect = (data: { race: Race }, e?: React.BaseSyntheticEvent) => {
+    const onSelect = (data: { race: string }, e?: React.BaseSyntheticEvent) => {
       dispatch(updateFormData(data));
     };
 
@@ -287,7 +288,7 @@ const RaceBuilder = ({ url }: Props) => {
             <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">{race.name}</span>
               <button
-                onClick={e => onSelect({ race }, e)}
+                onClick={e => onSelect({ race: race.name }, e)}
                 className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
               >
                 Select
@@ -346,7 +347,7 @@ const RaceBuilder = ({ url }: Props) => {
   return (
     <div>
       <h1>Step 1: Select Race</h1>
-      {formState.data.race ? <RaceDetails /> : <RaceInfo />}
+      {race ? <RaceDetails /> : <RaceInfo />}
     </div>
   );
 };

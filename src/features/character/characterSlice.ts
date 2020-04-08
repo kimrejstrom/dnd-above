@@ -4,6 +4,7 @@ import { RACES } from 'utils/data';
 import { ClassElement } from 'models/class';
 import { Race, Subrace } from 'models/race';
 import { BackgroundElement } from 'models/background';
+import { CreateCharacterFormState } from 'features/createCharacterForm/createCharacterFormSlice';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -61,6 +62,9 @@ const characterSlice = createSlice({
     },
     setLevel(state, action: PayloadAction<number>) {
       state.level = action.payload;
+    },
+    createCharacter(state, action: PayloadAction<CreateCharacterFormState>) {
+      state.name = action.payload.data.description?.name;
     },
   },
 });

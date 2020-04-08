@@ -4,16 +4,10 @@ import { RootState } from 'app/rootReducer';
 import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
-import {
-  BACKGROUNDS,
-  CLASSES,
-  WEAPONS,
-  ARMOR,
-  ALL_OTHER_ITEMS,
-  ALL_ITEMS,
-} from 'utils/data';
+import { WEAPONS, ARMOR, ALL_OTHER_ITEMS, ALL_ITEMS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import _ from 'lodash';
+import { getClass, getBackground } from 'utils/character';
 
 interface Props {}
 
@@ -43,10 +37,10 @@ const Equipment = ({ url }: { url: string }) => {
     { formId: string; type: string }[]
   >([]);
 
-  const selectedClass = formState.data.classElement || CLASSES.druid.class[0];
-  const selectedBackground =
-    formState.data.description?.background ||
-    BACKGROUNDS.find(background => background.name === 'Far Traveler')!;
+  const selectedClass = getClass(formState.data.classElement);
+  const selectedBackground = getBackground(
+    formState.data.description?.background,
+  );
 
   const addItemSelect = (e: any, type: string) => {
     e.preventDefault();
@@ -73,16 +67,16 @@ const Equipment = ({ url }: { url: string }) => {
         </button>
       </div>
 
-      <h2>{selectedClass.name} Starting Equipment</h2>
+      <h2>{selectedClass?.name} Starting Equipment</h2>
       <div className="w-full">
-        {selectedClass.startingEquipment.default.map(equipment => (
+        {selectedClass?.startingEquipment.default.map(equipment => (
           <Entry entry={equipment} />
         ))}
       </div>
-      <h2>{selectedBackground.name} Starting Equipment</h2>
+      <h2>{selectedBackground?.name} Starting Equipment</h2>
       <div className="w-full">
-        {selectedBackground.entries &&
-          selectedBackground.entries
+        {selectedBackground?.entries &&
+          selectedBackground?.entries
             .map(entry => {
               if (entry.type === 'list') {
                 return entry.items

@@ -9,6 +9,7 @@ import _, { isBoolean } from 'lodash';
 import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
 import TextBox from 'components/TextBox/TextBox';
+import { getRace } from 'utils/character';
 
 const Description = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Description = ({ url }: { url: string }) => {
       updateFormData({
         description: {
           ...data,
-          background: selectedBackground,
+          background: selectedBackground?.name,
         },
       }),
     );
@@ -39,6 +40,8 @@ const Description = ({ url }: { url: string }) => {
     characteristicsSource: string;
     imageUrl: string;
   };
+
+  const race = getRace(formState.data.race);
 
   // Local state
   const [selectedBackground, setSelectedBackground] = useState<
@@ -313,7 +316,7 @@ const Description = ({ url }: { url: string }) => {
               </TextBox>
 
               <div>
-                {(formState.data.race?.entries || []).map(entry =>
+                {(race?.entries || []).map(entry =>
                   entry.name === 'Alignment' ? entry.entries.join(', ') : '',
                 )}
               </div>
@@ -461,12 +464,12 @@ const Description = ({ url }: { url: string }) => {
                   </button>
                 </label>
                 <TextBox>
-                  {(formState.data.race?.entries || []).map(entry =>
+                  {(race?.entries || []).map(entry =>
                     entry.name === 'Size' ? entry.entries.join(', ') : '',
                   )}
                 </TextBox>
                 <TextBox>
-                  {(formState.data.race?.entries || []).map(entry =>
+                  {(race?.entries || []).map(entry =>
                     entry.name === 'Age' ? entry.entries.join(', ') : '',
                   )}
                 </TextBox>

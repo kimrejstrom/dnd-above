@@ -19,7 +19,9 @@ const Race = ({ character }: Props) => {
         </div>
       </div>
       <div className="w-5/12 mb-6 pb-2 mx-2 border-b-2 border-primary-dark dark:border-primary-light text-xl">
-        <div>{`${character.class.name} – ${getSubClass(character)?.name}`}</div>
+        <div>{`${character.class.name} – ${
+          getSubClass(character.class.name, character.subClass)?.name
+        }`}</div>
         <div className="-mb-10 text-primary-dark dark:text-primary-light">
           Class
         </div>

@@ -9,7 +9,7 @@ import { Dice } from 'vendor/nicer-dicer-engine';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
-import { getClassQuickBuild } from 'utils/character';
+import { getClassQuickBuild, getRace, getClass } from 'utils/character';
 import { StatsTypes } from 'features/character/characterSlice';
 
 const Abilities = ({ url }: { url: string }) => {
@@ -39,12 +39,15 @@ const Abilities = ({ url }: { url: string }) => {
     used: boolean;
   };
 
+  const race = getRace(formState.data.race);
+  const classElement = getClass(formState.data.classElement);
+
   const [abilityScores, setAbilityScores] = useState<AbilityScore[]>([]);
 
   const getRacialBonus = (key: string) => {
-    const standardRaceBonus = formState.data.race?.ability
-      ? (formState.data.race?.ability[0] as any)[key]
-        ? (formState.data.race?.ability[0] as any)[key]
+    const standardRaceBonus = race?.ability
+      ? (race?.ability[0] as any)[key]
+        ? (race?.ability[0] as any)[key]
         : 0
       : 0;
     const chosenBonus = formState.data.chosenRaceAbilities
@@ -132,7 +135,7 @@ const Abilities = ({ url }: { url: string }) => {
               data={mainRenderer.render(
                 {
                   type: 'entries',
-                  entries: getClassQuickBuild(formState.data.classElement),
+                  entries: getClassQuickBuild(classElement!),
                 },
                 1,
               )}

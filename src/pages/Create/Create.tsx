@@ -69,7 +69,7 @@ const Summary = () => {
 
   return (
     <>
-      <h2>Result:</h2>
+      <h2>Summary</h2>
       <pre>{JSON.stringify(formState, null, 2)}</pre>
     </>
   );

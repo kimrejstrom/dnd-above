@@ -228,7 +228,7 @@ export interface Multiclassing {
 export interface StartingProficiencies {
   armor?: Array<ArmorClass | ArmorEnum>;
   weapons?: string[];
-  skills?: Skill[];
+  skills?: SkillProficiency[];
   tools?: string[];
 }
 
@@ -244,11 +244,11 @@ export enum ArmorEnum {
   Shields = 'shields',
 }
 
-export interface Skill {
-  choose: Choose;
+export interface SkillProficiency {
+  choose: SkillProficiencyChoose;
 }
 
-export interface Choose {
+export interface SkillProficiencyChoose {
   from: string[];
   count: number;
 }

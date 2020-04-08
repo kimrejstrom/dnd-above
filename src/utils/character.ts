@@ -1,7 +1,7 @@
 import { CharacterState, StatsTypes } from 'features/character/characterSlice';
-import { mapValues, random } from 'lodash';
+import _, { mapValues, random } from 'lodash';
 import { ClassElement } from 'models/class';
-import _ from 'lodash';
+import { PLAYABLE_CLASSES, PLAYABLE_RACES, BACKGROUNDS } from 'utils/data';
 
 export const getRaceAbilityMod = (
   character: CharacterState,
@@ -40,10 +40,21 @@ export const getMaxHP = (hitDie: number, level: number, con: number) => {
   return maxHp;
 };
 
-export const getSubClass = (character: CharacterState) =>
-  character.class.subclasses.find(
-    subclass => subclass.shortName === character.subClass,
-  );
+export const getClass = (className: string) =>
+  PLAYABLE_CLASSES.find(mainClass => mainClass.name === className);
+
+export const getSubClass = (className: string, subClassName: string) => {
+  const baseClass = getClass(className);
+  return baseClass
+    ? baseClass.subclasses.find(subclass => subclass.name === subClassName)
+    : undefined;
+};
+
+export const getRace = (raceName: string) =>
+  PLAYABLE_RACES.find(race => race.name === raceName);
+
+export const getBackground = (backgroundName: string) =>
+  BACKGROUNDS.find(bg => bg.name === backgroundName);
 
 export const getDarkvision = (character: CharacterState) => {
   return character.race.darkvision
@@ -73,3 +84,13 @@ export const getClassQuickBuild = (classElement: ClassElement) =>
       ),
     ),
   );
+
+export const getIncludedProficiencies = (proficiencies: Array<any>) => {
+  return _.flatten(
+    proficiencies.map(entry => {
+      return Object.entries(entry)
+        .map(([key, value]) => (Boolean(value) === true ? key : undefined))
+        .map(x => x);
+    }),
+  );
+};

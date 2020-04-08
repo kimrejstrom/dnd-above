@@ -4,7 +4,7 @@ import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useState } from 'react';
-import { ClassElement, ClassSubclass, Skill } from 'models/class';
+import { ClassElement, SkillProficiency } from 'models/class';
 import { filterSources, PLAYABLE_CLASSES } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import ClassBase from 'pages/Create/ClassBase';
@@ -14,12 +14,21 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
 import _ from 'lodash';
+import { getClass, getSubClass } from 'utils/character';
 
 const ClassBuilder = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
+
+  const classElement = getClass(formState.data.classElement);
+  const subClass = getSubClass(
+    formState.data.classElement,
+    formState.data.subClass,
+  );
+
+  console.log(subClass);
 
   const ClassDetails = () => {
     const history = useHistory();
@@ -29,8 +38,8 @@ const ClassBuilder = ({ url }: { url: string }) => {
       history.push(`${url}/step-3`);
     };
 
-    const classProficiencies: Skill[] =
-      formState.data.classElement?.startingProficiencies.skills || [];
+    const classProficiencies: SkillProficiency[] =
+      classElement?.startingProficiencies.skills || [];
 
     return (
       <div>
@@ -40,8 +49,8 @@ const ClassBuilder = ({ url }: { url: string }) => {
             onClick={() =>
               dispatch(
                 updateFormData({
-                  classElement: undefined,
-                  subClass: undefined,
+                  classElement: '',
+                  subClass: '',
                 }),
               )
             }
@@ -56,7 +65,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
           </button>
         </div>
         <div className="flex relative">
-          <h1>{`${formState.data.classElement?.name} – ${formState.data.subClass?.name}`}</h1>
+          <h1>{`${formState.data.classElement} – ${formState.data.subClass}`}</h1>
         </div>
         <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark my-2">
           <form
@@ -102,11 +111,8 @@ const ClassBuilder = ({ url }: { url: string }) => {
             })}
           </form>
         </div>
-        <ClassTable
-          cls={formState.data.classElement!}
-          subcls={formState.data.subClass!}
-        />
-        <ClassBase cls={formState.data.classElement!} />
+        <ClassTable cls={classElement!} subcls={subClass!} />
+        <ClassBase cls={classElement!} />
       </div>
     );
   };
@@ -114,16 +120,14 @@ const ClassBuilder = ({ url }: { url: string }) => {
   const ClassInfo = () => {
     const onSelect = (
       data: {
-        classElement: ClassElement;
-        subClass: ClassSubclass;
+        classElement: string;
+        subClass: string;
       },
       e?: React.BaseSyntheticEvent,
     ) => {
       dispatch(updateFormData(data));
     };
-    const [selectedClass, setselectedClass] = useState(
-      formState.data.classElement,
-    );
+    const [selectedClass, setselectedClass] = useState(classElement);
 
     return (
       <div>
@@ -139,7 +143,10 @@ const ClassBuilder = ({ url }: { url: string }) => {
                     <button
                       onClick={e =>
                         onSelect(
-                          { classElement: selectedClass, subClass: feature },
+                          {
+                            classElement: selectedClass.name,
+                            subClass: feature.name,
+                          },
                           e,
                         )
                       }
@@ -237,7 +244,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
   return (
     <div>
       <h1>Step 2: Select Class</h1>
-      {formState.data.classElement ? <ClassDetails /> : <ClassInfo />}
+      {classElement && subClass ? <ClassDetails /> : <ClassInfo />}
     </div>
   );
 };
