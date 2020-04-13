@@ -22,19 +22,17 @@ const ClassBuilder = ({ url }: { url: string }) => {
     (state: RootState) => state.createCharacterForm,
   );
 
-  const classElement = getClass(formState.data.classElement);
+  const classElement = getClass(formState.data.classData.classElement);
   const subClass = getSubClass(
-    formState.data.classElement,
-    formState.data.subClass,
+    formState.data.classData.classElement,
+    formState.data.classData.subClass,
   );
-
-  console.log(subClass);
 
   const ClassDetails = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
-      dispatch(updateFormData(data));
+      dispatch(updateFormData({ classData: data }));
       history.push(`${url}/step-3`);
     };
 
@@ -49,8 +47,10 @@ const ClassBuilder = ({ url }: { url: string }) => {
             onClick={() =>
               dispatch(
                 updateFormData({
-                  classElement: '',
-                  subClass: '',
+                  classData: {
+                    classElement: '',
+                    subClass: '',
+                  },
                 }),
               )
             }
@@ -65,7 +65,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
           </button>
         </div>
         <div className="flex relative">
-          <h1>{`${formState.data.classElement} – ${formState.data.subClass}`}</h1>
+          <h1>{`${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}</h1>
         </div>
         <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark my-2">
           <form
@@ -84,7 +84,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       count > 1 ? 'form-multiselect' : 'form-select'
                     } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                     multiple={count > 1}
-                    name="chosenClassProficiencies"
+                    name="chosenClassSkillProficiencies"
                     ref={register({
                       required: true,
                       validate: data =>
@@ -103,7 +103,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       }
                     })}
                   </select>
-                  {errors.chosenClassProficiencies && (
+                  {errors.chosenClassSkillProficiencies && (
                     <span>{`You must choose ${count} skills`}</span>
                   )}
                 </label>
@@ -125,7 +125,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
       },
       e?: React.BaseSyntheticEvent,
     ) => {
-      dispatch(updateFormData(data));
+      dispatch(updateFormData({ classData: data }));
     };
     const [selectedClass, setselectedClass] = useState(classElement);
 

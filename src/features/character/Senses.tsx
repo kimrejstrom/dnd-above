@@ -4,14 +4,14 @@ import {
   calculateStats,
   getAbilityMod,
   getProficiencyBonus,
-  getDarkvision,
+  isProficient,
 } from 'utils/character';
-import { SpellcastingAbility } from 'models/class';
+import { SkillTypes } from 'features/character/Skills';
 
 const PASSIVE_SENSES = {
-  'passive perception': 'wis',
-  'passive intelligence': 'int',
-  'passive insight': 'wis',
+  'passive perception': { ability: 'wis', skill: 'perception' },
+  'passive intelligence': { ability: 'int', skill: 'investigation' },
+  'passive insight': { ability: 'int', skill: 'insight' },
 };
 
 interface Props {
@@ -24,20 +24,26 @@ const Senses = ({ character }: Props) => {
       <div className="text-xl text-center leading-none mt-1 mb-2">Senses</div>
       <div className="flex flex-wrap">
         {Object.entries(PASSIVE_SENSES).map(([key, value]) => {
-          const score = calculateStats(character)[value as StatsTypes];
-          const proficient = character.class.proficiency.includes(
-            value as SpellcastingAbility,
-          );
+          const score = calculateStats(character)[value.ability as StatsTypes];
+          const proficient = isProficient(value.skill as SkillTypes, character);
+          console.log(score);
           const abilityMod = getAbilityMod(score);
           const passiveMod =
             (proficient
-              ? abilityMod + getProficiencyBonus(character.level)
+              ? abilityMod + getProficiencyBonus(character.customData.level)
               : abilityMod) + 10;
+          console.log(
+            passiveMod,
+            abilityMod,
+            getProficiencyBonus(character.customData.level),
+          );
           return (
             <div className="flex w-full">
               <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full">
                 <div className="text-lg leading-none ml-3 flex-grow">{key}</div>
-                <div className="text-md leading-none ml-1">({value})</div>
+                <div className="text-md leading-none ml-1">
+                  ({value.ability})
+                </div>
                 <div className="mx-2 text-2xl leading-none text-center">
                   {passiveMod}
                 </div>
@@ -45,12 +51,6 @@ const Senses = ({ character }: Props) => {
             </div>
           );
         })}
-        <div className="flex w-full justify-center my-2">
-          <div>
-            {getDarkvision(character) &&
-              `Darkvision: ${getDarkvision(character)} ft`}
-          </div>
-        </div>
       </div>
     </div>
   );

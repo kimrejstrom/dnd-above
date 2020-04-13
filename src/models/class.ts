@@ -226,15 +226,10 @@ export interface Multiclassing {
 }
 
 export interface StartingProficiencies {
-  armor?: Array<ArmorClass | ArmorEnum>;
+  armor?: Array<ArmorEnum>;
   weapons?: string[];
   skills?: SkillProficiency[];
   tools?: string[];
-}
-
-export interface ArmorClass {
-  proficiency: ArmorEnum;
-  full: string;
 }
 
 export enum ArmorEnum {

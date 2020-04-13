@@ -90,7 +90,7 @@ export const Main: React.FC<Props> = () => {
             <TabPanel className="overflow-y-scroll px-2">
               <div>
                 <div className="text-2xl">Background</div>
-                <Background background={character.background} />
+                <Background background={character.descriptionData.background} />
               </div>
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">

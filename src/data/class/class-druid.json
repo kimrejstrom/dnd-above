@@ -19,10 +19,7 @@
 				"armor": [
 					"light",
 					"medium",
-					{
-						"proficiency": "shields",
-						"full": "shields (druids will not wear armor or use shields made of metal)"
-					}
+					"shields"
 				],
 				"weapons": [
 					"clubs",

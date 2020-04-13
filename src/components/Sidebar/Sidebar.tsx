@@ -14,7 +14,7 @@ const Sidebar = ({ character }: Props) => {
           <img className="p-2" src={shield} alt="" />
         </div>
         <div className="text-center text-white opacity-50 text-sm">
-          {character.name.substr(0, 3)}
+          {character.descriptionData.name.substr(0, 3)}
         </div>
       </div>
       <div className="cursor-pointer">

@@ -40,10 +40,10 @@ const Skills = ({ character }: Props) => {
       <div className="text-xl text-center leading-none mt-1 mb-2">Skills</div>
       {Object.entries(CHARACTER_ABILITIES).map(([key, value]) => {
         const score = calculateStats(character)[value as StatsTypes];
-        const proficient = Boolean(isProficient(value));
+        const proficient = isProficient(key as SkillTypes, character);
         const abilityMod = getAbilityMod(score);
         const skillMod = proficient
-          ? abilityMod + getProficiencyBonus(character.level)
+          ? abilityMod + getProficiencyBonus(character.customData.level)
           : abilityMod;
         return (
           <div className="flex flex-wrap relative p-1">

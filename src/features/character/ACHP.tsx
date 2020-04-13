@@ -3,7 +3,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { CharacterState } from 'features/character/characterSlice';
-import { getAbilityMod, calculateStats, getMaxHP } from 'utils/character';
+import {
+  getAbilityMod,
+  calculateStats,
+  getMaxHP,
+  getClass,
+} from 'utils/character';
 import hpLight from 'images/hp-light.png';
 import acLight from 'images/ac-light.png';
 import hpDark from 'images/hp-dark.png';
@@ -76,8 +81,8 @@ const ACHP = ({ character }: Props) => {
           }}
         >
           {getMaxHP(
-            character.class.hd.faces,
-            character.level,
+            getClass(character.classData.classElement)!.hd.faces,
+            character.customData.level,
             getAbilityMod(calculateStats(character).con),
           )}
         </p>

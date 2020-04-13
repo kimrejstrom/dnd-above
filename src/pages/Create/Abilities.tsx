@@ -10,7 +10,6 @@ import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import { getClassQuickBuild, getRace, getClass } from 'utils/character';
-import { StatsTypes } from 'features/character/characterSlice';
 
 const Abilities = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const Abilities = ({ url }: { url: string }) => {
   const history = useHistory();
   const { register, handleSubmit, getValues, errors } = useForm<FormData>();
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData({ abilityScores: data }));
+    dispatch(updateFormData({ classData: { abilityScores: data } }));
     history.push(`${url}/step-4`);
   };
 
@@ -39,8 +38,8 @@ const Abilities = ({ url }: { url: string }) => {
     used: boolean;
   };
 
-  const race = getRace(formState.data.race);
-  const classElement = getClass(formState.data.classElement);
+  const race = getRace(formState.data.raceData.race);
+  const classElement = getClass(formState.data.classData.classElement);
 
   const [abilityScores, setAbilityScores] = useState<AbilityScore[]>([]);
 
@@ -50,9 +49,9 @@ const Abilities = ({ url }: { url: string }) => {
         ? (race?.ability[0] as any)[key]
         : 0
       : 0;
-    const chosenBonus = formState.data.chosenRaceAbilities
-      ? formState.data.chosenRaceAbilities.includes(key as StatsTypes)
-        ? 1
+    const chosenBonus = formState.data.raceData.chosenRaceAbilities.length
+      ? (formState.data.raceData.chosenRaceAbilities[0] as any)[key]
+        ? (formState.data.raceData.chosenRaceAbilities[0] as any)[key]
         : 0
       : 0;
     return standardRaceBonus + chosenBonus;
@@ -129,7 +128,7 @@ const Abilities = ({ url }: { url: string }) => {
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <h2>Ability Scores</h2>
-        {formState.data.classElement && (
+        {formState.data.classData.classElement && (
           <TextBox>
             <DangerousHtml
               data={mainRenderer.render(

@@ -3,6 +3,7 @@ import { CharacterState } from 'features/character/characterSlice';
 import { PurpleEntry, ClassFeature } from 'models/class';
 import { RaceEntry } from 'models/race';
 import Entry from 'components/Entry/Entry';
+import { getClass, getRace } from 'utils/character';
 
 interface Props {
   character: CharacterState;
@@ -46,12 +47,14 @@ const renderRaceTraits = (raceTraits: RaceEntry[] = []) => {
 };
 
 const FeaturesTraits = ({ character }: Props) => {
+  const classElement = getClass(character.classData.classElement);
+  const race = getRace(character.raceData.race);
   return (
     <div>
-      <div className="text-xl">{character.class.name} features</div>
-      {renderClassFeatures(character.class.classFeatures)}
-      <div className="text-xl">{character.race.name} traits</div>
-      {renderRaceTraits(character.race.entries)}
+      <div className="text-xl">{classElement!.name} features</div>
+      {renderClassFeatures(classElement!.classFeatures)}
+      <div className="text-xl">{race!.name} traits</div>
+      {renderRaceTraits(race!.entries)}
     </div>
   );
 };

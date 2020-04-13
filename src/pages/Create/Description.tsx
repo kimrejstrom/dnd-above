@@ -21,7 +21,7 @@ const Description = ({ url }: { url: string }) => {
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
     dispatch(
       updateFormData({
-        description: {
+        descriptionData: {
           ...data,
           background: selectedBackground?.name,
         },
@@ -35,13 +35,13 @@ const Description = ({ url }: { url: string }) => {
     background: BackgroundElement;
     chosenBackgroundSkillProficiencies: string[];
     chosenBackgroundToolProficiencies: string[];
-    chosenBackgroundLanguageProficiencies: string[];
+    chosenBackgroundLanguages: string[];
     alignment: string;
     characteristicsSource: string;
     imageUrl: string;
   };
 
-  const race = getRace(formState.data.race);
+  const race = getRace(formState.data.raceData.race);
 
   // Local state
   const [selectedBackground, setSelectedBackground] = useState<
@@ -90,6 +90,7 @@ const Description = ({ url }: { url: string }) => {
             Character Name
             <input
               name="name"
+              defaultValue={formState.data.descriptionData.name}
               className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
               ref={register({ required: true })}
             />
@@ -110,6 +111,7 @@ const Description = ({ url }: { url: string }) => {
                     required: true,
                     validate: data => data !== 'initial',
                   })}
+                  defaultValue={formState.data.descriptionData.background}
                   className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                 >
                   <option value="initial">-</option>
@@ -246,7 +248,7 @@ const Description = ({ url }: { url: string }) => {
                                   : 'form-select'
                               } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                               multiple={lang.anyStandard > 1}
-                              name="chosenBackgroundLanguageProficiencies"
+                              name="chosenBackgroundLanguages"
                               ref={register({
                                 required: true,
                                 validate: data =>
@@ -266,7 +268,7 @@ const Description = ({ url }: { url: string }) => {
                                 </option>
                               ))}
                             </select>
-                            {errors.chosenBackgroundLanguageProficiencies && (
+                            {errors.chosenBackgroundLanguages && (
                               <span>{`You must choose ${lang.anyStandard} skills`}</span>
                             )}
                           </label>
@@ -287,7 +289,7 @@ const Description = ({ url }: { url: string }) => {
 
               {selectedBackground && (
                 <div className="custom-border custom-border-thin my-2">
-                  <Background background={selectedBackground} />
+                  <Background background={selectedBackground.name} />
                 </div>
               )}
             </div>
@@ -333,6 +335,7 @@ const Description = ({ url }: { url: string }) => {
                     required: true,
                     validate: data => data !== 'initial',
                   })}
+                  defaultValue={formState.data.descriptionData.alignment}
                 >
                   <option value="initial">-</option>
                   {Object.entries(Parser.ALIGNMENTS).map(([key, value]) => (
@@ -366,6 +369,9 @@ const Description = ({ url }: { url: string }) => {
                   }}
                   ref={register}
                   value={characteristicsSource}
+                  defaultValue={
+                    formState.data.descriptionData.characteristicsSource
+                  }
                 >
                   <option value="initial">-</option>
                   {CHARACTERISTICS.map(entry => (
@@ -481,6 +487,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="hair"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.hair}
                   />
                 </label>
                 <label className="block">
@@ -489,6 +496,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="skin"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.skin}
                   />
                 </label>
                 <label className="block">
@@ -497,6 +505,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="eyes"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.eyes}
                   />
                 </label>
                 <label className="block">
@@ -505,6 +514,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="height"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.height}
                   />
                 </label>
                 <label className="block">
@@ -513,6 +523,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="weight"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.weight}
                   />
                 </label>
                 <label className="block">
@@ -521,6 +532,7 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="age"
                     ref={register}
+                    defaultValue={formState.data.descriptionData.age}
                   />
                 </label>
               </div>
@@ -539,6 +551,7 @@ const Description = ({ url }: { url: string }) => {
                   name="backstory"
                   rows={5}
                   ref={register}
+                  defaultValue={formState.data.descriptionData.backstory}
                 />
               </label>
             </div>

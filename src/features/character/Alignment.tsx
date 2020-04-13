@@ -5,6 +5,7 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
 import { CharacterState } from 'features/character/characterSlice';
+import { getRace, getClass } from 'utils/character';
 
 interface Props {
   character: CharacterState;
@@ -30,7 +31,7 @@ const Alignment = ({ character }: Props) => {
           left: '-4.1rem',
         }}
       >
-        {character.level}
+        {character.customData.level}
       </p>
       <p
         className="text-2xl absolute inset-0 text-center"
@@ -39,7 +40,7 @@ const Alignment = ({ character }: Props) => {
           left: '4.25rem',
         }}
       >
-        {character.race.speed}
+        {getRace(character.raceData.race)!.speed}
       </p>
       <p
         className="text-2xl absolute inset-0 text-center"
@@ -48,7 +49,7 @@ const Alignment = ({ character }: Props) => {
           left: '13rem',
         }}
       >
-        {`d${character.class.hd.faces}`}
+        {`d${getClass(character.classData.classElement)!.hd.faces}`}
       </p>
     </div>
   );

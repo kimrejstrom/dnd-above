@@ -1,12 +1,13 @@
 import React from 'react';
 import { Route, useRouteMatch, Switch, NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import RaceBuilder from 'pages/Create/RaceBuilder';
 import ClassBuilder from 'pages/Create/ClassBuilder';
 import Abilities from 'pages/Create/Abilities';
 import Description from 'pages/Create/Description';
 import Equipment from 'pages/Create/Equipment';
+import { createCharacter } from 'features/character/characterSlice';
 
 interface Props {}
 
@@ -66,11 +67,20 @@ const Summary = () => {
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
+  const dispatch = useDispatch();
 
   return (
     <>
       <h2>Summary</h2>
-      <pre>{JSON.stringify(formState, null, 2)}</pre>
+      <button
+        className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
+        onClick={() => dispatch(createCharacter(formState))}
+      >
+        Save Character
+      </button>
+      <pre className="bg-tertiary-light">
+        {JSON.stringify(formState, null, 2)}
+      </pre>
     </>
   );
 };

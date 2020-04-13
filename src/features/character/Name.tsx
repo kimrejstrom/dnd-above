@@ -31,7 +31,7 @@ const Name = ({ character }: Props) => {
         ></path>
         <text width="500" className="fill-current text-3xl">
           <textPath textAnchor="middle" startOffset="25%" href="#curve">
-            {character.name}
+            {character.descriptionData.name}
           </textPath>
         </text>
       </svg>

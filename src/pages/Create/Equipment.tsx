@@ -37,9 +37,9 @@ const Equipment = ({ url }: { url: string }) => {
     { formId: string; type: string }[]
   >([]);
 
-  const selectedClass = getClass(formState.data.classElement);
+  const selectedClass = getClass(formState.data.classData.classElement);
   const selectedBackground = getBackground(
-    formState.data.description?.background,
+    formState.data.descriptionData.background,
   );
 
   const addItemSelect = (e: any, type: string) => {

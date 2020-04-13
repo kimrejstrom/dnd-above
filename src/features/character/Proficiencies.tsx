@@ -1,18 +1,20 @@
 import React from 'react';
 import { CharacterState } from 'features/character/characterSlice';
+import { getClass } from 'utils/character';
 
 interface Props {
   character: CharacterState;
 }
 
 const Proficiencies = ({ character }: Props) => {
+  const classElement = getClass(character.classData.classElement);
   return (
     <div className="custom-border w-full px-2">
       <div className="text-xl text-center leading-none mt-1 mb-2">
         Proficiencies &amp; Languages
       </div>
       <div>
-        {Object.entries(character.class.startingProficiencies).map(
+        {Object.entries(classElement!.startingProficiencies).map(
           ([key, value]) => {
             return (
               <div className="flex flex-col my-2">

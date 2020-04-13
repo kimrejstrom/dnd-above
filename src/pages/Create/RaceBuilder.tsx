@@ -24,25 +24,41 @@ const RaceBuilder = ({ url }: Props) => {
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
-  const race = getRace(formState.data.race);
+  const race = getRace(formState.data.raceData.race);
 
   const RaceDetails = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
-      dispatch(updateFormData(data));
+      const chosenAbs = Array.isArray(data.chosenRaceAbilities)
+        ? data.chosenRaceAbilities
+        : [data.chosenRaceAbilities];
+      dispatch(
+        updateFormData({
+          raceData: {
+            ...data,
+            chosenRaceAbilities: [
+              chosenAbs.reduce(
+                (acc: any, curr: string) => ({ ...acc, [curr]: abilityAmount }),
+                {},
+              ),
+            ],
+          },
+        }),
+      );
       history.push(`${url}/step-2`);
     };
     const abilities = race?.ability || [];
-    const proficiencies = race?.skillProficiencies || [];
+    const skillProficiencies = race?.skillProficiencies || [];
     const languages = race?.languageProficiencies || [];
+    const abilityAmount = abilities[0].choose?.amount || 1;
 
     return (
       <div>
         <div className="flex justify-between my-4">
           <button
             className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-            onClick={() => dispatch(updateFormData({ race: undefined }))}
+            onClick={() => dispatch(updateFormData({ raceData: { race: '' } }))}
           >
             Previous
           </button>
@@ -100,8 +116,8 @@ const RaceBuilder = ({ url }: Props) => {
             })}
 
             <h3>Skill Proficiencies</h3>
-            {proficiencies.length
-              ? proficiencies.map(prof => {
+            {skillProficiencies.length
+              ? skillProficiencies.map(prof => {
                   if (prof.choose) {
                     const hasToolOption =
                       typeof _.last(prof.choose.from) !== 'string';
@@ -116,7 +132,7 @@ const RaceBuilder = ({ url }: Props) => {
                             {`Choose skill proficiency (${count}):`}
                             <select
                               multiple={count > 1}
-                              name="chosenRaceProficiencies"
+                              name="chosenRaceSkillProficiencies"
                               ref={register({
                                 required: true,
                                 validate: data =>
@@ -140,7 +156,7 @@ const RaceBuilder = ({ url }: Props) => {
                                 }
                               })}
                             </select>
-                            {errors.chosenRaceProficiencies && (
+                            {errors.chosenRaceSkillProficiencies && (
                               <span>{`You must choose ${count} skills`}</span>
                             )}
                           </label>
@@ -272,7 +288,7 @@ const RaceBuilder = ({ url }: Props) => {
 
   const RaceInfo = () => {
     const onSelect = (data: { race: string }, e?: React.BaseSyntheticEvent) => {
-      dispatch(updateFormData(data));
+      dispatch(updateFormData({ raceData: data }));
     };
 
     const addDefaultImageSrc = (ev: any, name: string) => {

@@ -1,65 +1,43 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StatsTypes } from 'features/character/characterSlice';
-import { SkillTypes } from 'features/character/Skills';
-import { Item, BaseItem } from 'models/base-item';
+import { CharacterBase } from 'features/character/characterSlice';
 
 export interface CreateCharacterFormState {
-  data: {
-    race: string;
-    chosenRaceAbilities: StatsTypes[];
-    chosenRaceProficiencies: SkillTypes[];
-    chosenRaceLanguages: string[];
-    classElement: string;
-    subClass: string;
-    chosenClassProficiencies: SkillTypes[];
-    abilityScores: Record<StatsTypes, number> & { rollMethod: string };
-    description: {
-      name: string;
-      background: string;
-      alignment: string;
-      characteristicsSource: string;
-      imageUrl: string;
-      hair: string;
-      skin: string;
-      eyes: string;
-      height: string;
-      weight: string;
-      age: string;
-      backstory: string;
-      chosenBackgroundSkillProficiencies: SkillTypes[];
-      chosenBackgroundLanguageProficiencies: string[];
-      characteristicsPersonalityTrait: string;
-      characteristicsIdeal: string;
-      characteristicsBond: string;
-      characteristicsFlaw: string;
-    };
-    equipment: (Item | BaseItem)[];
-  };
+  data: CharacterBase;
 }
 
 const initialState: CreateCharacterFormState = {
   data: {
-    race: '',
-    chosenRaceAbilities: [],
-    chosenRaceProficiencies: [],
-    chosenRaceLanguages: [],
-    classElement: '',
-    subClass: '',
-    chosenClassProficiencies: [],
-    abilityScores: {
-      str: 10,
-      dex: 10,
-      con: 10,
-      int: 10,
-      wis: 10,
-      cha: 10,
-      rollMethod: 'none',
+    raceData: {
+      race: '',
+      chosenRaceAbilities: [],
+      standardRaceAbilities: [],
+      chosenRaceSkillProficiencies: [],
+      standardRaceSkillProficiencies: [],
+      chosenRaceLanguages: [],
+      standardRaceLanguages: [],
     },
-    description: {
+    classData: {
+      classElement: '',
+      subClass: '',
+      chosenClassSkillProficiencies: [],
+      standardClassArmorProficiencies: [],
+      standardClassWeaponProficiencies: [],
+      standardClassToolProficiencies: [],
+      abilityScores: {
+        str: 10,
+        dex: 10,
+        con: 10,
+        int: 10,
+        wis: 10,
+        cha: 10,
+        rollMethod: '',
+      },
+    },
+    descriptionData: {
       name: 'Generic Man',
-      background: 'Noble',
-      alignment: 'LG',
-      characteristicsSource: 'Noble',
+      background: '',
+      alignment: '',
+      characteristicsSource: '',
       imageUrl: `${process.env.PUBLIC_URL}/img/races/default.png`,
       hair: 'Brown',
       skin: 'Fair',
@@ -69,7 +47,11 @@ const initialState: CreateCharacterFormState = {
       age: '40',
       backstory: 'None, yet.',
       chosenBackgroundSkillProficiencies: [],
-      chosenBackgroundLanguageProficiencies: [],
+      standardBackgroundSkillProficiencies: [],
+      chosenBackgroundToolProficiencies: [],
+      standardBackgroundToolProficiencies: [],
+      chosenBackgroundLanguages: [],
+      standardBackgroundLanguages: [],
       characteristicsPersonalityTrait: '',
       characteristicsIdeal: '',
       characteristicsBond: '',
@@ -84,10 +66,13 @@ const createCharacterFormSlice = createSlice({
   initialState: initialState,
   reducers: {
     updateFormData(state, action: PayloadAction<any>) {
-      state.data = {
-        ...state.data,
-        ...action.payload,
-      };
+      Object.entries(action.payload).map(
+        ([key, value]) =>
+          ((state.data as any)[key] = {
+            ...(state.data as any)[key],
+            ...(value as any),
+          }),
+      );
     },
   },
 });

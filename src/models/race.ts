@@ -56,13 +56,16 @@ export enum ItemsType {
   Inset = 'inset',
 }
 
-export interface Ability {
+export interface AbilityBase {
   dex?: number;
   wis?: number;
   con?: number;
   int?: number;
   str?: number;
   cha?: number;
+}
+
+export interface Ability extends AbilityBase {
   choose?: AbilityChoose;
 }
 
