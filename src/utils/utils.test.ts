@@ -15,6 +15,38 @@ describe('character utils', () => {
         stealth: true,
       },
     ];
+
+    // const chooseProficiencies = [
+    //   {
+    //     choose: {
+    //       from: [
+    //         'athletics',
+    //         'acrobatics',
+    //         'sleight of hand',
+    //         'stealth',
+    //         'arcana',
+    //         'history',
+    //         'investigation',
+    //         'nature',
+    //         'religion',
+    //         'animal handling',
+    //         'insight',
+    //         'medicine',
+    //         'perception',
+    //         'survival',
+    //         'deception',
+    //         'intimidation',
+    //         'performance',
+    //         'persuasion',
+    //         {
+    //           tool: true,
+    //         },
+    //       ],
+    //       count: 4,
+    //     },
+    //   },
+    // ];
+
     expect(getIncludedProficiencies(languageProficiencies)).toStrictEqual([
       'common',
       'other',
@@ -23,5 +55,6 @@ describe('character utils', () => {
     expect(getIncludedProficiencies(skillProficiencies)).toStrictEqual([
       'stealth',
     ]);
+    // expect(getIncludedProficiencies(chooseProficiencies)).toStrictEqual([]);
   });
 });

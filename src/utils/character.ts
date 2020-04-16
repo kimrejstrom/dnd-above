@@ -1,4 +1,7 @@
-import { CharacterState, StatsTypes } from 'features/character/characterSlice';
+import {
+  CharacterState,
+  StatsTypes,
+} from 'features/character/characterListSlice';
 import _, { mapValues } from 'lodash';
 import { ClassElement } from 'models/class';
 import { PLAYABLE_CLASSES, PLAYABLE_RACES, BACKGROUNDS } from 'utils/data';

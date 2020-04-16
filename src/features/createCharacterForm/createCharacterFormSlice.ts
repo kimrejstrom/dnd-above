@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CharacterBase } from 'features/character/characterSlice';
+import { CharacterBase } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 
 export interface CreateCharacterFormState {
   data: CharacterBase;
@@ -34,7 +35,7 @@ const initialState: CreateCharacterFormState = {
       },
     },
     descriptionData: {
-      name: 'Generic Man',
+      name: 'Justin Tyme',
       background: '',
       alignment: '',
       characteristicsSource: '',
@@ -42,8 +43,8 @@ const initialState: CreateCharacterFormState = {
       hair: 'Brown',
       skin: 'Fair',
       eyes: 'Blue',
-      height: '175cm',
-      weight: '70kg',
+      height: '182cm',
+      weight: '85kg',
       age: '40',
       backstory: 'None, yet.',
       chosenBackgroundSkillProficiencies: [],
@@ -57,7 +58,9 @@ const initialState: CreateCharacterFormState = {
       characteristicsBond: '',
       characteristicsFlaw: '',
     },
-    equipment: [],
+    equipmentData: {
+      items: [],
+    },
   },
 };
 
@@ -65,8 +68,22 @@ const createCharacterFormSlice = createSlice({
   name: 'createCharacterForm',
   initialState: initialState,
   reducers: {
+    setInitialFormData: state => initialState,
+    loadInitialFormData(state, action: PayloadAction<CharacterListItem>) {
+      const character = action.payload;
+      const formState: CreateCharacterFormState = {
+        data: {
+          id: character.id,
+          raceData: character.raceData,
+          classData: character.classData,
+          descriptionData: character.descriptionData,
+          equipmentData: character.equipmentData,
+        },
+      };
+      return formState;
+    },
     updateFormData(state, action: PayloadAction<any>) {
-      Object.entries(action.payload).map(
+      Object.entries<Partial<CharacterBase>>(action.payload).map(
         ([key, value]) =>
           ((state.data as any)[key] = {
             ...(state.data as any)[key],
@@ -77,6 +94,10 @@ const createCharacterFormSlice = createSlice({
   },
 });
 
-export const { updateFormData } = createCharacterFormSlice.actions;
+export const {
+  updateFormData,
+  setInitialFormData,
+  loadInitialFormData,
+} = createCharacterFormSlice.actions;
 
 export default createCharacterFormSlice.reducer;

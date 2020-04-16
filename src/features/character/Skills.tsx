@@ -1,5 +1,8 @@
 import React from 'react';
-import { CharacterState, StatsTypes } from 'features/character/characterSlice';
+import {
+  CharacterState,
+  StatsTypes,
+} from 'features/character/characterListSlice';
 import {
   calculateStats,
   getAbilityMod,

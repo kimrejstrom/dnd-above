@@ -21,9 +21,11 @@ const Equipment = ({ url }: { url: string }) => {
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
     dispatch(
       updateFormData({
-        equipment: Object.values(data).map(item =>
-          _.find(ALL_ITEMS, entry => entry.name === item),
-        ),
+        equipmentData: {
+          items: Object.values(data).map(item =>
+            _.find(ALL_ITEMS, entry => entry.name === item),
+          ),
+        },
       }),
     );
     history.push(`${url}/summary`);

@@ -4,19 +4,21 @@ Project Description
 
 ### Todo
 
-- [ ] InitiateForm(character) to map from characterState to characterForm when opening existing char in builder  
 - [ ] Fix @dice rendering  
+- [ ] Fix standardProficiencies parsing  
+- [ ] Handle default values and stepping through form for existing character  
 
 ### In Progress
 
-- [ ] map from characterForm to CharacterState  
-- [ ] Characterbuilder landing: List of characters + Create New  
-  - [ ] Create character list  
-- [ ] Complete character form builder  
 - [ ] Summary + save  
 
 ### Done ✓
 
+- [x] Complete character form builder  
+  - [x] Create character list  
+- [x] Characterbuilder landing: List of characters + Create New  
+- [x] InitiateForm(character) to map from characterState to characterForm when opening existing char in builder  
+- [x] map from characterForm to CharacterState  
 - [x] Allow to add picture (by url) to character  
 - [x] Add Fluff quick build to stats  
 

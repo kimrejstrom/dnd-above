@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterSlice';
+import { CharacterState } from 'features/character/characterListSlice';
 import { PurpleEntry, ClassFeature } from 'models/class';
 import { RaceEntry } from 'models/race';
 import Entry from 'components/Entry/Entry';

@@ -2,7 +2,10 @@ import React from 'react';
 import { Spells } from 'components/Spells/Spells';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { CharacterState } from 'features/character/characterSlice';
+import {
+  CharacterList,
+  DEAFULT_CHARACTER,
+} from 'features/character/characterListSlice';
 import Name from 'features/character/Name';
 import Alignment from 'features/character/Alignment';
 import Inspiration from 'features/character/Inspiration';
@@ -22,9 +25,15 @@ interface Props {}
 
 export const Main: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const character: CharacterState = useSelector(
-    (state: RootState) => state.character,
+  const characterList: CharacterList = useSelector(
+    (state: RootState) => state.characterList,
   );
+  const selectedCharacterId: string = useSelector(
+    (state: RootState) => state.selectedCharacter,
+  );
+  const character =
+    characterList.find(char => char.id === selectedCharacterId) ||
+    DEAFULT_CHARACTER;
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
   const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
 

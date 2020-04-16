@@ -34,11 +34,11 @@ import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/base-item';
-import { SourceUtil } from 'vendor/5e-tools/renderer';
 import { RaceFluffElement } from 'models/race-fluff';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import mainRenderer from 'utils/mainRenderer';
+import { SourceUtil } from 'vendor/5e-tools/renderer';
 import { BackgroundFluffElement } from 'models/background-fluff';
 import { Item } from 'models/item';
 

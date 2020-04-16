@@ -4,7 +4,7 @@ import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
-import { CharacterState } from 'features/character/characterSlice';
+import { CharacterState } from 'features/character/characterListSlice';
 import { getRace, getClass } from 'utils/character';
 
 interface Props {

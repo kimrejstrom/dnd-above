@@ -10,7 +10,10 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import Entry from 'components/Entry/Entry';
 import { useForm } from 'react-hook-form';
-import { CHARACTER_STATS, StatsTypes } from 'features/character/characterSlice';
+import {
+  CHARACTER_STATS,
+  StatsTypes,
+} from 'features/character/characterListSlice';
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
 import { getRace } from 'utils/character';
@@ -26,23 +29,33 @@ const RaceBuilder = ({ url }: Props) => {
   );
   const race = getRace(formState.data.raceData.race);
 
+  const parseChosenRaceAbilities = (
+    abilityAmount: number,
+    abs?: string | string[],
+  ) => {
+    if (abs) {
+      const chosenAbs = Array.isArray(abs) ? abs : [abs];
+      return chosenAbs.reduce(
+        (acc: any, curr: string) => ({ ...acc, [curr]: abilityAmount }),
+        {},
+      );
+    }
+    return [];
+  };
+
   const RaceDetails = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
-      const chosenAbs = Array.isArray(data.chosenRaceAbilities)
-        ? data.chosenRaceAbilities
-        : [data.chosenRaceAbilities];
+      const chosenAbs = parseChosenRaceAbilities(
+        abilityAmount,
+        data.chosenRaceAbilities,
+      );
       dispatch(
         updateFormData({
           raceData: {
             ...data,
-            chosenRaceAbilities: [
-              chosenAbs.reduce(
-                (acc: any, curr: string) => ({ ...acc, [curr]: abilityAmount }),
-                {},
-              ),
-            ],
+            chosenRaceAbilities: chosenAbs,
           },
         }),
       );

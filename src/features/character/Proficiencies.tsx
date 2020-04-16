@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterSlice';
+import { CharacterState } from 'features/character/characterListSlice';
 import { getClass } from 'utils/character';
 
 interface Props {

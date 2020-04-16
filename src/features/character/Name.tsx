@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
-import { CharacterState } from 'features/character/characterSlice';
+import { CharacterState } from 'features/character/characterListSlice';
 import nameDark from 'images/name-dark.png';
 import nameLight from 'images/name-light.png';
 

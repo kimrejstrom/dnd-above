@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterSlice';
+import { CharacterState } from 'features/character/characterListSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';

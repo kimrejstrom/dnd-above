@@ -9899,14 +9899,6 @@ UrlUtil = {
    * @param href the link
    */
   link(href) {
-    function addGetParam(curr) {
-      if (href.includes('?')) return `${curr}&v=${VERSION_NUMBER}`;
-      else return `${curr}?v=${VERSION_NUMBER}`;
-    }
-
-    if (!IS_VTT && IS_DEPLOYED)
-      return addGetParam(`${DEPLOYED_STATIC_ROOT}${href}`);
-    else if (IS_DEPLOYED) return addGetParam(href);
     return href;
   },
 

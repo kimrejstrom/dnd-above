@@ -3,7 +3,7 @@ import {
   CharacterState,
   CHARACTER_STATS,
   StatsTypes,
-} from 'features/character/characterSlice';
+} from 'features/character/characterListSlice';
 import { calculateStats, getAbilityMod } from 'utils/character';
 
 interface Props {

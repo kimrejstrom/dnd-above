@@ -7,7 +7,11 @@ import ClassBuilder from 'pages/Create/ClassBuilder';
 import Abilities from 'pages/Create/Abilities';
 import Description from 'pages/Create/Description';
 import Equipment from 'pages/Create/Equipment';
-import { createCharacter } from 'features/character/characterSlice';
+import CharacterListing from 'pages/Create/CharacterListing';
+import {
+  addCharacter,
+  updateCharacter,
+} from 'features/character/characterListSlice';
 
 interface Props {}
 
@@ -37,7 +41,7 @@ const Create = (props: Props) => {
       <div className="custom-border bg-secondary-light dark:bg-secondary-dark dar p-2">
         <Switch>
           <Route exact path={path}>
-            <div>TODO Character list / new choice</div>
+            <CharacterListing url={url} />
           </Route>
           <Route path={`${path}/step-1`}>
             <RaceBuilder url={url} />
@@ -74,7 +78,11 @@ const Summary = () => {
       <h2>Summary</h2>
       <button
         className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
-        onClick={() => dispatch(createCharacter(formState))}
+        onClick={() => {
+          formState.data.id
+            ? dispatch(updateCharacter(formState))
+            : dispatch(addCharacter(formState));
+        }}
       >
         Save Character
       </button>

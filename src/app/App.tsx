@@ -10,7 +10,6 @@ import { UpdateNotification } from 'components/UpdateNotification/UpdateNotifica
 import { Main } from 'pages/Main/Main';
 import { ThemeMode } from 'features/theme/themeSlice';
 import Create from 'pages/Create/Create';
-import { CharacterState } from 'features/character/characterSlice';
 import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 
@@ -21,9 +20,6 @@ const App: React.FC = () => {
   // Global Modal state
   const { title, content } = useSelector(
     (state: RootState) => state.modalVisibility,
-  );
-  const character: CharacterState = useSelector(
-    (state: RootState) => state.character,
   );
   const theme = useSelector((state: RootState) => state.theme);
   return (
@@ -40,7 +36,7 @@ const App: React.FC = () => {
             <UpdateNotification />
             <Header />
             <div className="flex w-full">
-              <Sidebar character={character} />
+              <Sidebar />
               {/* Main content */}
               <div className="flex w-10/12 flex-wrap bg-yellow-100 dark:bg-primary-dark p-4 h-full">
                 <Switch>
