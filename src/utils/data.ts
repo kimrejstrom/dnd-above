@@ -37,8 +37,8 @@ import { BaseItem } from 'models/base-item';
 import { RaceFluffElement } from 'models/race-fluff';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
-import mainRenderer from 'utils/mainRenderer';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
+import mainRenderer from 'utils/mainRenderer';
 import { BackgroundFluffElement } from 'models/background-fluff';
 import { Item } from 'models/item';
 

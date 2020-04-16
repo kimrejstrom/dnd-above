@@ -1,5 +1,18 @@
 import { getIncludedProficiencies } from 'utils/character';
 
+// Mock 5e-tools
+jest.mock('vendor/5e-tools/renderer', () => ({
+  Renderer: jest.fn().mockImplementation(() => ({
+    race: {
+      mergeSubraces: jest.fn(() => []),
+    },
+  })),
+  SourceUtil: {
+    isCoreOrSupplement: jest.fn(),
+    isNonstandardSource: jest.fn(),
+  },
+}));
+
 describe('character utils', () => {
   it('gets the default proficiencies', () => {
     const languageProficiencies = [
@@ -16,36 +29,36 @@ describe('character utils', () => {
       },
     ];
 
-    // const chooseProficiencies = [
-    //   {
-    //     choose: {
-    //       from: [
-    //         'athletics',
-    //         'acrobatics',
-    //         'sleight of hand',
-    //         'stealth',
-    //         'arcana',
-    //         'history',
-    //         'investigation',
-    //         'nature',
-    //         'religion',
-    //         'animal handling',
-    //         'insight',
-    //         'medicine',
-    //         'perception',
-    //         'survival',
-    //         'deception',
-    //         'intimidation',
-    //         'performance',
-    //         'persuasion',
-    //         {
-    //           tool: true,
-    //         },
-    //       ],
-    //       count: 4,
-    //     },
-    //   },
-    // ];
+    const chooseProficiencies = [
+      {
+        choose: {
+          from: [
+            'athletics',
+            'acrobatics',
+            'sleight of hand',
+            'stealth',
+            'arcana',
+            'history',
+            'investigation',
+            'nature',
+            'religion',
+            'animal handling',
+            'insight',
+            'medicine',
+            'perception',
+            'survival',
+            'deception',
+            'intimidation',
+            'performance',
+            'persuasion',
+            {
+              tool: true,
+            },
+          ],
+          count: 4,
+        },
+      },
+    ];
 
     expect(getIncludedProficiencies(languageProficiencies)).toStrictEqual([
       'common',
@@ -55,6 +68,6 @@ describe('character utils', () => {
     expect(getIncludedProficiencies(skillProficiencies)).toStrictEqual([
       'stealth',
     ]);
-    // expect(getIncludedProficiencies(chooseProficiencies)).toStrictEqual([]);
+    expect(getIncludedProficiencies(chooseProficiencies)).toStrictEqual([]);
   });
 });
