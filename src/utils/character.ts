@@ -4,8 +4,16 @@ import {
 } from 'features/character/characterListSlice';
 import _, { mapValues } from 'lodash';
 import { ClassElement } from 'models/class';
-import { PLAYABLE_CLASSES, PLAYABLE_RACES, BACKGROUNDS } from 'utils/data';
+import {
+  PLAYABLE_CLASSES,
+  PLAYABLE_RACES,
+  BACKGROUNDS,
+  ALL_ITEMS,
+} from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
+import { isDefined } from 'ts-is-present';
+import { BaseItem } from 'models/base-item';
+import { Item } from 'models/item';
 
 export const getRaceAbilityMod = (
   character: CharacterState,
@@ -78,6 +86,9 @@ export const getProficiencyBonus = (level: number) => {
   return Math.ceil(level / 4) + 1;
 };
 
+export const getItem = (itemName: string): Item | BaseItem | undefined =>
+  ALL_ITEMS.find(entry => entry.name === itemName);
+
 export const isProficient = (skill: SkillTypes, character: CharacterState) => {
   const skillProficiencies = character.raceData.chosenRaceSkillProficiencies.concat(
     [
@@ -102,16 +113,13 @@ export const getClassQuickBuild = (classElement: ClassElement) =>
     ),
   );
 
-export const getIncludedProficiencies = (proficiencies: Array<any>) => {
-  if (proficiencies) {
-    return _.flatten(
-      proficiencies.map(entry => {
-        return Object.entries(entry)
-          .map(([key, value]) => (Boolean(value) === true ? key : undefined))
-          .map(x => x) as string[];
-      }),
-    );
-  } else {
-    return [];
-  }
-};
+export const getIncludedProficiencies = (proficiencies: Array<any>): string[] =>
+  proficiencies
+    ? _.flatten(
+        proficiencies.map(entry =>
+          Object.entries(entry).map(([key, value]) =>
+            typeof value === 'boolean' ? key : undefined,
+          ),
+        ),
+      ).filter(isDefined)
+    : [];

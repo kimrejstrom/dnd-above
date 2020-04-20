@@ -34,7 +34,7 @@ const Create = (props: Props) => {
           <NavLink to={`${url}/step-4`}>4. Description</NavLink>
         </li>
         <li>
-          <NavLink to={`${url}/step-5`}>5. Equipmemnt</NavLink>
+          <NavLink to={`${url}/step-5`}>5. Equipment</NavLink>
         </li>
       </ul>
 

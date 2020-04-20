@@ -1,5 +1,4 @@
 import React from 'react';
-import shield from 'images/shield.svg';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { CharacterList } from 'features/character/characterListSlice';
@@ -17,11 +16,18 @@ const Sidebar = () => {
     <div className="bg-tertiary-dark flex-none w-24 p-6 hidden md:block font-sans">
       {characterList.map(character => (
         <button
-          onClick={() => dispatch(setSelectedCharacter(character.id))}
+          onClick={() => {
+            dispatch(setSelectedCharacter(character.id));
+            history.push(`/`);
+          }}
           className="mb-4"
         >
-          <div className="bg-white h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
-            <img className="p-2" src={shield} alt="" />
+          <div className="bg-white flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
+            <img
+              className="h-12 w-12 object-cover object-top"
+              src={character.descriptionData.imageUrl}
+              alt="character"
+            />
           </div>
           <div className="text-center text-white opacity-50 text-sm">
             {character.descriptionData.name.substr(0, 3)}

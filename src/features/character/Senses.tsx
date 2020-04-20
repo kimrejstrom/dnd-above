@@ -29,17 +29,11 @@ const Senses = ({ character }: Props) => {
         {Object.entries(PASSIVE_SENSES).map(([key, value]) => {
           const score = calculateStats(character)[value.ability as StatsTypes];
           const proficient = isProficient(value.skill as SkillTypes, character);
-          console.log(score);
           const abilityMod = getAbilityMod(score);
           const passiveMod =
             (proficient
               ? abilityMod + getProficiencyBonus(character.customData.level)
               : abilityMod) + 10;
-          console.log(
-            passiveMod,
-            abilityMod,
-            getProficiencyBonus(character.customData.level),
-          );
           return (
             <div className="flex w-full">
               <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full">

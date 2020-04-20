@@ -68,7 +68,7 @@ export interface CharacterBase {
     characteristicsFlaw: string;
   };
   equipmentData: {
-    items: (Item | BaseItem)[];
+    items: string[];
   };
 }
 
@@ -91,60 +91,81 @@ export interface CharacterListItem extends CharacterState {
 }
 export type CharacterList = Array<CharacterListItem>;
 export const DEFAULT_ID = 'id-DEFAULT';
-export const DEAFULT_CHARACTER = {
+export const DEAFULT_CHARACTER: CharacterListItem = {
   id: DEFAULT_ID,
   raceData: {
-    race: 'Halfling (Ghostwise)',
+    race: 'Human',
     chosenRaceAbilities: [],
-    standardRaceAbilities: [],
+    standardRaceAbilities: [
+      {
+        str: 1,
+        dex: 1,
+        con: 1,
+        int: 1,
+        wis: 1,
+        cha: 1,
+      },
+    ],
     chosenRaceSkillProficiencies: [],
     standardRaceSkillProficiencies: [],
-    chosenRaceLanguages: [],
-    standardRaceLanguages: [],
+    chosenRaceLanguages: ['elvish'],
+    standardRaceLanguages: ['common'],
   },
   classData: {
-    classElement: 'Druid',
-    subClass: 'Circle of the Shepherd',
-    chosenClassSkillProficiencies: [],
-    standardClassArmorProficiencies: [],
-    standardClassWeaponProficiencies: [],
+    classElement: 'Fighter',
+    subClass: 'Champion',
+    chosenClassSkillProficiencies: ['athletics', 'perception'],
+    standardClassArmorProficiencies: ['light', 'medium', 'heavy', 'shields'],
+    standardClassWeaponProficiencies: ['simple', 'martial'],
     standardClassToolProficiencies: [],
     abilityScores: {
-      str: 10,
-      dex: 10,
-      con: 10,
+      rollMethod: 'standard',
+      str: 15,
+      dex: 12,
+      con: 14,
       int: 10,
-      wis: 10,
-      cha: 10,
-      rollMethod: '',
+      wis: 8,
+      cha: 13,
     },
   },
   descriptionData: {
-    name: 'Justin Thyme',
-    background: '',
-    alignment: '',
-    characteristicsSource: '',
-    imageUrl: `${process.env.PUBLIC_URL}/img/races/default.png`,
-    hair: 'Brown',
+    name: 'Regdar Ridgehearth',
+    background: 'Soldier',
+    alignment: 'LG',
+    characteristicsSource: 'Soldier',
+    imageUrl: '/img/races/human.png',
+    hair: 'Blonde',
     skin: 'Fair',
-    eyes: 'Blue',
-    height: '175cm',
-    weight: '70kg',
-    age: '40',
-    backstory: 'None, yet.',
+    eyes: 'Brown',
+    height: '192cm',
+    weight: '95kg',
+    age: '35',
+    backstory:
+      'You squired for a knight who taught you how to fight, care for a steed, and conduct yourself with honor. You decided to take up that path for yourself.\n\nMan-at-arms: You were the member of an elite cavalry unit of an army, trained in heavy armor and a variety of weapons to charge the enemy and crush the opposition.',
     chosenBackgroundSkillProficiencies: [],
-    standardBackgroundSkillProficiencies: [],
+    standardBackgroundSkillProficiencies: ['athletics', 'intimidation'],
     chosenBackgroundToolProficiencies: [],
-    standardBackgroundToolProficiencies: [],
+    standardBackgroundToolProficiencies: ['gaming set', 'vehicles (land)'],
     chosenBackgroundLanguages: [],
     standardBackgroundLanguages: [],
-    characteristicsPersonalityTrait: '',
-    characteristicsIdeal: '',
-    characteristicsBond: '',
-    characteristicsFlaw: '',
+    characteristicsPersonalityTrait:
+      "I'm full of inspiring and cautionary tales from my military experience relevant to almost every combat situation.",
+    characteristicsIdeal:
+      'Greater Good. Our lot is to lay down our lives in defense of others. (Good)',
+    characteristicsBond:
+      'I would still lay down my life for the people I served with.',
+    characteristicsFlaw:
+      'I have little respect for anyone who is not a proven warrior.',
   },
   equipmentData: {
-    items: [],
+    items: [
+      'Greatsword',
+      'Shield',
+      "Explorer's Pack",
+      'Handaxe',
+      'Handaxe',
+      'Chain Mail',
+    ],
   },
   customData: {
     level: 1,

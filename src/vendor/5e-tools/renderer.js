@@ -2754,7 +2754,7 @@ Renderer.condition = {
   },
 };
 
-Renderer.background = {
+Renderer.prototype.background = {
   getCompactRenderedString(bg) {
     return `
 		${Renderer.utils.getExcludedTr(bg, 'background')}
@@ -4205,26 +4205,28 @@ Renderer.monster = {
   },
 };
 
-Renderer.item = {
+Renderer.prototype.item = {
   // avoid circular references by deciding a global link direction for specific <-> general
   // default is general -> specific
   LINK_SPECIFIC_TO_GENERIC_DIRECTION: 1,
 
   _sortProperties(a, b) {
+    const renderer = Renderer.get();
     return SortUtil.ascSort(
-      Renderer.item.propertyMap[a].name,
-      Renderer.item.propertyMap[b].name,
+      renderer.item.propertyMap[a].name,
+      renderer.item.propertyMap[b].name,
     );
   },
 
   _getPropertiesText(item) {
+    const renderer = Renderer.get();
     if (item.property) {
       let renderedDmg2 = false;
 
       const renderedProperties = item.property
-        .sort(Renderer.item._sortProperties)
+        .sort(renderer.item._sortProperties)
         .map(prop => {
-          const fullProp = Renderer.item.propertyMap[prop];
+          const fullProp = renderer.item.propertyMap[prop];
 
           if (fullProp.template) {
             const toRender = fullProp.template.replace(
@@ -4232,10 +4234,10 @@ Renderer.item = {
               (...m) => {
                 // Special case for damage dice -- need to add @damage tags
                 if (m[1] === 'item.dmg1') {
-                  return Renderer.item._renderDamage(item.dmg1);
+                  return renderer.item._renderDamage(item.dmg1);
                 } else if (m[1] === 'item.dmg2') {
                   renderedDmg2 = true;
-                  return Renderer.item._renderDamage(item.dmg2);
+                  return renderer.item._renderDamage(item.dmg2);
                 }
 
                 const spl = m[1].split('.');
@@ -4258,7 +4260,7 @@ Renderer.item = {
 
       if (!renderedDmg2 && item.dmg2)
         renderedProperties.unshift(
-          `alt. ${Renderer.item._renderDamage(item.dmg2)}`,
+          `alt. ${renderer.item._renderDamage(item.dmg2)}`,
         );
 
       return `${
@@ -4267,7 +4269,7 @@ Renderer.item = {
     } else {
       const parts = [];
       if (item.dmg2)
-        parts.push(`alt. ${Renderer.item._renderDamage(item.dmg2)}`);
+        parts.push(`alt. ${renderer.item._renderDamage(item.dmg2)}`);
       if (item.range) parts.push(`range ${item.range} ft.`);
       return `${item.dmg1 && parts.length ? ' - ' : ''}${parts.join(', ')}`;
     }
@@ -4283,9 +4285,10 @@ Renderer.item = {
   },
 
   getDamageAndPropertiesText: function(item) {
+    const renderer = Renderer.get();
     const damageParts = [];
 
-    if (item.dmg1) damageParts.push(Renderer.item._renderDamage(item.dmg1));
+    if (item.dmg1) damageParts.push(renderer.item._renderDamage(item.dmg1));
 
     // armor
     if (item.ac != null) {
@@ -4362,17 +4365,18 @@ Renderer.item = {
 
     const damage = damageParts.join(', ');
     const damageType = item.dmgType ? Parser.dmgTypeToFull(item.dmgType) : '';
-    const propertiesTxt = Renderer.item._getPropertiesText(item);
+    const propertiesTxt = item.property ? item.property.join(',') : '';
 
     return [damage, damageType, propertiesTxt];
   },
 
   getTypeRarityAndAttunementText(item) {
+    const renderer = Renderer.get();
     const typeRarity = [
       item._typeHtml === 'Other' ? '' : item._typeHtml,
       [
         item.tier,
-        item.rarity && Renderer.item.doRenderRarity(item.rarity)
+        item.rarity && renderer.item.doRenderRarity(item.rarity)
           ? item.rarity
           : '',
       ]
@@ -4570,38 +4574,48 @@ Renderer.item = {
     return renderStack.join('').trim();
   },
 
-  getCompactRenderedString(item) {
+  getCompactRenderedString(item, withEntries = true) {
+    const renderer = Renderer.get();
     const [
       damage,
       damageType,
       propertiesTxt,
-    ] = Renderer.item.getDamageAndPropertiesText(item);
+    ] = renderer.item.getDamageAndPropertiesText(item);
     const hasEntries =
-      (item._fullEntries && item._fullEntries.length) ||
-      (item.entries && item.entries.length);
+      withEntries &&
+      ((item._fullEntries && item._fullEntries.length) ||
+        (item.entries && item.entries.length));
 
     return `
 		${Renderer.utils.getExcludedTr(item, 'item')}
 		${Renderer.utils.getNameTr(item, { page: UrlUtil.PG_ITEMS })}
-		<tr><td class="rd-item__type-rarity-attunement" colspan="6">${Renderer.item.getTypeRarityAndAttunementText(
+		<tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
       item,
     )}</td></tr>
 		<tr>
 			<td colspan="2">${[Parser.itemValueToFull(item), Parser.itemWeightToFull(item)]
         .filter(Boolean)
-        .join(', ')
-        .uppercaseFirst()}</td>
+        .join(', ')}</td>
 			<td class="text-right" colspan="4">${damage} ${damageType} ${propertiesTxt}</td>
 		</tr>
 		${
       hasEntries
-        ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${Renderer.item.getRenderedEntries(
+        ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
             item,
             true,
           )}</td></tr>`
         : ''
     }`;
   },
+
+  _hiddenRarity: new Set(['None', 'Unknown', 'Unknown (Magic)', 'Varies']),
+  doRenderRarity(rarity) {
+    const renderer = Renderer.get();
+    return !renderer.item._hiddenRarity.has(rarity);
+  },
+
+  propertyMap: {},
+  typeMap: {},
 };
 
 Renderer.psionic = {

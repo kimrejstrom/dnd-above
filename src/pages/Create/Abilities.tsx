@@ -10,6 +10,7 @@ import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import { getClassQuickBuild, getRace, getClass } from 'utils/character';
+import { isDefined } from 'ts-is-present';
 
 const Abilities = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,16 @@ const Abilities = ({ url }: { url: string }) => {
   const history = useHistory();
   const { register, handleSubmit, getValues, errors } = useForm<FormData>();
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
-    dispatch(updateFormData({ classData: { abilityScores: data } }));
+    const parsedData = {
+      rollMethod: data.rollMethod,
+      str: Number(data.str),
+      dex: Number(data.dex),
+      con: Number(data.con),
+      int: Number(data.int),
+      wis: Number(data.wis),
+      cha: Number(data.cha),
+    };
+    dispatch(updateFormData({ classData: { abilityScores: parsedData } }));
     history.push(`${url}/step-4`);
   };
 
@@ -41,7 +51,13 @@ const Abilities = ({ url }: { url: string }) => {
   const race = getRace(formState.data.raceData.race);
   const classElement = getClass(formState.data.classData.classElement);
 
-  const [abilityScores, setAbilityScores] = useState<AbilityScore[]>([]);
+  const [abilityScores, setAbilityScores] = useState<AbilityScore[]>(
+    Object.values(formState.data.classData.abilityScores)
+      .map(score =>
+        typeof score === 'number' ? { score, used: false } : undefined,
+      )
+      .filter(isDefined),
+  );
 
   const getRacialBonus = (key: string) => {
     const standardRaceBonus = race?.ability
@@ -54,10 +70,10 @@ const Abilities = ({ url }: { url: string }) => {
         ? (formState.data.raceData.chosenRaceAbilities[0] as any)[key]
         : 0
       : 0;
-    return standardRaceBonus + chosenBonus;
+    return Number(standardRaceBonus) + Number(chosenBonus);
   };
 
-  const getBaseScore = (key: string) => Number((getValues() as any)[key]);
+  const getBaseScore = (key: string) => Number((getValues() as any)[key] || 0);
 
   const handleScoreSelect = (
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
@@ -147,6 +163,7 @@ const Abilities = ({ url }: { url: string }) => {
             <select
               name="rollMethod"
               onChange={handleMethodSelect}
+              defaultValue={formState.data.classData.abilityScores.rollMethod}
               ref={register({
                 required: true,
                 validate: data => data !== 'initial',

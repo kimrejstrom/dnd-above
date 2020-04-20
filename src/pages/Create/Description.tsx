@@ -9,7 +9,7 @@ import _, { isBoolean } from 'lodash';
 import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
 import TextBox from 'components/TextBox/TextBox';
-import { getRace } from 'utils/character';
+import { getRace, getBackground } from 'utils/character';
 
 const Description = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -45,11 +45,11 @@ const Description = ({ url }: { url: string }) => {
 
   // Local state
   const [selectedBackground, setSelectedBackground] = useState<
-    BackgroundElement
-  >();
+    BackgroundElement | undefined
+  >(getBackground(formState.data.descriptionData.background));
   const [selectedAlignment, setSelectedAlignment] = useState<string>();
   const [characteristicsSource, setCharacteristicsSource] = useState<string>(
-    '',
+    formState.data.descriptionData.characteristicsSource,
   );
   const [charaterImageURL, setCharaterImageURL] = useState<string>(
     `${process.env.PUBLIC_URL}/img/races/default.png`,

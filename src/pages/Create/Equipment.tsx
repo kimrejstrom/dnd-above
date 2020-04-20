@@ -4,10 +4,11 @@ import { RootState } from 'app/rootReducer';
 import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
-import { WEAPONS, ARMOR, ALL_OTHER_ITEMS, ALL_ITEMS } from 'utils/data';
+import { WEAPONS, ARMOR, ALL_OTHER_ITEMS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
-import _ from 'lodash';
-import { getClass, getBackground } from 'utils/character';
+import { getClass, getBackground, getItem } from 'utils/character';
+import mainRenderer from 'utils/mainRenderer';
+import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 
 interface Props {}
 
@@ -22,9 +23,7 @@ const Equipment = ({ url }: { url: string }) => {
     dispatch(
       updateFormData({
         equipmentData: {
-          items: Object.values(data).map(item =>
-            _.find(ALL_ITEMS, entry => entry.name === item),
-          ),
+          items: itemList,
         },
       }),
     );
@@ -39,10 +38,16 @@ const Equipment = ({ url }: { url: string }) => {
     { formId: string; type: string }[]
   >([]);
 
+  const [itemList, setItemList] = useState(formState.data.equipmentData.items);
+
   const selectedClass = getClass(formState.data.classData.classElement);
   const selectedBackground = getBackground(
     formState.data.descriptionData.background,
   );
+
+  const addItemToList = (e: React.SyntheticEvent<HTMLSelectElement, Event>) => {
+    setItemList(itemList.concat(e.currentTarget.value));
+  };
 
   const addItemSelect = (e: any, type: string) => {
     e.preventDefault();
@@ -69,32 +74,59 @@ const Equipment = ({ url }: { url: string }) => {
         </button>
       </div>
 
-      <h2>{selectedClass?.name} Starting Equipment</h2>
-      <div className="w-full">
-        {selectedClass?.startingEquipment.default.map(equipment => (
-          <Entry entry={equipment} />
-        ))}
-      </div>
-      <h2>{selectedBackground?.name} Starting Equipment</h2>
-      <div className="w-full">
-        {selectedBackground?.entries &&
-          selectedBackground?.entries
-            .map(entry => {
-              if (entry.type === 'list') {
-                return entry.items
-                  ?.map(item =>
-                    item.name === 'Equipment' ? (
-                      <Entry entry={item.entry!} />
-                    ) : (
-                      undefined
-                    ),
-                  )
-                  .map(x => x);
-              }
-              return undefined;
-            })
-            .map(z => z)}
-      </div>
+      {selectedClass && (
+        <>
+          <h2>{selectedClass?.name} Starting Equipment</h2>
+          <div className="w-full">
+            {selectedClass?.startingEquipment.default.map(equipment => (
+              <Entry entry={equipment} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {selectedBackground && (
+        <>
+          <h2>{selectedBackground?.name} Starting Equipment</h2>
+          <div className="w-full">
+            {selectedBackground?.entries &&
+              selectedBackground?.entries
+                .map(entry => {
+                  if (entry.type === 'list') {
+                    return entry.items
+                      ?.map(item =>
+                        item.name === 'Equipment' ? (
+                          <Entry entry={item.entry!} />
+                        ) : (
+                          undefined
+                        ),
+                      )
+                      .map(x => x);
+                  }
+                  return undefined;
+                })
+                .map(z => z)}
+          </div>
+        </>
+      )}
+      {itemList.length > 0 && (
+        <>
+          <h2>Current Equipment</h2>
+          <div className="w-full flex flex-wrap">
+            {itemList.map((itemName, index) => (
+              <div className="leading-none dnd-body mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-24 h-24 flex justify-center items-center flex-col custom-border custom-border-thin">
+                <DangerousHtml
+                  data={mainRenderer.item.getCompactRenderedString(
+                    getItem(itemName),
+                    false,
+                  )}
+                />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       <div className="flex my-4">
         <button
           onClick={e => addItemSelect(e, 'Weapon')}
@@ -143,6 +175,7 @@ const Equipment = ({ url }: { url: string }) => {
                 name={selectData.formId}
                 ref={register}
                 className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                onChange={addItemToList}
               >
                 <option value="initial">-</option>
                 {itemType.map((item: any) => (

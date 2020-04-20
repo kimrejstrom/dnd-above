@@ -37,6 +37,7 @@ import { BaseItem } from 'models/base-item';
 import { RaceFluffElement } from 'models/race-fluff';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
+import { isDefined } from 'ts-is-present';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
 import { BackgroundFluffElement } from 'models/background-fluff';
@@ -83,7 +84,7 @@ export const PLAYABLE_RACES = uniqBy(
   sortBy(
     mainRenderer.race
       .mergeSubraces(races.race)
-      .filter(race => filterSources(race)),
+      .filter((race: any) => filterSources(race)),
     ['name'],
   ),
   'name',
@@ -113,7 +114,7 @@ export const CHARACTERISTICS = BACKGROUNDS.map(bg => ({
             return undefined;
           }
         })
-        .filter(x => x)
+        .filter(isDefined)
     : [],
 })).map(characteristic => ({
   ...characteristic,
