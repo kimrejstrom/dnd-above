@@ -40,7 +40,7 @@ export const getAbilityBonus = (
 export const calculateStats = (
   character: CharacterState,
 ): Record<StatsTypes, number> => {
-  const baseStats = _.omit(character.classData.abilityScores, 'rollMetod');
+  const baseStats = _.omit(character.classData.abilityScores, 'rollMethod');
 
   return mapValues(
     baseStats,

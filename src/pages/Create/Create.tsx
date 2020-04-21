@@ -1,17 +1,12 @@
 import React from 'react';
 import { Route, useRouteMatch, Switch, NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'app/rootReducer';
 import RaceBuilder from 'pages/Create/RaceBuilder';
 import ClassBuilder from 'pages/Create/ClassBuilder';
 import Abilities from 'pages/Create/Abilities';
 import Description from 'pages/Create/Description';
 import Equipment from 'pages/Create/Equipment';
 import CharacterListing from 'pages/Create/CharacterListing';
-import {
-  addCharacter,
-  updateCharacter,
-} from 'features/character/characterListSlice';
+import Summary from 'pages/Create/Summary';
 
 interface Props {}
 
@@ -38,7 +33,7 @@ const Create = (props: Props) => {
         </li>
       </ul>
 
-      <div className="custom-border bg-secondary-light dark:bg-secondary-dark dar p-2">
+      <div className="custom-border bg-secondary-light dark:bg-secondary-dark p-2">
         <Switch>
           <Route exact path={path}>
             <CharacterListing url={url} />
@@ -59,37 +54,11 @@ const Create = (props: Props) => {
             <Equipment url={url} />
           </Route>
           <Route path={`${path}/summary`}>
-            <Summary />
+            <Summary url={url} />
           </Route>
         </Switch>
       </div>
     </div>
-  );
-};
-
-const Summary = () => {
-  const formState = useSelector(
-    (state: RootState) => state.createCharacterForm,
-  );
-  const dispatch = useDispatch();
-
-  return (
-    <>
-      <h2>Summary</h2>
-      <button
-        className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
-        onClick={() => {
-          formState.data.id
-            ? dispatch(updateCharacter(formState))
-            : dispatch(addCharacter(formState));
-        }}
-      >
-        Save Character
-      </button>
-      <pre className="bg-tertiary-light">
-        {JSON.stringify(formState, null, 2)}
-      </pre>
-    </>
   );
 };
 

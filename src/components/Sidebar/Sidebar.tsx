@@ -38,7 +38,7 @@ const Sidebar = () => {
       <button
         onClick={() => {
           dispatch(setInitialFormData());
-          history.push(`create/step-1`);
+          history.push(`/create/step-1`);
         }}
       >
         <div className="bg-white opacity-25 h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">

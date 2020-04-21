@@ -2052,7 +2052,7 @@ Renderer.utils = {
       }" colspan="6" ${dataPart}>
 				<div class="name-inner">
 					<div class="flex-v-center">
-						<span class="stats-name copyable">${opts.prefix || ''}${it._displayName ||
+						<span class="font-bold stats-name copyable">${opts.prefix || ''}${it._displayName ||
       it.name}${opts.suffix || ''}</span>
 						${opts.pronouncePart || ''}
 					</div>
@@ -2904,7 +2904,7 @@ Renderer.reward = {
 };
 
 Renderer.prototype.race = {
-  getCompactRenderedString(race) {
+  getCompactRenderedString(race, withEntries = true) {
     const renderer = Renderer.get();
     const renderStack = [];
 
@@ -2916,7 +2916,7 @@ Renderer.prototype.race = {
         !race._isBaseRace
           ? `
 			<tr><td colspan="6">
-				<table class="summary striped-even">
+				<table class="w-full summary striped-even">
 					<tr>
 						<th class="col-4 text-center">Ability Scores</th>
 						<th class="col-4 text-center">Size</th>
@@ -2932,18 +2932,21 @@ Renderer.prototype.race = {
           : ''
       }
 			<tr class="text"><td colspan="6">
-		`);
-    race._isBaseRace
-      ? renderer.recursiveRender(
-          { type: 'entries', entries: race._baseRaceEntries },
-          renderStack,
-          { depth: 1 },
-        )
-      : renderer.recursiveRender(
-          { type: 'entries', entries: race.entries },
-          renderStack,
-          { depth: 1 },
-        );
+    `);
+
+    if (withEntries) {
+      race._isBaseRace
+        ? renderer.recursiveRender(
+            { type: 'entries', entries: race._baseRaceEntries },
+            renderStack,
+            { depth: 1 },
+          )
+        : renderer.recursiveRender(
+            { type: 'entries', entries: race.entries },
+            renderStack,
+            { depth: 1 },
+          );
+    }
     renderStack.push('</td></tr>');
 
     return renderStack.join('');

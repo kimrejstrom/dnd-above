@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CreateCharacterFormState } from 'features/createCharacterForm/createCharacterFormSlice';
 import { SkillTypes } from 'features/character/Skills';
-import { Item, BaseItem } from 'models/base-item';
 import { ArmorEnum } from 'models/class';
 import {
   getRace,

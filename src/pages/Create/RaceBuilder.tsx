@@ -331,7 +331,6 @@ const RaceBuilder = ({ url }: Props) => {
                 </TabList>
 
                 <TabPanel className="overflow-y-scroll px-2">
-                  <div className="flex w-full"></div>
                   <div>
                     <img
                       src={`${

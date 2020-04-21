@@ -25,26 +25,24 @@ const CharacterListing = ({ url }: { url: string }) => {
               dispatch(loadInitialFormData(char));
               history.push(`${url}/step-1`);
             }}
-            className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-56 flex justify-center items-center flex-col custom-border custom-border-thin"
+            className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-56 flex justify-between items-center flex-col custom-border custom-border-thin"
           >
-            <span>{char.descriptionData.name}</span>
-            <div>
-              <img
-                className="rounded my-2 w-full h-20 object-cover object-top"
-                src={char.descriptionData.imageUrl}
-                alt="character"
-              />
-            </div>
+            <img
+              className="rounded w-full h-24 object-cover object-top"
+              src={char.descriptionData.imageUrl}
+              alt="character"
+            />
 
-            <span className="leading-tight dnd-body text-sm">
-              <strong>{char.raceData.race}</strong>
-            </span>
-            <span className="leading-tight dnd-body text-sm">
-              {char.classData.classElement}
-            </span>
-            <span className="leading-tight dnd-body text-sm">
-              {char.classData.subClass}
-            </span>
+            <div className="leading-none text-xl">
+              {char.descriptionData.name}
+            </div>
+            <div className="leading-tight dnd-body text-sm mb-2">
+              <div>
+                <strong>{char.raceData.race}</strong>
+              </div>
+              <div>{char.classData.classElement}</div>
+              <div>{char.classData.subClass}</div>
+            </div>
           </button>
         ))}
         <button
