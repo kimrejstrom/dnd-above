@@ -2052,8 +2052,8 @@ Renderer.utils = {
       }" colspan="6" ${dataPart}>
 				<div class="name-inner">
 					<div class="flex-v-center">
-						<span class="font-bold stats-name copyable">${opts.prefix || ''}${it._displayName ||
-      it.name}${opts.suffix || ''}</span>
+						<span class="font-bold stats-name copyable">${opts.prefix ||
+              ''}${it._displayName || it.name}${opts.suffix || ''}</span>
 						${opts.pronouncePart || ''}
 					</div>
 					<span class="stats-source flex-v-baseline">
@@ -2916,7 +2916,7 @@ Renderer.prototype.race = {
         !race._isBaseRace
           ? `
 			<tr><td colspan="6">
-				<table class="w-full summary striped-even">
+				<table class="summary striped-even">
 					<tr>
 						<th class="col-4 text-center">Ability Scores</th>
 						<th class="col-4 text-center">Size</th>
@@ -4591,7 +4591,7 @@ Renderer.prototype.item = {
 
     return `
 		${Renderer.utils.getExcludedTr(item, 'item')}
-		${Renderer.utils.getNameTr(item, { page: UrlUtil.PG_ITEMS })}
+		${Renderer.utils.getNameTr(item)}
 		<tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
       item,
     )}</td></tr>

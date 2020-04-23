@@ -29,15 +29,18 @@ const App: React.FC = () => {
         theme === ThemeMode.LIGHT ? 'mode-light' : 'mode-dark'
       }`}
     >
-      <ErrorBoundary>
-        <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
-          <Router>
+      <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
+        <Router>
+          <ErrorBoundary>
             {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <main className="min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
+            <main className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
               <UpdateNotification />
               <Header />
-              <div className="flex w-full">
+              <div
+                className="flex w-full"
+                style={{ minHeight: 'calc(100vh - 5rem)' }}
+              >
                 <Sidebar />
                 {/* Main content */}
                 <div className="flex w-10/12 flex-wrap bg-yellow-100 dark:bg-primary-dark p-4 h-full">
@@ -51,9 +54,9 @@ const App: React.FC = () => {
                 <RightPanel />
               </div>
             </main>
-          </Router>
-        </div>
-      </ErrorBoundary>
+          </ErrorBoundary>
+        </Router>
+      </div>
     </div>
   );
 };
