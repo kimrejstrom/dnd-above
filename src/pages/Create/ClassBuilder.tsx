@@ -173,7 +173,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
           <div>
             {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+                <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
                   <span className="text-xl">
                     <img
                       className="inline w-8 mr-2 rounded bg-contain"

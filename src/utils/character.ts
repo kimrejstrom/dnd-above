@@ -113,6 +113,31 @@ export const getClassQuickBuild = (classElement: ClassElement) =>
     ),
   );
 
+export const getArmorProficiencies = (character: CharacterState): string[] =>
+  character.classData.standardClassArmorProficiencies.concat(
+    character.customData.customArmorProficiencies,
+  );
+
+export const getWeaponProficiencies = (character: CharacterState): string[] =>
+  character.classData.standardClassWeaponProficiencies.concat(
+    character.customData.customWeaponProficiencies,
+  );
+
+export const getToolProficiencies = (character: CharacterState): string[] =>
+  character.classData.standardClassToolProficiencies.concat(
+    character.descriptionData.standardBackgroundToolProficiencies,
+    character.descriptionData.chosenBackgroundToolProficiencies,
+    character.customData.customToolProficiencies,
+  );
+
+export const getLanguageProficiencies = (character: CharacterState): string[] =>
+  character.raceData.standardRaceLanguages.concat(
+    character.raceData.chosenRaceLanguages,
+    character.descriptionData.standardBackgroundLanguages,
+    character.descriptionData.chosenBackgroundLanguages,
+    character.customData.customLanguages,
+  );
+
 export const getIncludedProficiencies = (proficiencies: Array<any>): string[] =>
   proficiencies
     ? _.flatten(

@@ -7,6 +7,7 @@ import {
   getClass,
   calculateStats,
   getAbilityMod,
+  getItem,
 } from 'utils/character';
 import {
   updateCharacter,
@@ -19,7 +20,6 @@ import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
-import { getItem } from 'localforage';
 
 const Summary = ({ url }: { url: string }) => {
   const formState = useSelector(

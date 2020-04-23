@@ -3,6 +3,7 @@ import Entry from 'components/Entry/Entry';
 import { BACKGROUNDS_FLUFF } from 'utils/data';
 import _ from 'lodash';
 import { getBackground } from 'utils/character';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {
   background: string;
@@ -11,9 +12,12 @@ interface Props {
 const Background = ({ background }: Props) => {
   const backgroundElement = getBackground(background);
   const fluff = _.find(BACKGROUNDS_FLUFF, item => item.name === background);
+
   return (
     <div>
-      <div className="text-xl">{`${backgroundElement?.name}, ${backgroundElement?.source}  ${backgroundElement?.page}`}</div>
+      <DetailedEntryTrigger data={backgroundElement} extraClassName="text-xl">
+        {`${backgroundElement?.name}, ${backgroundElement?.source}  ${backgroundElement?.page}`}
+      </DetailedEntryTrigger>
       {backgroundElement?.entries?.map(entry => (
         <div className="dnd-body my-2 custom-border custom-border-thin">
           <Entry entry={entry} />

@@ -12,9 +12,9 @@ import {
 import { SkillTypes } from 'features/character/Skills';
 
 const PASSIVE_SENSES = {
-  'passive perception': { ability: 'wis', skill: 'perception' },
-  'passive intelligence': { ability: 'int', skill: 'investigation' },
-  'passive insight': { ability: 'int', skill: 'insight' },
+  perception: { ability: 'wis', skill: 'perception' },
+  investigation: { ability: 'int', skill: 'investigation' },
+  insight: { ability: 'int', skill: 'insight' },
 };
 
 interface Props {
@@ -24,7 +24,9 @@ interface Props {
 const Senses = ({ character }: Props) => {
   return (
     <div className="custom-border w-full px-2">
-      <div className="text-xl text-center leading-none mt-1 mb-2">Senses</div>
+      <div className="text-xl text-center leading-none mt-1 mb-2">
+        Passive Senses
+      </div>
       <div className="flex flex-wrap">
         {Object.entries(PASSIVE_SENSES).map(([key, value]) => {
           const score = calculateStats(character)[value.ability as StatsTypes];
@@ -35,8 +37,8 @@ const Senses = ({ character }: Props) => {
               ? abilityMod + getProficiencyBonus(character.customData.level)
               : abilityMod) + 10;
           return (
-            <div className="flex w-full">
-              <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full">
+            <div className="flex w-full p-1">
+              <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full h-8">
                 <div className="text-lg leading-none ml-3 flex-grow">{key}</div>
                 <div className="text-md leading-none ml-1">
                   ({value.ability})

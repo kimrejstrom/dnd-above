@@ -29,19 +29,22 @@ import backgroundsFluff from 'data/fluff-backgrounds.json';
 // Items
 import baseItems from 'data/items-base.json';
 import items from 'data/items.json';
+// Actions
+import actions from 'data/actions.json';
 // Models
 import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/base-item';
 import { RaceFluffElement } from 'models/race-fluff';
+import { Item } from 'models/item';
+import { BackgroundFluffElement } from 'models/background-fluff';
+import { Action } from 'models/actions';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import { isDefined } from 'ts-is-present';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
-import { BackgroundFluffElement } from 'models/background-fluff';
-import { Item } from 'models/item';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -140,3 +143,5 @@ export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
   | Item
   | BaseItem
 )[];
+
+export const ACTIONS = actions as Action;

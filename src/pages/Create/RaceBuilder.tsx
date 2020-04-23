@@ -314,7 +314,7 @@ const RaceBuilder = ({ url }: Props) => {
       <div>
         {PLAYABLE_RACES.map((race: Race, index) => (
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl">{race.name}</span>
               <button
                 onClick={e => onSelect({ race: race.name }, e)}
