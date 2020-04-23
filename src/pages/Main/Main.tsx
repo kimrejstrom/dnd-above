@@ -20,6 +20,7 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { setSelectedIndex, TAB_PANELS } from 'features/tabs/tabsSlice';
 import FeaturesTraits from 'features/character/FeaturesTraits';
 import Background from 'pages/Create/Background';
+import ItemsLoot from 'features/character/ItemsLoot';
 
 interface Props {}
 
@@ -67,7 +68,7 @@ export const Main: React.FC<Props> = () => {
         <Skills character={character} />
       </div>
       <div className="w-6/12 h-full">
-        <div className="custom-border pb-10" style={{ height: '58rem' }}>
+        <div className="custom-border pb-10" style={{ height: '50rem' }}>
           <Tabs
             selectedIndex={characterTabPanel.selectedIndex}
             onSelect={tabIndex => handleTabChange(tabIndex)}
@@ -84,16 +85,17 @@ export const Main: React.FC<Props> = () => {
             </TabList>
 
             <TabPanel className="overflow-y-scroll px-2">
-              <div>Actions</div>
+              <div>
+                <h2>Actions</h2>
+              </div>
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Spells />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <div>Equipment</div>
+              <ItemsLoot character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <div className="text-2xl">Features &amp; Traits</div>
               <FeaturesTraits character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
