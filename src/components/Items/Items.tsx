@@ -1,10 +1,17 @@
 import React from 'react';
-import { BASE_ITEMS } from 'utils/data';
 import { Cell } from 'react-table';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
+import { BaseItem } from 'models/base-item';
+import { Item } from 'models/item';
+import { useDispatch } from 'react-redux';
+import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
+import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
+import mainRenderer from 'utils/mainRenderer';
 
-interface Props {}
+interface Props {
+  items: (Item | BaseItem)[];
+}
 
 const handleSpecialCell = (cell: Cell<object>) => {
   if (cell.value instanceof Array) {
@@ -14,16 +21,26 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-const Items = (props: Props) => {
-  const allItems = BASE_ITEMS;
-  const tableData = Object.values(allItems);
+const Items = ({ items }: Props) => {
+  const dispatch = useDispatch();
+  const tableData = items.map(item => ({
+    ...item,
+    detailedEntryTrigger: () =>
+      dispatch(
+        setDetailedEntry(
+          <DangerousHtml
+            data={mainRenderer.item.getCompactRenderedString(item)}
+          />,
+        ),
+      ),
+  }));
   const tableColumns = Object.keys(tableData[0])
     .map(key => ({
       accessor: key,
       Header: startCase(key),
     }))
     .filter(column =>
-      ['name', 'type', 'age', 'rarity', 'property', 'source'].includes(
+      ['name', 'type', 'weight', 'quantity', 'value', 'source'].includes(
         column.accessor,
       ),
     );

@@ -5,16 +5,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
-import { Weapons } from 'components/Weapons/Weapons';
-import { Armor } from 'components/Armor/Armor';
 import Items from 'components/Items/Items';
-// import { Navigation } from 'components/Navigation/Navigation';
+import { ALL_ITEMS, ACTIONS } from 'utils/data';
+import Entry from 'components/Entry/Entry';
+import TextBox from 'components/TextBox/TextBox';
+import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 
 interface Props {}
 
 const RightPanel = (props: Props) => {
   const dispatch = useDispatch();
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
+  const { selectedEntry } = useSelector(
+    (state: RootState) => state.detailedEntry,
+  );
   const rightPanelTabPanel = tabPanels[TAB_PANELS.RIGHTPANEL];
 
   const handleTabChange = (tabIndex: number) => {
@@ -46,7 +50,7 @@ const RightPanel = (props: Props) => {
           </div>
         </div>
       </div>
-      <div style={{ height: '70rem' }}>
+      <div style={{ height: '40rem' }}>
         <Tabs
           selectedIndex={rightPanelTabPanel.selectedIndex}
           onSelect={tabIndex => handleTabChange(tabIndex)}
@@ -54,29 +58,36 @@ const RightPanel = (props: Props) => {
         >
           <TabList className="flex justify-between text-center">
             <Tab>Roller</Tab>
+            <Tab>Actions</Tab>
             <Tab>Spells</Tab>
             <Tab>Items</Tab>
-            <Tab>Weapons</Tab>
-            <Tab>Armor</Tab>
           </TabList>
           <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
             <TabPanel className="overflow-y-scroll px-2">
               <Roller />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
+              {ACTIONS.action.map(actionElement => (
+                <TextBox>
+                  <Entry entry={actionElement} />
+                </TextBox>
+              ))}
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
               <Spells />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <Items />
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <Weapons />
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <Armor />
+              <Items items={ALL_ITEMS} />
             </TabPanel>
           </div>
         </Tabs>
+      </div>
+      <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '28rem' }}>
+        <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+          <div className="h-full overflow-y-scroll px-2">
+            <DetailedEntry data={selectedEntry} />
+          </div>
+        </div>
       </div>
     </div>
   );

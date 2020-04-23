@@ -2,8 +2,8 @@ import React from 'react';
 import { useTable, useExpanded, UseTableOptions, Cell } from 'react-table';
 
 interface Props {
-  cellRenderer: (cell: Cell<object>) => JSX.Element;
   tableData: UseTableOptions<any>;
+  cellRenderer: (cell: Cell<object>) => JSX.Element;
 }
 
 const isValidCellValue = (value: Cell<object>) =>
@@ -41,8 +41,9 @@ const Table = ({ cellRenderer, tableData }: Props) => {
           prepareRow(row);
           return (
             <tr
-              className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
+              className="cursor-pointer odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
               {...row.getRowProps()}
+              onClick={(row.original as any).detailedEntryTrigger}
             >
               {row.cells.map(cell => (
                 <td {...cell.getCellProps()}>
