@@ -25,7 +25,6 @@ function Renderer() {
   this._lazyImages = false;
   this._subVariant = false;
   this._firstSection = true;
-  this._isAddHandlers = false;
   this._headerIndex = 1;
   this._tagExportDict = null;
   this._trackTitles = { enabled: false, titles: {} };
@@ -303,6 +302,9 @@ function Renderer() {
           break;
         case 'link':
           this._renderLink(entry, textStack, meta, options);
+          break;
+        case 'dice':
+          this._renderDice(entry, textStack, meta, options);
           break;
 
         // list items
@@ -1043,6 +1045,10 @@ function Renderer() {
     textStack[0] += `${entry.value < 0 ? '' : '+'}${entry.value} ft.`;
   };
 
+  this._renderDice = function(entry, textStack, meta, options) {
+    textStack[0] += Renderer.getEntryDice(entry, entry.name);
+  };
+
   this._renderActions = function(entry, textStack, meta, options) {
     const dataString = this._renderEntriesSubtypes_getDataString(entry);
     this._handleTrackTitles(entry.name);
@@ -1524,22 +1530,13 @@ function Renderer() {
     let href = this._renderLink_getHref(entry);
 
     if (this._isIternalLinksDisabled && entry.href.type === 'internal') {
-      textStack[0] += `<span class="bold" ${this._renderLink_getHoverString(
-        entry,
-      )} ${this._getHooks('link', 'ele')
-        .map(hook => hook(entry))
-        .join(' ')}>${this.render(entry.text)}</span>`;
+      textStack[0] += `<span class="bold">${this.render(entry.text)}</span>`;
     } else {
       textStack[0] += `<a href="${href}" ${
         entry.href.type === 'internal'
           ? ''
           : `target="_blank" rel="noopener noreferrer"`
-      } ${this._renderLink_getHoverString(entry)} ${this._getHooks(
-        'link',
-        'ele',
-      )
-        .map(hook => hook(entry))
-        .join(' ')}>${this.render(entry.text)}</a>`;
+      }>${this.render(entry.text)}</a>`;
     }
   };
 
@@ -1582,34 +1579,6 @@ function Renderer() {
         .join(HASH_SUB_LIST_SEP);
     }
     return out;
-  };
-
-  this._renderLink_getHoverString = function(entry) {
-    if (!entry.href.hover) return '';
-    let procHash = UrlUtil.encodeForHash(entry.href.hash).replace(/'/g, "\\'");
-    if (this._tagExportDict) {
-      this._tagExportDict[procHash] = {
-        page: entry.href.hover.page,
-        source: entry.href.hover.source,
-        hash: procHash,
-      };
-    }
-
-    if (entry.href.hover.subhashes) {
-      for (let i = 0; i < entry.href.hover.subhashes.length; ++i) {
-        procHash += this._renderLink_getSubhashPart(
-          entry.href.hover.subhashes[i],
-        );
-      }
-    }
-
-    if (this._isAddHandlers)
-      return `onmouseover="Renderer.hover.pHandleLinkMouseOver(event, this, '${
-        entry.href.hover.page
-      }', '${entry.href.hover.source}', '${procHash}', ${
-        entry.href.hover.preloadId ? `'${entry.href.hover.preloadId}'` : 'null'
-      })" onmouseleave="Renderer.hover.handleLinkMouseLeave(event, this)" onmousemove="Renderer.hover.handleLinkMouseMove(event, this)"  ${Renderer.hover.getPreventTouchString()}`;
-    else return '';
   };
 
   /**
@@ -1785,6 +1754,51 @@ Renderer._splitByTagsBase = function(leadingCharacter) {
 
 Renderer.splitByTags = Renderer._splitByTagsBase('@');
 Renderer.splitByPropertyInjectors = Renderer._splitByTagsBase('=');
+
+Renderer.getEntryDice = function(entry, name) {
+  function pack(obj) {
+    return `'${JSON.stringify(obj).escapeQuotes()}'`;
+  }
+
+  const toDisplay = Renderer.getEntryDiceDisplayText(entry);
+
+  if (entry.rollable === true) {
+    const toPack = MiscUtil.copy(entry);
+    if (typeof toPack.toRoll !== 'string') {
+      // handle legacy format
+      toPack.toRoll = Renderer.legacyDiceToString(toPack.toRoll);
+    }
+
+    const titlePart = name
+      ? `title="${name.escapeQuotes()}" data-roll-name="${name.escapeQuotes()}"`
+      : '';
+
+    return `<span class="roller render-roller" ${titlePart}>${toDisplay}</span>`;
+  } else return toDisplay;
+};
+
+Renderer.legacyDiceToString = function(array) {
+  let stack = '';
+  array.forEach(r => {
+    stack += `${r.neg ? '-' : stack === '' ? '' : '+'}${r.number || 1}d${
+      r.faces
+    }${r.mod ? (r.mod > 0 ? `+${r.mod}` : r.mod) : ''}`;
+  });
+  return stack;
+};
+
+Renderer.getEntryDiceDisplayText = function(entry) {
+  function getDiceAsStr() {
+    if (entry.successThresh) return `${entry.successThresh} percent`;
+    else if (typeof entry.toRoll === 'string') return entry.toRoll;
+    else {
+      // handle legacy format
+      return Renderer.legacyDiceToString(entry.toRoll);
+    }
+  }
+
+  return entry.displayText ? entry.displayText : getDiceAsStr();
+};
 
 Renderer.parseScaleDice = function(tag, text) {
   // format: {@scaledice 2d6;3d6|2-8,9|1d6|psi} (or @scaledamage)
@@ -4213,53 +4227,40 @@ Renderer.prototype.item = {
   // default is general -> specific
   LINK_SPECIFIC_TO_GENERIC_DIRECTION: 1,
 
-  _sortProperties(a, b) {
-    const renderer = Renderer.get();
-    return SortUtil.ascSort(
-      renderer.item.propertyMap[a].name,
-      renderer.item.propertyMap[b].name,
-    );
-  },
-
   _getPropertiesText(item) {
     const renderer = Renderer.get();
     if (item.property) {
       let renderedDmg2 = false;
 
-      const renderedProperties = item.property
-        .sort(renderer.item._sortProperties)
-        .map(prop => {
-          const fullProp = renderer.item.propertyMap[prop];
+      const renderedProperties = item.property.map(prop => {
+        const fullProp = renderer.item.propertyMap[prop];
 
-          if (fullProp.template) {
-            const toRender = fullProp.template.replace(
-              /{{([^}]+)}}/g,
-              (...m) => {
-                // Special case for damage dice -- need to add @damage tags
-                if (m[1] === 'item.dmg1') {
-                  return renderer.item._renderDamage(item.dmg1);
-                } else if (m[1] === 'item.dmg2') {
-                  renderedDmg2 = true;
-                  return renderer.item._renderDamage(item.dmg2);
-                }
+        if (fullProp.template) {
+          const toRender = fullProp.template.replace(/{{([^}]+)}}/g, (...m) => {
+            // Special case for damage dice -- need to add @damage tags
+            if (m[1] === 'item.dmg1') {
+              return renderer.item._renderDamage(item.dmg1);
+            } else if (m[1] === 'item.dmg2') {
+              renderedDmg2 = true;
+              return renderer.item._renderDamage(item.dmg2);
+            }
 
-                const spl = m[1].split('.');
-                switch (spl[0]) {
-                  case 'prop_name':
-                    return fullProp.name;
-                  case 'item': {
-                    const path = spl.slice(1);
-                    if (!path.length) return `{@i missing key path}`;
-                    return MiscUtil.get(item, ...path) || '';
-                  }
-                  default:
-                    return `{@i unknown template root: "${spl[0]}"}`;
-                }
-              },
-            );
-            return Renderer.get().render(toRender);
-          } else return fullProp.name;
-        });
+            const spl = m[1].split('.');
+            switch (spl[0]) {
+              case 'prop_name':
+                return fullProp.name;
+              case 'item': {
+                const path = spl.slice(1);
+                if (!path.length) return `{@i missing key path}`;
+                return MiscUtil.get(item, ...path) || '';
+              }
+              default:
+                return `{@i unknown template root: "${spl[0]}"}`;
+            }
+          });
+          return Renderer.get().render(toRender);
+        } else return fullProp.name;
+      });
 
       if (!renderedDmg2 && item.dmg2)
         renderedProperties.unshift(
@@ -4284,10 +4285,12 @@ Renderer.prototype.item = {
       RollerUtil.DICE_REGEX,
       (...m) => `{@damage ${m[1]}}`,
     );
+    console.log(tagged);
     return Renderer.get().render(tagged);
   },
 
   getDamageAndPropertiesText: function(item) {
+    console.log(item);
     const renderer = Renderer.get();
     const damageParts = [];
 
@@ -4365,11 +4368,11 @@ Renderer.prototype.item = {
           .join('<br>'),
       );
     }
-
+    console.log(item.dmgType);
     const damage = damageParts.join(', ');
     const damageType = item.dmgType ? Parser.dmgTypeToFull(item.dmgType) : '';
-    const propertiesTxt = item.property ? item.property.join(',') : '';
-
+    const propertiesTxt = renderer.item._getPropertiesText(item);
+    console.log([damage, damageType, propertiesTxt]);
     return [damage, damageType, propertiesTxt];
   },
 
@@ -4619,6 +4622,34 @@ Renderer.prototype.item = {
 
   propertyMap: {},
   typeMap: {},
+  _additionalEntriesMap: {},
+
+  _addProperty(p) {
+    const renderer = Renderer.get();
+    if (renderer.item.propertyMap[p.abbreviation]) return;
+    renderer.item.propertyMap[p.abbreviation] = p.name
+      ? MiscUtil.copy(p)
+      : {
+          name: p.entries[0].name.toLowerCase(),
+          entries: p.entries,
+          template: p.template,
+        };
+  },
+  _addType(t) {
+    const renderer = Renderer.get();
+    if (renderer.item.typeMap[t.abbreviation]) return;
+    renderer.item.typeMap[t.abbreviation] = t.name
+      ? MiscUtil.copy(t)
+      : {
+          name: t.entries[0].name.toLowerCase(),
+          entries: t.entries,
+        };
+  },
+  _addAdditionalEntries(e) {
+    const renderer = Renderer.get();
+    if (renderer.item._additionalEntriesMap[e.appliesTo]) return;
+    renderer.item._additionalEntriesMap[e.appliesTo] = MiscUtil.copy(e.entries);
+  },
 };
 
 Renderer.psionic = {

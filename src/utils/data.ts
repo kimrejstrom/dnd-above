@@ -145,3 +145,13 @@ export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
 )[];
 
 export const ACTIONS = actions as Action;
+
+const createPropertyMaps = (data: any) => {
+  data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
+  data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
+  data.itemTypeAdditionalEntries.forEach((e: any) =>
+    mainRenderer.item._addAdditionalEntries(e),
+  );
+};
+
+createPropertyMaps(baseItems);
