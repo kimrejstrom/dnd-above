@@ -24,7 +24,7 @@ interface Props {
 const Senses = ({ character }: Props) => {
   return (
     <div className="custom-border w-full px-2">
-      <div className="text-xl text-center leading-none mt-1 mb-2">
+      <div className="text-xl text-center leading-none my-1">
         Passive Senses
       </div>
       <div className="flex flex-wrap">
@@ -39,13 +39,9 @@ const Senses = ({ character }: Props) => {
           return (
             <div className="flex w-full p-1">
               <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full h-8">
-                <div className="text-lg leading-none ml-3 flex-grow">{key}</div>
-                <div className="text-md leading-none ml-1">
-                  ({value.ability})
-                </div>
-                <div className="mx-2 text-2xl leading-none text-center">
-                  {passiveMod}
-                </div>
+                <div className="text-lg ml-3 flex-grow">{key}</div>
+                <div className="text-md ml-1">({value.ability})</div>
+                <div className="mx-2 text-2xl text-center">{passiveMod}</div>
               </div>
             </div>
           );

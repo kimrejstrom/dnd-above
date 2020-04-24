@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import d20 from 'images/logo.svg';
+import beholder from 'images/beholder-light.png';
 
 interface Props {}
 interface State {
@@ -20,8 +20,14 @@ export default class ErrorBoundary extends Component<Props, State> {
       // You can render any custom fallback UI
       return (
         <div className="fixed bg-primary-dark w-full h-full top-0 left-0 flex flex-col items-center justify-center">
-          <img src={d20} className="w-12 px-2 py-2 shape-shadow" alt="logo" />
+          <img
+            src={beholder}
+            className="h-40 w-40 px-2 py-2 shape-shadow"
+            alt="logo"
+          />
           <h1 className="text-center mb-6 text-primary-light">
+            Oh no!
+            <br />
             Something went wrong
           </h1>
           <Link

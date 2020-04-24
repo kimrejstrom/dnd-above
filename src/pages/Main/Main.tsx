@@ -21,6 +21,7 @@ import { setSelectedIndex, TAB_PANELS } from 'features/tabs/tabsSlice';
 import FeaturesTraits from 'features/character/FeaturesTraits';
 import Background from 'pages/Create/Background';
 import ItemsLoot from 'features/character/ItemsLoot';
+import Actions from 'features/character/Actions';
 
 interface Props {}
 
@@ -85,9 +86,7 @@ export const Main: React.FC<Props> = () => {
             </TabList>
 
             <TabPanel className="overflow-y-scroll px-2">
-              <div>
-                <h2>Actions</h2>
-              </div>
+              <Actions character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Spells />

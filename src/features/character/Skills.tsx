@@ -40,7 +40,7 @@ interface Props {
 const Skills = ({ character }: Props) => {
   return (
     <div className="custom-border">
-      <div className="text-xl text-center leading-none mt-1 mb-2">Skills</div>
+      <div className="text-xl text-center leading-none my-1">Skills</div>
       {Object.entries(CHARACTER_ABILITIES).map(([key, value]) => {
         const score = calculateStats(character)[value as StatsTypes];
         const proficient = isProficient(key as SkillTypes, character);
@@ -58,11 +58,9 @@ const Skills = ({ character }: Props) => {
                     : 'bg-yellow-100 dark:bg-primary-dark'
                 } border-2 border-primary-dark dark:border-primary-light left-0 absolute rounded-full w-3 h-3`}
               ></div>
-              <div className="text-lg leading-none ml-3 flex-grow">{key}</div>
-              <div className="text-md leading-none ml-1">({value})</div>
-              <div className="mx-2 text-2xl leading-none text-center">
-                {skillMod}
-              </div>
+              <div className="text-lg ml-3 flex-grow">{key}</div>
+              <div className="text-md ml-1">({value})</div>
+              <div className="mx-2 text-2xl text-center">{skillMod}</div>
             </div>
           </div>
         );

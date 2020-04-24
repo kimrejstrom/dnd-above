@@ -22,28 +22,26 @@ const ItemsLoot = ({ character }: Props) => {
 
   return (
     <>
-      <div>
-        <div
-          className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
-          style={{
-            height: '4rem',
-            backgroundImage: `url(${
-              theme === ThemeMode.DARK ? itemsLight : itemsDark
-            })`,
-          }}
-        ></div>
-        <PillFilter pills={['inventory', 'attunement', 'other possessions']}>
-          <ContentBlock name="inventory">
-            <Items items={items} />
-          </ContentBlock>
-          <ContentBlock name="attunement">
-            <div>My attunements</div>
-          </ContentBlock>
-          <ContentBlock name="other possessions">
-            <div>My Other Possessions</div>
-          </ContentBlock>
-        </PillFilter>
-      </div>
+      <div
+        className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        style={{
+          height: '5rem',
+          backgroundImage: `url(${
+            theme === ThemeMode.DARK ? itemsLight : itemsDark
+          })`,
+        }}
+      ></div>
+      <PillFilter pills={['inventory', 'attunement', 'other possessions']}>
+        <ContentBlock name="inventory">
+          <Items items={items} />
+        </ContentBlock>
+        <ContentBlock name="attunement">
+          <div>My attunements</div>
+        </ContentBlock>
+        <ContentBlock name="other possessions">
+          <div>My Other Possessions</div>
+        </ContentBlock>
+      </PillFilter>
     </>
   );
 };
