@@ -31,7 +31,7 @@ const Alignment = ({ character }: Props) => {
           left: '-4.1rem',
         }}
       >
-        {character.customData.level}
+        {character.gameData.level}
       </p>
       <p
         className="text-2xl absolute inset-0 text-center"

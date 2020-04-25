@@ -13,7 +13,7 @@ const detailedEntrySlice = createSlice({
   initialState: initialState,
   reducers: {
     setDetailedEntry(state, action) {
-      state.selectedEntry = action.payload;
+      return { selectedEntry: action.payload };
     },
   },
 });

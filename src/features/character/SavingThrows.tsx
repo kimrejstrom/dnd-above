@@ -29,7 +29,7 @@ const SavingThrows = ({ character }: Props) => {
           );
           const abilityMod = getAbilityMod(score);
           const savingThrowMod = proficient
-            ? abilityMod + getProficiencyBonus(character.customData.level)
+            ? abilityMod + getProficiencyBonus(character.gameData.level)
             : abilityMod;
           return (
             <div

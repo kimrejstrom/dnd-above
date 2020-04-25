@@ -17,6 +17,7 @@ import {
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
 import { getRace } from 'utils/character';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 interface Props {
   url: string;
@@ -69,18 +70,12 @@ const RaceBuilder = ({ url }: Props) => {
     return (
       <div>
         <div className="flex justify-between my-4">
-          <button
-            className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
+          <StyledButton
             onClick={() => dispatch(updateFormData({ raceData: { race: '' } }))}
           >
             Previous
-          </button>
-          <button
-            className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Next
-          </button>
+          </StyledButton>
+          <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
         </div>
         <div className="flex relative">
           <h1>{race?.name}</h1>
@@ -316,12 +311,12 @@ const RaceBuilder = ({ url }: Props) => {
           <details>
             <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl">{race.name}</span>
-              <button
+              <StyledButton
                 onClick={e => onSelect({ race: race.name }, e)}
-                className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
+                extraClassName="absolute right-0 mr-2"
               >
                 Select
-              </button>
+              </StyledButton>
             </summary>
             <div className="dnd-body p-2">
               <Tabs>

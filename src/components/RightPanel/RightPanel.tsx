@@ -6,7 +6,7 @@ import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import Items from 'components/Items/Items';
-import { ALL_ITEMS, ACTIONS } from 'utils/data';
+import { ALL_ITEMS, ACTIONS, ALL_SPELLS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
@@ -27,6 +27,7 @@ const RightPanel = (props: Props) => {
     };
     dispatch(setSelectedIndex(updatedPanel));
   };
+
   return (
     <div className="flex w-4/12 flex-shrink-0 flex-col bg-secondary-light dark:bg-secondary-dark overflow-hidden custom-border custom-border-l dark:border-primary-light">
       {/* Search bar */}
@@ -50,7 +51,7 @@ const RightPanel = (props: Props) => {
           </div>
         </div>
       </div>
-      <div style={{ height: '40rem' }}>
+      <div style={{ height: '35rem' }}>
         <Tabs
           selectedIndex={rightPanelTabPanel.selectedIndex}
           onSelect={tabIndex => handleTabChange(tabIndex)}
@@ -74,7 +75,7 @@ const RightPanel = (props: Props) => {
               ))}
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <Spells />
+              <Spells spells={ALL_SPELLS} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Items items={ALL_ITEMS} />
@@ -82,7 +83,7 @@ const RightPanel = (props: Props) => {
           </div>
         </Tabs>
       </div>
-      <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '28rem' }}>
+      <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '25rem' }}>
         <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />

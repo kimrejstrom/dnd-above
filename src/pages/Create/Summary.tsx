@@ -20,6 +20,7 @@ import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 const Summary = ({ url }: { url: string }) => {
   const formState = useSelector(
@@ -34,8 +35,8 @@ const Summary = ({ url }: { url: string }) => {
     <>
       <h1>Summary</h1>
       <div className="flex justify-end">
-        <button
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
+        <StyledButton
+          extraClassName="mr-2"
           onClick={() => {
             formState.data.id
               ? dispatch(updateCharacter(formState))
@@ -44,7 +45,7 @@ const Summary = ({ url }: { url: string }) => {
           }}
         >
           Save Character
-        </button>
+        </StyledButton>
       </div>
 
       <div>

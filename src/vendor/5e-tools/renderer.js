@@ -692,7 +692,8 @@ function Renderer() {
             : b.name
             ? 1
             : 0,
-        );
+        )
+        .filter(entryItem => entryItem.source !== 'UAClassFeatureVariants');
       this._renderEntriesSubtypes(entry, textStack, meta, options, false);
     }
   };
@@ -1756,25 +1757,8 @@ Renderer.splitByTags = Renderer._splitByTagsBase('@');
 Renderer.splitByPropertyInjectors = Renderer._splitByTagsBase('=');
 
 Renderer.getEntryDice = function(entry, name) {
-  function pack(obj) {
-    return `'${JSON.stringify(obj).escapeQuotes()}'`;
-  }
-
   const toDisplay = Renderer.getEntryDiceDisplayText(entry);
-
-  if (entry.rollable === true) {
-    const toPack = MiscUtil.copy(entry);
-    if (typeof toPack.toRoll !== 'string') {
-      // handle legacy format
-      toPack.toRoll = Renderer.legacyDiceToString(toPack.toRoll);
-    }
-
-    const titlePart = name
-      ? `title="${name.escapeQuotes()}" data-roll-name="${name.escapeQuotes()}"`
-      : '';
-
-    return `<span class="roller render-roller" ${titlePart}>${toDisplay}</span>`;
-  } else return toDisplay;
+  return toDisplay;
 };
 
 Renderer.legacyDiceToString = function(array) {
@@ -2050,27 +2034,17 @@ Renderer.utils = {
    */
   getNameTr: (it, opts) => {
     opts = opts || {};
-
-    let dataPart = '';
-    if (opts.page) {
-      const hash = UrlUtil.URL_TO_HASH_BUILDER[opts.page](it);
-      dataPart = `data-page="${
-        opts.page
-      }" data-source="${it.source.escapeQuotes()}" data-hash="${hash.escapeQuotes()}"`;
-    }
-
-    // Add data-page/source/hash attributes for external script use (e.g. Rivet)
     return `<tr>
 			<th class="rnd-name name ${
         opts.extraThClasses ? opts.extraThClasses.join(' ') : ''
-      }" colspan="6" ${dataPart}>
+      }" colspan="6">
 				<div class="name-inner">
 					<div class="flex-v-center">
 						<span class="font-bold stats-name copyable">${opts.prefix ||
               ''}${it._displayName || it.name}${opts.suffix || ''}</span>
 						${opts.pronouncePart || ''}
 					</div>
-					<span class="stats-source flex-v-baseline">
+					<span class="stats-source flex justify-end">
 						<span class="help--subtle ${
               it.source
                 ? `${Parser.sourceJsonToColor(
@@ -2512,7 +2486,7 @@ Renderer.prototype.spell = {
 			${Renderer.utils.getExcludedTr(spell, 'spell')}
 			${Renderer.utils.getNameTr(spell, { page: UrlUtil.PG_SPELLS })}
 			<tr><td colspan="6">
-				<table class="summary striped-even">
+				<table class="w-full text-left">
 					<tr>
 						<th colspan="1">Level</th>
 						<th colspan="1">School</th>
@@ -2930,16 +2904,16 @@ Renderer.prototype.race = {
         !race._isBaseRace
           ? `
 			<tr><td colspan="6">
-				<table class="summary striped-even">
+				<table class="text-left">
 					<tr>
-						<th class="col-4 text-center">Ability Scores</th>
-						<th class="col-4 text-center">Size</th>
-						<th class="col-4 text-center">Speed</th>
+						<th class="col-4">Ability Scores</th>
+						<th class="col-4">Size</th>
+						<th class="col-4">Speed</th>
 					</tr>
 					<tr>
-						<td class="text-center">${ability.asText}</td>
-						<td class="text-center">${Parser.sizeAbvToFull(race.size)}</td>
-						<td class="text-center">${Parser.getSpeedString(race)}</td>
+						<td>${ability.asText}</td>
+						<td>${Parser.sizeAbvToFull(race.size)}</td>
+						<td>${Parser.getSpeedString(race)}</td>
 					</tr>
 				</table>
 			</td></tr>`
@@ -4267,15 +4241,13 @@ Renderer.prototype.item = {
           `alt. ${renderer.item._renderDamage(item.dmg2)}`,
         );
 
-      return `${
-        item.dmg1 && renderedProperties.length ? ' - ' : ''
-      }${renderedProperties.join(', ')}`;
+      return `${renderedProperties.join(', ')}`;
     } else {
       const parts = [];
       if (item.dmg2)
         parts.push(`alt. ${renderer.item._renderDamage(item.dmg2)}`);
       if (item.range) parts.push(`range ${item.range} ft.`);
-      return `${item.dmg1 && parts.length ? ' - ' : ''}${parts.join(', ')}`;
+      return `${parts.join(', ')}`;
     }
   },
 
@@ -4285,12 +4257,10 @@ Renderer.prototype.item = {
       RollerUtil.DICE_REGEX,
       (...m) => `{@damage ${m[1]}}`,
     );
-    console.log(tagged);
     return Renderer.get().render(tagged);
   },
 
   getDamageAndPropertiesText: function(item) {
-    console.log(item);
     const renderer = Renderer.get();
     const damageParts = [];
 
@@ -4368,11 +4338,9 @@ Renderer.prototype.item = {
           .join('<br>'),
       );
     }
-    console.log(item.dmgType);
     const damage = damageParts.join(', ');
     const damageType = item.dmgType ? Parser.dmgTypeToFull(item.dmgType) : '';
     const propertiesTxt = renderer.item._getPropertiesText(item);
-    console.log([damage, damageType, propertiesTxt]);
     return [damage, damageType, propertiesTxt];
   },
 
@@ -4602,8 +4570,10 @@ Renderer.prototype.item = {
 			<td colspan="2">${[Parser.itemValueToFull(item), Parser.itemWeightToFull(item)]
         .filter(Boolean)
         .join(', ')}</td>
-			<td class="text-right" colspan="4">${damage} ${damageType} ${propertiesTxt}</td>
 		</tr>
+    <tr><td colspan="6">${damage}</td></tr>
+    <tr><td colspan="6">${damageType}</td></tr>
+    <tr><td colspan="6">${propertiesTxt}</td></tr>
 		${
       hasEntries
         ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(

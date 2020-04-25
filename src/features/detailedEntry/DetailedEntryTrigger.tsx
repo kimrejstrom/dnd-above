@@ -5,7 +5,7 @@ import Entry from 'components/Entry/Entry';
 
 interface Props {
   data: any;
-  extraClassName: string;
+  extraClassName?: string;
 }
 
 const DetailedEntryTrigger: React.FC<Props> = ({

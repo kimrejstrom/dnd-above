@@ -10,6 +10,9 @@ import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
 import TextBox from 'components/TextBox/TextBox';
 import { getRace, getBackground } from 'utils/character';
+import StyledButton, {
+  DEFAULT_BUTTON_STYLE,
+} from 'components/StyledButton/StyledButton';
 
 const Description = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -52,7 +55,9 @@ const Description = ({ url }: { url: string }) => {
     formState.data.descriptionData.characteristicsSource,
   );
   const [charaterImageURL, setCharaterImageURL] = useState<string>(
-    `${process.env.PUBLIC_URL}/img/races/default.png`,
+    `${
+      process.env.PUBLIC_URL
+    }/img/races/${formState.data.raceData.race.toLowerCase()}.png`,
   );
 
   const handleBackgroundSelect = (
@@ -70,18 +75,10 @@ const Description = ({ url }: { url: string }) => {
     <div>
       <h1>Step 4: Description</h1>
       <div className="flex justify-between my-4">
-        <Link
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          to={`${url}/step-3`}
-        >
+        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-3`}>
           Previous
         </Link>
-        <button
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Next
-        </button>
+        <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <h2>Character Description</h2>
@@ -459,15 +456,15 @@ const Description = ({ url }: { url: string }) => {
                     className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                     name="imageUrl"
                     ref={register}
-                    defaultValue="/img/races/default.png"
+                    defaultValue={charaterImageURL}
                   />
-                  <button
+                  <StyledButton
                     type="button"
-                    className="w-full mt-2 text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
+                    extraClassName="w-full mt-2"
                     onClick={() => setCharaterImageURL(getValues().imageUrl)}
                   >
                     Load image
-                  </button>
+                  </StyledButton>
                 </label>
                 <TextBox>
                   {(race?.entries || []).map(entry =>

@@ -11,6 +11,7 @@ import mainRenderer from 'utils/mainRenderer';
 
 interface Props {
   items: (Item | BaseItem)[];
+  columns?: string[];
 }
 
 const handleSpecialCell = (cell: Cell<object>) => {
@@ -21,14 +22,23 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-const Items = ({ items }: Props) => {
+const Items = ({ items, columns }: Props) => {
   const dispatch = useDispatch();
+  const itemColumns = columns || [
+    'name',
+    'type',
+    'weight',
+    'quantity',
+    'value',
+    'source',
+  ];
   const tableData = items.map(item => ({
     ...item,
     detailedEntryTrigger: () =>
       dispatch(
         setDetailedEntry(
           <DangerousHtml
+            extraClassName="w-full"
             data={mainRenderer.item.getCompactRenderedString(item)}
           />,
         ),
@@ -39,11 +49,7 @@ const Items = ({ items }: Props) => {
       accessor: key,
       Header: startCase(key),
     }))
-    .filter(column =>
-      ['name', 'type', 'weight', 'quantity', 'value', 'source'].includes(
-        column.accessor,
-      ),
-    );
+    .filter(column => itemColumns.includes(column.accessor));
 
   return (
     <div className="text-left mx-auto w-full">

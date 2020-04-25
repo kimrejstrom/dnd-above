@@ -73,8 +73,6 @@ export interface CharacterBase {
 
 export interface CharacterCustom {
   customData: {
-    level: number;
-    feats: string[];
     customAbilities: StatsTypes[];
     customSkillProficiencies: SkillTypes[];
     customArmorProficiencies: Array<ArmorEnum>;
@@ -84,7 +82,20 @@ export interface CharacterCustom {
   };
 }
 
-export type CharacterState = CharacterBase & CharacterCustom;
+export interface CharacterGameData {
+  gameData: {
+    level: number;
+    feats: string[];
+    spells: string[];
+    attunements: string[];
+    actions: any[];
+    extras: any[];
+  };
+}
+
+export type CharacterState = CharacterBase &
+  CharacterCustom &
+  CharacterGameData;
 export interface CharacterListItem extends CharacterState {
   id: string;
 }
@@ -164,11 +175,11 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
       'Handaxe',
       'Handaxe',
       'Chain Mail',
+      'Longbow',
+      'Lance',
     ],
   },
   customData: {
-    level: 1,
-    feats: [],
     customAbilities: [],
     customSkillProficiencies: [],
     customArmorProficiencies: [],
@@ -176,9 +187,129 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
     customToolProficiencies: [],
     customLanguages: [],
   },
+  gameData: {
+    level: 1,
+    feats: [],
+    spells: [],
+    attunements: [],
+    actions: [],
+    extras: [],
+  },
 };
 
-const initialState: CharacterList = [DEAFULT_CHARACTER];
+const MOE: CharacterListItem = {
+  id: 'id-cb5de106a9e47',
+  raceData: {
+    race: 'Halfling (Ghostwise)',
+    chosenRaceAbilities: [],
+    standardRaceAbilities: [
+      {
+        dex: 2,
+        wis: 1,
+      },
+    ],
+    chosenRaceSkillProficiencies: [],
+    standardRaceSkillProficiencies: [],
+    chosenRaceLanguages: [],
+    standardRaceLanguages: ['common', 'halfling'],
+  },
+  classData: {
+    classElement: 'Druid',
+    subClass: 'Circle of the Shepherd',
+    chosenClassSkillProficiencies: ['insight', 'perception'],
+    standardClassArmorProficiencies: ['light', 'medium', 'shields'],
+    standardClassWeaponProficiencies: [
+      'clubs',
+      'daggers',
+      'darts',
+      'javelins',
+      'maces',
+      'quarterstaffs',
+      'scimitars',
+      'sickles',
+      'slings',
+      'spears',
+    ],
+    standardClassToolProficiencies: [],
+    abilityScores: {
+      rollMethod: 'roll',
+      str: 9,
+      dex: 15,
+      con: 15,
+      int: 10,
+      wis: 17,
+      cha: 9,
+    },
+  },
+  descriptionData: {
+    name: 'Moe Glee, The Minionmancer',
+    background: 'Far Traveler',
+    alignment: 'CG',
+    characteristicsSource: 'Far Traveler',
+    imageUrl: '/img/races/halfling (ghostwise).png',
+    hair: 'Orange',
+    skin: 'Greenish',
+    eyes: 'Orange',
+    height: '3ft',
+    weight: '40',
+    age: '19',
+    backstory:
+      'Born to a poor farmer family, Moe remembers very little about his parents. He still sees the flames that took them from him in his dreams, violently raging as they consume the last parts of his childhood home.\nMoe can’t remember how the fire started, but it haunts his dreams - night after night he is tormented by these visions. Again and again the flames erupt out of nowhere and each night he fails to escape them.\nShira, the fey spirit that watched over Moe and his tribe often walks the earth in the form of black panther. She managed to pull Moe from the flames on that fateful night, carrying the small boy to safety. She tried going back in for the others but was blocked by the flames.\nOrphaned, and with no-one of his kin left to care for him, Shira decided to bring the boy with her, deep into the forest where he would live with a new kind of tribe.\nFor fifteen years Moe lived together with the animals as a part of their herd. When Moe was seven Shira brought one of her old friends to the camp, a 250 year old tortle druid named Grok. Together Grok and Shira set out to teach Moe about the power of nature, the Great Balance and about the elements that guide it: the power of tooth and claw, of sun and moon and of fire and storm.\nWhen Moe turned 17, Shira came to Moe with a request. She had sensed a growing power, a darkness somewhere far away, disrupting the Great Balance. A force that seeks to hold sway over nature and life. She sent him on a mission to find out what this force is, and to try and restore the balance to their world.\nSo Moe set off towards the foreign lands of Asteria.',
+    chosenBackgroundSkillProficiencies: [],
+    standardBackgroundSkillProficiencies: ['insight', 'perception'],
+    chosenBackgroundToolProficiencies: ['gaming set'],
+    standardBackgroundToolProficiencies: [],
+    chosenBackgroundLanguages: ['primordial'],
+    standardBackgroundLanguages: [],
+    characteristicsPersonalityTrait:
+      "I have different assumptions from those around me concerning personal space, blithely invading others' space in innocence, or reacting to ignorant invasion of my own.",
+    characteristicsIdeal:
+      "Adventure. I'm far from home, and everything is strange and wonderful! (Chaotic)",
+    characteristicsBond:
+      'Though I had no choice, I lament having to leave my loved one(s) behind. I hope to see them again one day.',
+    characteristicsFlaw:
+      'I have a weakness for the new intoxicants and other pleasures of this land.',
+  },
+  equipmentData: {
+    items: [
+      'Quarterstaff',
+      'Scimitar',
+      'Leather Armor',
+      'Shield',
+      "Explorer's Pack",
+      'Totem',
+    ],
+  },
+  customData: {
+    customAbilities: [],
+    customSkillProficiencies: [],
+    customArmorProficiencies: [],
+    customWeaponProficiencies: [],
+    customToolProficiencies: [],
+    customLanguages: [],
+  },
+  gameData: {
+    level: 3,
+    feats: [],
+    spells: [
+      'Guidance',
+      'Produce Flame',
+      'Shillelagh',
+      'Entangle',
+      'Goodberry',
+      'Healing Word',
+      'Thunderwave',
+      'Barkskin',
+      'Flaming Sphere',
+      'Heat Metal',
+    ],
+    attunements: [],
+    actions: [],
+    extras: [],
+  },
+};
+
+const initialState: CharacterList = [DEAFULT_CHARACTER, MOE];
 
 const generateID = () =>
   `id-${Math.random()
@@ -240,14 +371,20 @@ const characterListSlice = createSlice({
             items: character.data.equipmentData.items,
           },
           customData: {
-            level: 1,
-            feats: [],
             customAbilities: [],
             customSkillProficiencies: [],
             customArmorProficiencies: [],
             customWeaponProficiencies: [],
             customToolProficiencies: [],
             customLanguages: [],
+          },
+          gameData: {
+            level: 1,
+            feats: [],
+            spells: [],
+            attunements: [],
+            actions: [],
+            extras: [],
           },
         };
         state.push({ id, ...newCharacter });
@@ -281,11 +418,6 @@ const characterListSlice = createSlice({
       state.filter(item => item.id !== action.payload);
     },
   },
-  //   extraReducers: builder => {
-  //     builder.addCase(createCharacter, (state, action) => {
-  //       addCharacter(action.payload);
-  //     });
-  //   },
 });
 
 export const {

@@ -45,6 +45,7 @@ import { sortBy, uniqBy, flatten } from 'lodash';
 import { isDefined } from 'ts-is-present';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
+import { SpellElement } from 'models/spells';
 
 export const filterSources = (item: any) => {
   return SourceUtil.isCoreOrSupplement(item.source) &&
@@ -54,7 +55,11 @@ export const filterSources = (item: any) => {
     : 0;
 };
 
-export const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
+const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
+export const ALL_SPELLS: SpellElement[] = Object.values(SPELLS)
+  .map(spell => spell.spell)
+  .flat();
+
 export const CLASSES = {
   artificer,
   barbarian,

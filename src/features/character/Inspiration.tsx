@@ -46,7 +46,7 @@ const Inspiration = ({ character }: Props) => {
           className="text-2xl text-center absolute"
           style={{ right: '1rem', top: '0.4rem' }}
         >
-          {getProficiencyBonus(character.customData.level)}
+          {getProficiencyBonus(character.gameData.level)}
         </p>
       </div>
     </div>

@@ -46,7 +46,7 @@ const Skills = ({ character }: Props) => {
         const proficient = isProficient(key as SkillTypes, character);
         const abilityMod = getAbilityMod(score);
         const skillMod = proficient
-          ? abilityMod + getProficiencyBonus(character.customData.level)
+          ? abilityMod + getProficiencyBonus(character.gameData.level)
           : abilityMod;
         return (
           <div className="flex flex-wrap relative p-1">

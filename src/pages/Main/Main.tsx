@@ -1,5 +1,4 @@
 import React from 'react';
-import { Spells } from 'components/Spells/Spells';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import {
@@ -22,6 +21,8 @@ import FeaturesTraits from 'features/character/FeaturesTraits';
 import Background from 'pages/Create/Background';
 import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
+import SpellCasting from 'features/character/SpellCasting';
+import { getClass } from 'utils/character';
 
 interface Props {}
 
@@ -45,6 +46,9 @@ export const Main: React.FC<Props> = () => {
     };
     dispatch(setSelectedIndex(updatedPanel));
   };
+
+  const classElement = getClass(character.classData.classElement);
+  const isSpellCaster = classElement?.spellcastingAbility !== undefined;
 
   return (
     <>
@@ -77,7 +81,7 @@ export const Main: React.FC<Props> = () => {
           >
             <TabList className="flex justify-between text-center">
               <Tab>Actions</Tab>
-              <Tab>Spells</Tab>
+              {isSpellCaster && <Tab>Spells</Tab>}
               <Tab>Equipment</Tab>
               <Tab>Features &amp; Traits</Tab>
               <Tab>Description</Tab>
@@ -88,9 +92,11 @@ export const Main: React.FC<Props> = () => {
             <TabPanel className="overflow-y-scroll px-2">
               <Actions character={character} />
             </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <Spells />
-            </TabPanel>
+            {isSpellCaster && (
+              <TabPanel className="overflow-y-scroll px-2">
+                <SpellCasting character={character} />
+              </TabPanel>
+            )}
             <TabPanel className="overflow-y-scroll px-2">
               <ItemsLoot character={character} />
             </TabPanel>

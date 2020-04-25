@@ -15,6 +15,7 @@ import mainRenderer from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
 import _ from 'lodash';
 import { getClass, getSubClass } from 'utils/character';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 const ClassBuilder = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -42,8 +43,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
     return (
       <div>
         <div className="flex justify-between my-4">
-          <button
-            className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
+          <StyledButton
             onClick={() =>
               dispatch(
                 updateFormData({
@@ -56,13 +56,8 @@ const ClassBuilder = ({ url }: { url: string }) => {
             }
           >
             Previous
-          </button>
-          <button
-            className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Next
-          </button>
+          </StyledButton>
+          <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
         </div>
         <div className="flex relative">
           <h1>{`${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}</h1>
@@ -140,7 +135,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                 <details key={feature.name}>
                   <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
                     <span className="text-xl">{feature.name}</span>
-                    <button
+                    <StyledButton
                       onClick={e =>
                         onSelect(
                           {
@@ -150,10 +145,10 @@ const ClassBuilder = ({ url }: { url: string }) => {
                           e,
                         )
                       }
-                      className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded rounded absolute right-0 mr-2"
+                      extraClassName="absolute right-0 mr-2"
                     >
                       Select
-                    </button>
+                    </StyledButton>
                   </summary>
                   {feature.subclassFeatures.map(feat =>
                     feat.map((entry, index) => (
@@ -187,12 +182,12 @@ const ClassBuilder = ({ url }: { url: string }) => {
                     />
                     {classElement.name}
                   </span>
-                  <button
+                  <StyledButton
                     onClick={e => setselectedClass(classElement)}
-                    className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded absolute right-0 mr-2"
+                    extraClassName="absolute right-0 mr-2"
                   >
                     Select
-                  </button>
+                  </StyledButton>
                 </summary>
                 <div className="dnd-body p-2">
                   <Tabs>
@@ -200,7 +195,6 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       <Tab className="mr-2">Features</Tab>
                       <Tab>Info</Tab>
                     </TabList>
-
                     <TabPanel className="overflow-y-scroll px-2">
                       <Entry entry={classElement} />
                       <ClassBase cls={classElement} />

@@ -15,6 +15,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
+  immutableCheck: false,
 });
 
 const store = configureStore({

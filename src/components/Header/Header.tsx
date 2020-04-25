@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -6,9 +6,6 @@ import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
-
-  // Open mobile menu open
-  const [open, setOpen] = useState(false);
 
   // Get theme from Redux
   const theme = useSelector((state: RootState) => state.theme);
@@ -34,43 +31,24 @@ export const Header: React.FC = () => {
             D&amp;D Above
           </Link>
         </div>
-        <div className="block lg:hidden">
-          <button
-            onClick={() => setOpen(!open)}
-            className="flex items-center px-3 py-2 border rounded text-yellow-400 border-yellow-400 hover:text-white hover:border-white"
-          >
-            <svg
-              className="fill-current h-3 w-3"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-            </svg>
-          </button>
-        </div>
-        <div
-          className={`${
-            open ? 'block' : 'hidden'
-          } w-full block flex-grow lg:flex lg:items-center lg:w-auto`}
-        >
-          <div className="text-lg font-medium lg:flex-grow">
+        <div className={`block flex flex-grow items-center w-auto`}>
+          <div className="text-lg font-medium flex-grow">
             <NavLink
               exact
               to="/"
-              className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
+              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Home
             </NavLink>
             <NavLink
               to="/create"
-              className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
+              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Create
             </NavLink>
             <NavLink
               to="/about"
-              className="block mt-4 lg:inline-block lg:mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
+              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
             >
               About
             </NavLink>

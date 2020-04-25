@@ -11,6 +11,9 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import mainRenderer from 'utils/mainRenderer';
 import { getClassQuickBuild, getRace, getClass } from 'utils/character';
 import { isDefined } from 'ts-is-present';
+import StyledButton, {
+  DEFAULT_BUTTON_STYLE,
+} from 'components/StyledButton/StyledButton';
 
 const Abilities = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -129,18 +132,10 @@ const Abilities = ({ url }: { url: string }) => {
     <div>
       <h1>Step 3: Abilities</h1>
       <div className="flex justify-between my-4">
-        <Link
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          to={`${url}/step-2`}
-        >
+        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-2`}>
           Previous
         </Link>
-        <button
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Next
-        </button>
+        <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <h2>Ability Scores</h2>

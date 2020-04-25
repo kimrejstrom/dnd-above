@@ -9,19 +9,13 @@ import {
   PLAYABLE_RACES,
   BACKGROUNDS,
   ALL_ITEMS,
+  ALL_SPELLS,
 } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
-
-export const getRaceAbilityMod = (
-  character: CharacterState,
-  ability: StatsTypes,
-) => {
-  const raceElement = getRace(character.raceData.race);
-  return raceElement?.ability ? raceElement.ability[0][ability] || 0 : 0;
-};
+import { getEntry } from 'utils/mainRenderer';
 
 export const getAbilityBonus = (
   character: CharacterState,
@@ -88,6 +82,37 @@ export const getProficiencyBonus = (level: number) => {
 
 export const getItem = (itemName: string): Item | BaseItem | undefined =>
   ALL_ITEMS.find(entry => entry.name === itemName);
+
+export const getSpell = (spellName: string) =>
+  ALL_SPELLS.find(sp => sp.name === spellName);
+
+export const getSpellSaveDC = (character: CharacterState) => {
+  const classElement = getClass(character.classData.classElement);
+  // const spellCasting = classElement?.classFeatures[0].filter(feat => {
+  //   return feat.name === 'Spellcasting';
+  // });
+  // const dcEntry = getEntry(spellCasting, [], undefined, 'abilityDc');
+
+  const score = calculateStats(character)[
+    classElement?.spellcastingAbility as StatsTypes
+  ];
+  const mod = getAbilityMod(score);
+  return 8 + mod + getProficiencyBonus(character.gameData.level);
+};
+
+export const getSpellAttack = (character: CharacterState) => {
+  const classElement = getClass(character.classData.classElement);
+  // const spellCasting = classElement?.classFeatures[0].filter(feat => {
+  //   return feat.name === 'Spellcasting';
+  // });
+  // const dcEntry = getEntry(spellCasting, [], undefined, 'abilityDc');
+
+  const score = calculateStats(character)[
+    classElement?.spellcastingAbility as StatsTypes
+  ];
+  const mod = getAbilityMod(score);
+  return mod + getProficiencyBonus(character.gameData.level);
+};
 
 export const isProficient = (skill: SkillTypes, character: CharacterState) => {
   const skillProficiencies = character.raceData.chosenRaceSkillProficiencies.concat(

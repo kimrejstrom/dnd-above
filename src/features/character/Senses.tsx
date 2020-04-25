@@ -34,7 +34,7 @@ const Senses = ({ character }: Props) => {
           const abilityMod = getAbilityMod(score);
           const passiveMod =
             (proficient
-              ? abilityMod + getProficiencyBonus(character.customData.level)
+              ? abilityMod + getProficiencyBonus(character.gameData.level)
               : abilityMod) + 10;
           return (
             <div className="flex w-full p-1">

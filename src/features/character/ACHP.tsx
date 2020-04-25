@@ -62,6 +62,14 @@ const ACHP = ({ character }: Props) => {
         >
           17
         </p>
+        <p
+          className="text-md absolute inset-0 text-center"
+          style={{
+            top: '6.05rem',
+          }}
+        >
+          {10 + getAbilityMod(calculateStats(character).dex)}
+        </p>
       </div>
       <div
         className="relative bg-contain bg-center bg-no-repeat"
@@ -82,7 +90,7 @@ const ACHP = ({ character }: Props) => {
         >
           {getMaxHP(
             getClass(character.classData.classElement)!.hd.faces,
-            character.customData.level,
+            character.gameData.level,
             getAbilityMod(calculateStats(character).con),
           )}
         </p>

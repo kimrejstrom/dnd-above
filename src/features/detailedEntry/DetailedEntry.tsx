@@ -6,7 +6,7 @@ interface Props {
 
 const DetailedEntry = ({ data }: Props) =>
   data ? (
-    <div>{data}</div>
+    <div className="w-full">{data}</div>
   ) : (
     <div className="opacity-50 p-4 h-full flex text-center justify-center items-center">
       <div>

@@ -9,6 +9,9 @@ import Entry from 'components/Entry/Entry';
 import { getClass, getBackground, getItem } from 'utils/character';
 import mainRenderer from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
+import StyledButton, {
+  DEFAULT_BUTTON_STYLE,
+} from 'components/StyledButton/StyledButton';
 
 interface Props {}
 
@@ -60,18 +63,10 @@ const Equipment = ({ url }: { url: string }) => {
     <div>
       <h1>Step 5: Equipment</h1>
       <div className="flex justify-between my-4">
-        <Link
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          to={`${url}/step-4`}
-        >
+        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-4`}>
           Previous
         </Link>
-        <button
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded"
-          onClick={handleSubmit(onSubmit)}
-        >
-          Next
-        </button>
+        <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
 
       {selectedClass && (
@@ -114,7 +109,7 @@ const Equipment = ({ url }: { url: string }) => {
           <h2>Current Equipment</h2>
           <div className="w-full flex flex-wrap">
             {itemList.map((itemName, index) => (
-              <div className="leading-none dnd-body mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-24 h-24 flex justify-center items-center flex-col custom-border custom-border-thin">
+              <div className="leading-none dnd-body mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-40 flex justify-center items-center flex-col custom-border custom-border-thin">
                 <DangerousHtml
                   data={mainRenderer.item.getCompactRenderedString(
                     getItem(itemName),
@@ -128,24 +123,24 @@ const Equipment = ({ url }: { url: string }) => {
       )}
 
       <div className="flex my-4">
-        <button
+        <StyledButton
           onClick={e => addItemSelect(e, 'Weapon')}
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
+          extraClassName="mr-2"
         >
           + Add weapon
-        </button>
-        <button
+        </StyledButton>
+        <StyledButton
           onClick={e => addItemSelect(e, 'Armor')}
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
+          extraClassName="mr-2"
         >
           + Add armor
-        </button>
-        <button
+        </StyledButton>
+        <StyledButton
           onClick={e => addItemSelect(e, 'Item')}
-          className="text-lg dark-hover:bg-primary-dark bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 border dark:border-primary-light rounded mr-2"
+          extraClassName="mr-2"
         >
           + Add item
-        </button>
+        </StyledButton>
       </div>
 
       <form

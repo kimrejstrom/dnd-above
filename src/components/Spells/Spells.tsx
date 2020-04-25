@@ -1,5 +1,4 @@
 import React from 'react';
-import { SPELLS } from 'utils/data';
 import { startCase } from 'lodash/fp';
 import Table from 'components/Table/Table';
 import { Cell } from 'react-table';
@@ -8,6 +7,10 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { SpellElement } from 'models/spells';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
+
+interface Props {
+  spells: SpellElement[];
+}
 
 const handleSpecialCell = (cell: Cell<object>) => {
   const cellType = cell.column.id;
@@ -37,23 +40,19 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-export const Spells: React.FC = () => {
+export const Spells = ({ spells }: Props) => {
   const dispatch = useDispatch();
-  const allSpells = SPELLS;
-  const tableData: SpellElement[] = Object.values(allSpells)
-    .map(spell => spell.spell)
-    .flat()
-    .map(sp => ({
-      ...sp,
-      detailedEntryTrigger: () =>
-        dispatch(
-          setDetailedEntry(
-            <DangerousHtml
-              data={mainRenderer.spell.getCompactRenderedString(sp)}
-            />,
-          ),
+  const tableData = spells.map(sp => ({
+    ...sp,
+    detailedEntryTrigger: () =>
+      dispatch(
+        setDetailedEntry(
+          <DangerousHtml
+            data={mainRenderer.spell.getCompactRenderedString(sp)}
+          />,
         ),
-    }));
+      ),
+  }));
   const tableColumns = Object.keys(tableData[0])
     .map(key => ({
       accessor: key,
@@ -66,17 +65,11 @@ export const Spells: React.FC = () => {
     );
 
   return (
-    <div className="text-left mx-auto">
+    <div className="text-left mx-auto w-full">
       <Table
         cellRenderer={handleSpecialCell}
         tableData={{ columns: tableColumns, data: tableData }}
       />
-      {/* {tableData.map((sp, index) => (
-        <DangerousHtml
-          key={index}
-          data={mainRenderer.spell.getCompactRenderedString(sp)}
-        />
-      ))} */}
     </div>
   );
 };

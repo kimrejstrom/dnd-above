@@ -33,7 +33,7 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
             className={`${
               selected === pill
                 ? 'text-white dark:text-black bg-primary-dark dark:bg-primary-light'
-                : 'bg-gray-200'
+                : 'text-black bg-gray-200 dark:bg-yellow-500'
             } rounded-full px-4 uppercase mx-1 my-2`}
           >
             {pill}
