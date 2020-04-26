@@ -10,6 +10,7 @@ import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 
 interface Props {
   spells: SpellElement[];
+  columns?: string[];
 }
 
 const handleSpecialCell = (cell: Cell<object>) => {
@@ -40,8 +41,16 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-export const Spells = ({ spells }: Props) => {
+export const Spells = ({ spells, columns }: Props) => {
   const dispatch = useDispatch();
+  const itemColumns = columns || [
+    'name',
+    'level',
+    'time',
+    'school',
+    'range',
+    'source',
+  ];
   const tableData = spells.map(sp => ({
     ...sp,
     detailedEntryTrigger: () =>
@@ -58,11 +67,7 @@ export const Spells = ({ spells }: Props) => {
       accessor: key,
       Header: startCase(key),
     }))
-    .filter(column =>
-      ['name', 'level', 'time', 'school', 'range', 'source'].includes(
-        column.accessor,
-      ),
-    );
+    .filter(column => itemColumns.includes(column.accessor));
 
   return (
     <div className="text-left mx-auto w-full">

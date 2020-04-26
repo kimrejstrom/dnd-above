@@ -22,7 +22,7 @@ import Background from 'pages/Create/Background';
 import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
-import { getClass } from 'utils/character';
+import { getClass, isSpellCaster } from 'utils/character';
 
 interface Props {}
 
@@ -46,9 +46,6 @@ export const Main: React.FC<Props> = () => {
     };
     dispatch(setSelectedIndex(updatedPanel));
   };
-
-  const classElement = getClass(character.classData.classElement);
-  const isSpellCaster = classElement?.spellcastingAbility !== undefined;
 
   return (
     <>
@@ -81,7 +78,7 @@ export const Main: React.FC<Props> = () => {
           >
             <TabList className="flex justify-between text-center">
               <Tab>Actions</Tab>
-              {isSpellCaster && <Tab>Spells</Tab>}
+              {isSpellCaster(character) && <Tab>Spells</Tab>}
               <Tab>Equipment</Tab>
               <Tab>Features &amp; Traits</Tab>
               <Tab>Description</Tab>
@@ -92,7 +89,7 @@ export const Main: React.FC<Props> = () => {
             <TabPanel className="overflow-y-scroll px-2">
               <Actions character={character} />
             </TabPanel>
-            {isSpellCaster && (
+            {isSpellCaster(character) && (
               <TabPanel className="overflow-y-scroll px-2">
                 <SpellCasting character={character} />
               </TabPanel>

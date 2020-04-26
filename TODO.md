@@ -4,16 +4,31 @@ Project Description
 
 ### Todo
 
-- [ ] Fix @dice rendering  
-- [ ] Fix standardProficiencies parsing  
-- [ ] Handle default values and stepping through form for existing character  
+- [ ] Current HP + dmg/heal  
+- [ ] Long Rest / Short Rest  
+- [ ] Spellslots Total + Used + Reset at rests  
+- [ ] Manage Selected Spells + Rating / Comments  
+- [ ] Custom data form / Game data form?  
+- [ ] Level Up  
+- [ ] Custom items (w/ use as base)  
+- [ ] Attuned items  
+- [ ] Feats  
+- [ ] XP  
+- [ ] Omni search  
+- [ ] Extras: Bestiary + any other "saved entries"  
+- [ ] Font  
 
 ### In Progress
 
-- [ ] Summary + save  
+- [ ] AC  
 
 ### Done ✓
 
+- [x] Bonus action + reaction uses  
+- [x] Handle default values and stepping through form for existing character  
+- [x] Fix standardProficiencies parsing  
+- [x] Fix @dice rendering  
+- [x] Summary + save  
 - [x] Complete character form builder  
   - [x] Create character list  
 - [x] Characterbuilder landing: List of characters + Create New  

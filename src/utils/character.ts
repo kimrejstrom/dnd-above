@@ -86,6 +86,12 @@ export const getItem = (itemName: string): Item | BaseItem | undefined =>
 export const getSpell = (spellName: string) =>
   ALL_SPELLS.find(sp => sp.name === spellName);
 
+export const isSpellCaster = (character: CharacterState) => {
+  const classElement = getClass(character.classData.classElement);
+  const isSpellCaster = classElement?.spellcastingAbility !== undefined;
+  return isSpellCaster;
+};
+
 export const getSpellSaveDC = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
   // const spellCasting = classElement?.classFeatures[0].filter(feat => {
