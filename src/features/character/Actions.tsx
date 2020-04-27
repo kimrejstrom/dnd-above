@@ -14,7 +14,6 @@ import { Property } from 'models/item';
 import { ACTIONS } from 'utils/data';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
-import { SpellElement } from 'models/spells';
 
 interface Props {
   character: CharacterState;

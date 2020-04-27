@@ -15,7 +15,6 @@ import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
-import { getEntry } from 'utils/mainRenderer';
 
 export const getAbilityBonus = (
   character: CharacterState,

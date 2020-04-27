@@ -14,7 +14,7 @@ Project Description
 - [ ] Attuned items  
 - [ ] Feats  
 - [ ] XP  
-- [ ] Omni search  
+- [ ] Omni search (Fuse)  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Font  
 

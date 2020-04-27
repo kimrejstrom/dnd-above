@@ -3,6 +3,8 @@ import { NavLink, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
+import dudeDark from 'images/dude-dark.png';
+import dudeLight from 'images/dude-light.png';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,12 +24,17 @@ export const Header: React.FC = () => {
 
   return (
     <header className="border-b-2 border-tertiary-dark bg-yellow-100 dark:border-primary-light dark:bg-primary-dark h-20">
-      <nav className="flex items-center justify-between flex-wrap p-6">
+      <nav className="flex items-center justify-between flex-wrap p-5">
         <div className="flex items-center flex-shrink-0 text-primary-dark dark:text-primary-light mr-6">
           <Link
             to="/"
-            className="font-semibold text-3xl tracking-tighter leading-none"
+            className="flex items-center font-semibold text-2xl tracking-tighter leading-none"
           >
+            <img
+              className="mr-2 h-10"
+              src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
+              alt="logo"
+            />
             D&amp;D Above
           </Link>
         </div>
