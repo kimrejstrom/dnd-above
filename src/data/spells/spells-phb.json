@@ -3163,7 +3163,7 @@
 			"name": "Bigby's Hand",
 			"source": "PHB",
 			"page": 218,
-			"srd": "Arcane Hand",
+			"srd": true,
 			"level": 5,
 			"school": "V",
 			"time": [
@@ -11511,7 +11511,7 @@
 			"name": "Drawmij's Instant Summons",
 			"source": "PHB",
 			"page": 235,
-			"srd": "Instant Summons",
+			"srd": true,
 			"level": 6,
 			"school": "C",
 			"time": [
@@ -12708,7 +12708,7 @@
 			"name": "Evard's Black Tentacles",
 			"source": "PHB",
 			"page": 238,
-			"srd": "Black Tentacles",
+			"srd": true,
 			"level": 4,
 			"school": "C",
 			"time": [
@@ -20577,7 +20577,7 @@
 			"name": "Leomund's Secret Chest",
 			"source": "PHB",
 			"page": 254,
-			"srd": "Secret Chest",
+			"srd": true,
 			"level": 4,
 			"school": "C",
 			"time": [
@@ -20664,7 +20664,7 @@
 			"name": "Leomund's Tiny Hut",
 			"source": "PHB",
 			"page": 255,
-			"srd": "Tiny Hut",
+			"srd": true,
 			"level": 3,
 			"school": "V",
 			"time": [
@@ -22990,7 +22990,7 @@
 			"name": "Melf's Acid Arrow",
 			"source": "PHB",
 			"page": 259,
-			"srd": "Acid Arrow",
+			"srd": true,
 			"level": 2,
 			"school": "V",
 			"time": [
@@ -24078,7 +24078,7 @@
 			"name": "Mordenkainen's Faithful Hound",
 			"source": "PHB",
 			"page": 261,
-			"srd": "Faithful Hound",
+			"srd": true,
 			"level": 4,
 			"school": "C",
 			"time": [
@@ -24152,7 +24152,7 @@
 			"name": "Mordenkainen's Magnificent Mansion",
 			"source": "PHB",
 			"page": 261,
-			"srd": "Magnificent Mansion",
+			"srd": true,
 			"level": 7,
 			"school": "C",
 			"time": [
@@ -24207,7 +24207,7 @@
 			"name": "Mordenkainen's Private Sanctum",
 			"source": "PHB",
 			"page": 262,
-			"srd": "Private Sanctum",
+			"srd": true,
 			"level": 4,
 			"school": "A",
 			"time": [
@@ -24298,7 +24298,7 @@
 			"name": "Mordenkainen's Sword",
 			"source": "PHB",
 			"page": 262,
-			"srd": "Arcane Sword",
+			"srd": true,
 			"level": 7,
 			"school": "V",
 			"time": [
@@ -24523,7 +24523,7 @@
 			"name": "Nystul's Magic Aura",
 			"source": "PHB",
 			"page": 263,
-			"srd": "Arcanist's Magic Aura",
+			"srd": true,
 			"level": 2,
 			"school": "I",
 			"time": [
@@ -24601,7 +24601,7 @@
 			"name": "Otiluke's Freezing Sphere",
 			"source": "PHB",
 			"page": 263,
-			"srd": "Freezing Sphere",
+			"srd": true,
 			"level": 6,
 			"school": "V",
 			"time": [
@@ -24666,7 +24666,7 @@
 			"name": "Otiluke's Resilient Sphere",
 			"source": "PHB",
 			"page": 264,
-			"srd": "Resilient Sphere",
+			"srd": true,
 			"level": 4,
 			"school": "V",
 			"time": [
@@ -24797,7 +24797,7 @@
 			"name": "Otto's Irresistible Dance",
 			"source": "PHB",
 			"page": 264,
-			"srd": "Irresistible Dance",
+			"srd": true,
 			"level": 6,
 			"school": "E",
 			"time": [
@@ -27371,7 +27371,7 @@
 			"name": "Rary's Telepathic Bond",
 			"source": "PHB",
 			"page": 270,
-			"srd": "Telepathic Bond",
+			"srd": true,
 			"level": 5,
 			"school": "D",
 			"time": [
@@ -32540,7 +32540,7 @@
 			"name": "Tasha's Hideous Laughter",
 			"source": "PHB",
 			"page": 280,
-			"srd": "Hideous Laughter",
+			"srd": true,
 			"level": 1,
 			"school": "E",
 			"time": [
@@ -33057,7 +33057,7 @@
 			"name": "Tenser's Floating Disk",
 			"source": "PHB",
 			"page": 282,
-			"srd": "Floating Disk",
+			"srd": true,
 			"level": 1,
 			"school": "C",
 			"time": [

@@ -13,9 +13,11 @@ import Create from 'pages/Create/Create';
 import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
+import { setCookie } from 'utils/cookie';
 
 // Google Analytics
 initializeGA();
+setCookie('allSources', 'true');
 
 const App: React.FC = () => {
   // Global Modal state

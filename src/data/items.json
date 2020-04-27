@@ -532,7 +532,7 @@
 			"lootTables": [
 				"Magic Item Table I"
 			],
-			"srd": "Apparatus of the Crab"
+			"srd": true
 		},
 		{
 			"name": "Aquamarine",
@@ -3068,7 +3068,7 @@
 				"This poison must be harvested from a dead or {@condition incapacitated} {@creature carrion crawler}. A creature subjected to this poison must succeed on a DC 13 Constitution saving throw or be {@condition poisoned} for 1 minute. The {@condition poisoned} creature is {@condition paralyzed}. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 			],
 			"poison": true,
-			"srd": "Crawler Mucus (Contact)"
+			"srd": true
 		},
 		{
 			"name": "Cart",
@@ -4156,7 +4156,7 @@
 			"lootTables": [
 				"Magic Item Table G"
 			],
-			"srd": "Instant Fortress"
+			"srd": true
 		},
 		{
 			"name": "Dagger of Venom",
@@ -7671,7 +7671,7 @@
 			"lootTables": [
 				"Magic Item Table C"
 			],
-			"srd": "Handy Haversack"
+			"srd": true
 		},
 		{
 			"name": "Hew",
@@ -8667,7 +8667,7 @@
 			"lootTables": [
 				"Magic Item Table G"
 			],
-			"srd": "Iron Bands of Binding"
+			"srd": true
 		},
 		{
 			"name": "Iron Flask",
@@ -9160,7 +9160,7 @@
 			"lootTables": [
 				"Magic Item Table B"
 			],
-			"srd": "Restorative Ointment"
+			"srd": true
 		},
 		{
 			"name": "Korolnor Scepter",
@@ -10435,7 +10435,7 @@
 			"lootTables": [
 				"Magic Item Table D"
 			],
-			"srd": "Marvelous Pigments"
+			"srd": true
 		},
 		{
 			"name": "Oathbow",
@@ -12351,7 +12351,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Anchor"
+			"srd": true
 		},
 		{
 			"name": "Quaal's Feather Token, Bird",
@@ -12370,7 +12370,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Bird"
+			"srd": true
 		},
 		{
 			"name": "Quaal's Feather Token, Fan",
@@ -12389,7 +12389,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Fan"
+			"srd": true
 		},
 		{
 			"name": "Quaal's Feather Token, Swan Boat",
@@ -12408,7 +12408,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Swan Boat"
+			"srd": true
 		},
 		{
 			"name": "Quaal's Feather Token, Tree",
@@ -12427,7 +12427,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Tree"
+			"srd": true
 		},
 		{
 			"name": "Quaal's Feather Token, Whip",
@@ -12447,7 +12447,7 @@
 					]
 				}
 			],
-			"srd": "Feather Token, Whip"
+			"srd": true
 		},
 		{
 			"name": "Quartz",
@@ -12488,7 +12488,7 @@
 			"lootTables": [
 				"Magic Item Table F"
 			],
-			"srd": "Efficient Quiver"
+			"srd": true
 		},
 		{
 			"name": "Rain Catcher",

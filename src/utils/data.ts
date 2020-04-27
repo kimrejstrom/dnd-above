@@ -46,11 +46,20 @@ import { isDefined } from 'ts-is-present';
 import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
+import { getCookie } from 'utils/cookie';
 
-export const filterSources = (item: any) => {
+export const filterSources = (item: any, includeDMG: boolean = true) => {
+  const allSources = getCookie('allSources') === 'true';
+  if (!includeDMG && item.source === 'DMG') {
+    return 0;
+  }
+
+  if (!allSources && item.srd !== true) {
+    return 0;
+  }
+
   return SourceUtil.isCoreOrSupplement(item.source) &&
-    !SourceUtil.isNonstandardSource(item.source) &&
-    item.source !== 'DMG'
+    !SourceUtil.isNonstandardSource(item.source)
     ? 1
     : 0;
 };
@@ -58,7 +67,8 @@ export const filterSources = (item: any) => {
 const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
 export const ALL_SPELLS: SpellElement[] = Object.values(SPELLS)
   .map(spell => spell.spell)
-  .flat();
+  .flat()
+  .filter(entry => filterSources(entry));
 
 export const CLASSES = {
   artificer,
@@ -92,14 +102,14 @@ export const PLAYABLE_RACES = uniqBy(
   sortBy(
     mainRenderer.race
       .mergeSubraces(races.race)
-      .filter((race: any) => filterSources(race)),
+      .filter((race: any) => filterSources(race, false)),
     ['name'],
   ),
   'name',
 ) as Race[];
 
 export const PLAYABLE_RACES_FLUFF = raceFluff.raceFluff.filter(fluff =>
-  filterSources(fluff),
+  filterSources(fluff, false),
 ) as RaceFluffElement[];
 
 export const BACKGROUNDS = backgrounds.background

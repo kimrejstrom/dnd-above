@@ -93,11 +93,6 @@ export const isSpellCaster = (character: CharacterState) => {
 
 export const getSpellSaveDC = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
-  // const spellCasting = classElement?.classFeatures[0].filter(feat => {
-  //   return feat.name === 'Spellcasting';
-  // });
-  // const dcEntry = getEntry(spellCasting, [], undefined, 'abilityDc');
-
   const score = calculateStats(character)[
     classElement?.spellcastingAbility as StatsTypes
   ];
@@ -107,11 +102,6 @@ export const getSpellSaveDC = (character: CharacterState) => {
 
 export const getSpellAttack = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
-  // const spellCasting = classElement?.classFeatures[0].filter(feat => {
-  //   return feat.name === 'Spellcasting';
-  // });
-  // const dcEntry = getEntry(spellCasting, [], undefined, 'abilityDc');
-
   const score = calculateStats(character)[
     classElement?.spellcastingAbility as StatsTypes
   ];

@@ -22,7 +22,7 @@ import Background from 'pages/Create/Background';
 import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
-import { getClass, isSpellCaster } from 'utils/character';
+import { isSpellCaster } from 'utils/character';
 
 interface Props {}
 
