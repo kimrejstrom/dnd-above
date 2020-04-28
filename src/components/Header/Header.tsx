@@ -39,9 +39,9 @@ export const Header: React.FC = () => {
               src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
               alt="logo"
             />
-            D&amp;D Above
+            <div>D&amp;D Above</div>
             {(konamiCode || allSources) && (
-              <sup className="text-sm ml-1">Pro</sup>
+              <sup className="text-yellow-500 text-sm ml-1">Adv</sup>
             )}
           </Link>
         </div>

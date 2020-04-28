@@ -10,8 +10,7 @@
   font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Patrick+Hand&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
 
 body {
   font-family: 'dnd_condensedbold', -apple-system, BlinkMacSystemFont,
@@ -20,7 +19,7 @@ body {
 }
 
 .dnd-body {
-  font-family: 'Patrick Hand', sans-serif;
+  font-family: 'PT Serif', sans-serif;
 }
 
 .h-body {

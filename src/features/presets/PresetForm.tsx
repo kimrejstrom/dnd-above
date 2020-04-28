@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addPreset, updatePreset } from 'features/presets/presetsSlice';
+import {
+  addPreset,
+  updatePreset,
+  DiceType,
+} from 'features/presets/presetsSlice';
 import { Preset } from 'features/presets/presetsSlice';
-import { useForm, InputsFor } from 'utils/customHooks';
+import { useForm } from 'react-hook-form';
 import { Dice } from 'vendor/nicer-dicer-engine';
 import { Alert } from 'components/Alert/Alert';
 import { toggleModal } from 'components/Modal/modalSlice';
@@ -14,8 +18,10 @@ export const PresetForm: React.FC<{
   const dispatch = useDispatch();
   const [error, setError] = useState<Error>();
   const [success, setSuccess] = useState<string>();
+  const { register, handleSubmit, getValues, errors } = useForm<FormData>();
 
   const submitPreset = () => {
+    const inputs = getValues();
     const dice = new Dice();
     try {
       // check if formula is valid
@@ -44,21 +50,19 @@ export const PresetForm: React.FC<{
     }
   };
 
-  const existingInputs: InputsFor<Preset> = {
-    title: existingPreset?.title,
-    formula: existingPreset?.formula,
-    diceType: existingPreset?.diceType,
+  type FormData = {
+    title: string;
+    formula: string;
+    diceType: DiceType;
   };
-
-  const { inputs, handleInputChange, handleSubmit } = useForm(
-    submitPreset,
-    existingInputs,
-  );
 
   return (
     <div className="flex flex-col items-center">
       <div className="text-lg text-green-300">{success}</div>
-      <form className="text-center w-full" onSubmit={handleSubmit}>
+      <form
+        className="text-center w-full"
+        onSubmit={handleSubmit(submitPreset)}
+      >
         <label>
           Title
           <input
@@ -66,9 +70,12 @@ export const PresetForm: React.FC<{
             type="text"
             name="title"
             required={true}
-            value={inputs?.title || ''}
-            onChange={handleInputChange}
+            defaultValue={existingPreset?.title}
+            ref={register({
+              required: true,
+            })}
           />
+          {errors.title && 'Title is required'}
         </label>
         <label>
           Formula
@@ -77,9 +84,12 @@ export const PresetForm: React.FC<{
             type="text"
             name="formula"
             required={true}
-            value={inputs?.formula || ''}
-            onChange={handleInputChange}
+            defaultValue={existingPreset?.formula}
+            ref={register({
+              required: true,
+            })}
           />
+          {errors.formula && 'Formula is required'}
         </label>
         <label>
           Dice type
@@ -87,8 +97,8 @@ export const PresetForm: React.FC<{
             <select
               className="relative w-full appearance-none text-lg font-mono flex dark:bg-primary-dark text-center font-bold py-2 px-4 rounded border dark:border-primary-light focus:outline-none focus:border-yellow-400"
               name="diceType"
-              value={inputs?.diceType}
-              onChange={handleInputChange}
+              defaultValue={existingPreset?.diceType}
+              ref={register}
             >
               <option value="d4">d4</option>
               <option value="d6">d6</option>

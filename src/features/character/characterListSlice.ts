@@ -7,6 +7,8 @@ import {
   getClass,
   getBackground,
   getIncludedProficiencies,
+  getAbilityMod,
+  calculateStats,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase } from 'models/race';
@@ -92,6 +94,8 @@ export interface CharacterGameData {
     attunements: string[];
     actions: any[];
     extras: any[];
+    ac: number;
+    currentHp: number;
   };
 }
 
@@ -187,6 +191,8 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
     attunements: [],
     actions: [],
     extras: [],
+    ac: 0,
+    currentHp: 12,
   },
 };
 
@@ -304,6 +310,8 @@ const MOE: CharacterListItem = {
     attunements: [],
     actions: [],
     extras: [],
+    ac: 16,
+    currentHp: 12,
   },
 };
 
@@ -385,6 +393,12 @@ const characterListSlice = createSlice({
             attunements: [],
             actions: [],
             extras: [],
+            ac: 0,
+            currentHp:
+              10 +
+              getAbilityMod(
+                calculateStats(character.data as CharacterState).dex,
+              ),
           },
         };
         state.push({ id, ...newCharacter });
@@ -417,6 +431,25 @@ const characterListSlice = createSlice({
     removeCharacter(state, action: PayloadAction<string>) {
       state.filter(item => item.id !== action.payload);
     },
+    setAc(state, action: PayloadAction<{ id: string; ac: number }>) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.ac = Number(action.payload.ac);
+      }
+    },
+    setHp(
+      state,
+      action: PayloadAction<{ id: string; hp: number; type: string }>,
+    ) {
+      const { id, hp, type } = action.payload;
+      const character = state.find(chara => chara.id === id);
+      if (character) {
+        character.gameData.currentHp =
+          type === 'heal'
+            ? character.gameData.currentHp + Number(hp)
+            : character.gameData.currentHp - Number(hp);
+      }
+    },
   },
 });
 
@@ -424,6 +457,8 @@ export const {
   addCharacter,
   updateCharacter,
   removeCharacter,
+  setAc,
+  setHp,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

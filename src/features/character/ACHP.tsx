@@ -1,8 +1,12 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
-import { CharacterState } from 'features/character/characterListSlice';
+import {
+  CharacterState,
+  setAc,
+  setHp,
+} from 'features/character/characterListSlice';
 import {
   getAbilityMod,
   calculateStats,
@@ -15,13 +19,43 @@ import hpDark from 'images/hp-dark.png';
 import acDark from 'images/ac-dark.png';
 import initiativeDark from 'images/initiative-dark.png';
 import initiativeLight from 'images/initiative-light.png';
+import { useForm } from 'react-hook-form';
+import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
 
 interface Props {
   character: CharacterState;
 }
 
 const ACHP = ({ character }: Props) => {
+  const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
+  type FormData = {
+    ac: number;
+    hp: number;
+  };
+
+  const { register, handleSubmit, setValue, errors, getValues } = useForm<
+    FormData
+  >();
+
+  useEffect(() => {
+    setValue('ac', character.gameData.ac);
+  });
+
+  const onACSubmit = (data: FormData) => {
+    dispatch(setAc({ id: character.id!, ac: data.ac }));
+  };
+
+  const onHPChange = (type: string) => {
+    const { hp } = getValues();
+    console.log(hp, type);
+    dispatch(setHp({ id: character.id!, hp, type }));
+  };
+
+  const onHPSubmit = (data: FormData) => {
+    // Do nothing
+  };
+
   return (
     <>
       <div
@@ -53,15 +87,22 @@ const ACHP = ({ character }: Props) => {
           })`,
         }}
       >
-        <p
+        <form
+          onSubmit={handleSubmit(onACSubmit)}
           className="text-2xl absolute inset-0 text-center"
           style={{
             top: '2.8rem',
-            left: '0.1rem',
           }}
         >
-          17
-        </p>
+          <input
+            name="ac"
+            className="text-center w-8 h-6 bg-white dark:bg-secondary-dark"
+            onChange={handleSubmit(onACSubmit)}
+            ref={register({ required: true })}
+          />
+          {errors.ac && <div>AC is required</div>}
+        </form>
+
         <p
           className="text-md absolute inset-0 text-center"
           style={{
@@ -88,12 +129,46 @@ const ACHP = ({ character }: Props) => {
             left: '0.1rem',
           }}
         >
+          {character.gameData.currentHp}
+        </p>
+        <p
+          className="text-md absolute inset-0 text-center"
+          style={{
+            top: '6.05rem',
+          }}
+        >
           {getMaxHP(
             getClass(character.classData.classElement)!.hd.faces,
             character.gameData.level,
             getAbilityMod(calculateStats(character).con),
           )}
         </p>
+      </div>
+      <div className="ml-2">
+        <form
+          onSubmit={handleSubmit(onHPSubmit)}
+          className="text-xl text-center flex flex-col"
+        >
+          <button
+            className={DEFAULT_BUTTON_STYLE}
+            onClick={() => onHPChange('heal')}
+            type="button"
+          >
+            Heal
+          </button>
+          <input
+            name="hp"
+            className="text-center h-10 my-1 w-20 bg-white dark:bg-secondary-dark custom-border custom-border-thin rounded dark:border-primary-light border-secondary-dark"
+            ref={register}
+          />
+          <button
+            className={DEFAULT_BUTTON_STYLE}
+            onClick={() => onHPChange('damage')}
+            type="button"
+          >
+            Damage
+          </button>
+        </form>
       </div>
     </>
   );
