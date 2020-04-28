@@ -100,7 +100,8 @@
 				"V"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Blowgun",
@@ -118,7 +119,8 @@
 			],
 			"range": "25/100",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Blowgun Needle",
@@ -153,7 +155,8 @@
 			"page": 145,
 			"entries": [
 				"This armor consists of a fitted metal chest piece worn with supple leather. Although it leaves the legs and arms relatively unprotected, this armor provides good protection for the wearer's vital organs while leaving the wearer relatively unencumbered."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Chain Mail",
@@ -169,7 +172,8 @@
 			"page": 145,
 			"entries": [
 				"Made of interlocking metal rings, chain mail includes a layer of quilted fabric worn underneath the mail to prevent chafing and to cushion the impact of blows. The suit includes gauntlets."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Chain Shirt",
@@ -183,7 +187,8 @@
 			"page": 144,
 			"entries": [
 				"Made of interlocking metal rings, a chain shirt is worn between layers of clothing or leather. This armor offers modest protection to the wearer's upper body and allows the sound of the rings rubbing against one another to be muffled by outer layers."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Club",
@@ -199,7 +204,8 @@
 				"L"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Crossbow Bolt",
@@ -250,7 +256,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Dart",
@@ -268,7 +275,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Double-Bladed Scimitar",
@@ -323,7 +331,8 @@
 			"dmg1": "1d8",
 			"dmgType": "B",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Glaive",
@@ -341,7 +350,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Greataxe",
@@ -359,7 +369,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Greatclub",
@@ -375,7 +386,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Greatsword",
@@ -411,7 +423,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Half Plate Armor",
@@ -426,7 +439,8 @@
 			"page": 145,
 			"entries": [
 				"Half plate consists of shaped metal plates that cover most of the wearer's body. It does not include leg protection beyond simple greaves that are attached with leather straps."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Hand Crossbow",
@@ -445,7 +459,8 @@
 			],
 			"range": "30/120",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Handaxe",
@@ -464,7 +479,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Heavy Crossbow",
@@ -484,7 +500,8 @@
 			],
 			"range": "100/400",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Hide Armor",
@@ -498,7 +515,8 @@
 			"page": 144,
 			"entries": [
 				"This crude armor consists of thick furs and pelts. It is commonly worn by barbarian tribes, evil humanoids, and other folk who lack access to the tools and materials needed to create better armor."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Hooked Shortspear",
@@ -554,7 +572,8 @@
 			],
 			"range": "30/120",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Lance",
@@ -580,7 +599,8 @@
 						"You have disadvantage when you use a lance to attack a target within 5 feet of you. Also, a lance requires two hands to wield when you aren't mounted."
 					]
 				}
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Laser Pistol",
@@ -635,7 +655,8 @@
 			"page": 144,
 			"entries": [
 				"The breastplate and shoulder protectors of this armor are made of leather that has been stiffened by being boiled in oil. The rest of the armor is made of softer and more flexible materials."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Light Crossbow",
@@ -654,7 +675,8 @@
 			],
 			"range": "80/320",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Light Repeating Crossbow",
@@ -692,7 +714,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Longbow",
@@ -711,7 +734,8 @@
 			],
 			"range": "150/600",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Longsword",
@@ -729,7 +753,8 @@
 				"V"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Mace",
@@ -742,7 +767,8 @@
 			"dmg1": "1d6",
 			"dmgType": "B",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Maul",
@@ -759,7 +785,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Modern Bullets (10)",
@@ -782,7 +809,8 @@
 			"dmg1": "1d8",
 			"dmgType": "P",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Musket",
@@ -828,7 +856,8 @@
 						"A Large or smaller creature hit by a net is {@condition restrained} until it is freed. A net has no effect on creatures that are formless, or creatures that are Huge or larger. A creature can use its action to make a DC 10 Strength check, freeing itself or another creature within its reach on a success. Dealing 5 slashing damage to the net (AC 10) also frees the creature without harming it, ending the effect and destroying the net. When you use an action, bonus action, or reaction to attack with a net, you can make only one attack regardless of the number of attacks you can normally make."
 					]
 				}
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Orb",
@@ -854,7 +883,8 @@
 			"page": 144,
 			"entries": [
 				"Padded armor consists of quilted layers of cloth and batting."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Pike",
@@ -872,7 +902,8 @@
 				"2H"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Pistol",
@@ -908,7 +939,8 @@
 			"page": 145,
 			"entries": [
 				"Plate consists of shaped, interlocking metal plates to cover the entire body. A suit of plate includes gauntlets, heavy leather boots, a visored helmet, and thick layers of padding underneath the armor. Buckles and straps distribute the weight over the body."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Quarterstaff",
@@ -926,7 +958,8 @@
 			],
 			"source": "PHB",
 			"page": 149,
-			"staff": true
+			"staff": true,
+			"srd": true
 		},
 		{
 			"name": "Rapier",
@@ -943,7 +976,8 @@
 				"F"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Renaissance Bullets (10)",
@@ -989,7 +1023,8 @@
 			"page": 145,
 			"entries": [
 				"This armor is leather armor with heavy rings sewn into it. The rings help reinforce the armor against blows from swords and axes. Ring mail is inferior to chain mail, and it's usually worn only by those who can't afford better armor."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Rod",
@@ -1015,7 +1050,8 @@
 			"page": 144,
 			"entries": [
 				"This armor consists of a coat and leggings (and perhaps a separate skirt) of leather covered with overlapping pieces of metal, much like the scales of a fish. The suit includes gauntlets."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Scimitar",
@@ -1033,7 +1069,8 @@
 				"L"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Shield",
@@ -1046,7 +1083,8 @@
 			"page": 144,
 			"entries": [
 				"A shield is made from wood or metal and is carried in one hand. Wielding a shield increases your Armor Class by 2. You can benefit from only one shield at a time."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Shortbow",
@@ -1064,7 +1102,8 @@
 			],
 			"range": "80/320",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Shortsword",
@@ -1082,7 +1121,8 @@
 				"L"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Shotgun",
@@ -1119,7 +1159,8 @@
 				"L"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Sling",
@@ -1135,7 +1176,8 @@
 			],
 			"range": "30/120",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Sling Bullet",
@@ -1175,7 +1217,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Spiked Armor",
@@ -1190,7 +1233,8 @@
 			"page": 121,
 			"entries": [
 				"Spiked armor is a rare type of medium armor made by dwarves. It consists of a leather coat and leggings covered with spikes that are usually made of metal."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Splint Armor",
@@ -1206,7 +1250,8 @@
 			"page": 145,
 			"entries": [
 				"This armor is made of narrow vertical strips of metal riveted to a backing of leather that is worn over cloth padding. Flexible chain mail protects the joints."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Staff",
@@ -1232,7 +1277,8 @@
 			"page": 144,
 			"entries": [
 				"Made from tough but flexible leather, studded leather is reinforced with close-set rivets or spikes."
-			]
+			],
+			"srd": true
 		},
 		{
 			"name": "Trident",
@@ -1251,7 +1297,8 @@
 			],
 			"range": "20/60",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Wand",
@@ -1275,7 +1322,8 @@
 			"dmg1": "1d8",
 			"dmgType": "P",
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Warhammer",
@@ -1292,7 +1340,8 @@
 				"V"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Whip",
@@ -1309,7 +1358,8 @@
 				"R"
 			],
 			"source": "PHB",
-			"page": 149
+			"page": 149,
+			"srd": true
 		},
 		{
 			"name": "Yklwa",

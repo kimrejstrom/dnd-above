@@ -5,10 +5,12 @@ import { RootState } from 'app/rootReducer';
 import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
 import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
+import useKonamiCode from 'utils/konamiHook';
+import { getCookie } from 'utils/cookie';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
-
+  const allSources = getCookie('allSources') === 'true';
   // Get theme from Redux
   const theme = useSelector((state: RootState) => state.theme);
   // Support for OS level color preference
@@ -21,6 +23,8 @@ export const Header: React.FC = () => {
       dispatch(setThemeMode(ThemeMode.DARK));
     }
   });
+  const [konamiCode] = useKonamiCode();
+  console.log(konamiCode);
 
   return (
     <header className="border-b-2 border-tertiary-dark bg-yellow-100 dark:border-primary-light dark:bg-primary-dark h-20">
@@ -36,6 +40,9 @@ export const Header: React.FC = () => {
               alt="logo"
             />
             D&amp;D Above
+            {(konamiCode || allSources) && (
+              <sup className="text-sm ml-1">Pro</sup>
+            )}
           </Link>
         </div>
         <div className={`block flex flex-grow items-center w-auto`}>

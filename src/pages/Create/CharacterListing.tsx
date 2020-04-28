@@ -7,11 +7,18 @@ import {
   setInitialFormData,
   loadInitialFormData,
 } from 'features/createCharacterForm/createCharacterFormSlice';
+import { getCookie } from 'utils/cookie';
 
 const CharacterListing = ({ url }: { url: string }) => {
+  const allSources = getCookie('allSources') === 'true';
   const characterList: CharacterList = useSelector(
     (state: RootState) => state.characterList,
-  );
+  ).filter(character => {
+    if (!allSources) {
+      return !character.allSources;
+    }
+    return true;
+  });
   const dispatch = useDispatch();
   const history = useHistory();
 

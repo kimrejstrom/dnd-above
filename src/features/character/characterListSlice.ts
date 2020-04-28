@@ -10,6 +10,7 @@ import {
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase } from 'models/race';
+import { getCookie } from 'utils/cookie';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -72,6 +73,7 @@ export interface CharacterBase {
 }
 
 export interface CharacterCustom {
+  allSources: boolean;
   customData: {
     customAbilities: StatsTypes[];
     customSkillProficiencies: SkillTypes[];
@@ -103,6 +105,7 @@ export type CharacterList = Array<CharacterListItem>;
 export const DEFAULT_ID = 'id-DEFAULT';
 export const DEAFULT_CHARACTER: CharacterListItem = {
   id: DEFAULT_ID,
+  allSources: false,
   raceData: {
     race: 'Human',
     chosenRaceAbilities: [],
@@ -118,66 +121,56 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
     ],
     chosenRaceSkillProficiencies: [],
     standardRaceSkillProficiencies: [],
-    chosenRaceLanguages: ['elvish'],
+    chosenRaceLanguages: ['celestial'],
     standardRaceLanguages: ['common'],
   },
   classData: {
     classElement: 'Fighter',
     subClass: 'Champion',
-    chosenClassSkillProficiencies: ['athletics', 'perception'],
+    chosenClassSkillProficiencies: ['acrobatics', 'athletics'],
     standardClassArmorProficiencies: ['light', 'medium', 'heavy', 'shields'],
     standardClassWeaponProficiencies: ['simple', 'martial'],
     standardClassToolProficiencies: [],
     abilityScores: {
       rollMethod: 'standard',
       str: 15,
-      dex: 12,
+      dex: 13,
       con: 14,
       int: 10,
       wis: 8,
-      cha: 13,
+      cha: 12,
     },
   },
   descriptionData: {
-    name: 'Regdar Ridgehearth',
-    background: 'Soldier',
+    name: 'Regdar Ridgeheart',
+    background: 'Acolyte',
     alignment: 'LG',
-    characteristicsSource: 'Soldier',
+    characteristicsSource: 'Acolyte',
     imageUrl: '/img/races/human.png',
     hair: 'Blonde',
     skin: 'Fair',
     eyes: 'Brown',
-    height: '192cm',
-    weight: '95kg',
-    age: '35',
+    height: '193',
+    weight: '89',
+    age: '34',
     backstory:
       'You squired for a knight who taught you how to fight, care for a steed, and conduct yourself with honor. You decided to take up that path for yourself.\n\nMan-at-arms: You were the member of an elite cavalry unit of an army, trained in heavy armor and a variety of weapons to charge the enemy and crush the opposition.',
     chosenBackgroundSkillProficiencies: [],
-    standardBackgroundSkillProficiencies: ['athletics', 'intimidation'],
+    standardBackgroundSkillProficiencies: ['insight', 'religion'],
     chosenBackgroundToolProficiencies: [],
-    standardBackgroundToolProficiencies: ['gaming set', 'vehicles (land)'],
-    chosenBackgroundLanguages: [],
+    standardBackgroundToolProficiencies: [],
+    chosenBackgroundLanguages: ['dwarvish', 'halfling'],
     standardBackgroundLanguages: [],
     characteristicsPersonalityTrait:
-      "I'm full of inspiring and cautionary tales from my military experience relevant to almost every combat situation.",
+      "I idolize a particular hero of my faith, and constantly refer to that person's deeds and example.",
     characteristicsIdeal:
-      'Greater Good. Our lot is to lay down our lives in defense of others. (Good)',
-    characteristicsBond:
-      'I would still lay down my life for the people I served with.',
+      'Charity. I always try to help those in need, no matter what the personal cost. (Good)',
+    characteristicsBond: 'Everything I do is for the common people.',
     characteristicsFlaw:
-      'I have little respect for anyone who is not a proven warrior.',
+      'Once I pick a goal, I become obsessed with it to the detriment of everything else in my life.',
   },
   equipmentData: {
-    items: [
-      'Greatsword',
-      'Shield',
-      "Explorer's Pack",
-      'Handaxe',
-      'Handaxe',
-      'Chain Mail',
-      'Longbow',
-      'Lance',
-    ],
+    items: ['Longsword', 'Chain Mail', 'Shield', 'Arrows (20)'],
   },
   customData: {
     customAbilities: [],
@@ -199,6 +192,7 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
 
 const MOE: CharacterListItem = {
   id: 'id-cb5de106a9e47',
+  allSources: true,
   raceData: {
     race: 'Halfling (Ghostwise)',
     chosenRaceAbilities: [],
@@ -335,8 +329,10 @@ const characterListSlice = createSlice({
         const backgroundElement = getBackground(
           character.data.descriptionData.background,
         );
+        const allSources = getCookie('allSources') === 'true';
         const newCharacter: CharacterListItem = {
           id,
+          allSources,
           raceData: {
             ...character.data.raceData,
             standardRaceAbilities: raceElement?.ability
