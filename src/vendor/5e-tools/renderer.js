@@ -2897,7 +2897,7 @@ Renderer.prototype.race = {
     const renderStack = [];
 
     const ability = renderer.getAbilityData(race.ability);
-    renderStack.push(`
+    renderStack.push(`<div><table>
 			${Renderer.utils.getExcludedTr(race, 'race')}
 			${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
 			${
@@ -2916,10 +2916,11 @@ Renderer.prototype.race = {
 						<td>${Parser.getSpeedString(race)}</td>
 					</tr>
 				</table>
-			</td></tr>`
+      </td></tr></table>
+      </div>`
           : ''
       }
-			<tr class="text"><td colspan="6">
+			<div>
     `);
 
     if (withEntries) {
@@ -2935,7 +2936,7 @@ Renderer.prototype.race = {
             { depth: 1 },
           );
     }
-    renderStack.push('</td></tr>');
+    renderStack.push('<div>');
 
     return renderStack.join('');
   },

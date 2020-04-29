@@ -158,7 +158,7 @@ const ACHP = ({ character }: Props) => {
           </button>
           <input
             name="hp"
-            className="text-center h-10 my-1 w-20 bg-white dark:bg-secondary-dark custom-border custom-border-thin rounded dark:border-primary-light border-secondary-dark"
+            className="text-center my-1 h-8 w-20 bg-white dark:bg-secondary-dark custom-border custom-border-thin rounded dark:border-primary-light border-secondary-dark"
             ref={register}
           />
           <button

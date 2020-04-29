@@ -5,8 +5,13 @@ interface Props {
   extraClassName?: string;
 }
 
+const isTableElement = (data: string) => {
+  const tableElements = ['<td', '<tr', '<th'];
+  return tableElements.includes(data.trim().slice(0, 3)) ? true : false;
+};
+
 const DangerousHtml = ({ data, extraClassName }: Props) => {
-  if (data.includes('<tr>')) {
+  if (isTableElement(data)) {
     return (
       <table
         className={`${extraClassName ? extraClassName : ''}`}
