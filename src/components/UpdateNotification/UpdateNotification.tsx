@@ -9,7 +9,7 @@ export const UpdateNotification: React.FC = () => {
     updateAssets,
   } = useServiceWorker() as IServiceWorkerContext;
   return isUpdateAvailable ? (
-    <div className="max-w-lg fixed w-full bottom-0 mb-20">
+    <div className="fixed w-full bottom-0">
       <div
         className="p-2 bg-yellow-800 items-center text-yellow-100 leading-none flex justify-center items-center"
         role="alert"

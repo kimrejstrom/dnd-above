@@ -32,7 +32,7 @@ const CharacterListing = ({ url }: { url: string }) => {
               dispatch(loadInitialFormData(char));
               history.push(`${url}/step-1`);
             }}
-            className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-56 flex justify-between items-center flex-col custom-border custom-border-thin"
+            className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-40 h-56 flex justify-between items-center flex-col custom-border custom-border-thin"
           >
             <img
               className="rounded w-full h-24 object-cover object-top"
@@ -57,7 +57,7 @@ const CharacterListing = ({ url }: { url: string }) => {
             dispatch(setInitialFormData());
             history.push(`${url}/step-1`);
           }}
-          className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-56 flex justify-center items-center flex-col custom-border custom-border-thin"
+          className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-40 h-56 flex justify-center items-center flex-col custom-border custom-border-thin"
         >
           <span className="text-lg">Create</span>
           <div className="h-12 w-full flex justify-center text-3xl font-semibold rounded-lg mb-1 overflow-hidden">
