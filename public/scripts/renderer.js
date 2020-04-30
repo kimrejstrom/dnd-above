@@ -1150,10 +1150,10 @@ function Renderer() {
   this._renderDataHeader = function(textStack, name) {
     textStack[0] += `<table class="rd__b-data">`;
     textStack[0] += `<thead><tr><th class="rd__data-embed-header" colspan="6" onclick="((ele) => {
-						$(ele).find('.rd__data-embed-name').toggle();
-						$(ele).find('.rd__data-embed-toggle').text($(ele).text().includes('+') ? '[\u2013]' : '[+]');
-						$(ele).closest('table').find('tbody').toggle()
-					})(this)"><span style="display: none;" class="rd__data-embed-name">${name}</span><span class="rd__data-embed-toggle">[\u2013]</span></th></tr></thead><tbody>`;
+                          $(ele).find('.rd__data-embed-name').toggle();
+                          $(ele).find('.rd__data-embed-toggle').text($(ele).text().includes('+') ? '[\u2013]' : '[+]');
+                          $(ele).closest('table').find('tbody').toggle()
+                      })(this)"><span style="display: none;" class="rd__data-embed-name">${name}</span><span class="rd__data-embed-toggle">[\u2013]</span></th></tr></thead><tbody>`;
   };
 
   this._renderDataFooter = function(textStack) {
@@ -2035,34 +2035,37 @@ Renderer.utils = {
   getNameTr: (it, opts) => {
     opts = opts || {};
     return `<tr>
-			<th class="rnd-name name ${
-        opts.extraThClasses ? opts.extraThClasses.join(' ') : ''
-      }" colspan="6">
-				<div class="name-inner">
-					<div class="flex-v-center">
-						<span class="font-bold stats-name copyable">${opts.prefix ||
-              ''}${it._displayName || it.name}${opts.suffix || ''}</span>
-						${opts.pronouncePart || ''}
-					</div>
-					<span class="stats-source flex justify-end">
-						<span class="help--subtle ${
-              it.source
-                ? `${Parser.sourceJsonToColor(
-                    it.source,
-                  )}" title="${Parser.sourceJsonToFull(
-                    it.source,
-                  )}${Renderer.utils.getSourceSubText(it)}`
-                : ''
-            }">${it.source ? Parser.sourceJsonToAbv(it.source) : ''}</span>
-						${
-              it.page > 0
-                ? ` <span class="rd__stats-name-page ml-1" title="Page ${it.page}">p${it.page}</span>`
-                : ''
-            }
-					</span>
-				</div>
-			</th>
-		</tr>`;
+              <th class="rnd-name name ${
+                opts.extraThClasses ? opts.extraThClasses.join(' ') : ''
+              }" colspan="6">
+                  <div class="name-inner">
+                      <div class="flex-v-center">
+                          <span class="font-bold stats-name copyable">${opts.prefix ||
+                            ''}${it._displayName || it.name}${opts.suffix ||
+      ''}</span>
+                          ${opts.pronouncePart || ''}
+                      </div>
+                      <span class="stats-source flex justify-end">
+                          <span class="help--subtle ${
+                            it.source
+                              ? `${Parser.sourceJsonToColor(
+                                  it.source,
+                                )}" title="${Parser.sourceJsonToFull(
+                                  it.source,
+                                )}${Renderer.utils.getSourceSubText(it)}`
+                              : ''
+                          }">${
+      it.source ? Parser.sourceJsonToAbv(it.source) : ''
+    }</span>
+                          ${
+                            it.page > 0
+                              ? ` <span class="rd__stats-name-page ml-1" title="Page ${it.page}">p${it.page}</span>`
+                              : ''
+                          }
+                      </span>
+                  </div>
+              </th>
+          </tr>`;
   },
 
   getExcludedTr(it, dataProp) {
@@ -2458,11 +2461,11 @@ Renderer.feat = {
     const prerequisite = Renderer.utils.getPrerequisiteText(feat.prerequisite);
     Renderer.feat.mergeAbilityIncrease(feat);
     renderStack.push(`
-			${Renderer.utils.getExcludedTr(feat, 'feat')}
-			${Renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}
-			<tr class="text"><td colspan="6" class="text">
-			${prerequisite ? `<p><i>${prerequisite}</i></p>` : ''}
-		`);
+              ${Renderer.utils.getExcludedTr(feat, 'feat')}
+              ${Renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}
+              <tr class="text"><td colspan="6" class="text">
+              ${prerequisite ? `<p><i>${prerequisite}</i></p>` : ''}
+          `);
     renderer.recursiveRender({ entries: feat.entries }, renderStack, {
       depth: 2,
     });
@@ -2483,38 +2486,47 @@ Renderer.prototype.spell = {
     const renderStack = [];
 
     renderStack.push(`
-			${Renderer.utils.getExcludedTr(spell, 'spell')}
-			${Renderer.utils.getNameTr(spell, { page: UrlUtil.PG_SPELLS })}
-			<tr><td colspan="6">
-				<table class="w-full text-left">
-					<tr>
-						<th colspan="1">Level</th>
-						<th colspan="1">School</th>
-						<th colspan="2">Casting Time</th>
-						<th colspan="2">Range</th>
-					</tr>
-					<tr>
-						<td colspan="1">${Parser.spLevelToFull(spell.level)}${Parser.spMetaToFull(
-      spell.meta,
-    )}</td>
-						<td colspan="1">${Parser.spSchoolAndSubschoolsAbvsToFull(
-              spell.school,
-              spell.subschools,
-            )}</td>
-						<td colspan="2">${Parser.spTimeListToFull(spell.time)}</td>
-						<td colspan="2">${Parser.spRangeToFull(spell.range)}</td>
-					</tr>
-					<tr>
-						<th colspan="4">Components</th>
-						<th colspan="2">Duration</th>
-					</tr>
-					<tr>
-						<td colspan="4">${Parser.spComponentsToFull(spell.components, spell.level)}</td>
-						<td colspan="2">${Parser.spDurationToFull(spell.duration)}</td>
-					</tr>
-				</table>
-			</td></tr>
-		`);
+              ${Renderer.utils.getExcludedTr(spell, 'spell')}
+              ${Renderer.utils.getNameTr(spell, { page: UrlUtil.PG_SPELLS })}
+              <tr><td colspan="6">
+                  <table class="w-full text-left">
+                      <tr>
+                          <th colspan="1">Level</th>
+                          <th colspan="1">School</th>
+                          <th colspan="2">Casting Time</th>
+                          <th colspan="2">Range</th>
+                      </tr>
+                      <tr>
+                          <td colspan="1">${Parser.spLevelToFull(
+                            spell.level,
+                          )}${Parser.spMetaToFull(spell.meta)}</td>
+                          <td colspan="1">${Parser.spSchoolAndSubschoolsAbvsToFull(
+                            spell.school,
+                            spell.subschools,
+                          )}</td>
+                          <td colspan="2">${Parser.spTimeListToFull(
+                            spell.time,
+                          )}</td>
+                          <td colspan="2">${Parser.spRangeToFull(
+                            spell.range,
+                          )}</td>
+                      </tr>
+                      <tr>
+                          <th colspan="4">Components</th>
+                          <th colspan="2">Duration</th>
+                      </tr>
+                      <tr>
+                          <td colspan="4">${Parser.spComponentsToFull(
+                            spell.components,
+                            spell.level,
+                          )}</td>
+                          <td colspan="2">${Parser.spDurationToFull(
+                            spell.duration,
+                          )}</td>
+                      </tr>
+                  </table>
+              </td></tr>
+          `);
 
     renderStack.push(`<tr class="text"><td colspan="6" class="text">`);
     const entryList = { type: 'entries', entries: spell.entries };
@@ -2731,10 +2743,12 @@ Renderer.condition = {
     const renderStack = [];
 
     renderStack.push(`
-			${Renderer.utils.getExcludedTr(cond, cond.__prop || cond._type)}
-			${Renderer.utils.getNameTr(cond, { page: UrlUtil.PG_CONDITIONS_DISEASES })}
-			<tr class="text"><td colspan="6">
-		`);
+              ${Renderer.utils.getExcludedTr(cond, cond.__prop || cond._type)}
+              ${Renderer.utils.getNameTr(cond, {
+                page: UrlUtil.PG_CONDITIONS_DISEASES,
+              })}
+              <tr class="text"><td colspan="6">
+          `);
     renderer.recursiveRender({ entries: cond.entries }, renderStack);
     renderStack.push(`</td></tr>`);
 
@@ -2745,12 +2759,12 @@ Renderer.condition = {
 Renderer.prototype.background = {
   getCompactRenderedString(bg) {
     return `
-		${Renderer.utils.getExcludedTr(bg, 'background')}
-		${Renderer.utils.getNameTr(bg, { page: UrlUtil.PG_BACKGROUNDS })}
-		<tr class="text"><td colspan="6">
-		${Renderer.get().render({ type: 'entries', entries: bg.entries })}
-		</td></tr>
-		`;
+          ${Renderer.utils.getExcludedTr(bg, 'background')}
+          ${Renderer.utils.getNameTr(bg, { page: UrlUtil.PG_BACKGROUNDS })}
+          <tr class="text"><td colspan="6">
+          ${Renderer.get().render({ type: 'entries', entries: bg.entries })}
+          </td></tr>
+          `;
   },
 
   getSkillSummary(skillProfsArr, short, collectIn) {
@@ -2851,17 +2865,17 @@ Renderer.optionalfeature = {
     const renderStack = [];
 
     renderStack.push(`
-			${Renderer.utils.getExcludedTr(it, 'optionalfeature')}
-			${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_OPT_FEATURES })}
-			<tr class="text"><td colspan="6">
-			${
-        it.prerequisite
-          ? `<p><i>${Renderer.utils.getPrerequisiteText(
-              it.prerequisite,
-            )}</i></p>`
-          : ''
-      }
-		`);
+              ${Renderer.utils.getExcludedTr(it, 'optionalfeature')}
+              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_OPT_FEATURES })}
+              <tr class="text"><td colspan="6">
+              ${
+                it.prerequisite
+                  ? `<p><i>${Renderer.utils.getPrerequisiteText(
+                      it.prerequisite,
+                    )}</i></p>`
+                  : ''
+              }
+          `);
     renderer.recursiveRender({ entries: it.entries }, renderStack, {
       depth: 1,
     });
@@ -2884,10 +2898,10 @@ Renderer.reward = {
 
   getCompactRenderedString(reward) {
     return `
-			${Renderer.utils.getExcludedTr(reward, 'reward')}
-			${Renderer.utils.getNameTr(reward, { page: UrlUtil.PG_REWARDS })}
-			${Renderer.reward.getRenderedString(reward)}
-		`;
+              ${Renderer.utils.getExcludedTr(reward, 'reward')}
+              ${Renderer.utils.getNameTr(reward, { page: UrlUtil.PG_REWARDS })}
+              ${Renderer.reward.getRenderedString(reward)}
+          `;
   },
 };
 
@@ -2898,30 +2912,30 @@ Renderer.prototype.race = {
 
     const ability = renderer.getAbilityData(race.ability);
     renderStack.push(`<div><table>
-			${Renderer.utils.getExcludedTr(race, 'race')}
-			${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
-			${
-        !race._isBaseRace
-          ? `
-			<tr><td colspan="6">
-				<table class="text-left">
-					<tr>
-						<th class="col-4">Ability Scores</th>
-						<th class="col-4">Size</th>
-						<th class="col-4">Speed</th>
-					</tr>
-					<tr>
-						<td>${ability.asText}</td>
-						<td>${Parser.sizeAbvToFull(race.size)}</td>
-						<td>${Parser.getSpeedString(race)}</td>
-					</tr>
-				</table>
-      </td></tr></table>
-      </div>`
-          : ''
-      }
-			<div>
-    `);
+              ${Renderer.utils.getExcludedTr(race, 'race')}
+              ${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
+              ${
+                !race._isBaseRace
+                  ? `
+              <tr><td colspan="6">
+                  <table class="text-left">
+                      <tr>
+                          <th class="col-4">Ability Scores</th>
+                          <th class="col-4">Size</th>
+                          <th class="col-4">Speed</th>
+                      </tr>
+                      <tr>
+                          <td>${ability.asText}</td>
+                          <td>${Parser.sizeAbvToFull(race.size)}</td>
+                          <td>${Parser.getSpeedString(race)}</td>
+                      </tr>
+                  </table>
+        </td></tr></table>
+        </div>`
+                  : ''
+              }
+              <div>
+      `);
 
     if (withEntries) {
       race._isBaseRace
@@ -3212,27 +3226,27 @@ Renderer.deity = {
   getCompactRenderedString(deity) {
     const renderer = Renderer.get();
     return `
-			${Renderer.utils.getExcludedTr(deity, 'deity')}
-			${Renderer.utils.getNameTr(deity, {
-        suffix: deity.title ? `, ${deity.title.toTitleCase()}` : '',
-        page: UrlUtil.PG_DEITIES,
-      })}
-			<tr><td colspan="6">
-				<div class="rd__compact-stat">${Renderer.deity.getOrderedParts(
-          deity,
-          `<p>`,
-          `</p>`,
-        )}</div>
-			</td>
-			${
-        deity.entries
-          ? `<tr><td colspan="6"><div class="border"></div></td></tr><tr><td colspan="6">${renderer.render(
-              { entries: deity.entries },
-              1,
-            )}</td></tr>`
-          : ''
-      }
-		`;
+              ${Renderer.utils.getExcludedTr(deity, 'deity')}
+              ${Renderer.utils.getNameTr(deity, {
+                suffix: deity.title ? `, ${deity.title.toTitleCase()}` : '',
+                page: UrlUtil.PG_DEITIES,
+              })}
+              <tr><td colspan="6">
+                  <div class="rd__compact-stat">${Renderer.deity.getOrderedParts(
+                    deity,
+                    `<p>`,
+                    `</p>`,
+                  )}</div>
+              </td>
+              ${
+                deity.entries
+                  ? `<tr><td colspan="6"><div class="border"></div></td></tr><tr><td colspan="6">${renderer.render(
+                      { entries: deity.entries },
+                      1,
+                    )}</td></tr>`
+                  : ''
+              }
+          `;
   },
 };
 
@@ -3241,80 +3255,86 @@ Renderer.object = {
     const renderer = Renderer.get();
     const row2Width = 12 / (!!obj.resist + !!obj.vulnerable || 1);
     return `
-			${Renderer.utils.getExcludedTr(obj, 'object')}
-			${Renderer.utils.getNameTr(obj, { page: UrlUtil.PG_OBJECTS })}
-			<tr><td colspan="6">
-				<table class="summary striped-even">
-					<tr>
-						<th colspan="2" class="text-center">Type</th>
-						<th colspan="2" class="text-center">AC</th>
-						<th colspan="2" class="text-center">HP</th>
-						<th colspan="2" class="text-center">Speed</th>
-						<th colspan="4" class="text-center">Damage Imm.</th>
-					</tr>
-					<tr>
-						<td colspan="2" class="text-center">${Parser.sizeAbvToFull(
-              obj.size,
-            )} object</td>
-						<td colspan="2" class="text-center">${obj.ac}</td>
-						<td colspan="2" class="text-center">${obj.hp}</td>
-						<td colspan="2" class="text-center">${Parser.getSpeedString(obj)}</td>
-						<td colspan="4" class="text-center">${obj.immune}</td>
-					</tr>
-					${
-            Parser.ABIL_ABVS.some(ab => obj[ab] != null)
-              ? `
-					<tr>${Parser.ABIL_ABVS.map(
-            it =>
-              `<td colspan="2" class="text-center">${it.toUpperCase()}</td>`,
-          ).join('')}</tr>
-					<tr>${Parser.ABIL_ABVS.map(
-            it =>
-              `<td colspan="2" class="text-center">${Renderer.utils.getAbilityRoller(
-                obj,
-                it,
-              )}</td>`,
-          ).join('')}</tr>
-					`
-              : ''
-          }
-					${
-            obj.resist || obj.vulnerable
-              ? `
-					<tr>
-						${
-              obj.resist
-                ? `<th colspan="${row2Width}" class="text-center">Damage Res.</th>`
-                : ''
-            }
-						${
-              obj.vulnerable
-                ? `<th colspan="${row2Width}" class="text-center">Damage Vuln.</th>`
-                : ''
-            }
-					</tr>
-					<tr>
-						${
-              obj.resist
-                ? `<td colspan="${row2Width}" class="text-center">${obj.resist}</td>`
-                : ''
-            }
-						${
-              obj.vulnerable
-                ? `<td colspan="${row2Width}" class="text-center">${obj.vulnerable}</td>`
-                : ''
-            }
-					</tr>
-					`
-              : ''
-          }
-				</table>
-			</td></tr>
-			<tr class="text"><td colspan="6">
-			${obj.entries ? renderer.render({ entries: obj.entries }, 2) : ''}
-			${obj.actionEntries ? renderer.render({ entries: obj.actionEntries }, 2) : ''}
-			</td></tr>
-		`;
+              ${Renderer.utils.getExcludedTr(obj, 'object')}
+              ${Renderer.utils.getNameTr(obj, { page: UrlUtil.PG_OBJECTS })}
+              <tr><td colspan="6">
+                  <table class="summary striped-even">
+                      <tr>
+                          <th colspan="2" class="text-center">Type</th>
+                          <th colspan="2" class="text-center">AC</th>
+                          <th colspan="2" class="text-center">HP</th>
+                          <th colspan="2" class="text-center">Speed</th>
+                          <th colspan="4" class="text-center">Damage Imm.</th>
+                      </tr>
+                      <tr>
+                          <td colspan="2" class="text-center">${Parser.sizeAbvToFull(
+                            obj.size,
+                          )} object</td>
+                          <td colspan="2" class="text-center">${obj.ac}</td>
+                          <td colspan="2" class="text-center">${obj.hp}</td>
+                          <td colspan="2" class="text-center">${Parser.getSpeedString(
+                            obj,
+                          )}</td>
+                          <td colspan="4" class="text-center">${obj.immune}</td>
+                      </tr>
+                      ${
+                        Parser.ABIL_ABVS.some(ab => obj[ab] != null)
+                          ? `
+                      <tr>${Parser.ABIL_ABVS.map(
+                        it =>
+                          `<td colspan="2" class="text-center">${it.toUpperCase()}</td>`,
+                      ).join('')}</tr>
+                      <tr>${Parser.ABIL_ABVS.map(
+                        it =>
+                          `<td colspan="2" class="text-center">${Renderer.utils.getAbilityRoller(
+                            obj,
+                            it,
+                          )}</td>`,
+                      ).join('')}</tr>
+                      `
+                          : ''
+                      }
+                      ${
+                        obj.resist || obj.vulnerable
+                          ? `
+                      <tr>
+                          ${
+                            obj.resist
+                              ? `<th colspan="${row2Width}" class="text-center">Damage Res.</th>`
+                              : ''
+                          }
+                          ${
+                            obj.vulnerable
+                              ? `<th colspan="${row2Width}" class="text-center">Damage Vuln.</th>`
+                              : ''
+                          }
+                      </tr>
+                      <tr>
+                          ${
+                            obj.resist
+                              ? `<td colspan="${row2Width}" class="text-center">${obj.resist}</td>`
+                              : ''
+                          }
+                          ${
+                            obj.vulnerable
+                              ? `<td colspan="${row2Width}" class="text-center">${obj.vulnerable}</td>`
+                              : ''
+                          }
+                      </tr>
+                      `
+                          : ''
+                      }
+                  </table>
+              </td></tr>
+              <tr class="text"><td colspan="6">
+              ${obj.entries ? renderer.render({ entries: obj.entries }, 2) : ''}
+              ${
+                obj.actionEntries
+                  ? renderer.render({ entries: obj.actionEntries }, 2)
+                  : ''
+              }
+              </td></tr>
+          `;
   },
 };
 
@@ -3419,24 +3439,26 @@ Renderer.traphazard = {
     const renderer = Renderer.get();
     const subtitle = Renderer.traphazard.getSubtitle(it);
     return `
-			${Renderer.utils.getExcludedTr(
-        it,
-        it.__prop || (it._type === 't' ? 'trap' : 'hazard'),
-      )}
-			${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_TRAPS_HAZARDS })}
-			${
-        subtitle
-          ? `<tr class="text"><td colspan="6"><i>${subtitle}</i>${Renderer.traphazard.getSimplePart(
-              renderer,
-              it,
-            )}${Renderer.traphazard.getComplexPart(renderer, it)}</td>`
-          : ''
-      }
-			<tr class="text"><td colspan="6">${renderer.render(
-        { entries: it.entries },
-        2,
-      )}</td></tr>
-		`;
+              ${Renderer.utils.getExcludedTr(
+                it,
+                it.__prop || (it._type === 't' ? 'trap' : 'hazard'),
+              )}
+              ${Renderer.utils.getNameTr(it, {
+                page: UrlUtil.PG_TRAPS_HAZARDS,
+              })}
+              ${
+                subtitle
+                  ? `<tr class="text"><td colspan="6"><i>${subtitle}</i>${Renderer.traphazard.getSimplePart(
+                      renderer,
+                      it,
+                    )}${Renderer.traphazard.getComplexPart(renderer, it)}</td>`
+                  : ''
+              }
+              <tr class="text"><td colspan="6">${renderer.render(
+                { entries: it.entries },
+                2,
+              )}</td></tr>
+          `;
   },
 
   _trapTypes: new Set(['MECH', 'MAG', 'SMPL', 'CMPX']),
@@ -3509,12 +3531,12 @@ Renderer.cultboon = {
         depth: 2,
       });
       return `
-			${Renderer.utils.getExcludedTr(it, 'cult')}
-			${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
-			<tr id="text"><td class="divider" colspan="6"><div></div></td></tr>
-			<tr class='text'><td colspan='6' class='text'>${renderStack.join(
-        '',
-      )}</td></tr>`;
+              ${Renderer.utils.getExcludedTr(it, 'cult')}
+              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
+              <tr id="text"><td class="divider" colspan="6"><div></div></td></tr>
+              <tr class='text'><td colspan='6' class='text'>${renderStack.join(
+                '',
+              )}</td></tr>`;
     } else if (it._type === 'b') {
       Renderer.cultboon.doRenderBoonParts(it, renderer, renderStack);
       renderer.recursiveRender({ entries: it.entries }, renderStack, {
@@ -3523,9 +3545,11 @@ Renderer.cultboon = {
       it._displayName =
         it._displayName || `${it.type || 'Demonic Boon'}: ${it.name}`;
       return `
-			${Renderer.utils.getExcludedTr(it, 'boon')}
-			${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
-			<tr class='text'><td colspan='6'>${renderStack.join('')}</td></tr>`;
+              ${Renderer.utils.getExcludedTr(it, 'boon')}
+              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
+              <tr class='text'><td colspan='6'>${renderStack.join(
+                '',
+              )}</td></tr>`;
     }
   },
 };
@@ -3820,18 +3844,20 @@ Renderer.monster = {
     const noteKey = `${key}Note`;
     return mon[key]
       ? `
-		<tr class="mon__stat-header-underline"><td colspan="6"><span class="mon__sect-header-inner">${title}${
+          <tr class="mon__stat-header-underline"><td colspan="6"><span class="mon__sect-header-inner">${title}${
           mon[noteKey] ? ` (<span class="small">${mon[noteKey]}</span>)` : ''
         }</span></td></tr>
-		<tr class="text compact"><td colspan="6">
-		${
-      key === 'legendary' && mon.legendary
-        ? `<p>${Renderer.monster.getLegendaryActionIntro(mon)}</p>`
-        : ''
-    }
-		${mon[key].map(it => it.rendered || renderer.render(it, depth)).join('')}
-		</td></tr>
-		`
+          <tr class="text compact"><td colspan="6">
+          ${
+            key === 'legendary' && mon.legendary
+              ? `<p>${Renderer.monster.getLegendaryActionIntro(mon)}</p>`
+              : ''
+          }
+          ${mon[key]
+            .map(it => it.rendered || renderer.render(it, depth))
+            .join('')}
+          </td></tr>
+          `
       : '';
   },
 
@@ -3865,178 +3891,204 @@ Renderer.monster = {
     const isCrHidden = Parser.crToNumber(mon.cr) === 100;
 
     renderStack.push(`
-			${Renderer.utils.getExcludedTr(mon, 'monster')}
-			${Renderer.utils.getNameTr(mon, { page: UrlUtil.PG_BESTIARY })}
-			<tr><td colspan="6"><i>${Renderer.monster.getTypeAlignmentPart(
-        mon,
-      )}</i></td></tr>
-			<tr><td colspan="6"><div class="border"></div></td></tr>
-			<tr><td colspan="6">
-				<table class="summary-noback" style="position: relative;">
-					<tr>
-						<th>Armor Class</th>
-						<th>Hit Points</th>
-						<th>Speed</th>
-						${isCrHidden ? '' : '<th>Challenge Rating</th>'}
-					</tr>
-					<tr>
-						<td>${Parser.acToFull(mon.ac)}</td>
-						<td>${Renderer.monster.getRenderedHp(mon.hp)}</td>
-						<td>${Parser.getSpeedString(mon)}</td>
-						${
-              isCrHidden
-                ? ''
-                : `
-						<td>
-							${Parser.monCrToFull(mon.cr)}
-							${
-                options.showScaler &&
-                Parser.isValidCr(mon.cr ? mon.cr.cr || mon.cr : null)
-                  ? `
-							<button title="Scale Creature By CR (Highly Experimental)" class="mon__btn-scale-cr btn btn-xs btn-default">
-								<span class="glyphicon glyphicon-signal"></span>
-							</button>
-							`
+              ${Renderer.utils.getExcludedTr(mon, 'monster')}
+              ${Renderer.utils.getNameTr(mon, { page: UrlUtil.PG_BESTIARY })}
+              <tr><td colspan="6"><i>${Renderer.monster.getTypeAlignmentPart(
+                mon,
+              )}</i></td></tr>
+              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6">
+                  <table class="summary-noback" style="position: relative;">
+                      <tr>
+                          <th>Armor Class</th>
+                          <th>Hit Points</th>
+                          <th>Speed</th>
+                          ${isCrHidden ? '' : '<th>Challenge Rating</th>'}
+                      </tr>
+                      <tr>
+                          <td>${Parser.acToFull(mon.ac)}</td>
+                          <td>${Renderer.monster.getRenderedHp(mon.hp)}</td>
+                          <td>${Parser.getSpeedString(mon)}</td>
+                          ${
+                            isCrHidden
+                              ? ''
+                              : `
+                          <td>
+                              ${Parser.monCrToFull(mon.cr)}
+                              ${
+                                options.showScaler &&
+                                Parser.isValidCr(
+                                  mon.cr ? mon.cr.cr || mon.cr : null,
+                                )
+                                  ? `
+                              <button title="Scale Creature By CR (Highly Experimental)" class="mon__btn-scale-cr btn btn-xs btn-default">
+                                  <span class="glyphicon glyphicon-signal"></span>
+                              </button>
+                              `
+                                  : ''
+                              }
+                              ${
+                                options.isScaled
+                                  ? `
+                              <button title="Reset CR Scaling" class="mon__btn-reset-cr btn btn-xs btn-default">
+                                  <span class="glyphicon glyphicon-refresh"></span>
+                              </button>
+                              `
+                                  : ''
+                              }
+                          </td>
+                          `
+                          }
+                      </tr>
+                  </table>
+              </td></tr>
+              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6">
+                  <table class="summary striped-even">
+                      <tr>
+                          <th class="col-2 text-center">STR</th>
+                          <th class="col-2 text-center">DEX</th>
+                          <th class="col-2 text-center">CON</th>
+                          <th class="col-2 text-center">INT</th>
+                          <th class="col-2 text-center">WIS</th>
+                          <th class="col-2 text-center">CHA</th>
+                      </tr>
+                      <tr>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'str',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'dex',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'con',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'int',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'wis',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            mon,
+                            'cha',
+                          )}</td>
+                      </tr>
+                  </table>
+              </td></tr>
+              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6">
+                  <div class="rd__compact-stat">
+                      ${
+                        mon.save
+                          ? `<p><b>Saving Throws</b> ${Renderer.monster.getSavesPart(
+                              mon,
+                            )}</p>`
+                          : ''
+                      }
+                      ${
+                        mon.skill
+                          ? `<p><b>Skills</b> ${Renderer.monster.getSkillsString(
+                              renderer,
+                              mon,
+                            )}</p>`
+                          : ''
+                      }
+                      ${
+                        mon.vulnerable
+                          ? `<p><b>Damage Vuln.</b> ${Parser.monImmResToFull(
+                              mon.vulnerable,
+                            )}</p>`
+                          : ''
+                      }
+                      ${
+                        mon.resist
+                          ? `<p><b>Damage Res.</b> ${Parser.monImmResToFull(
+                              mon.resist,
+                            )}</p>`
+                          : ''
+                      }
+                      ${
+                        mon.immune
+                          ? `<p><b>Damage Imm.</b> ${Parser.monImmResToFull(
+                              mon.immune,
+                            )}</p>`
+                          : ''
+                      }
+                      ${
+                        mon.conditionImmune
+                          ? `<p><b>Condition Imm.</b> ${Parser.monCondImmToFull(
+                              mon.conditionImmune,
+                            )}</p>`
+                          : ''
+                      }
+                      <p><b>Senses</b> ${Renderer.monster.getSensesPart(
+                        mon,
+                      )}</p>
+                      <p><b>Languages</b> ${Renderer.monster.getRenderedLanguages(
+                        mon.languages,
+                      )}</p>
+                  </div>
+              </td></tr>
+              ${
+                mon.trait || mon.spellcasting
+                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr class="text compact"><td colspan="6">
+              ${Renderer.monster
+                .getOrderedTraits(mon, renderer)
+                .map(it => it.rendered || renderer.render(it, 2))
+                .join('')}
+              </td></tr>`
                   : ''
               }
-							${
-                options.isScaled
+              ${Renderer.monster.getCompactRenderedStringSection(
+                mon,
+                renderer,
+                'Actions',
+                'action',
+                2,
+              )}
+              ${Renderer.monster.getCompactRenderedStringSection(
+                mon,
+                renderer,
+                'Reactions',
+                'reaction',
+                2,
+              )}
+              ${Renderer.monster.getCompactRenderedStringSection(
+                mon,
+                renderer,
+                'Legendary Actions',
+                'legendary',
+                2,
+              )}
+              ${
+                mon.variant || (mon.dragonCastingColor && !mon.spellcasting)
                   ? `
-							<button title="Reset CR Scaling" class="mon__btn-reset-cr btn btn-xs btn-default">
-								<span class="glyphicon glyphicon-refresh"></span>
-							</button>
-							`
+              <tr class="text compact"><td colspan="6">
+              ${
+                mon.variant
+                  ? mon.variant
+                      .map(it => it.rendered || renderer.render(it))
+                      .join('')
                   : ''
               }
-						</td>
-						`
-            }
-					</tr>
-				</table>
-			</td></tr>
-			<tr><td colspan="6"><div class="border"></div></td></tr>
-			<tr><td colspan="6">
-				<table class="summary striped-even">
-					<tr>
-						<th class="col-2 text-center">STR</th>
-						<th class="col-2 text-center">DEX</th>
-						<th class="col-2 text-center">CON</th>
-						<th class="col-2 text-center">INT</th>
-						<th class="col-2 text-center">WIS</th>
-						<th class="col-2 text-center">CHA</th>
-					</tr>
-					<tr>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'str')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'dex')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'con')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'int')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'wis')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(mon, 'cha')}</td>
-					</tr>
-				</table>
-			</td></tr>
-			<tr><td colspan="6"><div class="border"></div></td></tr>
-			<tr><td colspan="6">
-				<div class="rd__compact-stat">
-					${
-            mon.save
-              ? `<p><b>Saving Throws</b> ${Renderer.monster.getSavesPart(
-                  mon,
-                )}</p>`
-              : ''
-          }
-					${
-            mon.skill
-              ? `<p><b>Skills</b> ${Renderer.monster.getSkillsString(
-                  renderer,
-                  mon,
-                )}</p>`
-              : ''
-          }
-					${
-            mon.vulnerable
-              ? `<p><b>Damage Vuln.</b> ${Parser.monImmResToFull(
-                  mon.vulnerable,
-                )}</p>`
-              : ''
-          }
-					${
-            mon.resist
-              ? `<p><b>Damage Res.</b> ${Parser.monImmResToFull(
-                  mon.resist,
-                )}</p>`
-              : ''
-          }
-					${
-            mon.immune
-              ? `<p><b>Damage Imm.</b> ${Parser.monImmResToFull(
-                  mon.immune,
-                )}</p>`
-              : ''
-          }
-					${
-            mon.conditionImmune
-              ? `<p><b>Condition Imm.</b> ${Parser.monCondImmToFull(
-                  mon.conditionImmune,
-                )}</p>`
-              : ''
-          }
-					<p><b>Senses</b> ${Renderer.monster.getSensesPart(mon)}</p>
-					<p><b>Languages</b> ${Renderer.monster.getRenderedLanguages(mon.languages)}</p>
-				</div>
-			</td></tr>
-			${
-        mon.trait || mon.spellcasting
-          ? `<tr><td colspan="6"><div class="border"></div></td></tr>
-			<tr class="text compact"><td colspan="6">
-			${Renderer.monster
-        .getOrderedTraits(mon, renderer)
-        .map(it => it.rendered || renderer.render(it, 2))
-        .join('')}
-			</td></tr>`
-          : ''
-      }
-			${Renderer.monster.getCompactRenderedStringSection(
-        mon,
-        renderer,
-        'Actions',
-        'action',
-        2,
-      )}
-			${Renderer.monster.getCompactRenderedStringSection(
-        mon,
-        renderer,
-        'Reactions',
-        'reaction',
-        2,
-      )}
-			${Renderer.monster.getCompactRenderedStringSection(
-        mon,
-        renderer,
-        'Legendary Actions',
-        'legendary',
-        2,
-      )}
-			${
-        mon.variant || (mon.dragonCastingColor && !mon.spellcasting)
-          ? `
-			<tr class="text compact"><td colspan="6">
-			${
-        mon.variant
-          ? mon.variant.map(it => it.rendered || renderer.render(it)).join('')
-          : ''
-      }
-			${
-        mon.dragonCastingColor
-          ? Renderer.monster.getDragonCasterVariant(renderer, mon)
-          : ''
-      }
-			${mon.footer ? renderer.render({ entries: mon.footer }) : ''}
-			</td></tr>
-			`
-          : ''
-      }
-		`);
+              ${
+                mon.dragonCastingColor
+                  ? Renderer.monster.getDragonCasterVariant(renderer, mon)
+                  : ''
+              }
+              ${mon.footer ? renderer.render({ entries: mon.footer }) : ''}
+              </td></tr>
+              `
+                  : ''
+              }
+          `);
 
     return renderStack.join('');
   },
@@ -4562,27 +4614,30 @@ Renderer.prototype.item = {
         (item.entries && item.entries.length));
 
     return `
-		${Renderer.utils.getExcludedTr(item, 'item')}
-		${Renderer.utils.getNameTr(item)}
-		<tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
-      item,
-    )}</td></tr>
-		<tr>
-			<td colspan="2">${[Parser.itemValueToFull(item), Parser.itemWeightToFull(item)]
-        .filter(Boolean)
-        .join(', ')}</td>
-		</tr>
-    <tr><td colspan="6">${damage}</td></tr>
-    <tr><td colspan="6">${damageType}</td></tr>
-    <tr><td colspan="6">${propertiesTxt}</td></tr>
-		${
-      hasEntries
-        ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
+          ${Renderer.utils.getExcludedTr(item, 'item')}
+          ${Renderer.utils.getNameTr(item)}
+          <tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
             item,
-            true,
-          )}</td></tr>`
-        : ''
-    }`;
+          )}</td></tr>
+          <tr>
+              <td colspan="2">${[
+                Parser.itemValueToFull(item),
+                Parser.itemWeightToFull(item),
+              ]
+                .filter(Boolean)
+                .join(', ')}</td>
+          </tr>
+      <tr><td colspan="6">${damage}</td></tr>
+      <tr><td colspan="6">${damageType}</td></tr>
+      <tr><td colspan="6">${propertiesTxt}</td></tr>
+          ${
+            hasEntries
+              ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
+                  item,
+                  true,
+                )}</td></tr>`
+              : ''
+          }`;
   },
 
   _hiddenRarity: new Set(['None', 'Unknown', 'Unknown (Magic)', 'Varies']),
@@ -4746,25 +4801,28 @@ Renderer.psionic = {
 
   getCompactRenderedString(psi) {
     return `
-			${Renderer.utils.getExcludedTr(psi, 'psionic')}
-			${Renderer.utils.getNameTr(psi, { page: UrlUtil.PG_PSIONICS })}
-			<tr class="text"><td colspan="6">
-			<p><i>${Renderer.psionic.getTypeOrderString(psi)}</i></p>
-			${Renderer.psionic.getBodyText(psi, Renderer.get().setFirstSection(true))}
-			</td></tr>
-		`;
+              ${Renderer.utils.getExcludedTr(psi, 'psionic')}
+              ${Renderer.utils.getNameTr(psi, { page: UrlUtil.PG_PSIONICS })}
+              <tr class="text"><td colspan="6">
+              <p><i>${Renderer.psionic.getTypeOrderString(psi)}</i></p>
+              ${Renderer.psionic.getBodyText(
+                psi,
+                Renderer.get().setFirstSection(true),
+              )}
+              </td></tr>
+          `;
   },
 };
 
 Renderer.rule = {
   getCompactRenderedString(rule) {
     return `
-			<tr><td colspan="6">
-			${Renderer.get()
-        .setFirstSection(true)
-        .render(rule)}
-			</td></tr>
-		`;
+              <tr><td colspan="6">
+              ${Renderer.get()
+                .setFirstSection(true)
+                .render(rule)}
+              </td></tr>
+          `;
   },
 };
 
@@ -4773,14 +4831,16 @@ Renderer.variantrule = {
     const cpy = MiscUtil.copy(rule);
     delete cpy.name;
     return `
-			${Renderer.utils.getExcludedTr(rule, 'variantrule')}
-			${Renderer.utils.getNameTr(rule, { page: UrlUtil.PG_VARIATNRULES })}
-			<tr><td colspan="6">
-			${Renderer.get()
-        .setFirstSection(true)
-        .render(cpy)}
-			</td></tr>
-		`;
+              ${Renderer.utils.getExcludedTr(rule, 'variantrule')}
+              ${Renderer.utils.getNameTr(rule, {
+                page: UrlUtil.PG_VARIATNRULES,
+              })}
+              <tr><td colspan="6">
+              ${Renderer.get()
+                .setFirstSection(true)
+                .render(cpy)}
+              </td></tr>
+          `;
   },
 };
 
@@ -4790,14 +4850,14 @@ Renderer.table = {
     const cpy = MiscUtil.copy(it);
     delete cpy.name;
     return `
-			${Renderer.utils.getExcludedTr(it, 'table')}
-			${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_TABLES })}
-			<tr><td colspan="6">
-			${Renderer.get()
-        .setFirstSection(true)
-        .render(it)}
-			</td></tr>
-		`;
+              ${Renderer.utils.getExcludedTr(it, 'table')}
+              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_TABLES })}
+              <tr><td colspan="6">
+              ${Renderer.get()
+                .setFirstSection(true)
+                .render(it)}
+              </td></tr>
+          `;
   },
 };
 
@@ -4833,24 +4893,24 @@ Renderer.vehicle = {
     function getSectionHpPart(sect, each) {
       if (!sect.ac && !sect.hp) return '';
       return `
-				<div><b>Armor Class</b> ${sect.ac}</div>
-				<div><b>Hit Points</b> ${sect.hp}${each ? ` each` : ''}${
+                  <div><b>Armor Class</b> ${sect.ac}</div>
+                  <div><b>Hit Points</b> ${sect.hp}${each ? ` each` : ''}${
         sect.dt ? ` (damage threshold ${sect.dt})` : ''
       }${sect.hpNote ? `; ${sect.hpNote}` : ''}</div>
-			`;
+              `;
     }
 
     function getControlSection(control) {
       if (!control) return '';
       return `
-				<tr class="mon__stat-header-underline"><td colspan="6"><span>Control: ${
-          control.name
-        }</span></td></tr>
-				<tr><td colspan="6">
-				${getSectionHpPart(control)}
-				<div>${renderer.render({ entries: control.entries })}</div>
-				</td></tr>
-			`;
+                  <tr class="mon__stat-header-underline"><td colspan="6"><span>Control: ${
+                    control.name
+                  }</span></td></tr>
+                  <tr><td colspan="6">
+                  ${getSectionHpPart(control)}
+                  <div>${renderer.render({ entries: control.entries })}</div>
+                  </td></tr>
+              `;
     }
 
     function getMovementSection(move) {
@@ -4887,114 +4947,141 @@ Renderer.vehicle = {
       }
 
       return `
-				<tr class="mon__stat-header-underline"><td colspan="6"><span>${
-          move.isControl ? `Control and ` : ''
-        }Movement: ${move.name}</span></td></tr>
-				<tr><td colspan="6">
-				${getSectionHpPart(move)}
-				${(move.locomotion || []).map(getLocomotionSection)}
-				${(move.speed || []).map(getSpeedSection)}
-				</td></tr>
-			`;
+                  <tr class="mon__stat-header-underline"><td colspan="6"><span>${
+                    move.isControl ? `Control and ` : ''
+                  }Movement: ${move.name}</span></td></tr>
+                  <tr><td colspan="6">
+                  ${getSectionHpPart(move)}
+                  ${(move.locomotion || []).map(getLocomotionSection)}
+                  ${(move.speed || []).map(getSpeedSection)}
+                  </td></tr>
+              `;
     }
 
     function getWeaponSection(weap) {
       return `
-				<tr class="mon__stat-header-underline"><td colspan="6"><span>Weapons: ${
-          weap.name
-        }${weap.count ? ` (${weap.count})` : ''}</span></td></tr>
-				<tr><td colspan="6">
-				${getSectionHpPart(weap, !!weap.count)}
-				${renderer.render({ entries: weap.entries })}
-				</td></tr>
-			`;
+                  <tr class="mon__stat-header-underline"><td colspan="6"><span>Weapons: ${
+                    weap.name
+                  }${weap.count ? ` (${weap.count})` : ''}</span></td></tr>
+                  <tr><td colspan="6">
+                  ${getSectionHpPart(weap, !!weap.count)}
+                  ${renderer.render({ entries: weap.entries })}
+                  </td></tr>
+              `;
     }
 
     function getOtherSection(oth) {
       return `
-				<tr class="mon__stat-header-underline"><td colspan="6"><span>${
-          oth.name
-        }</span></td></tr>
-				<tr><td colspan="6">
-				${getSectionHpPart(oth)}
-				${renderer.render({ entries: oth.entries })}
-				</td></tr>
-			`;
+                  <tr class="mon__stat-header-underline"><td colspan="6"><span>${
+                    oth.name
+                  }</span></td></tr>
+                  <tr><td colspan="6">
+                  ${getSectionHpPart(oth)}
+                  ${renderer.render({ entries: oth.entries })}
+                  </td></tr>
+              `;
     }
 
     return `
-			${Renderer.utils.getExcludedTr(veh, 'vehicle')}
-			${Renderer.utils.getNameTr(veh, {
-        extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
-        page: UrlUtil.PG_VEHICLES,
-      })}
-			<tr class="text"><td colspan="6"><i>${Parser.sizeAbvToFull(veh.size)} vehicle${
+              ${Renderer.utils.getExcludedTr(veh, 'vehicle')}
+              ${Renderer.utils.getNameTr(veh, {
+                extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
+                page: UrlUtil.PG_VEHICLES,
+              })}
+              <tr class="text"><td colspan="6"><i>${Parser.sizeAbvToFull(
+                veh.size,
+              )} vehicle${
       veh.dimensions ? ` (${veh.dimensions.join(' by ')})` : ''
     }</i><br></td></tr>
-			<tr class="text"><td colspan="6">
-				<div><b>Creature Capacity</b> ${veh.capCrew} crew${
+              <tr class="text"><td colspan="6">
+                  <div><b>Creature Capacity</b> ${veh.capCrew} crew${
       veh.capPassenger ? `, ${veh.capPassenger} passengers` : ''
     }</div>
-				${
-          veh.capCargo
-            ? `<div><b>Cargo Capacity</b> ${
-                typeof veh.capCargo === 'string'
-                  ? veh.capCargo
-                  : `${veh.capCargo} ton${veh.capCargo === 1 ? '' : 's'}`
-              }</div>`
-            : ''
-        }
-				<div><b>Travel Pace</b> ${veh.pace} miles per hour (${veh.pace *
-      24} miles per day)</div>
-			</td></tr>
-			<tr><td colspan="6">
-				<table class="summary striped-even">
-					<tr>
-						<th class="col-2 text-center">STR</th>
-						<th class="col-2 text-center">DEX</th>
-						<th class="col-2 text-center">CON</th>
-						<th class="col-2 text-center">INT</th>
-						<th class="col-2 text-center">WIS</th>
-						<th class="col-2 text-center">CHA</th>
-					</tr>
-					<tr>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'str')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'dex')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'con')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'int')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'wis')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'cha')}</td>
-					</tr>
-				</table>
-			</td></tr>
-			<tr class="text"><td colspan="6">
-				${
-          veh.immune
-            ? `<div><b>Damage Immunities</b> ${Parser.monImmResToFull(
-                veh.immune,
-              )}</div>`
-            : ''
-        }
-				${
-          veh.conditionImmune
-            ? `<div><b>Condition Immunities</b> ${Parser.monCondImmToFull(
-                veh.conditionImmune,
-              )}</div>`
-            : ''
-        }
-			</td></tr>
-			${veh.action ? getSectionTitle('Actions') : ''}
-			${veh.action ? `<tr><td colspan="6">${getActionPart()}</td></tr>` : ''}
-			${getSectionTitle('Hull')}
-			<tr><td colspan="6">
-			${getSectionHpPart(veh.hull)}
-			</td></tr>
-			${(veh.control || []).map(getControlSection).join('')}
-			${(veh.movement || []).map(getMovementSection).join('')}
-			${(veh.weapon || []).map(getWeaponSection).join('')}
-			${(veh.other || []).map(getOtherSection).join('')}
-			${Renderer.utils.getPageTr(veh)}
-		`;
+                  ${
+                    veh.capCargo
+                      ? `<div><b>Cargo Capacity</b> ${
+                          typeof veh.capCargo === 'string'
+                            ? veh.capCargo
+                            : `${veh.capCargo} ton${
+                                veh.capCargo === 1 ? '' : 's'
+                              }`
+                        }</div>`
+                      : ''
+                  }
+                  <div><b>Travel Pace</b> ${
+                    veh.pace
+                  } miles per hour (${veh.pace * 24} miles per day)</div>
+              </td></tr>
+              <tr><td colspan="6">
+                  <table class="summary striped-even">
+                      <tr>
+                          <th class="col-2 text-center">STR</th>
+                          <th class="col-2 text-center">DEX</th>
+                          <th class="col-2 text-center">CON</th>
+                          <th class="col-2 text-center">INT</th>
+                          <th class="col-2 text-center">WIS</th>
+                          <th class="col-2 text-center">CHA</th>
+                      </tr>
+                      <tr>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'str',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'dex',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'con',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'int',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'wis',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'cha',
+                          )}</td>
+                      </tr>
+                  </table>
+              </td></tr>
+              <tr class="text"><td colspan="6">
+                  ${
+                    veh.immune
+                      ? `<div><b>Damage Immunities</b> ${Parser.monImmResToFull(
+                          veh.immune,
+                        )}</div>`
+                      : ''
+                  }
+                  ${
+                    veh.conditionImmune
+                      ? `<div><b>Condition Immunities</b> ${Parser.monCondImmToFull(
+                          veh.conditionImmune,
+                        )}</div>`
+                      : ''
+                  }
+              </td></tr>
+              ${veh.action ? getSectionTitle('Actions') : ''}
+              ${
+                veh.action
+                  ? `<tr><td colspan="6">${getActionPart()}</td></tr>`
+                  : ''
+              }
+              ${getSectionTitle('Hull')}
+              <tr><td colspan="6">
+              ${getSectionHpPart(veh.hull)}
+              </td></tr>
+              ${(veh.control || []).map(getControlSection).join('')}
+              ${(veh.movement || []).map(getMovementSection).join('')}
+              ${(veh.weapon || []).map(getWeaponSection).join('')}
+              ${(veh.other || []).map(getOtherSection).join('')}
+              ${Renderer.utils.getPageTr(veh)}
+          `;
   },
 
   _getRenderedString_infwar(veh, opts) {
@@ -5002,88 +5089,110 @@ Renderer.vehicle = {
     const dexMod = Parser.getAbilityModNumber(veh.dex);
 
     return `
-			${Renderer.utils.getExcludedTr(veh, 'vehicle')}
-			${Renderer.utils.getNameTr(veh, {
-        extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
-        page: UrlUtil.PG_VEHICLES,
-      })}
-			<tr class="text"><td colspan="6"><i>${Parser.sizeAbvToFull(
-        veh.size,
-      )} vehicle (${veh.weight.toLocaleString()} lb.)</i><br></td></tr>
-			<tr class="text"><td colspan="6">
-				<div><b>Creature Capacity</b> ${veh.capCreature} Medium creatures</div>
-				<div><b>Cargo Capacity</b> ${Parser.weightToFull(veh.capCargo)}</div>
-				<div><b>Armor Class</b> ${
-          dexMod === 0 ? `19` : `${19 + dexMod} (19 while motionless)`
-        }</div>
-				<div><b>Hit Points</b> ${veh.hp.hp} (damage threshold ${
+              ${Renderer.utils.getExcludedTr(veh, 'vehicle')}
+              ${Renderer.utils.getNameTr(veh, {
+                extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
+                page: UrlUtil.PG_VEHICLES,
+              })}
+              <tr class="text"><td colspan="6"><i>${Parser.sizeAbvToFull(
+                veh.size,
+              )} vehicle (${veh.weight.toLocaleString()} lb.)</i><br></td></tr>
+              <tr class="text"><td colspan="6">
+                  <div><b>Creature Capacity</b> ${
+                    veh.capCreature
+                  } Medium creatures</div>
+                  <div><b>Cargo Capacity</b> ${Parser.weightToFull(
+                    veh.capCargo,
+                  )}</div>
+                  <div><b>Armor Class</b> ${
+                    dexMod === 0 ? `19` : `${19 + dexMod} (19 while motionless)`
+                  }</div>
+                  <div><b>Hit Points</b> ${veh.hp.hp} (damage threshold ${
       veh.hp.dt
     }, mishap threshold ${veh.hp.mt})</div>
-				<div><b>Speed</b> ${veh.speed} ft.</div>
-			</td></tr>
-			<tr><td colspan="6">
-				<table class="summary striped-even">
-					<tr>
-						<th class="col-2 text-center">STR</th>
-						<th class="col-2 text-center">DEX</th>
-						<th class="col-2 text-center">CON</th>
-						<th class="col-2 text-center">INT</th>
-						<th class="col-2 text-center">WIS</th>
-						<th class="col-2 text-center">CHA</th>
-					</tr>
-					<tr>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'str')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'dex')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'con')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'int')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'wis')}</td>
-						<td class="text-center">${Renderer.utils.getAbilityRoller(veh, 'cha')}</td>
-					</tr>
-				</table>
-			</td></tr>
-			<tr class="text"><td colspan="6">
-				${
-          veh.immune
-            ? `<div><b>Damage Immunities</b> ${Parser.monImmResToFull(
-                veh.immune,
-              )}</div>`
-            : ''
-        }
-				${
-          veh.conditionImmune
-            ? `<div><b>Condition Immunities</b> ${Parser.monCondImmToFull(
-                veh.conditionImmune,
-              )}</div>`
-            : ''
-        }
-			</td></tr>
-			${
-        veh.trait
-          ? `<tr><td colspan="6"><div class="border"></div></td></tr>
-			<tr class="text compact"><td colspan="6">
-			${Renderer.monster
-        .getOrderedTraits(veh, renderer)
-        .map(it => it.rendered || renderer.render(it, 2))
-        .join('')}
-			</td></tr>`
-          : ''
-      }
-			${Renderer.monster.getCompactRenderedStringSection(
-        veh,
-        renderer,
-        'Action Stations',
-        'actionStation',
-        2,
-      )}
-			${Renderer.monster.getCompactRenderedStringSection(
-        veh,
-        renderer,
-        'Reactions',
-        'reaction',
-        2,
-      )}
-			${Renderer.utils.getPageTr(veh)}
-		`;
+                  <div><b>Speed</b> ${veh.speed} ft.</div>
+              </td></tr>
+              <tr><td colspan="6">
+                  <table class="summary striped-even">
+                      <tr>
+                          <th class="col-2 text-center">STR</th>
+                          <th class="col-2 text-center">DEX</th>
+                          <th class="col-2 text-center">CON</th>
+                          <th class="col-2 text-center">INT</th>
+                          <th class="col-2 text-center">WIS</th>
+                          <th class="col-2 text-center">CHA</th>
+                      </tr>
+                      <tr>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'str',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'dex',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'con',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'int',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'wis',
+                          )}</td>
+                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                            veh,
+                            'cha',
+                          )}</td>
+                      </tr>
+                  </table>
+              </td></tr>
+              <tr class="text"><td colspan="6">
+                  ${
+                    veh.immune
+                      ? `<div><b>Damage Immunities</b> ${Parser.monImmResToFull(
+                          veh.immune,
+                        )}</div>`
+                      : ''
+                  }
+                  ${
+                    veh.conditionImmune
+                      ? `<div><b>Condition Immunities</b> ${Parser.monCondImmToFull(
+                          veh.conditionImmune,
+                        )}</div>`
+                      : ''
+                  }
+              </td></tr>
+              ${
+                veh.trait
+                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr class="text compact"><td colspan="6">
+              ${Renderer.monster
+                .getOrderedTraits(veh, renderer)
+                .map(it => it.rendered || renderer.render(it, 2))
+                .join('')}
+              </td></tr>`
+                  : ''
+              }
+              ${Renderer.monster.getCompactRenderedStringSection(
+                veh,
+                renderer,
+                'Action Stations',
+                'actionStation',
+                2,
+              )}
+              ${Renderer.monster.getCompactRenderedStringSection(
+                veh,
+                renderer,
+                'Reactions',
+                'reaction',
+                2,
+              )}
+              ${Renderer.utils.getPageTr(veh)}
+          `;
   },
 };
 
@@ -5095,9 +5204,9 @@ Renderer.action = {
       it,
       'action',
     )}${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_ACTIONS })}
-		<tr><td colspan="6">${Renderer.get()
-      .setFirstSection(true)
-      .render(cpy)}</td></tr>`;
+          <tr><td colspan="6">${Renderer.get()
+            .setFirstSection(true)
+            .render(cpy)}</td></tr>`;
   },
 };
 
@@ -5126,42 +5235,42 @@ Renderer.language = {
       allEntries.push('{@i No information available.}');
 
     return `
-		${Renderer.utils.getExcludedTr(it, 'language')}
-		${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_LANGUAGES })}
-		${
-      it.type
-        ? `<tr class="text"><td colspan="6" class="pt-0"><i>${it.type.toTitleCase()} language</i></td></tr>`
-        : ''
-    }
-		${
-      hasMeta
-        ? `<tr class="text"><td colspan="6">
-		${
-      it.typicalSpeakers
-        ? `<div><b>Typical Speakers</b> ${Renderer.get().render(
-            it.typicalSpeakers.join(', '),
-          )}</b>`
-        : ''
-    }
-		${
-      it.script
-        ? `<div><b>Script</b> ${Renderer.get().render(it.script)}</div>`
-        : ''
-    }
-		<div></div>
-		</td></tr>`
-        : ''
-    }
-		${
-      allEntries.length
-        ? `<tr class="text"><td colspan="6">
-		${Renderer.get()
-      .setFirstSection(true)
-      .render({ entries: allEntries })}
-		</td></tr>`
-        : ''
-    }
-		${Renderer.utils.getPageTr(it)}`;
+          ${Renderer.utils.getExcludedTr(it, 'language')}
+          ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_LANGUAGES })}
+          ${
+            it.type
+              ? `<tr class="text"><td colspan="6" class="pt-0"><i>${it.type.toTitleCase()} language</i></td></tr>`
+              : ''
+          }
+          ${
+            hasMeta
+              ? `<tr class="text"><td colspan="6">
+          ${
+            it.typicalSpeakers
+              ? `<div><b>Typical Speakers</b> ${Renderer.get().render(
+                  it.typicalSpeakers.join(', '),
+                )}</b>`
+              : ''
+          }
+          ${
+            it.script
+              ? `<div><b>Script</b> ${Renderer.get().render(it.script)}</div>`
+              : ''
+          }
+          <div></div>
+          </td></tr>`
+              : ''
+          }
+          ${
+            allEntries.length
+              ? `<tr class="text"><td colspan="6">
+          ${Renderer.get()
+            .setFirstSection(true)
+            .render({ entries: allEntries })}
+          </td></tr>`
+              : ''
+          }
+          ${Renderer.utils.getPageTr(it)}`;
   },
 };
 
@@ -10619,20 +10728,20 @@ BrewUtil = {
       });
 
       $$($modalInner)`
-					<p><i>A list of homebrew available in the public repository. Click a name to load the homebrew, or view the source directly.<br>
-					Contributions are welcome; see the <a href="https://github.com/TheGiddyLimit/homebrew/blob/master/README.md" target="_blank" rel="noopener noreferrer">README</a>, or stop by our <a href="https://discord.gg/nGvRCDs" target="_blank" rel="noopener noreferrer">Discord</a>.</i></p>
-					<hr class="manbrew__hr">
-					<div class="manbrew__load_all_wrp">${$btnAll}</div>
-					${$iptSearch}
-					<div class="filtertools manbrew__filtertools sortlabel btn-group lst__form-bottom">
-						<button class="col-4 sort btn btn-default btn-xs" data-sort="name">Name</button>
-						<button class="col-3 sort btn btn-default btn-xs" data-sort="author">Author</button>
-						<button class="col-1-2 sort btn btn-default btn-xs" data-sort="category">Category</button>
-						<button class="col-1-4 sort btn btn-default btn-xs" data-sort="modified">Modified</button>
-						<button class="col-1-4 sort btn btn-default btn-xs" data-sort="added">Added</button>
-						<button class="sort btn btn-default btn-xs" disabled>Source</button>
-					</div>
-					${$ulRows}`;
+                      <p><i>A list of homebrew available in the public repository. Click a name to load the homebrew, or view the source directly.<br>
+                      Contributions are welcome; see the <a href="https://github.com/TheGiddyLimit/homebrew/blob/master/README.md" target="_blank" rel="noopener noreferrer">README</a>, or stop by our <a href="https://discord.gg/nGvRCDs" target="_blank" rel="noopener noreferrer">Discord</a>.</i></p>
+                      <hr class="manbrew__hr">
+                      <div class="manbrew__load_all_wrp">${$btnAll}</div>
+                      ${$iptSearch}
+                      <div class="filtertools manbrew__filtertools sortlabel btn-group lst__form-bottom">
+                          <button class="col-4 sort btn btn-default btn-xs" data-sort="name">Name</button>
+                          <button class="col-3 sort btn btn-default btn-xs" data-sort="author">Author</button>
+                          <button class="col-1-2 sort btn btn-default btn-xs" data-sort="category">Category</button>
+                          <button class="col-1-4 sort btn btn-default btn-xs" data-sort="modified">Modified</button>
+                          <button class="col-1-4 sort btn btn-default btn-xs" data-sort="added">Added</button>
+                          <button class="sort btn btn-default btn-xs" disabled>Source</button>
+                      </div>
+                      ${$ulRows}`;
 
       // populate list
       function getBrewDirs() {
@@ -10807,15 +10916,15 @@ BrewUtil = {
           );
 
         const $li = $$`<li class="not-clickable lst--border lst__row--focusable" tabindex="1">
-						<div class="lst__wrp-cells">
-							${$btnAdd}
-							<span class="col-3">${it._brewAuthor}</span>
-							<span class="col-1-2 text-center">${it._brewCat}</span>
-							<span class="col-1-4 text-center">${timestampModified}</span>
-							<span class="col-1-4 text-center">${timestampAdded}</span>
-							<span class="col-1 manbrew__source text-center pr-0"><a href="${it.download_url}" target="_blank" rel="noopener noreferrer">View Raw</a></span>
-						</div>
-					</li>`;
+                          <div class="lst__wrp-cells">
+                              ${$btnAdd}
+                              <span class="col-3">${it._brewAuthor}</span>
+                              <span class="col-1-2 text-center">${it._brewCat}</span>
+                              <span class="col-1-4 text-center">${timestampModified}</span>
+                              <span class="col-1-4 text-center">${timestampAdded}</span>
+                              <span class="col-1 manbrew__source text-center pr-0"><a href="${it.download_url}" target="_blank" rel="noopener noreferrer">View Raw</a></span>
+                          </div>
+                      </li>`;
 
         $li.keydown(evt => {
           switch (evt.which) {
@@ -10899,28 +11008,28 @@ BrewUtil = {
     const $btnDelAll = isModal ? null : BrewUtil._$getBtnDeleteAll();
 
     const $wrpBtns = $$`<div class="flex-vh-center no-shrink">
-			<div class="flex-v-center btn-group mr-2">
-				${$btnGet}
-				${$btnCustomUrl}
-			</div>
-			<label role="button" class="btn btn-default btn-sm btn-file mr-2">Upload File${$iptAdd}</label>
-			${$btnLoadFromUrl}
-			<a href="https://github.com/TheGiddyLimit/homebrew" class="flex-v-center" target="_blank" rel="noopener noreferrer"><button class="btn btn-default btn-sm btn-file">Browse Source Repository</button></a>
-			${$btnDelAll}
-		</div>`;
+              <div class="flex-v-center btn-group mr-2">
+                  ${$btnGet}
+                  ${$btnCustomUrl}
+              </div>
+              <label role="button" class="btn btn-default btn-sm btn-file mr-2">Upload File${$iptAdd}</label>
+              ${$btnLoadFromUrl}
+              <a href="https://github.com/TheGiddyLimit/homebrew" class="flex-v-center" target="_blank" rel="noopener noreferrer"><button class="btn btn-default btn-sm btn-file">Browse Source Repository</button></a>
+              ${$btnDelAll}
+          </div>`;
 
     if (isModal) {
       $$($appendTo)`
-			<hr class="manbrew__hr no-shrink">
-			${$brewList}
-			<div class="mb-3 text-center no-shrink">${$wrpBtns}</div>
-		`;
+              <hr class="manbrew__hr no-shrink">
+              ${$brewList}
+              <div class="mb-3 text-center no-shrink">${$wrpBtns}</div>
+          `;
     } else {
       $$($appendTo)`
-			<div class="mb-3 text-center no-shrink">${$wrpBtns}</div>
-			<hr class="manbrew__hr no-shrink">
-			${$brewList}
-		`;
+              <div class="mb-3 text-center no-shrink">${$wrpBtns}</div>
+              <hr class="manbrew__hr no-shrink">
+              ${$brewList}
+          `;
     }
 
     BrewUtil.addBrewRemote = async ($ele, jsonUrl, doUnescape) => {
@@ -11051,13 +11160,13 @@ BrewUtil = {
         `<input type="search" class="search manbrew__search form-control w-100" placeholder="Search entries...">`,
       );
       $$($modalInner)`
-				${$iptSearch}
-				<div class="filtertools manbrew__filtertools sortlabel btn-group">
-					<button class="col-6 sort btn btn-default btn-xs" data-sort="name">Name</button>
-					<button class="col-5 sort btn btn-default btn-xs" data-sort="category">Category</button>
-					<label class="col-1 wrp-cb-all pr-0">${$cbAll}</label>
-				</div>
-				${$ulRows}`;
+                  ${$iptSearch}
+                  <div class="filtertools manbrew__filtertools sortlabel btn-group">
+                      <button class="col-6 sort btn btn-default btn-xs" data-sort="name">Name</button>
+                      <button class="col-5 sort btn btn-default btn-xs" data-sort="category">Category</button>
+                      <label class="col-1 wrp-cb-all pr-0">${$cbAll}</label>
+                  </div>
+                  ${$ulRows}`;
 
       let list;
 
@@ -11131,10 +11240,10 @@ BrewUtil = {
               );
 
               const eleLi = $(`<li class="lst--border"><label class="mb-0 flex-v-center row">
-									<span class="col-6 bold">${it.name}</span>
-									<span class="col-5 text-center">${dispCat}${it.extraInfo}</span>
-									<span class="pr-0 col-1 text-center"><input type="checkbox"></span>
-								</label></li>`)[0];
+                                      <span class="col-6 bold">${it.name}</span>
+                                      <span class="col-5 text-center">${dispCat}${it.extraInfo}</span>
+                                      <span class="pr-0 col-1 text-center"><input type="checkbox"></span>
+                                  </label></li>`)[0];
 
               const listItem = new ListItem(
                 i,
@@ -11221,17 +11330,17 @@ BrewUtil = {
       const list = new List({ $iptSearch, $wrpList, isUseJquery: true });
 
       const $lst = $$`
-				<div class="flex-col h-100">
-					${$iptSearch}
-					<div class="filtertools manbrew__filtertools sortlabel btn-group lst__form-bottom">
-						<button class="col-5 sort btn btn-default btn-xs" data-sort="source">Source</button>
-						<button class="col-4 sort btn btn-default btn-xs" data-sort="authors">Authors</button>
-						<button class="col-1 btn btn-default btn-xs" disabled>Origin</button>
-						<button class="btn btn-default btn-xs" disabled>&nbsp;</button>
-					</div>
-					<div class="flex w-100 h-100 overflow-y-auto relative">${$wrpList}</div>
-				</div>
-			`.appendTo($brewList);
+                  <div class="flex-col h-100">
+                      ${$iptSearch}
+                      <div class="filtertools manbrew__filtertools sortlabel btn-group lst__form-bottom">
+                          <button class="col-5 sort btn btn-default btn-xs" data-sort="source">Source</button>
+                          <button class="col-4 sort btn btn-default btn-xs" data-sort="authors">Authors</button>
+                          <button class="col-1 btn btn-default btn-xs" disabled>Origin</button>
+                          <button class="btn btn-default btn-xs" disabled>&nbsp;</button>
+                      </div>
+                      <div class="flex w-100 h-100 overflow-y-auto relative">${$wrpList}</div>
+                  </div>
+              `.appendTo($brewList);
       $ulGroup.appendTo($brewList);
       SortUtil.initBtnSortHandlers($lst.find('.manbrew__filtertools'), list);
 
@@ -11348,17 +11457,19 @@ BrewUtil = {
         const isGroup = src._unknown || src._all;
 
         const $row = $(`<li class="row manbrew__row lst--border">
-						<span class="col-5 manbrew__col--tall source manbrew__source">${
-              isGroup ? '<i>' : ''
-            }${src.full}${isGroup ? '</i>' : ''}</span>
-						<span class="col-4 manbrew__col--tall authors">${validAuthors}</span>
-						<${src.url ? 'a' : 'span'} class="col-1 manbrew__col--tall text-center" ${
+                          <span class="col-5 manbrew__col--tall source manbrew__source">${
+                            isGroup ? '<i>' : ''
+                          }${src.full}${isGroup ? '</i>' : ''}</span>
+                          <span class="col-4 manbrew__col--tall authors">${validAuthors}</span>
+                          <${
+                            src.url ? 'a' : 'span'
+                          } class="col-1 manbrew__col--tall text-center" ${
           src.url
             ? `href="${src.url}" target="_blank" rel="noopener noreferrer"`
             : ''
         }>${src.url ? 'View Source' : ''}</${src.url ? 'a' : 'span'}>
-						<span class="hidden">${src.abbreviation}</span>
-					</li>`);
+                          <span class="hidden">${src.abbreviation}</span>
+                      </li>`);
         createButtons(src, $row);
 
         const listItem = new ListItem(i, $row, src.full, {
@@ -11370,8 +11481,8 @@ BrewUtil = {
 
       const createGroupRow = (fullText, modeProp) => {
         const $row = $(`<li class="row manbrew__row">
-					<span class="col-10 manbrew__col--tall source manbrew__source text-right"><i>${fullText}</i></span>
-				</li>`);
+                      <span class="col-10 manbrew__col--tall source manbrew__source text-right"><i>${fullText}</i></span>
+                  </li>`);
         createButtons({ [modeProp]: true }, $row);
         $ulGroup.append($row);
       };
@@ -12272,10 +12383,10 @@ ExcludeUtil = {
       (list.length > 0 && list.length === ExcludeUtil._excludeCount)
     ) {
       $pagecontent.html(`
-				<tr><th class="border" colspan="6"></th></tr>
-				<tr><td colspan="6" class="initial-message">(Content <a href="blacklist.html">blacklisted</a>)</td></tr>
-				<tr><th class="border" colspan="6"></th></tr>
-			`);
+                  <tr><th class="border" colspan="6"></th></tr>
+                  <tr><td colspan="6" class="initial-message">(Content <a href="blacklist.html">blacklisted</a>)</td></tr>
+                  <tr><th class="border" colspan="6"></th></tr>
+              `);
     }
   },
 
@@ -12324,4 +12435,5 @@ ExcludeUtil = {
 if (typeof module !== 'undefined') {
   module.exports.Renderer = Renderer;
   module.exports.SourceUtil = SourceUtil;
+  module.exports.Parser = Parser;
 }

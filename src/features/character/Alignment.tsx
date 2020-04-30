@@ -15,25 +15,25 @@ const Alignment = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const getAlignmentPosition = (alignment: string) => {
     console.log(alignment);
-    switch ((Parser.ALIGNMENTS as any)[alignment]) {
-      case Parser.ALIGNMENTS.LG:
+    switch (((window as any).Parser.ALIGNMENTS as any)[alignment]) {
+      case (window as any).Parser.ALIGNMENTS.LG:
         console.log('HIT');
         return { top: '0.45rem', left: '0.85rem' };
-      case Parser.ALIGNMENTS.NG:
+      case (window as any).Parser.ALIGNMENTS.NG:
         return { top: '0.45rem', left: '1.8rem' };
-      case Parser.ALIGNMENTS.CG:
+      case (window as any).Parser.ALIGNMENTS.CG:
         return { top: '0.45rem', left: '2.8rem' };
-      case Parser.ALIGNMENTS.LN:
+      case (window as any).Parser.ALIGNMENTS.LN:
         return { top: '1.4rem', left: '0.85rem' };
-      case Parser.ALIGNMENTS.N:
+      case (window as any).Parser.ALIGNMENTS.N:
         return { top: '1.4rem', left: '1.8rem' };
-      case Parser.ALIGNMENTS.CN:
+      case (window as any).Parser.ALIGNMENTS.CN:
         return { top: '1.4rem', left: '2.8rem' };
-      case Parser.ALIGNMENTS.LE:
+      case (window as any).Parser.ALIGNMENTS.LE:
         return { top: '2.3rem', left: '0.85rem' };
-      case Parser.ALIGNMENTS.NE:
+      case (window as any).Parser.ALIGNMENTS.NE:
         return { top: '2.3rem', left: '1.8rem' };
-      case Parser.ALIGNMENTS.CE:
+      case (window as any).Parser.ALIGNMENTS.CE:
         return { top: '2.3rem', left: '2.8rem' };
       default:
         break;

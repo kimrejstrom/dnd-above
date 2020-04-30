@@ -10,5 +10,6 @@
 
 # production
 /build
+/public
 /src/styles.css
 /src/vendor

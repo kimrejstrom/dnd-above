@@ -185,11 +185,13 @@ const RaceBuilder = ({ url }: Props) => {
                                     : true,
                               })}
                             >
-                              {Parser.TOOL_PROFICIENCY.map(pr => (
-                                <option className="capitalize" value={pr}>
-                                  {pr}
-                                </option>
-                              ))}
+                              {(window as any).Parser.TOOL_PROFICIENCY.map(
+                                (pr: any) => (
+                                  <option className="capitalize" value={pr}>
+                                    {pr}
+                                  </option>
+                                ),
+                              )}
                             </select>
                             {errors.chosenRaceTools && (
                               <span>{`You must choose ${count} skills`}</span>
@@ -237,9 +239,9 @@ const RaceBuilder = ({ url }: Props) => {
                                   : true,
                             })}
                           >
-                            {Parser.LANGUAGES_STANDARD.concat(
-                              Parser.LANGUAGES_EXOTIC,
-                            ).map(allLang => (
+                            {(window as any).Parser.LANGUAGES_STANDARD.concat(
+                              (window as any).Parser.LANGUAGES_EXOTIC,
+                            ).map((allLang: any) => (
                               <option
                                 className="capitalize"
                                 value={allLang.toLowerCase()}

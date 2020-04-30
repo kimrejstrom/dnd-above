@@ -254,9 +254,9 @@ const Description = ({ url }: { url: string }) => {
                                     : true,
                               })}
                             >
-                              {Parser.LANGUAGES_STANDARD.concat(
-                                Parser.LANGUAGES_EXOTIC,
-                              ).map(allLang => (
+                              {(window as any).Parser.LANGUAGES_STANDARD.concat(
+                                (window as any).Parser.LANGUAGES_EXOTIC,
+                              ).map((allLang: any) => (
                                 <option
                                   className="capitalize"
                                   value={allLang.toLowerCase()}
@@ -310,7 +310,11 @@ const Description = ({ url }: { url: string }) => {
                 <p className="mt-4">
                   Thus, nine distinct alignments define the possible
                   combinations:{' '}
-                  <strong>{Object.values(Parser.ALIGNMENTS).join(', ')}</strong>
+                  <strong>
+                    {Object.values((window as any).Parser.ALIGNMENTS).join(
+                      ', ',
+                    )}
+                  </strong>
                 </p>
               </TextBox>
 
@@ -335,18 +339,26 @@ const Description = ({ url }: { url: string }) => {
                   defaultValue={formState.data.descriptionData.alignment}
                 >
                   <option value="initial">-</option>
-                  {Object.entries(Parser.ALIGNMENTS).map(([key, value]) => (
-                    <option className="capitalize" value={key}>
-                      {value}
-                    </option>
-                  ))}
+                  {Object.entries((window as any).Parser.ALIGNMENTS).map(
+                    ([key, value]) => (
+                      <option className="capitalize" value={key}>
+                        {value as any}
+                      </option>
+                    ),
+                  )}
                 </select>
                 {errors.alignment && (
                   <span>{`You must choose an alignment`}</span>
                 )}
               </label>
               {selectedAlignment && (
-                <p>{(Parser.ALIGNMENTS_DESC as any)[selectedAlignment]}</p>
+                <p>
+                  {
+                    ((window as any).Parser.ALIGNMENTS_DESC as any)[
+                      selectedAlignment
+                    ]
+                  }
+                </p>
               )}
             </div>
           </details>

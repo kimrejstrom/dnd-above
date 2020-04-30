@@ -47,7 +47,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
       )
       .join(', ');
   const renderSkillsProfs = (skills: any) =>
-    `${Parser.skillProficienciesToFull(skills).uppercaseFirst()}.`;
+    `${(window as any).Parser.skillProficienciesToFull(
+      skills,
+    ).uppercaseFirst()}.`;
 
   const profs = cls.startingProficiencies;
 
@@ -91,7 +93,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
     const renderPart = (obj: any, joiner = ', ') =>
       Object.keys(obj)
         .filter(k => k !== 'or')
-        .map(k => `${Parser.attAbvToFull(k)} ${obj[k]}`)
+        .map(k => `${(window as any).Parser.attAbvToFull(k)} ${obj[k]}`)
         .join(joiner);
     const orPart = (mc: Multiclassing) =>
       mc.requirements.or
@@ -186,7 +188,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
               <b>Saving Throws: </b>
               <span>
                 {cls.proficiency
-                  ? cls.proficiency.map(p => Parser.attAbvToFull(p)).join(', ')
+                  ? cls.proficiency
+                      .map(p => (window as any).Parser.attAbvToFull(p))
+                      .join(', ')
                   : 'none'}
               </span>
             </div>

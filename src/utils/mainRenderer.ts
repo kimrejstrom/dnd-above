@@ -1,6 +1,6 @@
-const Renderer = require('vendor/5e-tools/renderer');
+// const Renderer = require('vendor/5e-tools/renderer');
 
-const mainRenderer = new Renderer.Renderer();
+const mainRenderer = new (window as any).Renderer();
 
 export const getEntry = (
   entry: any,

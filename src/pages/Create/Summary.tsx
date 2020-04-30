@@ -59,7 +59,7 @@ const Summary = ({ url }: { url: string }) => {
               <div>
                 <div className="mt-4 font-bold text-md text-center">
                   {
-                    (Parser.ALIGNMENTS as any)[
+                    ((window as any).Parser.ALIGNMENTS as any)[
                       formState.data.descriptionData.alignment
                     ]
                   }
