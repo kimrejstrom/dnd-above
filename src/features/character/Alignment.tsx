@@ -6,6 +6,7 @@ import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
 import { CharacterState } from 'features/character/characterListSlice';
 import { getRace, getClass } from 'utils/character';
+import { Parser } from 'utils/mainRenderer';
 
 interface Props {
   character: CharacterState;
@@ -14,26 +15,25 @@ interface Props {
 const Alignment = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const getAlignmentPosition = (alignment: string) => {
-    console.log(alignment);
-    switch (((window as any).Parser.ALIGNMENTS as any)[alignment]) {
-      case (window as any).Parser.ALIGNMENTS.LG:
+    switch ((Parser.ALIGNMENTS as any)[alignment]) {
+      case Parser.ALIGNMENTS.LG:
         console.log('HIT');
         return { top: '0.45rem', left: '0.85rem' };
-      case (window as any).Parser.ALIGNMENTS.NG:
+      case Parser.ALIGNMENTS.NG:
         return { top: '0.45rem', left: '1.8rem' };
-      case (window as any).Parser.ALIGNMENTS.CG:
+      case Parser.ALIGNMENTS.CG:
         return { top: '0.45rem', left: '2.8rem' };
-      case (window as any).Parser.ALIGNMENTS.LN:
+      case Parser.ALIGNMENTS.LN:
         return { top: '1.4rem', left: '0.85rem' };
-      case (window as any).Parser.ALIGNMENTS.N:
+      case Parser.ALIGNMENTS.N:
         return { top: '1.4rem', left: '1.8rem' };
-      case (window as any).Parser.ALIGNMENTS.CN:
+      case Parser.ALIGNMENTS.CN:
         return { top: '1.4rem', left: '2.8rem' };
-      case (window as any).Parser.ALIGNMENTS.LE:
+      case Parser.ALIGNMENTS.LE:
         return { top: '2.3rem', left: '0.85rem' };
-      case (window as any).Parser.ALIGNMENTS.NE:
+      case Parser.ALIGNMENTS.NE:
         return { top: '2.3rem', left: '1.8rem' };
-      case (window as any).Parser.ALIGNMENTS.CE:
+      case Parser.ALIGNMENTS.CE:
         return { top: '2.3rem', left: '2.8rem' };
       default:
         break;

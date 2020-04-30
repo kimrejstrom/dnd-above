@@ -7,7 +7,7 @@ import { Race } from 'models/race';
 import { PLAYABLE_RACES, PLAYABLE_RACES_FLUFF } from 'utils/data';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import mainRenderer, { Parser } from 'utils/mainRenderer';
 import Entry from 'components/Entry/Entry';
 import { useForm } from 'react-hook-form';
 import {
@@ -185,13 +185,11 @@ const RaceBuilder = ({ url }: Props) => {
                                     : true,
                               })}
                             >
-                              {(window as any).Parser.TOOL_PROFICIENCY.map(
-                                (pr: any) => (
-                                  <option className="capitalize" value={pr}>
-                                    {pr}
-                                  </option>
-                                ),
-                              )}
+                              {Parser.TOOL_PROFICIENCY.map((pr: any) => (
+                                <option className="capitalize" value={pr}>
+                                  {pr}
+                                </option>
+                              ))}
                             </select>
                             {errors.chosenRaceTools && (
                               <span>{`You must choose ${count} skills`}</span>
@@ -239,8 +237,8 @@ const RaceBuilder = ({ url }: Props) => {
                                   : true,
                             })}
                           >
-                            {(window as any).Parser.LANGUAGES_STANDARD.concat(
-                              (window as any).Parser.LANGUAGES_EXOTIC,
+                            {Parser.LANGUAGES_STANDARD.concat(
+                              Parser.LANGUAGES_EXOTIC,
                             ).map((allLang: any) => (
                               <option
                                 className="capitalize"

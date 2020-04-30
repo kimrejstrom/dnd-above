@@ -49,7 +49,7 @@ import mainRenderer from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
-const SourceUtil = (window as any).SourceUtil;
+import { SourceUtil } from 'utils/mainRenderer';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const allSources = getCookie('allSources') === 'true';

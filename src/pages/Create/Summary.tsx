@@ -18,7 +18,7 @@ import {
 } from 'features/character/characterListSlice';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import mainRenderer, { Parser } from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
 import StyledButton from 'components/StyledButton/StyledButton';
 
@@ -59,7 +59,7 @@ const Summary = ({ url }: { url: string }) => {
               <div>
                 <div className="mt-4 font-bold text-md text-center">
                   {
-                    ((window as any).Parser.ALIGNMENTS as any)[
+                    (Parser.ALIGNMENTS as any)[
                       formState.data.descriptionData.alignment
                     ]
                   }

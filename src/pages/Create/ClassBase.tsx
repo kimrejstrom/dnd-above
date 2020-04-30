@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClassElement, Multiclassing } from 'models/class';
-import mainRenderer from 'utils/mainRenderer';
+import mainRenderer, { Parser } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 
 const ClassBase = ({ cls }: { cls: ClassElement }) => {
@@ -47,9 +47,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
       )
       .join(', ');
   const renderSkillsProfs = (skills: any) =>
-    `${(window as any).Parser.skillProficienciesToFull(
-      skills,
-    ).uppercaseFirst()}.`;
+    `${Parser.skillProficienciesToFull(skills).uppercaseFirst()}.`;
 
   const profs = cls.startingProficiencies;
 
@@ -93,7 +91,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
     const renderPart = (obj: any, joiner = ', ') =>
       Object.keys(obj)
         .filter(k => k !== 'or')
-        .map(k => `${(window as any).Parser.attAbvToFull(k)} ${obj[k]}`)
+        .map(k => `${Parser.attAbvToFull(k)} ${obj[k]}`)
         .join(joiner);
     const orPart = (mc: Multiclassing) =>
       mc.requirements.or
@@ -188,9 +186,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
               <b>Saving Throws: </b>
               <span>
                 {cls.proficiency
-                  ? cls.proficiency
-                      .map(p => (window as any).Parser.attAbvToFull(p))
-                      .join(', ')
+                  ? cls.proficiency.map(p => Parser.attAbvToFull(p)).join(', ')
                   : 'none'}
               </span>
             </div>

@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { Dice } from 'vendor/nicer-dicer-engine';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import mainRenderer, { Parser } from 'utils/mainRenderer';
 import { getClassQuickBuild, getRace, getClass } from 'utils/character';
 import { isDefined } from 'ts-is-present';
 import StyledButton, {
@@ -190,68 +190,62 @@ const Abilities = ({ url }: { url: string }) => {
         )}
 
         <div className="flex w-full my-4">
-          {Object.entries((window as any).Parser.ATB_ABV_TO_FULL).map(
-            ([key, value]) => (
-              <div className="w-1/6 text-center">
-                <label className="block mx-1">
-                  {value}
-                  <select
-                    name={key}
-                    onChange={handleScoreSelect}
-                    ref={register({
-                      required: true,
-                      validate: data => data !== '0',
-                    })}
-                    className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                  >
-                    <option value="0">-</option>
-                    {abilityScores.map(ab => (
-                      <option disabled={ab.used} value={ab.score}>
-                        {ab.score}
-                      </option>
-                    ))}
-                  </select>
-                  {(errors as any)[key] && (
-                    <span>{`You must choose a score`}</span>
-                  )}
-                </label>
-              </div>
-            ),
-          )}
+          {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
+            <div className="w-1/6 text-center">
+              <label className="block mx-1">
+                {value}
+                <select
+                  name={key}
+                  onChange={handleScoreSelect}
+                  ref={register({
+                    required: true,
+                    validate: data => data !== '0',
+                  })}
+                  className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                >
+                  <option value="0">-</option>
+                  {abilityScores.map(ab => (
+                    <option disabled={ab.used} value={ab.score}>
+                      {ab.score}
+                    </option>
+                  ))}
+                </select>
+                {(errors as any)[key] && (
+                  <span>{`You must choose a score`}</span>
+                )}
+              </label>
+            </div>
+          ))}
         </div>
       </form>
       <div className="flex flex-wrap w-full my-4">
-        {Object.entries((window as any).Parser.ATB_ABV_TO_FULL).map(
-          ([key, value]) => (
-            <div className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark">
-              <div className="w-full px-4 py-1 bg-primary-dark text-yellow-100">
-                {value as any}
-              </div>
-              <table className="bg-yellow-100 dark:bg-tertiary-dark w-full rounded border-collapse border border-gray-400 dark:border-primary-dark">
-                <tbody>
-                  <tr>
-                    <td className="px-4">Total Score</td>
-                    <td className="text-2xl text-center">
-                      {getRacialBonus(key) + getBaseScore(key)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4">Base Score</td>
-                    <td className="text-2xl text-center">
-                      {getBaseScore(key)}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="px-4">Racial Bonus</td>
-                    <td className="text-2xl text-center">
-                      {getRacialBonus(key)}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
+          <div className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark">
+            <div className="w-full px-4 py-1 bg-primary-dark text-yellow-100">
+              {value as any}
             </div>
-          ),
-        )}
+            <table className="bg-yellow-100 dark:bg-tertiary-dark w-full rounded border-collapse border border-gray-400 dark:border-primary-dark">
+              <tbody>
+                <tr>
+                  <td className="px-4">Total Score</td>
+                  <td className="text-2xl text-center">
+                    {getRacialBonus(key) + getBaseScore(key)}
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4">Base Score</td>
+                  <td className="text-2xl text-center">{getBaseScore(key)}</td>
+                </tr>
+                <tr>
+                  <td className="px-4">Racial Bonus</td>
+                  <td className="text-2xl text-center">
+                    {getRacialBonus(key)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ))}
       </div>
     </div>
   );

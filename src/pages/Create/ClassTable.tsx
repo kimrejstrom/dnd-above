@@ -6,6 +6,7 @@ import {
   SubclassTableGroup,
 } from 'models/class';
 import Entry from 'components/Entry/Entry';
+import { Parser } from 'utils/mainRenderer';
 
 interface Props {
   cls: ClassElement;
@@ -52,7 +53,7 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
     );
     return (
       <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm text-center">
-        <td>{(window as any).Parser.getOrdinalForm(ixLvl + 1)}</td>
+        <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
         <td>+{pb}</td>
         <td className="text-left">
           {lvlFeaturesFilt.length
