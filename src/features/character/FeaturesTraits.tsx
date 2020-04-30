@@ -1,8 +1,8 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { CharacterState } from 'features/character/characterListSlice';
 import { ClassFeature, SubclassFeature } from 'models/class';
 import { Race } from 'models/race';
-import { getClass, getRace, getSubClass } from 'utils/character';
+import { getClass, getRace, getSubClass, getFeat } from 'utils/character';
 import { ThemeMode } from 'features/theme/themeSlice';
 import characterDark from 'images/character-dark.png';
 import characterLight from 'images/character-light.png';
@@ -70,7 +70,7 @@ const renderSubClassFeatures = (classFeatures: SubclassFeature[][]) => {
   });
 };
 
-const renderRaceTraits = (race: Race, dispatch: Dispatch<any>) => {
+const renderRaceTraits = (race: Race) => {
   const raceTraits = race.entries?.filter(
     item => !_.includes(['Age', 'Size', 'Alignment', 'Languages'], item.name),
   );
@@ -82,6 +82,26 @@ const renderRaceTraits = (race: Race, dispatch: Dispatch<any>) => {
         </div>
       </DetailedEntryTrigger>
     ))
+  ) : (
+    <p>No racial traits</p>
+  );
+};
+
+const renderFeats = (feats: string[]) => {
+  return feats?.length ? (
+    feats?.map(featName => {
+      const feat = getFeat(featName);
+      return (
+        <DetailedEntryTrigger data={feat}>
+          <div
+            key={feat?.name}
+            className="custom-border custom-border-thin my-2"
+          >
+            {feat?.name}
+          </div>
+        </DetailedEntryTrigger>
+      );
+    })
   ) : (
     <p>No racial traits</p>
   );
@@ -129,10 +149,11 @@ const FeaturesTraits = ({ character }: Props) => {
           >
             {race!.name} traits
           </div>
-          {renderRaceTraits(race!, dispatch)}
+          {renderRaceTraits(race!)}
         </ContentBlock>
         <ContentBlock name="feats">
-          <div>TODO: Feats</div>
+          <div className="text-lg">Feats</div>
+          {renderFeats(character.gameData.feats)}
         </ContentBlock>
       </PillFilter>
     </div>

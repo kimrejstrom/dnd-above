@@ -8,7 +8,6 @@ import {
 import Name from 'features/character/Name';
 import Alignment from 'features/character/Alignment';
 import Inspiration from 'features/character/Inspiration';
-import Race from 'features/character/Race';
 import AbilityScores from 'features/character/AbilityScores';
 import ACHP from 'features/character/ACHP';
 import SavingThrows from 'features/character/SavingThrows';
@@ -23,6 +22,7 @@ import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
+import Feats from 'features/character/Feats';
 
 interface Props {}
 
@@ -53,7 +53,6 @@ export const Main: React.FC<Props> = () => {
         <Name character={character} />
         <Alignment character={character} />
         <Inspiration character={character} />
-        <Race character={character} />
         <div className="flex flex-wrap items-center text-center mt-2 mb-6">
           <AbilityScores character={character} />
           <ACHP character={character} />
@@ -64,6 +63,9 @@ export const Main: React.FC<Props> = () => {
           <SavingThrows character={character} />
           <Senses character={character} />
           <Proficiencies character={character} />
+          {character.gameData.feats.length > 0 && (
+            <Feats character={character} />
+          )}
         </div>
       </div>
       <div className="w-3/12 h-full">

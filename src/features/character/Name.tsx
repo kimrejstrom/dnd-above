@@ -23,7 +23,7 @@ const Name = ({ character }: Props) => {
         })`,
       }}
     >
-      <svg viewBox="-65 31 500 100">
+      <svg viewBox="-65 31 500 85">
         <path
           d="M0,98 C0,98 85,83.5 177,83.5 C269,83.5 354,98 353.902495,98 L0,98 Z"
           id="curve"
@@ -32,6 +32,30 @@ const Name = ({ character }: Props) => {
         <text width="500" className="fill-current text-3xl">
           <textPath textAnchor="middle" startOffset="25%" href="#curve">
             {character.descriptionData.name}
+          </textPath>
+        </text>
+      </svg>
+      <svg viewBox="-65 70 500 20">
+        <path
+          d="M0,98 C0,98 85,83.5 177,83.5 C269,83.5 354,98 353.902495,98 L0,98 Z"
+          id="curve"
+          fill="transparent"
+        ></path>
+        <text width="500" className="fill-current text-xl opacity-75">
+          <textPath textAnchor="middle" startOffset="25%" href="#curve">
+            {`${character.raceData.race} – ${character.classData.classElement}`}
+          </textPath>
+        </text>
+      </svg>
+      <svg viewBox="-65 70 500 20">
+        <path
+          d="M0,98 C0,98 85,83.5 177,83.5 C269,83.5 354,98 353.902495,98 L0,98 Z"
+          id="curve"
+          fill="transparent"
+        ></path>
+        <text width="500" className="fill-current text-xl opacity-75">
+          <textPath textAnchor="middle" startOffset="25%" href="#curve">
+            {character.classData.subClass}
           </textPath>
         </text>
       </svg>

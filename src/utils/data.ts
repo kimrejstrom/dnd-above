@@ -31,6 +31,8 @@ import baseItems from 'data/items-base.json';
 import items from 'data/items.json';
 // Actions
 import actions from 'data/actions.json';
+// Feats
+import feats from 'data/feats.json';
 // Models
 import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
@@ -47,6 +49,7 @@ import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
+import { FeatElement } from 'models/feats';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const allSources = getCookie('allSources') === 'true';
@@ -160,6 +163,7 @@ export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
 )[];
 
 export const ACTIONS = actions as Action;
+export const FEATS = feats.feat.filter(i => filterSources(i)) as FeatElement[];
 
 const createPropertyMaps = (data: any) => {
   data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));

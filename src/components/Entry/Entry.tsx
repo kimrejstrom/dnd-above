@@ -1,13 +1,18 @@
 import React from 'react';
 import mainRenderer from 'utils/mainRenderer';
+import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 
 interface Props {
   entry: any;
+  extraClassName?: string;
 }
 
-const Entry = ({ entry }: Props) => {
+const Entry = ({ entry, extraClassName }: Props) => {
   return (
-    <div dangerouslySetInnerHTML={{ __html: mainRenderer.render(entry) }}></div>
+    <DangerousHtml
+      data={mainRenderer.render(entry)}
+      extraClassName={extraClassName}
+    />
   );
 };
 

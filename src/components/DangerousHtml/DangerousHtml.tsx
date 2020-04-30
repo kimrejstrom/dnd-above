@@ -1,14 +1,10 @@
 import React from 'react';
+import { isTableElement } from 'utils/render';
 
 interface Props {
   data: string;
   extraClassName?: string;
 }
-
-const isTableElement = (data: string) => {
-  const tableElements = ['<td', '<tr', '<th'];
-  return tableElements.includes(data.trim().slice(0, 3)) ? true : false;
-};
 
 const DangerousHtml = ({ data, extraClassName }: Props) => {
   if (isTableElement(data)) {

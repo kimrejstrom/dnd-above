@@ -59,7 +59,7 @@ const ACHP = ({ character }: Props) => {
   return (
     <>
       <div
-        className="ml-2 mr-1 relative bg-contain bg-center bg-no-repeat"
+        className="ml-1 relative bg-contain bg-center bg-no-repeat"
         style={{
           height: '7.5rem',
           width: '7.5rem',
@@ -113,7 +113,7 @@ const ACHP = ({ character }: Props) => {
         </p>
       </div>
       <div
-        className="relative bg-contain bg-center bg-no-repeat"
+        className="relative -ml-2 bg-contain bg-center bg-no-repeat"
         style={{
           height: '7.5rem',
           width: '7.5rem',

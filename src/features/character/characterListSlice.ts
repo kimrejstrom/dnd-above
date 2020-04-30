@@ -290,7 +290,7 @@ const MOE: CharacterListItem = {
   },
   gameData: {
     level: 3,
-    feats: [],
+    feats: ['Resilient'],
     spells: [
       'Guidance',
       'Produce Flame',
