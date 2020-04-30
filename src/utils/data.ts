@@ -45,11 +45,11 @@ import { Action } from 'models/actions';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import { isDefined } from 'ts-is-present';
-import { SourceUtil } from 'vendor/5e-tools/renderer';
 import mainRenderer from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
+const Renderer = require('vendor/5e-tools/renderer');
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const allSources = getCookie('allSources') === 'true';
@@ -61,8 +61,8 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     return 0;
   }
 
-  return SourceUtil.isCoreOrSupplement(item.source) &&
-    !SourceUtil.isNonstandardSource(item.source)
+  return Renderer.SourceUtil.isCoreOrSupplement(item.source) &&
+    !Renderer.SourceUtil.isNonstandardSource(item.source)
     ? 1
     : 0;
 };
