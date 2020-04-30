@@ -48,7 +48,7 @@
   "scripts": {
     "start": "npm run watch:styles & sleep 2 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=node",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint --ignore-path .eslintignore . --ext ts --ext tsx --ext js --ext jsx",

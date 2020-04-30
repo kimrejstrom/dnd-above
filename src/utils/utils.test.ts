@@ -6,6 +6,11 @@ jest.mock('vendor/5e-tools/renderer', () => ({
     race: {
       mergeSubraces: jest.fn(() => []),
     },
+    item: {
+      _addProperty: jest.fn(),
+      _addType: jest.fn(),
+      _addAdditionalEntries: jest.fn(),
+    },
   })),
   SourceUtil: {
     isCoreOrSupplement: jest.fn(),
