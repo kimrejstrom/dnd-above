@@ -95,6 +95,9 @@ export const isSpellCaster = (character: CharacterState) => {
   return isSpellCaster;
 };
 
+export const getHdTotal = (character: CharacterState) =>
+  character.gameData.level;
+
 export const getSpellSaveDC = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
   const score = calculateStats(character)[

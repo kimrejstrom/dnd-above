@@ -96,6 +96,7 @@ export interface CharacterGameData {
     extras: any[];
     ac: number;
     currentHp: number;
+    currentHd: number;
   };
 }
 
@@ -193,6 +194,7 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
     extras: [],
     ac: 0,
     currentHp: 12,
+    currentHd: 1,
   },
 };
 
@@ -312,6 +314,7 @@ const MOE: CharacterListItem = {
     extras: [],
     ac: 16,
     currentHp: 12,
+    currentHd: 3,
   },
 };
 
@@ -399,6 +402,7 @@ const characterListSlice = createSlice({
               getAbilityMod(
                 calculateStats(character.data as CharacterState).dex,
               ),
+            currentHd: 1,
           },
         };
         state.push({ id, ...newCharacter });
@@ -450,6 +454,15 @@ const characterListSlice = createSlice({
             : character.gameData.currentHp - Number(hp);
       }
     },
+    setCurrentHd(
+      state,
+      action: PayloadAction<{ id: string; currentHd: number }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.currentHd = Number(action.payload.currentHd);
+      }
+    },
   },
 });
 
@@ -459,6 +472,7 @@ export const {
   removeCharacter,
   setAc,
   setHp,
+  setCurrentHd,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

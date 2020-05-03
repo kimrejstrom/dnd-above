@@ -31,7 +31,7 @@ const AbilityScores = ({ character }: Props) => {
               </div>
             </div> */}
 
-            <div className="relative w-20 h-20 mr-1 bg-yellow-100 dark:bg-primary-dark custom-border flex flex-col items-center">
+            <div className="relative w-20 h-20 bg-yellow-100 dark:bg-primary-dark custom-border flex flex-col items-center">
               <div className="absolute top-0 -mt-2 uppercase text-sm">
                 {value}
               </div>

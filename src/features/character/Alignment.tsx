@@ -1,12 +1,17 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
-import { CharacterState } from 'features/character/characterListSlice';
-import { getRace, getClass } from 'utils/character';
+import {
+  CharacterState,
+  setCurrentHd,
+} from 'features/character/characterListSlice';
+import { getRace, getClass, getHdTotal } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
+import { useForm } from 'react-hook-form';
+import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
 
 interface Props {
   character: CharacterState;
@@ -14,6 +19,19 @@ interface Props {
 
 const Alignment = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
+  const dispatch = useDispatch();
+  type FormData = {
+    currentHd: number;
+  };
+  const { register, handleSubmit, setValue, errors, getValues } = useForm<
+    FormData
+  >();
+  const onHDSubmit = (data: FormData) => {
+    dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
+  };
+  useEffect(() => {
+    setValue('currentHd', character.gameData.currentHd);
+  });
   const getAlignmentPosition = (alignment: string) => {
     switch ((Parser.ALIGNMENTS as any)[alignment]) {
       case Parser.ALIGNMENTS.LG:
@@ -41,7 +59,7 @@ const Alignment = ({ character }: Props) => {
   };
   return (
     <div
-      className="mx-4 my-2 relative bg-contain bg-center bg-no-repeat"
+      className="mt-6 relative bg-contain bg-center bg-no-repeat"
       style={{
         width: '17rem',
         height: '4rem',
@@ -54,33 +72,62 @@ const Alignment = ({ character }: Props) => {
         className="absolute rounded-full w-2 h-2 bg-primary-dark dark:bg-primary-light"
         style={getAlignmentPosition(character.descriptionData.alignment)}
       ></div>
-      <p
-        className="text-2xl absolute inset-0 text-center"
+      <div
+        className="text-2xl absolute w-8 inset-0 text-center"
         style={{
           top: '0.55rem',
-          left: '-4.1rem',
+          left: '5.4rem',
         }}
       >
         {character.gameData.level}
-      </p>
-      <p
-        className="text-2xl absolute inset-0 text-center"
+      </div>
+      <div
+        className="text-2xl absolute w-8 inset-0 text-center"
         style={{
           top: '0.6rem',
-          left: '4.25rem',
+          left: '9.6rem',
         }}
       >
         {getRace(character.raceData.race)!.speed}
-      </p>
-      <p
-        className="text-2xl absolute inset-0 text-center"
+      </div>
+      <div
+        className="text-2xl absolute w-8 inset-0 text-center"
         style={{
           top: '0.55rem',
-          left: '13rem',
+          left: '14rem',
         }}
       >
         {`d${getClass(character.classData.classElement)!.hd.faces}`}
-      </p>
+      </div>
+      <div
+        className="z-0 custom-border absolute border-l-0"
+        style={{
+          top: '0.25rem',
+          right: '-4.1rem',
+          width: '5rem',
+          height: '2.5rem',
+        }}
+      ></div>
+      <div
+        className="absolute flex flex-col"
+        style={{ top: '0.55rem', right: '-3rem' }}
+      >
+        <div className="flex leading-none mt-1 z-20">
+          <form
+            onSubmit={handleSubmit(onHDSubmit)}
+            className="text-2xl text-center mb-3"
+          >
+            <input
+              name="currentHd"
+              className="text-center text-2xl w-6 h-6 bg-white dark:bg-secondary-dark"
+              onChange={handleSubmit(onHDSubmit)}
+              ref={register}
+            />
+          </form>
+          <div className="text-2xl">{`/ ${getHdTotal(character)}`}</div>
+        </div>
+        <div className="text-sm opacity-75">HD Total</div>
+      </div>
     </div>
   );
 };

@@ -23,6 +23,7 @@ import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
 import Feats from 'features/character/Feats';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 interface Props {}
 
@@ -50,12 +51,32 @@ export const Main: React.FC<Props> = () => {
   return (
     <>
       <div className="w-full flex flex-wrap">
-        <Name character={character} />
-        <Alignment character={character} />
-        <Inspiration character={character} />
+        <div>
+          <Name character={character} />
+          <Alignment character={character} />
+        </div>
+        <ACHP character={character} />
+        {/* <Alignment character={character} /> */}
+        <div className="flex flex-col">
+          <Inspiration character={character} />
+
+          <StyledButton
+            extraClassName="ml-2 -mt-1 mb-1 h-10"
+            onClick={() => console.log('short')}
+          >
+            Short Rest
+          </StyledButton>
+          <StyledButton
+            extraClassName="ml-2 mb-1 h-10"
+            onClick={() => console.log('long')}
+          >
+            Long Rest
+          </StyledButton>
+        </div>
         <div className="flex flex-wrap items-center text-center mt-2 mb-6">
-          <AbilityScores character={character} />
-          <ACHP character={character} />
+          <div>
+            <AbilityScores character={character} />
+          </div>
         </div>
       </div>
       <div className="w-3/12 h-full">
