@@ -7,12 +7,7 @@ import {
   setAc,
   setHp,
 } from 'features/character/characterListSlice';
-import {
-  getAbilityMod,
-  calculateStats,
-  getMaxHP,
-  getClass,
-} from 'utils/character';
+import { getAbilityMod, calculateStats, getMaxHP } from 'utils/character';
 import hpLight from 'images/hp-light.png';
 import acLight from 'images/ac-light.png';
 import hpDark from 'images/hp-dark.png';
@@ -143,11 +138,7 @@ const ACHP = ({ character }: Props) => {
               top: '6.05rem',
             }}
           >
-            {getMaxHP(
-              getClass(character.classData.classElement)!.hd.faces,
-              character.gameData.level,
-              getAbilityMod(calculateStats(character).con),
-            )}
+            {getMaxHP(character)}
           </p>
         </div>
         <div className="ml-1">

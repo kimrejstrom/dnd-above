@@ -9,6 +9,7 @@ import {
   getIncludedProficiencies,
   getAbilityMod,
   calculateStats,
+  getMaxHP,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase } from 'models/race';
@@ -97,6 +98,13 @@ export interface CharacterGameData {
     ac: number;
     currentHp: number;
     currentHd: number;
+    spellSlots?: Record<
+      number,
+      {
+        used: number;
+        total: number;
+      }
+    >;
   };
 }
 
@@ -315,6 +323,10 @@ const MOE: CharacterListItem = {
     ac: 16,
     currentHp: 12,
     currentHd: 3,
+    spellSlots: {
+      1: { used: 1, total: 3 },
+      2: { used: 0, total: 2 },
+    },
   },
 };
 
@@ -463,6 +475,26 @@ const characterListSlice = createSlice({
         character.gameData.currentHd = Number(action.payload.currentHd);
       }
     },
+    longRest(state, action: PayloadAction<{ id: string }>) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        const gainedHDs =
+          character.gameData.currentHd +
+            Math.ceil(Number(character.gameData.currentHd) / 2) || 1;
+        character.gameData.currentHd = Math.min(
+          gainedHDs,
+          character.gameData.level,
+        );
+        character.gameData.currentHp = getMaxHP(character);
+        const spellSlots = character.gameData.spellSlots;
+        character.gameData.spellSlots = spellSlots
+          ? Object.keys(spellSlots).reduce((acc: any, key) => {
+              acc[key] = { ...(spellSlots as any)[key], used: 0 };
+              return acc;
+            }, {})
+          : undefined;
+      }
+    },
   },
 });
 
@@ -473,6 +505,7 @@ export const {
   setAc,
   setHp,
   setCurrentHd,
+  longRest,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

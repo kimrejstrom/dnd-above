@@ -1,23 +1,5 @@
 import { getIncludedProficiencies } from 'utils/character';
 
-// Mock 5e-tools
-jest.mock('utils/mainRenderer', () => ({
-  mainRenderer: {
-    race: {
-      mergeSubraces: jest.fn(() => []),
-    },
-    item: {
-      _addProperty: jest.fn(),
-      _addType: jest.fn(),
-      _addAdditionalEntries: jest.fn(),
-    },
-  },
-  SourceUtil: {
-    isCoreOrSupplement: jest.fn(),
-    isNonstandardSource: jest.fn(),
-  },
-}));
-
 describe('character utils', () => {
   it('gets the default proficiencies', () => {
     const languageProficiencies = [

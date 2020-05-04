@@ -23,7 +23,7 @@ import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
 import Feats from 'features/character/Feats';
-import StyledButton from 'components/StyledButton/StyledButton';
+import Rests from 'features/character/Rests';
 
 interface Props {}
 
@@ -58,22 +58,20 @@ export const Main: React.FC<Props> = () => {
         <ACHP character={character} />
         <div className="flex flex-col">
           <Inspiration character={character} />
-          <StyledButton
-            extraClassName="ml-2 -mt-1 mb-1 h-10 custom-border-medium"
-            onClick={() => console.log('short')}
-          >
-            Short Rest
-          </StyledButton>
-          <StyledButton
-            extraClassName="ml-2 mb-1 h-10 custom-border-medium"
-            onClick={() => console.log('long')}
-          >
-            Long Rest
-          </StyledButton>
+          <Rests character={character} />
         </div>
-        <div className="flex flex-wrap items-center text-center mt-4 mb-6">
-          <div>
-            <AbilityScores character={character} />
+        <div className="flex flex-wrap items-center text-center mt-3 mb-6">
+          <AbilityScores character={character} />
+          <div
+            className="text-left text-sm custom-border h-20 flex"
+            style={{ width: '30rem' }}
+          >
+            <div className="w-1/2">
+              <div className="-mt-2">Defenses</div>
+            </div>
+            <div className="w-1/2 custom-border custom-border-medium custom-border-l">
+              <div className="-mt-2">Conditions</div>
+            </div>
           </div>
         </div>
       </div>

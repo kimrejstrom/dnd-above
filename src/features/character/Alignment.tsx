@@ -98,8 +98,9 @@ const Alignment = ({ character }: Props) => {
         {`d${getClass(character.classData.classElement)!.hd.faces}`}
       </div>
       <div
-        className="z-0 custom-border absolute border-l-0"
+        className="z-0 custom-border absolute"
         style={{
+          borderLeft: '0',
           top: '0.25rem',
           right: '-4.1rem',
           width: '5rem',

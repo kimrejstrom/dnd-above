@@ -43,7 +43,10 @@ export const calculateStats = (
   );
 };
 
-export const getMaxHP = (hitDie: number, level: number, con: number) => {
+export const getMaxHP = (character: CharacterState) => {
+  const hitDie = getClass(character.classData.classElement)?.hd.faces || 10;
+  const level = character.gameData.level;
+  const con = getAbilityMod(calculateStats(character).con);
   const hitDieAverage = Math.ceil((1 + hitDie) / 2);
   let maxHp = 0;
   for (let index = 0; index < level; index++) {

@@ -1,5 +1,3 @@
-// const Renderer = require('vendor/5e-tools/renderer');
-
 const Renderer = (window as any).Renderer;
 export const mainRenderer = new Renderer();
 export const SourceUtil = (window as any).SourceUtil;
