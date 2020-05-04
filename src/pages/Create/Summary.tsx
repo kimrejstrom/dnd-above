@@ -18,7 +18,7 @@ import {
 } from 'features/character/characterListSlice';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer, { Parser } from 'utils/mainRenderer';
+import { mainRenderer, Parser } from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
 import StyledButton from 'components/StyledButton/StyledButton';
 

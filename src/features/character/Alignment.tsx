@@ -11,7 +11,6 @@ import {
 import { getRace, getClass, getHdTotal } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
-import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
 
 interface Props {
   character: CharacterState;
@@ -35,7 +34,6 @@ const Alignment = ({ character }: Props) => {
   const getAlignmentPosition = (alignment: string) => {
     switch ((Parser.ALIGNMENTS as any)[alignment]) {
       case Parser.ALIGNMENTS.LG:
-        console.log('HIT');
         return { top: '0.45rem', left: '0.85rem' };
       case Parser.ALIGNMENTS.NG:
         return { top: '0.45rem', left: '1.8rem' };

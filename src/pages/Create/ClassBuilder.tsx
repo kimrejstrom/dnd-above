@@ -11,7 +11,7 @@ import ClassBase from 'pages/Create/ClassBase';
 import { useForm } from 'react-hook-form';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
 import _ from 'lodash';
 import { getClass, getSubClass } from 'utils/character';

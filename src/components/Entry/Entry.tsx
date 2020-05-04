@@ -1,5 +1,5 @@
 import React from 'react';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 
 interface Props {

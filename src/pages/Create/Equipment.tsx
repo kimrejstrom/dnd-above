@@ -7,7 +7,7 @@ import { updateFormData } from 'features/createCharacterForm/createCharacterForm
 import { WEAPONS, ARMOR, ALL_OTHER_ITEMS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import { getClass, getBackground, getItem } from 'utils/character';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,

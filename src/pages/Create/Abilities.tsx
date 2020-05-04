@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { Dice } from 'vendor/nicer-dicer-engine';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer, { Parser } from 'utils/mainRenderer';
+import { Parser, mainRenderer } from 'utils/mainRenderer';
 import { getClassQuickBuild, getRace, getClass } from 'utils/character';
 import { isDefined } from 'ts-is-present';
 import StyledButton, {

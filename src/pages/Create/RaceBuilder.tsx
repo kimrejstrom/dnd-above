@@ -7,7 +7,7 @@ import { Race } from 'models/race';
 import { PLAYABLE_RACES, PLAYABLE_RACES_FLUFF } from 'utils/data';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer, { Parser } from 'utils/mainRenderer';
+import { mainRenderer, Parser } from 'utils/mainRenderer';
 import Entry from 'components/Entry/Entry';
 import { useForm } from 'react-hook-form';
 import {

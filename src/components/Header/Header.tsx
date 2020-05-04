@@ -24,7 +24,6 @@ export const Header: React.FC = () => {
     }
   });
   const [konamiCode] = useKonamiCode();
-  console.log(konamiCode);
 
   return (
     <header className="border-b-2 border-tertiary-dark bg-yellow-100 dark:border-primary-light dark:bg-primary-dark h-20">

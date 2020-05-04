@@ -2,7 +2,7 @@ import React from 'react';
 import { startCase } from 'lodash/fp';
 import Table from 'components/Table/Table';
 import { Cell } from 'react-table';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { SpellElement } from 'models/spells';
 import { useDispatch } from 'react-redux';

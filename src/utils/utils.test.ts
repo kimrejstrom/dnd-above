@@ -1,8 +1,8 @@
 import { getIncludedProficiencies } from 'utils/character';
 
 // Mock 5e-tools
-jest.mock('vendor/5e-tools/renderer', () => ({
-  Renderer: jest.fn().mockImplementation(() => ({
+jest.mock('utils/mainRenderer', () => ({
+  mainRenderer: {
     race: {
       mergeSubraces: jest.fn(() => []),
     },
@@ -11,7 +11,7 @@ jest.mock('vendor/5e-tools/renderer', () => ({
       _addType: jest.fn(),
       _addAdditionalEntries: jest.fn(),
     },
-  })),
+  },
   SourceUtil: {
     isCoreOrSupplement: jest.fn(),
     isNonstandardSource: jest.fn(),

@@ -1,6 +1,7 @@
 // const Renderer = require('vendor/5e-tools/renderer');
 
-const mainRenderer = new (window as any).Renderer();
+const Renderer = (window as any).Renderer;
+export const mainRenderer = new Renderer();
 export const SourceUtil = (window as any).SourceUtil;
 export const Parser = (window as any).Parser;
 
@@ -29,4 +30,3 @@ export const getEntry = (
   }
   return result;
 };
-export default mainRenderer;

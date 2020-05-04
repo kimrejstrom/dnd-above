@@ -9,7 +9,7 @@ import { CharacterState } from 'features/character/characterListSlice';
 import { getItem, isSpellCaster, getSpell } from 'utils/character';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import { Property } from 'models/item';
 import { ACTIONS } from 'utils/data';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';

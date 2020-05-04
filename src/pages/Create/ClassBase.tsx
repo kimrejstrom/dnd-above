@@ -1,6 +1,6 @@
 import React from 'react';
 import { ClassElement, Multiclassing } from 'models/class';
-import mainRenderer, { Parser } from 'utils/mainRenderer';
+import { Parser, mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 
 const ClassBase = ({ cls }: { cls: ClassElement }) => {

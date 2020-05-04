@@ -11,7 +11,7 @@ import { RootState } from 'app/rootReducer';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import _ from 'lodash';
 

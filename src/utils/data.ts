@@ -45,11 +45,10 @@ import { Action } from 'models/actions';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import { isDefined } from 'ts-is-present';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
-import { SourceUtil } from 'utils/mainRenderer';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const allSources = getCookie('allSources') === 'true';

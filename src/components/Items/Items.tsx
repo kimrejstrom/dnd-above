@@ -7,7 +7,7 @@ import { Item } from 'models/item';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import mainRenderer from 'utils/mainRenderer';
+import { mainRenderer } from 'utils/mainRenderer';
 
 interface Props {
   items: (Item | BaseItem)[];
