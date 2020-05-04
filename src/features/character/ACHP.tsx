@@ -156,7 +156,7 @@ const ACHP = ({ character }: Props) => {
             className="text-xl text-center flex flex-col"
           >
             <button
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24`}
+              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
               onClick={() => onHPChange('heal')}
               type="button"
             >
@@ -164,11 +164,11 @@ const ACHP = ({ character }: Props) => {
             </button>
             <input
               name="hp"
-              className="text-center my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-thin rounded dark:border-primary-light border-secondary-dark"
+              className="text-center my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
               ref={register}
             />
             <button
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24`}
+              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
               onClick={() => onHPChange('damage')}
               type="button"
             >

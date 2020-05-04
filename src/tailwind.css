@@ -62,11 +62,22 @@ body.modal-active {
   border-image-repeat: round;
   border-image-source: url(./images/border-image-light.png);
 }
-
 .mode-dark .custom-border-thin,
 .custom-border-thin {
   border-image-slice: 45;
   border-width: 0.5rem;
+}
+
+.mode-dark .custom-border-medium,
+.custom-border-medium {
+  border-image-slice: 45;
+  border-width: 0.75rem;
+}
+
+.mode-dark .custom-border-heavy,
+.custom-border-heavy {
+  border-image-slice: 50;
+  border-width: 1rem;
 }
 
 .mode-dark .custom-border-t,

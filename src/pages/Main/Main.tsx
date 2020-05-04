@@ -51,29 +51,27 @@ export const Main: React.FC<Props> = () => {
   return (
     <>
       <div className="w-full flex flex-wrap">
-        <div>
+        <div className="flex flex-col">
           <Name character={character} />
           <Alignment character={character} />
         </div>
         <ACHP character={character} />
-        {/* <Alignment character={character} /> */}
         <div className="flex flex-col">
           <Inspiration character={character} />
-
           <StyledButton
-            extraClassName="ml-2 -mt-1 mb-1 h-10"
+            extraClassName="ml-2 -mt-1 mb-1 h-10 custom-border-medium"
             onClick={() => console.log('short')}
           >
             Short Rest
           </StyledButton>
           <StyledButton
-            extraClassName="ml-2 mb-1 h-10"
+            extraClassName="ml-2 mb-1 h-10 custom-border-medium"
             onClick={() => console.log('long')}
           >
             Long Rest
           </StyledButton>
         </div>
-        <div className="flex flex-wrap items-center text-center mt-2 mb-6">
+        <div className="flex flex-wrap items-center text-center mt-4 mb-6">
           <div>
             <AbilityScores character={character} />
           </div>
