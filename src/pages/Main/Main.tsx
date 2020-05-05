@@ -24,11 +24,15 @@ import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
 import Feats from 'features/character/Feats';
 import Rests from 'features/character/Rests';
+import dudeDark from 'images/dude-dark.png';
+import dudeLight from 'images/dude-light.png';
+import { ThemeMode } from 'features/theme/themeSlice';
 
 interface Props {}
 
 export const Main: React.FC<Props> = () => {
   const dispatch = useDispatch();
+  const theme = useSelector((state: RootState) => state.theme);
   const characterList: CharacterList = useSelector(
     (state: RootState) => state.characterList,
   );
@@ -64,13 +68,31 @@ export const Main: React.FC<Props> = () => {
           <AbilityScores character={character} />
           <div
             className="text-left text-sm custom-border h-20 flex"
-            style={{ width: '30rem' }}
+            style={{ width: '25rem' }}
           >
             <div className="w-1/2">
               <div className="-mt-2">Defenses</div>
             </div>
             <div className="w-1/2 custom-border custom-border-medium custom-border-l">
               <div className="-mt-2">Conditions</div>
+            </div>
+          </div>
+          <div className="custom-border custom-border-medium h-20 w-20">
+            <div
+              className="flex flex-col justify-center items-center rounded-lg"
+              style={{
+                height: '4.6rem',
+                width: '4.6rem',
+                marginTop: '-0.55rem',
+                marginLeft: '-0.55rem',
+              }}
+            >
+              <img
+                className="h-10 ml-2 -mt-1"
+                src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
+                alt="logo"
+              />
+              <div className="-mb-3 text-sm">Level Up</div>
             </div>
           </div>
         </div>

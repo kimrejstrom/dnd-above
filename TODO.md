@@ -4,16 +4,18 @@ Project Description
 
 ### Todo
 
+- [ ] Level Up  
 - [ ] Spellslots Total + Used + Reset at rests  
 - [ ] Manage Selected Spells + Rating / Comments  
 - [ ] Custom data form / Game data form?  
-- [ ] Level Up  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
 - [ ] Feats  
 - [ ] XP  
 - [ ] Omni search (Fuse)  
 - [ ] Extras: Bestiary + any other "saved entries"  
+- [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
+- [ ] Custom Items (type, info)  
 
 ### In Progress
 

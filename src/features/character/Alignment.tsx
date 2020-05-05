@@ -57,7 +57,7 @@ const Alignment = ({ character }: Props) => {
   };
   return (
     <div
-      className="mt-6 relative bg-contain bg-center bg-no-repeat"
+      className="mt-5 relative bg-contain bg-center bg-no-repeat"
       style={{
         width: '17rem',
         height: '4rem',
