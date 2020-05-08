@@ -53,109 +53,113 @@ export const Main: React.FC<Props> = () => {
   };
 
   return (
-    <>
-      <div className="w-full flex flex-wrap">
-        <div className="flex flex-col">
-          <Name character={character} />
-          <Alignment character={character} />
-        </div>
-        <ACHP character={character} />
-        <div className="flex flex-col">
-          <Inspiration character={character} />
-          <Rests character={character} />
-        </div>
-        <div className="flex flex-wrap items-center text-center mt-3 mb-6">
-          <AbilityScores character={character} />
-          <div
-            className="text-left text-sm custom-border h-20 flex"
-            style={{ width: '25rem' }}
-          >
-            <div className="w-1/2">
-              <div className="-mt-2">Defenses</div>
-            </div>
-            <div className="w-1/2 custom-border custom-border-medium custom-border-l">
-              <div className="-mt-2">Conditions</div>
-            </div>
+    <div className="w-full flex justify-center z-10">
+      <div className="flex flex-wrap" style={{ maxWidth: '62rem' }}>
+        <div className="w-full flex flex-wrap">
+          <div className="flex flex-col mr-2">
+            <Name character={character} />
+            <Alignment character={character} />
           </div>
-          <div className="custom-border custom-border-medium h-20 w-20">
+          <ACHP character={character} />
+          <div className="flex flex-col">
+            <Inspiration character={character} />
+            <Rests character={character} />
+          </div>
+          <div className="flex flex-wrap items-center text-center mt-3 mb-6">
+            <AbilityScores character={character} />
             <div
-              className="flex flex-col justify-center items-center rounded-lg"
-              style={{
-                height: '4.6rem',
-                width: '4.6rem',
-                marginTop: '-0.55rem',
-                marginLeft: '-0.55rem',
-              }}
+              className="text-left text-sm custom-border h-20 flex"
+              style={{ width: '25rem' }}
             >
-              <img
-                className="h-10 ml-2 -mt-1"
-                src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
-                alt="logo"
-              />
-              <div className="-mb-3 text-sm">Level Up</div>
+              <div className="w-1/2">
+                <div className="-mt-2">Defenses</div>
+              </div>
+              <div className="w-1/2 custom-border custom-border-medium custom-border-l">
+                <div className="-mt-2">Conditions</div>
+              </div>
+            </div>
+            <div className="ml-1 custom-border custom-border-medium h-20 w-20">
+              <div
+                className="flex flex-col justify-center items-center rounded-lg"
+                style={{
+                  height: '4.6rem',
+                  width: '4.6rem',
+                  marginTop: '-0.55rem',
+                  marginLeft: '-0.55rem',
+                }}
+              >
+                <img
+                  className="h-10 ml-2 -mt-1"
+                  src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
+                  alt="logo"
+                />
+                <div className="-mb-3 text-sm">Level Up</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-3/12 h-full">
-        <div className="flex flex-col">
-          <SavingThrows character={character} />
-          <Senses character={character} />
-          <Proficiencies character={character} />
-          {character.gameData.feats.length > 0 && (
-            <Feats character={character} />
-          )}
-        </div>
-      </div>
-      <div className="w-3/12 h-full">
-        <Skills character={character} />
-      </div>
-      <div className="w-6/12 h-full">
-        <div className="custom-border pb-10" style={{ height: '50rem' }}>
-          <Tabs
-            selectedIndex={characterTabPanel.selectedIndex}
-            onSelect={tabIndex => handleTabChange(tabIndex)}
-            className="h-full"
-          >
-            <TabList className="flex justify-between text-center">
-              <Tab>Actions</Tab>
-              {isSpellCaster(character) && <Tab>Spells</Tab>}
-              <Tab>Equipment</Tab>
-              <Tab>Features &amp; Traits</Tab>
-              <Tab>Description</Tab>
-              <Tab>Notes</Tab>
-              <Tab>Extras</Tab>
-            </TabList>
-
-            <TabPanel className="overflow-y-scroll px-2">
-              <Actions character={character} />
-            </TabPanel>
-            {isSpellCaster(character) && (
-              <TabPanel className="overflow-y-scroll px-2">
-                <SpellCasting character={character} />
-              </TabPanel>
+        <div className="w-1/2 lg:w-3/12">
+          <div className="flex flex-col">
+            <SavingThrows character={character} />
+            <Senses character={character} />
+            <Proficiencies character={character} />
+            {character.gameData.feats.length > 0 && (
+              <Feats character={character} />
             )}
-            <TabPanel className="overflow-y-scroll px-2">
-              <ItemsLoot character={character} />
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <FeaturesTraits character={character} />
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <div>
-                <div className="text-2xl">Background</div>
-                <Background background={character.descriptionData.background} />
-              </div>
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <div>Notes</div>
-            </TabPanel>
-            <TabPanel className="overflow-y-scroll px-2">
-              <div>Extras</div>
-            </TabPanel>
-          </Tabs>
+          </div>
+        </div>
+        <div className="w-1/2 lg:w-3/12">
+          <Skills character={character} />
+        </div>
+        <div className="w-full lg:w-6/12">
+          <div className="custom-border pb-10" style={{ height: '48.75rem' }}>
+            <Tabs
+              selectedIndex={characterTabPanel.selectedIndex}
+              onSelect={tabIndex => handleTabChange(tabIndex)}
+              className="h-full"
+            >
+              <TabList className="flex justify-between text-center">
+                <Tab>Actions</Tab>
+                {isSpellCaster(character) && <Tab>Spells</Tab>}
+                <Tab>Equipment</Tab>
+                <Tab>Features &amp; Traits</Tab>
+                <Tab>Description</Tab>
+                <Tab>Notes</Tab>
+                <Tab>Extras</Tab>
+              </TabList>
+
+              <TabPanel className="overflow-y-scroll px-2">
+                <Actions character={character} />
+              </TabPanel>
+              {isSpellCaster(character) && (
+                <TabPanel className="overflow-y-scroll px-2">
+                  <SpellCasting character={character} />
+                </TabPanel>
+              )}
+              <TabPanel className="overflow-y-scroll px-2">
+                <ItemsLoot character={character} />
+              </TabPanel>
+              <TabPanel className="overflow-y-scroll px-2">
+                <FeaturesTraits character={character} />
+              </TabPanel>
+              <TabPanel className="overflow-y-scroll px-2">
+                <div>
+                  <div className="text-2xl">Background</div>
+                  <Background
+                    background={character.descriptionData.background}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel className="overflow-y-scroll px-2">
+                <div>Notes</div>
+              </TabPanel>
+              <TabPanel className="overflow-y-scroll px-2">
+                <div>Extras</div>
+              </TabPanel>
+            </Tabs>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

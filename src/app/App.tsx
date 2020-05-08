@@ -34,7 +34,7 @@ const App: React.FC = () => {
           <ErrorBoundary>
             {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <main className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark flex-grow">
+            <main className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark">
               <UpdateNotification />
               <Header />
               <div
@@ -43,7 +43,7 @@ const App: React.FC = () => {
               >
                 <Sidebar />
                 {/* Main content */}
-                <div className="flex w-10/12 flex-wrap bg-yellow-100 dark:bg-primary-dark p-4 h-full">
+                <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-4 h-full">
                   <Switch>
                     <Route exact path="/" component={withTracker(Main)} />
                     <Route path="/about" component={withTracker(About)} />

@@ -205,6 +205,20 @@ a.active {
   @apply text-yellow-500 border-yellow-500 border-b-2;
 }
 
+.right-panel {
+  transition: all 200ms ease-in-out;
+}
+
+.right-panel-open {
+  transform: translateX(0%);
+  width: 35rem;
+}
+.right-panel-close {
+  transform: translateX(100%);
+  visibility: hidden !important;
+  width: 0;
+}
+
 /* Tabs */
 .react-tabs__tab {
   @apply text-secondary-dark cursor-pointer;
