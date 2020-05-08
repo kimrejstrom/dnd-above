@@ -211,12 +211,20 @@ a.active {
 
 .right-panel-open {
   transform: translateX(0%);
-  width: 35rem;
+  width: 25rem;
 }
+
 .right-panel-close {
   transform: translateX(100%);
   visibility: hidden !important;
   width: 0;
+}
+
+@media (min-width: 768px) {
+  .right-panel-open {
+    transform: translateX(0%);
+    width: 35rem;
+  }
 }
 
 /* Tabs */

@@ -57,8 +57,8 @@ const ACHP = ({ character }: Props) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex">
+    <div className="flex flex-col mt-4 md:mt-0">
+      <div className="flex justify-center md:justify-start flex-wrap md:flex-no-wrap">
         <div
           className="ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
@@ -141,10 +141,10 @@ const ACHP = ({ character }: Props) => {
             {getMaxHP(character)}
           </p>
         </div>
-        <div className="ml-1">
+        <div className="mt-4 md:mt-0 ml-1">
           <form
             onSubmit={handleSubmit(onHPSubmit)}
-            className="text-xl text-center flex flex-col"
+            className="text-xl text-center flex md:flex-col"
           >
             <button
               className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
@@ -168,7 +168,7 @@ const ACHP = ({ character }: Props) => {
           </form>
         </div>
       </div>
-      <div className="flex items-center justify-start">
+      <div className="flex items-center justify-center md:justify-start">
         <div
           className="ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
@@ -190,10 +190,8 @@ const ACHP = ({ character }: Props) => {
           }}
         ></div>
         <div
-          className="ml-4 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden md:block md:visible w-8 h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
           style={{
-            height: '2rem',
-            width: '2rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? skullIconLight : skullIconDark
             })`,
