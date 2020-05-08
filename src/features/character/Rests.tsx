@@ -15,7 +15,7 @@ const Rests = ({ character }: Props) => {
   return (
     <>
       <StyledButton
-        extraClassName="ml-2 md:-mt-1 mb-1 h-10 custom-border-medium"
+        extraClassName="ml-2 xl:-mt-1 mb-1 h-10 custom-border-medium"
         onClick={() => console.log('short')}
       >
         Short Rest

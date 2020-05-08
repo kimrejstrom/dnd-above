@@ -16,7 +16,7 @@ interface Props {
 const Inspiration = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
-    <div className="flex justify-center md:justify-start flex-wrap md:flex-no-wrap md:flex-col ml-2 mb-2">
+    <div className="flex justify-center xl:justify-start flex-wrap xl:flex-no-wrap xl:flex-col ml-2 xl:mb-2">
       <div
         className="relative bg-contain bg-center bg-no-repeat"
         style={{

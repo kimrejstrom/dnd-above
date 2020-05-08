@@ -64,7 +64,7 @@ export const Main: React.FC<Props> = () => {
             <Alignment character={character} />
           </div>
           <ACHP character={character} />
-          <div className="flex flex-wrap md:flex-no-wrap md:flex-col justify-center md:justify-start">
+          <div className="flex flex-wrap xl:flex-no-wrap xl:flex-col justify-center xl:justify-start">
             <Inspiration character={character} />
             <Rests character={character} />
           </div>
