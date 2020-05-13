@@ -312,7 +312,7 @@ const RaceBuilder = ({ url }: Props) => {
             <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl">{race.name}</span>
               <StyledButton
-                onClick={e => onSelect({ race: race.name }, e)}
+                onClick={(e: any) => onSelect({ race: race.name }, e)}
                 extraClassName="absolute right-0 mr-2"
               >
                 Select

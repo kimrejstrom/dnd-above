@@ -8,7 +8,7 @@ import {
   CharacterState,
   setCurrentHd,
 } from 'features/character/characterListSlice';
-import { getRace, getClass, getHdTotal } from 'utils/character';
+import { getRace, getHdTotal, getHitDice } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
 
@@ -22,9 +22,7 @@ const Alignment = ({ character }: Props) => {
   type FormData = {
     currentHd: number;
   };
-  const { register, handleSubmit, setValue, errors, getValues } = useForm<
-    FormData
-  >();
+  const { register, handleSubmit, setValue } = useForm<FormData>();
   const onHDSubmit = (data: FormData) => {
     dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
   };
@@ -95,7 +93,7 @@ const Alignment = ({ character }: Props) => {
           left: '14rem',
         }}
       >
-        {`d${getClass(character.classData.classElement)!.hd.faces}`}
+        {getHitDice(character)}
       </div>
       <div
         className="z-0 custom-border absolute"

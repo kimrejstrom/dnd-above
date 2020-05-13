@@ -69,6 +69,17 @@ export const getSubClass = (className: string, subClassName: string) => {
     : undefined;
 };
 
+export const getAllClassFeatures = (
+  className: string,
+  subClassName: string,
+) => {
+  const baseClass = getClass(className);
+  const subclass = baseClass?.subclasses.find(
+    subclass => subclass.name === subClassName,
+  );
+  return [...baseClass?.classFeatures[0]!, ...subclass?.subclassFeatures[0]!];
+};
+
 export const getRace = (raceName: string) =>
   PLAYABLE_RACES.find(race => race.name === raceName);
 
@@ -97,6 +108,9 @@ export const isSpellCaster = (character: CharacterState) => {
   const isSpellCaster = classElement?.spellcastingAbility !== undefined;
   return isSpellCaster;
 };
+
+export const getHitDice = (character: CharacterState) =>
+  `d${getClass(character.classData.classElement)!.hd.faces}`;
 
 export const getHdTotal = (character: CharacterState) =>
   character.gameData.level;

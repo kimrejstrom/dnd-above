@@ -124,19 +124,19 @@ const Equipment = ({ url }: { url: string }) => {
 
       <div className="flex my-4">
         <StyledButton
-          onClick={e => addItemSelect(e, 'Weapon')}
+          onClick={(e: any) => addItemSelect(e, 'Weapon')}
           extraClassName="mr-2"
         >
           + Add weapon
         </StyledButton>
         <StyledButton
-          onClick={e => addItemSelect(e, 'Armor')}
+          onClick={(e: any) => addItemSelect(e, 'Armor')}
           extraClassName="mr-2"
         >
           + Add armor
         </StyledButton>
         <StyledButton
-          onClick={e => addItemSelect(e, 'Item')}
+          onClick={(e: any) => addItemSelect(e, 'Item')}
           extraClassName="mr-2"
         >
           + Add item

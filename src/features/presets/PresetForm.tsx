@@ -7,9 +7,9 @@ import {
 } from 'features/presets/presetsSlice';
 import { Preset } from 'features/presets/presetsSlice';
 import { useForm } from 'react-hook-form';
-import { Dice } from 'vendor/nicer-dicer-engine';
 import { Alert } from 'components/Alert/Alert';
 import { toggleModal } from 'components/Modal/modalSlice';
+import { diceRoller } from 'utils/dice';
 
 export const PresetForm: React.FC<{
   existingPreset?: Preset;
@@ -22,10 +22,9 @@ export const PresetForm: React.FC<{
 
   const submitPreset = () => {
     const inputs = getValues();
-    const dice = new Dice();
     try {
       // check if formula is valid
-      dice.roll(inputs.formula);
+      diceRoller.roll(inputs.formula);
 
       const newPreset: Preset = {
         diceType: inputs.diceType,

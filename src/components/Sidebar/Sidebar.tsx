@@ -17,6 +17,9 @@ const Sidebar = () => {
     }
     return true;
   });
+  const selectedCharacterId = useSelector(
+    (state: RootState) => state.selectedCharacter,
+  );
   const dispatch = useDispatch();
   const history = useHistory();
   return (
@@ -29,7 +32,13 @@ const Sidebar = () => {
           }}
           className="mb-4"
         >
-          <div className="bg-white flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
+          <div
+            className={`${
+              selectedCharacterId !== character.id
+                ? 'opacity-50'
+                : 'border-2 border-yellow-500'
+            } bg-white flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden`}
+          >
             <img
               className="h-12 w-12 object-cover object-top"
               src={character.descriptionData.imageUrl}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dice, DiceResult } from 'vendor/nicer-dicer-engine';
+import { DiceResult } from 'vendor/nicer-dicer-engine';
 import { Alert } from 'components/Alert/Alert';
 import { RollResult } from 'features/rollResult/RollResult';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ import slide_04 from 'images/helper_slide4.png';
 import slide_05 from 'images/helper_slide5.png';
 import slide_06 from 'images/helper_slide6.png';
 import slide_07 from 'images/helper_slide7.png';
+import { diceRoller } from 'utils/dice';
 
 export const RollInput = () => {
   const dispatch = useDispatch();
@@ -41,11 +42,9 @@ export const RollInput = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const dice = new Dice(undefined, undefined, {
-      renderExpressionDecorators: true,
-    });
+
     try {
-      const rollResult = dice.roll(currentRoll);
+      const rollResult = diceRoller.roll(currentRoll);
       if (animations) {
         setLoading(true);
         await new Promise(r => setTimeout(r, 1600));

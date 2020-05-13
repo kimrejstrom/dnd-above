@@ -10,10 +10,12 @@ import {
   getAbilityMod,
   calculateStats,
   getMaxHP,
+  getHitDice,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase } from 'models/race';
 import { getCookie } from 'utils/cookie';
+import { diceRoller } from 'utils/dice';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -495,6 +497,17 @@ const characterListSlice = createSlice({
           : undefined;
       }
     },
+    expendHitDie(state, action: PayloadAction<{ id: string }>) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.currentHd = character.gameData.currentHd - 1;
+        const mod = getAbilityMod(calculateStats(character)['con']);
+        const rolledHp = diceRoller.roll(`1${getHitDice(character)}`).total;
+        const fullHp = getMaxHP(character);
+        const newHp = character.gameData.currentHp + rolledHp + mod;
+        character.gameData.currentHp = newHp < fullHp ? newHp : fullHp;
+      }
+    },
   },
 });
 
@@ -506,6 +519,7 @@ export const {
   setHp,
   setCurrentHd,
   longRest,
+  expendHitDie,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

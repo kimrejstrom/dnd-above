@@ -1,10 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import {
-  CharacterList,
-  DEAFULT_CHARACTER,
-} from 'features/character/characterListSlice';
 import Name from 'features/character/Name';
 import Alignment from 'features/character/Alignment';
 import Inspiration from 'features/character/Inspiration';
@@ -22,26 +18,18 @@ import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
-import Feats from 'features/character/Feats';
 import Rests from 'features/character/Rests';
 import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
 import { ThemeMode } from 'features/theme/themeSlice';
+import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {}
 
 export const Main: React.FC<Props> = () => {
   const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
-  const characterList: CharacterList = useSelector(
-    (state: RootState) => state.characterList,
-  );
-  const selectedCharacterId: string = useSelector(
-    (state: RootState) => state.selectedCharacter,
-  );
-  const character =
-    characterList.find(char => char.id === selectedCharacterId) ||
-    DEAFULT_CHARACTER;
+  const character = useSelector(getSelectedCharacter);
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
   const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
 
@@ -105,9 +93,6 @@ export const Main: React.FC<Props> = () => {
             <SavingThrows character={character} />
             <Senses character={character} />
             <Proficiencies character={character} />
-            {character.gameData.feats.length > 0 && (
-              <Feats character={character} />
-            )}
           </div>
         </div>
         <div className="w-full md:w-1/2 lg:w-3/12">

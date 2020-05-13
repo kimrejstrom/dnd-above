@@ -113,13 +113,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
   };
 
   const ClassInfo = () => {
-    const onSelect = (
-      data: {
-        classElement: string;
-        subClass: string;
-      },
-      e?: React.BaseSyntheticEvent,
-    ) => {
+    const onSelect = (data: { classElement: string; subClass: string }) => {
       dispatch(updateFormData({ classData: data }));
     };
     const [selectedClass, setselectedClass] = useState(classElement);
@@ -136,14 +130,11 @@ const ClassBuilder = ({ url }: { url: string }) => {
                   <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
                     <span className="text-xl">{feature.name}</span>
                     <StyledButton
-                      onClick={e =>
-                        onSelect(
-                          {
-                            classElement: selectedClass.name,
-                            subClass: feature.name,
-                          },
-                          e,
-                        )
+                      onClick={() =>
+                        onSelect({
+                          classElement: selectedClass.name,
+                          subClass: feature.name,
+                        })
                       }
                       extraClassName="absolute right-0 mr-2"
                     >
@@ -183,7 +174,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                     {classElement.name}
                   </span>
                   <StyledButton
-                    onClick={e => setselectedClass(classElement)}
+                    onClick={() => setselectedClass(classElement)}
                     extraClassName="absolute right-0 mr-2"
                   >
                     Select

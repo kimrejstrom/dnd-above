@@ -5,7 +5,6 @@ import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import * as _ from 'lodash';
-import { Dice } from 'vendor/nicer-dicer-engine';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { Parser, mainRenderer } from 'utils/mainRenderer';
@@ -14,6 +13,7 @@ import { isDefined } from 'ts-is-present';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
+import { diceRoller } from 'utils/dice';
 
 const Abilities = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
@@ -105,10 +105,7 @@ const Abilities = ({ url }: { url: string }) => {
         { score: 15, used: false },
       ]);
     } else if (e.currentTarget.value === 'roll') {
-      const dice = new Dice(undefined, undefined, {
-        renderExpressionDecorators: true,
-      });
-      const rollResult = dice
+      const rollResult = diceRoller
         .roll('{4d6kh3...6}')
         .renderedExpression.split('}')
         .filter(e => e)[0]
