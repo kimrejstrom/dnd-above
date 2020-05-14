@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Roller } from 'pages/Roller/Roller';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,18 +11,19 @@ import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { ThemeMode } from 'features/theme/themeSlice';
+import { togglePanel } from 'features/settings/settingsSlice';
 
 interface Props {}
 
 const RightPanel = (props: Props) => {
   const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
+  const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );
   const rightPanelTabPanel = tabPanels[TAB_PANELS.RIGHTPANEL];
-  const [panelOpen, setPanelOpen] = useState(true);
 
   const handleTabChange = (tabIndex: number) => {
     const updatedPanel = {
@@ -34,9 +35,9 @@ const RightPanel = (props: Props) => {
   return (
     <>
       <button
-        className="absolute"
+        className="hidden sm:block absolute"
         style={{ top: '1.8rem', right: '4rem' }}
-        onClick={() => setPanelOpen(!panelOpen)}
+        onClick={() => dispatch(togglePanel())}
       >
         <img
           src={`https://icon.now.sh/view_quilt/24/${

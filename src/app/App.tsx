@@ -1,8 +1,9 @@
 import React from 'react';
+import { useSwipeable } from 'react-swipeable';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Header } from 'components/Header/Header';
 import { Modal } from 'components/Modal/Modal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { withTracker, initializeGA } from 'utils/analyticsTracker';
 import { About } from 'pages/About/About';
@@ -13,6 +14,7 @@ import Create from 'pages/Create/Create';
 import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
+import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 
 // Google Analytics
 initializeGA();
@@ -22,7 +24,16 @@ const App: React.FC = () => {
   const { title, content } = useSelector(
     (state: RootState) => state.modalVisibility,
   );
+  const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      dispatch(setPanelOpen());
+    },
+    onSwipedRight: () => {
+      dispatch(setPanelClose());
+    },
+  });
   return (
     <div
       className={`flex flex-col min-h-screen theme ${
@@ -34,7 +45,10 @@ const App: React.FC = () => {
           <ErrorBoundary>
             {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <main className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark">
+            <main
+              {...handlers}
+              className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark"
+            >
               <UpdateNotification />
               <Header />
               <div
