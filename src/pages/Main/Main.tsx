@@ -23,6 +23,7 @@ import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { getSelectedCharacter } from 'app/selectors';
+import ConditionsDefenses from 'features/character/ConditionsDefenses';
 
 interface Props {}
 
@@ -58,17 +59,7 @@ export const Main: React.FC<Props> = () => {
           </div>
           <div className="flex flex-wrap text-center mt-3">
             <AbilityScores character={character} />
-            <div
-              className="text-left text-sm custom-border h-20 flex"
-              style={{ width: '24rem' }}
-            >
-              <div className="w-1/2">
-                <div className="-mt-2">Defenses</div>
-              </div>
-              <div className="w-1/2 custom-border custom-border-medium custom-border-l">
-                <div className="-mt-2">Conditions</div>
-              </div>
-            </div>
+            <ConditionsDefenses character={character} />
             <div className="flex justify-center ml-1 custom-border custom-border-medium h-20 w-full md:w-20">
               <div
                 className="flex flex-col justify-center items-center rounded-lg"

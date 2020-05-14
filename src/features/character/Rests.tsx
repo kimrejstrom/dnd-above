@@ -45,17 +45,18 @@ const ShortRestForm = () => {
 
   return (
     <div>
-      <div>
-        Expendable Hit Dice: {character.gameData.currentHd}
+      <div className="text-xl">
+        Expendable Hit Dice:{' '}
+        <span className="text-2xl mr-4">{character.gameData.currentHd}</span>
         <StyledButton
           disabled={isDisabled}
           onClick={() => dispatch(expendHitDie({ id: character.id! }))}
         >
-          Use Hit Die
+          Use
         </StyledButton>
       </div>
-      <div className="dnd-body">
-        Short Rest features:{' '}
+      <div className="dnd-body mt-3 custom-border custom-border-medium custom-border-t">
+        <div className="text-xl">Short Rest features:</div>
         <ul className="list-disc p-4">
           {search(
             getAllClassFeatures(

@@ -10,20 +10,19 @@ Project Description
 - [ ] Custom data form / Game data form?  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
-- [ ] Feats  
-- [ ] XP  
+- [ ] Feats select  
 - [ ] Omni search (Fuse)  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
-- [ ] Custom Items (type, info)  
+- [ ] XP  
 
 ### In Progress
 
-- [ ] Long Rest / Short Rest  
 - [ ] Conditions / Defenses  
 
 ### Done ✓
 
+- [x] Long Rest / Short Rest  
 - [x] Font  
 - [x] Current HP + dmg/heal  
 - [x] AC  

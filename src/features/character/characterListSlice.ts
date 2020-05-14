@@ -89,10 +89,18 @@ export interface CharacterCustom {
   };
 }
 
+export enum DefenseType {
+  Resistance = 'Resistacne',
+  Immunity = 'Immunity',
+  Vulnerability = 'Vulnerability',
+}
+
 export interface CharacterGameData {
   gameData: {
     level: number;
     feats: string[];
+    conditions: string[];
+    defenses: { type: DefenseType; option: string }[];
     spells: string[];
     attunements: string[];
     actions: any[];
@@ -198,6 +206,8 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
   gameData: {
     level: 1,
     feats: [],
+    conditions: [],
+    defenses: [],
     spells: [],
     attunements: [],
     actions: [],
@@ -319,6 +329,8 @@ const MOE: CharacterListItem = {
       'Vampiric Touch',
       'Counterspell',
     ],
+    conditions: ['invisible'],
+    defenses: [{ type: DefenseType.Immunity, option: 'cold' }],
     attunements: [],
     actions: [],
     extras: [],
@@ -407,6 +419,8 @@ const characterListSlice = createSlice({
             level: 1,
             feats: [],
             spells: [],
+            conditions: [],
+            defenses: [],
             attunements: [],
             actions: [],
             extras: [],
