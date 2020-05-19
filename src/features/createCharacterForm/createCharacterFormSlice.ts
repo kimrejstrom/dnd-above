@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CharacterBase } from 'features/character/characterListSlice';
+import {
+  CharacterBase,
+  randomize,
+} from 'features/character/characterListSlice';
 import { CharacterListItem } from 'features/character/characterListSlice';
 
 export interface CreateCharacterFormState {
@@ -69,6 +72,9 @@ const createCharacterFormSlice = createSlice({
   initialState: initialState,
   reducers: {
     setInitialFormData: state => initialState,
+    setGeneratedFormData: state => ({
+      data: randomize(),
+    }),
     loadInitialFormData(state, action: PayloadAction<CharacterListItem>) {
       const character = action.payload;
       const formState: CreateCharacterFormState = {
@@ -97,6 +103,7 @@ const createCharacterFormSlice = createSlice({
 export const {
   updateFormData,
   setInitialFormData,
+  setGeneratedFormData,
   loadInitialFormData,
 } = createCharacterFormSlice.actions;
 

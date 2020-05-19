@@ -21,6 +21,7 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer, Parser } from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
 import StyledButton from 'components/StyledButton/StyledButton';
+import { setGeneratedFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 
 const Summary = ({ url }: { url: string }) => {
   const formState = useSelector(
@@ -46,10 +47,20 @@ const Summary = ({ url }: { url: string }) => {
         >
           Save Character
         </StyledButton>
+        <StyledButton
+          extraClassName="mr-2"
+          onClick={() => {
+            dispatch(setGeneratedFormData());
+          }}
+        >
+          Randomize Character
+        </StyledButton>
       </div>
 
       <div>
-        <h1>{formState.data.descriptionData.name}</h1>
+        <h1>
+          {`${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}
+        </h1>
         <div className="flex flex-wrap lg:flex-no-wrap">
           <div className="flex-grow">
             <TextBox>

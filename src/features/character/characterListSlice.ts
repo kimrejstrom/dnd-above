@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CreateCharacterFormState } from 'features/createCharacterForm/createCharacterFormSlice';
 import { SkillTypes } from 'features/character/Skills';
-import { ArmorEnum } from 'models/class';
+import { ArmorEnum, ClassElement } from 'models/class';
 import {
   getRace,
   getClass,
@@ -13,9 +13,21 @@ import {
   getHitDice,
 } from 'utils/character';
 import _ from 'lodash';
-import { AbilityBase } from 'models/race';
+import { AbilityBase, Race } from 'models/race';
 import { getCookie } from 'utils/cookie';
 import { diceRoller } from 'utils/dice';
+import {
+  PLAYABLE_RACES,
+  PLAYABLE_CLASSES,
+  BACKGROUNDS,
+  filterSources,
+  WEAPONS,
+  ALL_OTHER_ITEMS,
+  ARMOR,
+} from 'utils/data';
+import { BackgroundElement } from 'models/background';
+import { Parser } from 'utils/mainRenderer';
+import { generate_name } from 'utils/name';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -342,6 +354,156 @@ const MOE: CharacterListItem = {
       2: { used: 0, total: 2 },
     },
   },
+};
+
+export const randomize = () => {
+  const race = _.sample(PLAYABLE_RACES) as Race;
+  const classElement = _.sample(PLAYABLE_CLASSES) as ClassElement;
+  const background = _.sample(BACKGROUNDS) as BackgroundElement;
+  const name = generate_name('base');
+  const abilityScores = diceRoller
+    .roll('{4d6kh3...6}')
+    .renderedExpression.split('}')
+    .filter(e => e)[0]
+    .replace(/[{}]/g, '')
+    .split(';')
+    .map(roll => roll.split('=')[1].trim());
+  const randomCharacter: CharacterBase = {
+    raceData: {
+      race: race.name,
+      chosenRaceAbilities: race.ability
+        ? _.sampleSize(
+            race.ability[0].choose?.from,
+            race.ability[0].choose?.count,
+          ).reduce((acc: any, curr: string) => ({ ...acc, [curr]: 1 }), {})
+        : [],
+      standardRaceAbilities: [],
+      chosenRaceSkillProficiencies: race.skillProficiencies
+        ? _.sampleSize(
+            race.skillProficiencies[0].choose?.from.filter(
+              entry => typeof entry === 'string',
+            ) as SkillTypes[],
+            race.skillProficiencies[0].choose?.count,
+          )
+        : [],
+      standardRaceSkillProficiencies: [],
+      chosenRaceLanguages: race.languageProficiencies
+        ? _.sampleSize(
+            Parser.LANGUAGES_STANDARD.concat(Parser.LANGUAGES_EXOTIC),
+            race.languageProficiencies[0].anyStandard || 0,
+          )
+        : [],
+      standardRaceLanguages: [],
+    },
+    classData: {
+      classElement: classElement.name,
+      subClass: _.sample(
+        classElement.subclasses.filter(subclass => filterSources(subclass)),
+      )?.name!,
+      chosenClassSkillProficiencies: classElement.startingProficiencies.skills
+        ? (_.sampleSize(
+            classElement.startingProficiencies.skills[0].choose?.from,
+            classElement.startingProficiencies.skills[0].choose?.count,
+          ) as SkillTypes[])
+        : [],
+      standardClassArmorProficiencies: [],
+      standardClassWeaponProficiencies: [],
+      standardClassToolProficiencies: [],
+      abilityScores: {
+        str: Number(abilityScores[0]),
+        dex: Number(abilityScores[1]),
+        con: Number(abilityScores[2]),
+        int: Number(abilityScores[3]),
+        wis: Number(abilityScores[4]),
+        cha: Number(abilityScores[5]),
+        rollMethod: 'roll',
+      },
+    },
+    descriptionData: {
+      name: name,
+      background: background.name,
+      alignment: _.sample(Object.keys(Parser.ALIGNMENTS))!,
+      characteristicsSource: background.name,
+      imageUrl: `${
+        process.env.PUBLIC_URL
+      }/img/races/${race.name.toLowerCase()}.png`,
+      hair: _.sample([
+        'Brown',
+        'Blonde',
+        'Dark',
+        'Grey',
+        'Green',
+        'Red',
+        'Blue',
+        'Auburn',
+        'Purple',
+      ])!,
+      skin: _.sample([
+        'Pale',
+        'Fair',
+        'Light',
+        'Light Tan',
+        'Tan',
+        'Dark Tan',
+        'Brown',
+        'Dark Brown',
+        'Bronze',
+        'Orange',
+        'Red',
+        'Aqua',
+        'Green',
+      ])!,
+      eyes: _.sample([
+        'Amber',
+        'Blue',
+        'Brown',
+        'Gray',
+        'Green',
+        'Hazel',
+        'Red and violet',
+      ])!,
+      height: `${_.random(110, 210)} cm`,
+      weight: `${_.random(30, 130)} kg`,
+      age: `${_.random(12, 120)} years`,
+      backstory: 'I just sprung in to existence, out of thin air!',
+      chosenBackgroundSkillProficiencies: background.skillProficiencies
+        ? _.sampleSize(
+            background.skillProficiencies[0].choose?.from.filter(
+              entry => typeof entry === 'string',
+            ) as SkillTypes[],
+            background.skillProficiencies[0].choose?.count,
+          )
+        : [],
+      standardBackgroundSkillProficiencies: [],
+      chosenBackgroundToolProficiencies: background.toolProficiencies
+        ? _.sampleSize(
+            background.toolProficiencies[0].choose?.from.filter(
+              entry => typeof entry === 'string',
+            ) as string[],
+            background.toolProficiencies[0].choose?.count,
+          )
+        : [],
+      standardBackgroundToolProficiencies: [],
+      chosenBackgroundLanguages: background.languageProficiencies
+        ? _.sampleSize(
+            Parser.LANGUAGES_STANDARD.concat(Parser.LANGUAGES_EXOTIC),
+            background.languageProficiencies[0].anyStandard || 0,
+          )
+        : [],
+      standardBackgroundLanguages: [],
+      characteristicsPersonalityTrait: '',
+      characteristicsIdeal: '',
+      characteristicsBond: '',
+      characteristicsFlaw: '',
+    },
+    equipmentData: {
+      items: _.sampleSize(WEAPONS as any, 2)
+        .map(item => item.name)
+        .concat(_.sampleSize(ALL_OTHER_ITEMS as any, 2).map(item => item.name))
+        .concat(_.sampleSize(ARMOR, 1).map(item => item.name)),
+    },
+  };
+  return randomCharacter;
 };
 
 const initialState: CharacterList = [DEAFULT_CHARACTER, MOE];
