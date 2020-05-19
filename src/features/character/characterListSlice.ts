@@ -595,7 +595,7 @@ const characterListSlice = createSlice({
             currentHd: 1,
           },
         };
-        state.push({ id, ...newCharacter });
+        state.push({ ...newCharacter });
       },
       prepare(payload: CreateCharacterFormState) {
         return { payload: { id: generateID(), ...payload } };

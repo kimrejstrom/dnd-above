@@ -124,15 +124,15 @@ export function generate_name(type: any) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // generate multiple
 
-function name_list(type: any, n_of: number) {
-  var list = [];
+// function name_list(type: any, n_of: number) {
+//   var list = [];
 
-  var i;
-  for (i = 0; i < n_of; i++) {
-    list.push(generate_name(type));
-  }
-  return list;
-}
+//   var i;
+//   for (i = 0; i < n_of; i++) {
+//     list.push(generate_name(type));
+//   }
+//   return list;
+// }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // get markov chain by type

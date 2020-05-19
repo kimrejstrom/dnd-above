@@ -67,10 +67,10 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
 };
 
 const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
-export const ALL_SPELLS: SpellElement[] = Object.values(SPELLS)
+export const ALL_SPELLS = Object.values(SPELLS)
   .map(spell => spell.spell)
   .flat()
-  .filter(entry => filterSources(entry));
+  .filter(entry => filterSources(entry)) as SpellElement[];
 
 export const CLASSES = {
   artificer,

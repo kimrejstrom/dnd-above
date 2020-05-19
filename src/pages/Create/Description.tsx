@@ -327,7 +327,7 @@ const Description = ({ url }: { url: string }) => {
                   className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
                   name="alignment"
                   onChange={() => {
-                    setSelectedAlignment(getValues().alignment);
+                    setSelectedAlignment((getValues() as any).alignment);
                   }}
                   ref={register({
                     required: true,
@@ -462,7 +462,9 @@ const Description = ({ url }: { url: string }) => {
                   <StyledButton
                     type="button"
                     extraClassName="w-full mt-2"
-                    onClick={() => setCharaterImageURL(getValues().imageUrl)}
+                    onClick={() =>
+                      setCharaterImageURL((getValues() as any).imageUrl)
+                    }
                   >
                     Load image
                   </StyledButton>
