@@ -10,7 +10,7 @@ interface Props {
 type ButtonProps = Props;
 
 export const DEFAULT_BUTTON_STYLE =
-  'text-lg dark-hover:bg-primary-dark h-8 leading-none bg-yellow-100 hover:bg-primary-light dark:bg-transparent dark:text-primary-light px-2 custom-border custom-border-thin text--center';
+  'text-lg dark-hover:bg-primary-dark h-8 leading-none bg-secondary-light hover:bg-primary-light dark:bg-tertiary-dark dark:text-primary-light px-2 custom-border custom-border-thin text--center';
 
 const StyledButton: React.FC<ButtonProps> = ({
   onClick,

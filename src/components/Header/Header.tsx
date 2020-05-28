@@ -28,7 +28,7 @@ export const Header: React.FC = () => {
   return (
     <header className="border-b-2 border-tertiary-dark bg-yellow-100 dark:border-primary-light dark:bg-primary-dark h-20">
       <nav className="flex items-center justify-between flex-wrap p-5">
-        <div className="flex items-center flex-shrink-0 text-primary-dark dark:text-primary-light mr-6">
+        <div className="flex items-center flex-shrink-0 text-primary-dark dark:text-primary-light mr-1 md:mr-6">
           <Link
             to="/"
             className="flex items-center font-semibold text-2xl tracking-tighter leading-none"

@@ -1,30 +1,97 @@
-import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import React, { useState } from 'react';
+import {
+  CharacterState,
+  DefenseType,
+} from 'features/character/characterListSlice';
+import SettingsCog from 'components/SettingsCog/SettingsCog';
+import { useDispatch } from 'react-redux';
+import { toggleModal } from 'components/Modal/modalSlice';
+import StyledButton from 'components/StyledButton/StyledButton';
+import { useForm } from 'react-hook-form';
+import { Parser } from 'utils/mainRenderer';
 
 interface Props {
   character: CharacterState;
 }
 
+const DefensesModal = () => {
+  const [itemDefenses, setItemDefenses] = useState<{ formId: string }[]>([]);
+  const { register, handleSubmit } = useForm();
+  const addItemDefense = (e: any) => {
+    e.preventDefault();
+    setItemDefenses(
+      itemDefenses.concat([{ formId: `item${itemDefenses.length + 1}` }]),
+    );
+  };
+  return (
+    <div>
+      <StyledButton onClick={addItemDefense}>Add new +</StyledButton>
+      {itemDefenses.map(selectData => {
+        return (
+          <div className="flex">
+            <label className="block w-1/2">
+              {`Type`}
+              <select
+                name={selectData.formId}
+                ref={register}
+                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+              >
+                <option value="initial">-</option>
+                {Object.keys(DefenseType).map(type => (
+                  <option value={type}>{type}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block w-1/2 ml-2">
+              {`Defense`}
+              <select
+                name={selectData.formId}
+                ref={register}
+                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+              >
+                <option value="initial">-</option>
+                <optgroup label="Damages">
+                  {Parser.DMG_TYPES.map((type: string) => (
+                    <option value={type}>{type}</option>
+                  ))}
+                </optgroup>
+                <optgroup label="Conditions">
+                  {Parser.CONDITIONS.map((type: string) => (
+                    <option value={type}>{type}</option>
+                  ))}
+                </optgroup>
+              </select>
+            </label>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const ConditionsModal = () => <div>Todo: Conditions</div>;
+
 const ConditionsDefenses = ({ character }: Props) => {
+  const dispatch = useDispatch();
   return (
     <div
       className="text-left text-sm custom-border h-20 flex"
       style={{ width: '24rem' }}
     >
-      <div className="w-1/2">
-        <div className="flex justify-between -mt-2">
+      <div className="w-1/2 relative">
+        <div className="flex -mt-2">
           <div>Defenses</div>
-          <button className="w-6 h-6">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="16"
-              className="fill-current"
-            >
-              <path d="M9 4.58V4c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v.58a8 8 0 0 1 1.92 1.11l.5-.29a2 2 0 0 1 2.74.73l1 1.74a2 2 0 0 1-.73 2.73l-.5.29a8.06 8.06 0 0 1 0 2.22l.5.3a2 2 0 0 1 .73 2.72l-1 1.74a2 2 0 0 1-2.73.73l-.5-.3A8 8 0 0 1 15 19.43V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.58a8 8 0 0 1-1.92-1.11l-.5.29a2 2 0 0 1-2.74-.73l-1-1.74a2 2 0 0 1 .73-2.73l.5-.29a8.06 8.06 0 0 1 0-2.22l-.5-.3a2 2 0 0 1-.73-2.72l1-1.74a2 2 0 0 1 2.73-.73l.5.3A8 8 0 0 1 9 4.57zM7.88 7.64l-.54.51-1.77-1.02-1 1.74 1.76 1.01-.17.73a6.02 6.02 0 0 0 0 2.78l.17.73-1.76 1.01 1 1.74 1.77-1.02.54.51a6 6 0 0 0 2.4 1.4l.72.2V20h2v-2.04l.71-.2a6 6 0 0 0 2.41-1.4l.54-.51 1.77 1.02 1-1.74-1.76-1.01.17-.73a6.02 6.02 0 0 0 0-2.78l-.17-.73 1.76-1.01-1-1.74-1.77 1.02-.54-.51a6 6 0 0 0-2.4-1.4l-.72-.2V4h-2v2.04l-.71.2a6 6 0 0 0-2.41 1.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-            </svg>
-          </button>
+          <SettingsCog
+            action={() =>
+              dispatch(
+                toggleModal({
+                  visible: true,
+                  title: 'Defenses',
+                  content: <DefensesModal />,
+                }),
+              )
+            }
+          />
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.defenses.length ? (
@@ -38,20 +105,20 @@ const ConditionsDefenses = ({ character }: Props) => {
           )}
         </div>
       </div>
-      <div className="w-1/2 custom-border custom-border-medium custom-border-l">
-        <div className="flex justify-between -mt-2">
+      <div className="w-1/2 custom-border custom-border-medium custom-border-l relative">
+        <div className="flex -mt-2">
           <div>Conditions</div>
-          <button className="w-6 h-6">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="16"
-              className="fill-current"
-            >
-              <path d="M9 4.58V4c0-1.1.9-2 2-2h2a2 2 0 0 1 2 2v.58a8 8 0 0 1 1.92 1.11l.5-.29a2 2 0 0 1 2.74.73l1 1.74a2 2 0 0 1-.73 2.73l-.5.29a8.06 8.06 0 0 1 0 2.22l.5.3a2 2 0 0 1 .73 2.72l-1 1.74a2 2 0 0 1-2.73.73l-.5-.3A8 8 0 0 1 15 19.43V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.58a8 8 0 0 1-1.92-1.11l-.5.29a2 2 0 0 1-2.74-.73l-1-1.74a2 2 0 0 1 .73-2.73l.5-.29a8.06 8.06 0 0 1 0-2.22l-.5-.3a2 2 0 0 1-.73-2.72l1-1.74a2 2 0 0 1 2.73-.73l.5.3A8 8 0 0 1 9 4.57zM7.88 7.64l-.54.51-1.77-1.02-1 1.74 1.76 1.01-.17.73a6.02 6.02 0 0 0 0 2.78l.17.73-1.76 1.01 1 1.74 1.77-1.02.54.51a6 6 0 0 0 2.4 1.4l.72.2V20h2v-2.04l.71-.2a6 6 0 0 0 2.41-1.4l.54-.51 1.77 1.02 1-1.74-1.76-1.01.17-.73a6.02 6.02 0 0 0 0-2.78l-.17-.73 1.76-1.01-1-1.74-1.77 1.02-.54-.51a6 6 0 0 0-2.4-1.4l-.72-.2V4h-2v2.04l-.71.2a6 6 0 0 0-2.41 1.4zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-            </svg>
-          </button>
+          <SettingsCog
+            action={() =>
+              dispatch(
+                toggleModal({
+                  visible: true,
+                  title: 'Conditions',
+                  content: <ConditionsModal />,
+                }),
+              )
+            }
+          />
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.conditions.length ? (

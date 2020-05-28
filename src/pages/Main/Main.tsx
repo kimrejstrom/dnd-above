@@ -24,6 +24,7 @@ import dudeLight from 'images/dude-light.png';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { getSelectedCharacter } from 'app/selectors';
 import ConditionsDefenses from 'features/character/ConditionsDefenses';
+import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 
 interface Props {}
 
@@ -33,6 +34,10 @@ export const Main: React.FC<Props> = () => {
   const character = useSelector(getSelectedCharacter);
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
   const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
+  const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
+  const { selectedEntry } = useSelector(
+    (state: RootState) => state.detailedEntry,
+  );
 
   const handleTabChange = (tabIndex: number) => {
     const updatedPanel = {
@@ -137,6 +142,15 @@ export const Main: React.FC<Props> = () => {
             </Tabs>
           </div>
         </div>
+        {!panelOpen && (
+          <div className="w-full mb-4" style={{ height: '10rem' }}>
+            <div className="h-full my-2 custom-border bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+              <div className="h-full overflow-y-scroll px-2">
+                <DetailedEntry data={selectedEntry} />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

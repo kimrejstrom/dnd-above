@@ -31,6 +31,7 @@ const Summary = ({ url }: { url: string }) => {
   const dispatch = useDispatch();
   const race = getRace(formState.data.raceData.race);
   const classElement = getClass(formState.data.classData.classElement);
+  const characterSummaryAvailable = classElement !== undefined;
 
   return (
     <>
@@ -38,6 +39,7 @@ const Summary = ({ url }: { url: string }) => {
       <div className="flex justify-end">
         <StyledButton
           extraClassName="mr-2"
+          disabled={!characterSummaryAvailable}
           onClick={() => {
             formState.data.id
               ? dispatch(updateCharacter(formState))
@@ -57,101 +59,105 @@ const Summary = ({ url }: { url: string }) => {
         </StyledButton>
       </div>
 
-      <div>
-        <h1>
-          {`${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}
-        </h1>
-        <div className="flex flex-wrap lg:flex-no-wrap">
-          <div className="flex-grow">
-            <TextBox>
-              <DangerousHtml
-                data={mainRenderer.race.getCompactRenderedString(race, false)}
-              />
-              <div>
-                <div className="mt-4 font-bold text-md text-center">
-                  {
-                    (Parser.ALIGNMENTS as any)[
-                      formState.data.descriptionData.alignment
-                    ]
-                  }
-                  {', '}
-                  {formState.data.descriptionData.background}
+      {characterSummaryAvailable ? (
+        <div>
+          <h1>
+            {`${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}
+          </h1>
+          <div className="flex flex-wrap lg:flex-no-wrap">
+            <div className="flex-grow">
+              <TextBox>
+                <DangerousHtml
+                  data={mainRenderer.race.getCompactRenderedString(race, false)}
+                />
+                <div>
+                  <div className="mt-4 font-bold text-md text-center">
+                    {
+                      (Parser.ALIGNMENTS as any)[
+                        formState.data.descriptionData.alignment
+                      ]
+                    }
+                    {', '}
+                    {formState.data.descriptionData.background}
+                  </div>
+                  <div className="flex justify-between my-3">
+                    <ul className="mr-2">
+                      <li>
+                        <strong>Age: </strong>
+                        {formState.data.descriptionData.age}
+                      </li>
+                      <li>
+                        <strong>Hair: </strong>
+                        {formState.data.descriptionData.hair}
+                      </li>
+                      <li>
+                        <strong>Skin: </strong>
+                        {formState.data.descriptionData.skin}
+                      </li>
+                      <li>
+                        <strong>Eyes: </strong>
+                        {formState.data.descriptionData.eyes}
+                      </li>
+                      <li>
+                        <strong>Height: </strong>
+                        {formState.data.descriptionData.height}
+                      </li>
+                      <li>
+                        <strong>Weight: </strong>
+                        {formState.data.descriptionData.weight}
+                      </li>
+                    </ul>
+                    <ul className="ml-2">
+                      {Object.entries(CHARACTER_STATS).map(([key, value]) => {
+                        const score = calculateStats(
+                          formState.data as CharacterState,
+                        )[key as StatsTypes];
+                        const mod = getAbilityMod(score);
+                        return (
+                          <li>
+                            <strong>{value}: </strong> {`${score} (${mod})`}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
                 </div>
-                <div className="flex justify-between my-3">
-                  <ul className="mr-2">
-                    <li>
-                      <strong>Age: </strong>
-                      {formState.data.descriptionData.age}
-                    </li>
-                    <li>
-                      <strong>Hair: </strong>
-                      {formState.data.descriptionData.hair}
-                    </li>
-                    <li>
-                      <strong>Skin: </strong>
-                      {formState.data.descriptionData.skin}
-                    </li>
-                    <li>
-                      <strong>Eyes: </strong>
-                      {formState.data.descriptionData.eyes}
-                    </li>
-                    <li>
-                      <strong>Height: </strong>
-                      {formState.data.descriptionData.height}
-                    </li>
-                    <li>
-                      <strong>Weight: </strong>
-                      {formState.data.descriptionData.weight}
-                    </li>
-                  </ul>
-                  <ul className="ml-2">
-                    {Object.entries(CHARACTER_STATS).map(([key, value]) => {
-                      const score = calculateStats(
-                        formState.data as CharacterState,
-                      )[key as StatsTypes];
-                      const mod = getAbilityMod(score);
-                      return (
-                        <li>
-                          <strong>{value}: </strong> {`${score} (${mod})`}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
-            </TextBox>
+              </TextBox>
+            </div>
+            <img
+              src={formState.data.descriptionData.imageUrl}
+              alt="character portrait"
+              className="rounded h-full object-cover object-top shadow my-2 ml-2"
+              style={{
+                width: '16.5rem',
+              }}
+            />
           </div>
-          <img
-            src={formState.data.descriptionData.imageUrl}
-            alt="character portrait"
-            className="rounded h-full object-cover object-top shadow my-2 ml-2"
-            style={{
-              width: '17rem',
-            }}
-          />
+          <TextBox>
+            <h3>
+              <strong>
+                {formState.data.classData.classElement} –{' '}
+                {formState.data.classData.subClass}
+              </strong>
+            </h3>
+            <ClassBase cls={classElement!} />
+          </TextBox>
+          <div className="flex flex-wrap">
+            {formState.data.equipmentData.items.map((itemName, index) => (
+              <TextBox key={index}>
+                <DangerousHtml
+                  data={mainRenderer.item.getCompactRenderedString(
+                    getItem(itemName),
+                    false,
+                  )}
+                />
+              </TextBox>
+            ))}
+          </div>
         </div>
-        <TextBox>
-          <h3>
-            <strong>
-              {formState.data.classData.classElement} –{' '}
-              {formState.data.classData.subClass}
-            </strong>
-          </h3>
-          <ClassBase cls={classElement!} />
-        </TextBox>
-        <div className="flex flex-wrap">
-          {formState.data.equipmentData.items.map((itemName, index) => (
-            <TextBox key={index}>
-              <DangerousHtml
-                data={mainRenderer.item.getCompactRenderedString(
-                  getItem(itemName),
-                  false,
-                )}
-              />
-            </TextBox>
-          ))}
-        </div>
-      </div>
+      ) : (
+        <div>No character data available</div>
+      )}
     </>
   );
 };
