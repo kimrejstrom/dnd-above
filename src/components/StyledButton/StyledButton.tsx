@@ -18,20 +18,17 @@ const StyledButton: React.FC<ButtonProps> = ({
   type,
   disabled,
   children,
-}) => {
-  console.log('BUTTON', disabled);
-  return (
-    <button
-      disabled={disabled}
-      type={type as any}
-      onClick={onClick}
-      className={`${extraClassName} ${DEFAULT_BUTTON_STYLE} ${
-        disabled ? 'opacity-50' : ''
-      }`}
-    >
-      {children}
-    </button>
-  );
-};
+}) => (
+  <button
+    disabled={disabled}
+    type={type as any}
+    onClick={onClick}
+    className={`${extraClassName} ${DEFAULT_BUTTON_STYLE} ${
+      disabled ? 'opacity-50' : ''
+    }`}
+  >
+    {children}
+  </button>
+);
 
 export default StyledButton;

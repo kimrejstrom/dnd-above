@@ -2,52 +2,102 @@ import React, { useState } from 'react';
 import {
   CharacterState,
   DefenseType,
+  addDefense,
+  removeDefense,
 } from 'features/character/characterListSlice';
 import SettingsCog from 'components/SettingsCog/SettingsCog';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
+import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {
   character: CharacterState;
 }
 
 const DefensesModal = () => {
-  const [itemDefenses, setItemDefenses] = useState<{ formId: string }[]>([]);
-  const { register, handleSubmit } = useForm();
-  const addItemDefense = (e: any) => {
+  const character = useSelector(getSelectedCharacter);
+  const [itemDefenses, setItemDefenses] = useState<
+    { formId: string; type: DefenseType }[]
+  >([]);
+  const defensesList = character.gameData.defenses;
+  const dispatch = useDispatch();
+  const { register } = useForm();
+  const addItemDefense = (e: any, type: DefenseType) => {
     e.preventDefault();
     setItemDefenses(
-      itemDefenses.concat([{ formId: `item${itemDefenses.length + 1}` }]),
+      itemDefenses.concat([{ formId: `item${itemDefenses.length + 1}`, type }]),
     );
   };
+
+  const addDefenseToList = (
+    e: React.SyntheticEvent<HTMLSelectElement, Event>,
+    type: DefenseType,
+  ) =>
+    dispatch(
+      addDefense({
+        id: character.id!,
+        data: { type, name: e.currentTarget.value },
+      }),
+    );
+  const removeDefenseFromList = (data: { type: DefenseType; name: string }) =>
+    dispatch(removeDefense({ id: character.id!, data }));
+
   return (
     <div>
-      <StyledButton onClick={addItemDefense}>Add new +</StyledButton>
+      {defensesList.length > 0 && (
+        <div className="pb-4">
+          <h2>Current Defenses</h2>
+          <div>
+            {defensesList.map((defense, index) => (
+              <div className="w-full flex items-center" key={index}>
+                <div className="mr-2">{`${defense.name} (${defense.type})`}</div>
+                <div
+                  onClick={() => removeDefenseFromList(defense)}
+                  className="modal-close cursor-pointer"
+                >
+                  <svg
+                    className="fill-current dark:text-white opacity-50"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 18 18"
+                  >
+                    <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <StyledButton
+        onClick={(e: any) => addItemDefense(e, DefenseType.Immunity)}
+      >
+        Add Immunity
+      </StyledButton>
+      <StyledButton
+        onClick={(e: any) => addItemDefense(e, DefenseType.Resistance)}
+      >
+        Add Resistance
+      </StyledButton>
+      <StyledButton
+        onClick={(e: any) => addItemDefense(e, DefenseType.Vulnerability)}
+      >
+        Add Vulnerability
+      </StyledButton>
       {itemDefenses.map(selectData => {
         return (
           <div className="flex">
-            <label className="block w-1/2">
-              {`Type`}
+            <label className="block w-full">
+              {`New ${selectData.type}`}
               <select
                 name={selectData.formId}
                 ref={register}
                 className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-              >
-                <option value="initial">-</option>
-                {Object.keys(DefenseType).map(type => (
-                  <option value={type}>{type}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block w-1/2 ml-2">
-              {`Defense`}
-              <select
-                name={selectData.formId}
-                ref={register}
-                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                onChange={e => addDefenseToList(e, selectData.type)}
               >
                 <option value="initial">-</option>
                 <optgroup label="Damages">
@@ -95,9 +145,9 @@ const ConditionsDefenses = ({ character }: Props) => {
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.defenses.length ? (
-            <ul>
+            <ul className="h-12 overflow-y-scroll">
               {character.gameData.defenses.map(defense => (
-                <li>{`${defense.option} (${defense.type})`}</li>
+                <li className="leading-tight">{`${defense.name} (${defense.type})`}</li>
               ))}
             </ul>
           ) : (

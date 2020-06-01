@@ -112,7 +112,7 @@ export interface CharacterGameData {
     level: number;
     feats: string[];
     conditions: string[];
-    defenses: { type: DefenseType; option: string }[];
+    defenses: { type: DefenseType; name: string }[];
     spells: string[];
     attunements: string[];
     actions: any[];
@@ -219,7 +219,7 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
     level: 1,
     feats: [],
     conditions: [],
-    defenses: [],
+    defenses: [{ type: DefenseType.Immunity, name: 'cold' }],
     spells: [],
     attunements: [],
     actions: [],
@@ -342,7 +342,7 @@ const MOE: CharacterListItem = {
       'Counterspell',
     ],
     conditions: ['invisible'],
-    defenses: [{ type: DefenseType.Immunity, option: 'cold' }],
+    defenses: [{ type: DefenseType.Immunity, name: 'cold' }],
     attunements: [],
     actions: [],
     extras: [],
@@ -684,6 +684,36 @@ const characterListSlice = createSlice({
         character.gameData.currentHp = newHp < fullHp ? newHp : fullHp;
       }
     },
+    addDefense(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: { type: DefenseType; name: string };
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.defenses.push(action.payload.data);
+      }
+    },
+    removeDefense(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: { type: DefenseType; name: string };
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.defenses = character.gameData.defenses.filter(
+          item =>
+            !(
+              action.payload.data.name === item.name &&
+              action.payload.data.type === item.type
+            ),
+        );
+      }
+    },
   },
 });
 
@@ -696,6 +726,8 @@ export const {
   setCurrentHd,
   longRest,
   expendHitDie,
+  addDefense,
+  removeDefense,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

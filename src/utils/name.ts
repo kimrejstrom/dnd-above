@@ -115,7 +115,6 @@ var chain_cache: any = {};
 export function generate_name(type: any) {
   var chain;
   if ((chain = markov_chain(type))) {
-    console.log(chain_cache);
     return markov_name(chain);
   }
   return '';
@@ -230,7 +229,6 @@ function scale_chain(chain: any) {
 function markov_name(chain: any) {
   var parts = select_link(chain, 'parts');
   var names = [];
-  console.log(parts);
 
   var i;
   //@ts-ignore
