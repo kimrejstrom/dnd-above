@@ -218,7 +218,7 @@ export const DEAFULT_CHARACTER: CharacterListItem = {
   gameData: {
     level: 1,
     feats: [],
-    conditions: [],
+    conditions: ['invisible'],
     defenses: [{ type: DefenseType.Immunity, name: 'cold' }],
     spells: [],
     attunements: [],

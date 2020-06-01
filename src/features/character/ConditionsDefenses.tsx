@@ -12,6 +12,7 @@ import StyledButton from 'components/StyledButton/StyledButton';
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
 import { getSelectedCharacter } from 'app/selectors';
+import _ from 'lodash';
 
 interface Props {
   character: CharacterState;
@@ -49,7 +50,7 @@ const DefensesModal = () => {
     <div>
       {defensesList.length > 0 && (
         <div className="pb-4">
-          <h2>Current Defenses</h2>
+          <h2>Active Defenses</h2>
           <div>
             {defensesList.map((defense, index) => (
               <div className="w-full flex items-center" key={index}>
@@ -119,15 +120,61 @@ const DefensesModal = () => {
   );
 };
 
-const ConditionsModal = () => <div>Todo: Conditions</div>;
+const ConditionsModal = () => {
+  const character = useSelector(getSelectedCharacter);
+  const conditionsList = character.gameData.conditions;
+  // const dispatch = useDispatch();
+  const { register } = useForm();
+  return (
+    <div className="pb-4">
+      <h2>Active Conditions</h2>
+      <div>
+        {conditionsList.map((condition, index) => (
+          <div className="w-full flex items-center" key={index}>
+            <div className="mr-2">{condition}</div>
+            <div
+              onClick={() => console.log('Remove ', condition)}
+              className="modal-close cursor-pointer"
+            >
+              <svg
+                className="fill-current dark:text-white opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 18 18"
+              >
+                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+              </svg>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div>
+        <form className="flex flex-col">
+          {_.sortBy(Parser.CONDITIONS).map((type: string) => (
+            <label className="inline-flex items-center">
+              <input
+                className="form-checkbox text-primary-dark"
+                type="checkbox"
+                defaultChecked={conditionsList.includes(type)}
+                name={type}
+                value={type}
+                ref={register}
+              />
+              <span className="ml-2">{type}</span>
+            </label>
+          ))}
+        </form>
+      </div>
+    </div>
+  );
+};
 
 const ConditionsDefenses = ({ character }: Props) => {
   const dispatch = useDispatch();
   return (
-    <div
-      className="text-left text-sm custom-border h-20 flex"
-      style={{ width: '24rem' }}
-    >
+    <div className="conditions-defenses-panel text-left text-sm custom-border h-20 flex">
       <div className="w-1/2 relative">
         <div className="flex -mt-2">
           <div>Defenses</div>
