@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import {
   CharacterState,
   DefenseType,
   addDefense,
   removeDefense,
+  addCondition,
+  removeCondition,
 } from 'features/character/characterListSlice';
 import SettingsCog from 'components/SettingsCog/SettingsCog';
 import { useDispatch, useSelector } from 'react-redux';
@@ -123,33 +125,24 @@ const DefensesModal = () => {
 const ConditionsModal = () => {
   const character = useSelector(getSelectedCharacter);
   const conditionsList = character.gameData.conditions;
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { register } = useForm();
+  const addConditionToList = (e: ChangeEvent<HTMLInputElement>) => {
+    return dispatch(
+      e.currentTarget.checked
+        ? addCondition({
+            id: character.id!,
+            data: e.currentTarget.value,
+          })
+        : removeCondition({
+            id: character.id!,
+            data: e.currentTarget.value,
+          }),
+    );
+  };
+
   return (
     <div className="pb-4">
-      <h2>Active Conditions</h2>
-      <div>
-        {conditionsList.map((condition, index) => (
-          <div className="w-full flex items-center" key={index}>
-            <div className="mr-2">{condition}</div>
-            <div
-              onClick={() => console.log('Remove ', condition)}
-              className="modal-close cursor-pointer"
-            >
-              <svg
-                className="fill-current dark:text-white opacity-50"
-                xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
-                viewBox="0 0 18 18"
-              >
-                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
-              </svg>
-            </div>
-          </div>
-        ))}
-      </div>
-
       <div>
         <form className="flex flex-col">
           {_.sortBy(Parser.CONDITIONS).map((type: string) => (
@@ -160,6 +153,7 @@ const ConditionsModal = () => {
                 defaultChecked={conditionsList.includes(type)}
                 name={type}
                 value={type}
+                onChange={addConditionToList}
                 ref={register}
               />
               <span className="ml-2">{type}</span>
@@ -219,9 +213,9 @@ const ConditionsDefenses = ({ character }: Props) => {
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.conditions.length ? (
-            <ul>
+            <ul className="h-12 overflow-y-scroll">
               {character.gameData.conditions.map(condition => (
-                <li>{condition}</li>
+                <li className="leading-tight">{condition}</li>
               ))}
             </ul>
           ) : (

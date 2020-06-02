@@ -44,8 +44,8 @@ const SavingThrows = ({ character }: Props) => {
                       : 'bg-yellow-100 dark:bg-primary-dark'
                   } border-2 border-primary-dark dark:border-primary-light left-0 absolute rounded-full w-3 h-3`}
                 ></div>
-                <div className="text-lg ml-3">{key}</div>
-                <div className="mx-2 text-2xl text-center">
+                <div className="text-lg ml-2">{key}</div>
+                <div className="ml-2 mr-1 text-2xl text-center">
                   {savingThrowMod}
                 </div>
               </div>

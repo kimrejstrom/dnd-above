@@ -714,6 +714,32 @@ const characterListSlice = createSlice({
         );
       }
     },
+    addCondition(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.conditions.push(action.payload.data);
+      }
+    },
+    removeCondition(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.conditions = character.gameData.conditions.filter(
+          item => item !== action.payload.data,
+        );
+      }
+    },
   },
 });
 
@@ -728,6 +754,8 @@ export const {
   expendHitDie,
   addDefense,
   removeDefense,
+  addCondition,
+  removeCondition,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;
