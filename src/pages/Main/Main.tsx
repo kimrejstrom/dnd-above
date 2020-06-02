@@ -101,7 +101,7 @@ export const Main: React.FC<Props> = () => {
               onSelect={tabIndex => handleTabChange(tabIndex)}
               className="h-full"
             >
-              <TabList className="flex justify-between text-center">
+              <TabList className="flex justify-between text-center tracking-tight">
                 <Tab>Actions</Tab>
                 {isSpellCaster(character) && <Tab>Spells</Tab>}
                 <Tab>Equipment</Tab>

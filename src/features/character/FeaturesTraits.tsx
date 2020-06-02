@@ -14,6 +14,7 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer } from 'utils/mainRenderer';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import _ from 'lodash';
+import ClassTable from 'pages/Create/ClassTable';
 
 interface Props {
   character: CharacterState;
@@ -127,14 +128,17 @@ const FeaturesTraits = ({ character }: Props) => {
           })`,
         }}
       ></div>
-      <PillFilter pills={['class features', 'race features', 'feats']}>
-        <ContentBlock name="class features">
+      <PillFilter pills={['table', 'class', 'race', 'feats']}>
+        <ContentBlock name="table">
+          <ClassTable cls={classElement!} subcls={subClassElement!} />
+        </ContentBlock>
+        <ContentBlock name="class">
           <div className="text-lg">{classElement!.name} features</div>
           {renderClassFeatures(classElement!.classFeatures)}
           <div className="text-lg">{subClassElement!.name} features</div>
           {renderSubClassFeatures(subClassElement!.subclassFeatures)}
         </ContentBlock>
-        <ContentBlock name="race features">
+        <ContentBlock name="race">
           <div
             className="text-lg cursor-pointer"
             onClick={() =>

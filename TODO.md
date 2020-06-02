@@ -18,10 +18,10 @@ Project Description
 
 ### In Progress
 
-- [ ] Conditions / Defenses  
 
 ### Done ✓
 
+- [x] Conditions / Defenses  
 - [x] Long Rest / Short Rest  
 - [x] Font  
 - [x] Current HP + dmg/heal  
