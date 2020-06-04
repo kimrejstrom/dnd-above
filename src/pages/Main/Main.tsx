@@ -21,10 +21,13 @@ import { isSpellCaster } from 'utils/character';
 import Rests from 'features/character/Rests';
 import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
+import descriptionDark from 'images/description-dark.png';
+import descriptionLight from 'images/description-light.png';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { getSelectedCharacter } from 'app/selectors';
 import ConditionsDefenses from 'features/character/ConditionsDefenses';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
+import Description from 'features/character/Description';
 
 interface Props {}
 
@@ -126,12 +129,7 @@ export const Main: React.FC<Props> = () => {
                 <FeaturesTraits character={character} />
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
-                <div>
-                  <div className="text-2xl">Background</div>
-                  <Background
-                    background={character.descriptionData.background}
-                  />
-                </div>
+                <Description character={character} />
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
                 <div>Notes</div>

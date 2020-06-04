@@ -18,9 +18,11 @@ const renderTableGroupsHeaderTitle = (
 ) =>
   tableGroups.map(tableGroup =>
     tableGroup.title ? (
-      <th colSpan={tableGroup.colLabels.length}>{tableGroup.title}</th>
+      <th className="text-sm" colSpan={tableGroup.colLabels.length}>
+        {tableGroup.title}
+      </th>
     ) : (
-      <th colSpan={tableGroup.colLabels.length}></th>
+      <th className="text-sm" colSpan={tableGroup.colLabels.length}></th>
     ),
   );
 
@@ -29,7 +31,7 @@ const renderTableGroupsHeader = (
 ) =>
   tableGroups.map(tableGroup =>
     tableGroup.colLabels.map(lbl => (
-      <th>
+      <th className="text-sm">
         <div>
           <Entry entry={lbl} />
         </div>
@@ -76,28 +78,22 @@ const ClassTable = ({ cls, subcls }: Props) => {
     <div className="my-1">
       <table className="w-full dnd-body">
         <tbody>
-          <tr>
-            <th className="border" colSpan={15}></th>
-          </tr>
           <tr className="leading-tight">
-            <th colSpan={3} />
+            <th className="text-sm" colSpan={3} />
             {cls.classTableGroups &&
               renderTableGroupsHeaderTitle(cls.classTableGroups)}
             {subcls.subclassTableGroups &&
               renderTableGroupsHeaderTitle(subcls.subclassTableGroups)}
           </tr>
           <tr className="leading-none">
-            <th>Level</th>
-            <th className="text-left">Features</th>
+            <th className="text-sm">Level</th>
+            <th className="text-sm text-left">Features</th>
             {cls.classTableGroups &&
               renderTableGroupsHeader(cls.classTableGroups)}
             {subcls.subclassTableGroups &&
               renderTableGroupsHeader(subcls.subclassTableGroups)}
           </tr>
           {renderTableRows(cls, subcls)}
-          <tr>
-            <th className="border" colSpan={15}></th>
-          </tr>
         </tbody>
       </table>
     </div>
