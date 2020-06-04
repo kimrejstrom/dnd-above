@@ -5,7 +5,7 @@ export const Parser = (window as any).Parser;
 
 export function search(array: any[], keyword: string) {
   const regExp = new RegExp(keyword, 'gi');
-  const check = (obj: any) => {
+  const check = (obj: any): boolean => {
     if (obj.source && obj.source.includes('UA')) {
       return false;
     }

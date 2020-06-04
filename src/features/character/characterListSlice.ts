@@ -92,7 +92,7 @@ export interface CharacterBase {
 export interface CharacterCustom {
   allSources: boolean;
   customData: {
-    customAbilities: StatsTypes[];
+    customAbilities: AbilityBase[];
     customSkillProficiencies: SkillTypes[];
     customArmorProficiencies: Array<ArmorEnum>;
     customWeaponProficiencies: string[];
@@ -267,12 +267,12 @@ const MOE: CharacterListItem = {
     standardClassToolProficiencies: [],
     abilityScores: {
       rollMethod: 'roll',
-      str: 9,
+      str: 8,
       dex: 15,
-      con: 15,
-      int: 10,
+      con: 17,
+      int: 11,
       wis: 17,
-      cha: 9,
+      cha: 11,
     },
   },
   descriptionData: {
@@ -290,7 +290,7 @@ const MOE: CharacterListItem = {
     backstory:
       'Born to a poor farmer family, Moe remembers very little about his parents. He still sees the flames that took them from him in his dreams, violently raging as they consume the last parts of his childhood home.\nMoe can’t remember how the fire started, but it haunts his dreams - night after night he is tormented by these visions. Again and again the flames erupt out of nowhere and each night he fails to escape them.\nShira, the fey spirit that watched over Moe and his tribe often walks the earth in the form of black panther. She managed to pull Moe from the flames on that fateful night, carrying the small boy to safety. She tried going back in for the others but was blocked by the flames.\nOrphaned, and with no-one of his kin left to care for him, Shira decided to bring the boy with her, deep into the forest where he would live with a new kind of tribe.\nFor fifteen years Moe lived together with the animals as a part of their herd. When Moe was seven Shira brought one of her old friends to the camp, a 250 year old tortle druid named Grok. Together Grok and Shira set out to teach Moe about the power of nature, the Great Balance and about the elements that guide it: the power of tooth and claw, of sun and moon and of fire and storm.\nWhen Moe turned 17, Shira came to Moe with a request. She had sensed a growing power, a darkness somewhere far away, disrupting the Great Balance. A force that seeks to hold sway over nature and life. She sent him on a mission to find out what this force is, and to try and restore the balance to their world.\nSo Moe set off towards the foreign lands of Asteria.',
     chosenBackgroundSkillProficiencies: [],
-    standardBackgroundSkillProficiencies: ['insight', 'perception'],
+    standardBackgroundSkillProficiencies: ['arcana', 'nature'],
     chosenBackgroundToolProficiencies: ['gaming set'],
     standardBackgroundToolProficiencies: [],
     chosenBackgroundLanguages: ['primordial'],
@@ -315,7 +315,7 @@ const MOE: CharacterListItem = {
     ],
   },
   customData: {
-    customAbilities: [],
+    customAbilities: [{ wis: 2 }],
     customSkillProficiencies: [],
     customArmorProficiencies: [],
     customWeaponProficiencies: [],
@@ -323,7 +323,7 @@ const MOE: CharacterListItem = {
     customLanguages: [],
   },
   gameData: {
-    level: 3,
+    level: 4,
     feats: ['Resilient'],
     spells: [
       'Guidance',
@@ -348,7 +348,7 @@ const MOE: CharacterListItem = {
     extras: [],
     ac: 16,
     currentHp: 12,
-    currentHd: 3,
+    currentHd: 5,
     spellSlots: {
       1: { used: 1, total: 3 },
       2: { used: 0, total: 2 },

@@ -47,14 +47,12 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
   };
 
   return cls.classFeatures.map((lvlFeatures, ixLvl) => {
-    const pb = Math.ceil((ixLvl + 1) / 4) + 1;
     const lvlFeaturesFilt = lvlFeatures.filter(
       it => it.name && it.type !== 'inset',
     );
     return (
       <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm text-center">
         <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
-        <td>+{pb}</td>
         <td className="text-left">
           {lvlFeaturesFilt.length
             ? lvlFeaturesFilt.map(it => it.name).join(', ')
@@ -90,7 +88,6 @@ const ClassTable = ({ cls, subcls }: Props) => {
           </tr>
           <tr className="leading-none">
             <th>Level</th>
-            <th>Proficiency Bonus</th>
             <th className="text-left">Features</th>
             {cls.classTableGroups &&
               renderTableGroupsHeader(cls.classTableGroups)}

@@ -3,7 +3,7 @@ import {
   StatsTypes,
 } from 'features/character/characterListSlice';
 import _, { mapValues } from 'lodash';
-import { ClassElement } from 'models/class';
+import { ClassElement, ClassTableGroup, Title } from 'models/class';
 import {
   PLAYABLE_CLASSES,
   PLAYABLE_RACES,
@@ -22,13 +22,17 @@ export const getAbilityBonus = (
   ability: StatsTypes,
 ) => {
   const raceElement = getRace(character.raceData.race);
-  const standardRaceAbility = raceElement?.ability
+  const standardRaceAbility: number = raceElement?.ability
     ? raceElement.ability[0][ability] || 0
     : 0;
-  const chosenRaceAbility = character.raceData.chosenRaceAbilities.length
+  const chosenRaceAbility: number = character.raceData.chosenRaceAbilities
+    .length
     ? character.raceData.chosenRaceAbilities[0][ability] || 0
     : 0;
-  return standardRaceAbility + chosenRaceAbility;
+  const customAbility: number = character.customData?.customAbilities?.length
+    ? character.customData.customAbilities[0][ability] || 0
+    : 0;
+  return standardRaceAbility + chosenRaceAbility + customAbility;
 };
 
 export const calculateStats = (
@@ -77,7 +81,10 @@ export const getAllClassFeatures = (
   const subclass = baseClass?.subclasses.find(
     subclass => subclass.name === subClassName,
   );
-  return [...baseClass?.classFeatures[0]!, ...subclass?.subclassFeatures[0]!];
+  return [
+    ..._.flatten(baseClass?.classFeatures!),
+    ..._.flatten(subclass?.subclassFeatures!),
+  ];
 };
 
 export const getRace = (raceName: string) =>
@@ -105,7 +112,13 @@ export const getSpell = (spellName: string) =>
 
 export const isSpellCaster = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
-  const isSpellCaster = classElement?.spellcastingAbility !== undefined;
+  const subClassElement = getSubClass(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+  const isSpellCaster =
+    classElement?.spellcastingAbility !== undefined ||
+    subClassElement?.spellcastingAbility !== undefined;
   return isSpellCaster;
 };
 
@@ -115,20 +128,24 @@ export const getHitDice = (character: CharacterState) =>
 export const getHdTotal = (character: CharacterState) =>
   character.gameData.level;
 
-export const getSpellSaveDC = (character: CharacterState) => {
+export const getSpellModifier = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);
-  const score = calculateStats(character)[
-    classElement?.spellcastingAbility as StatsTypes
-  ];
+  const subClassElement = getSubClass(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+  return (classElement?.spellcastingAbility ||
+    subClassElement?.spellcastingAbility) as StatsTypes;
+};
+
+export const getSpellSaveDC = (character: CharacterState) => {
+  const score = calculateStats(character)[getSpellModifier(character)];
   const mod = getAbilityMod(score);
   return 8 + mod + getProficiencyBonus(character.gameData.level);
 };
 
 export const getSpellAttack = (character: CharacterState) => {
-  const classElement = getClass(character.classData.classElement);
-  const score = calculateStats(character)[
-    classElement?.spellcastingAbility as StatsTypes
-  ];
+  const score = calculateStats(character)[getSpellModifier(character)];
   const mod = getAbilityMod(score);
   return mod + getProficiencyBonus(character.gameData.level);
 };
@@ -192,3 +209,45 @@ export const getIncludedProficiencies = (proficiencies: Array<any>): string[] =>
         ),
       ).filter(isDefined)
     : [];
+
+export const getSpellSlotsPerLevel = (character: CharacterState) => {
+  const classElement = getClass(character.classData.classElement);
+  const subClassElement = getSubClass(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+
+  const spellSlots = extractSpellSlots(
+    classElement?.classTableGroups!,
+    character.gameData.level,
+  );
+  const subClassSpellSlots = extractSpellSlots(
+    subClassElement?.subclassTableGroups!,
+    character.gameData.level,
+  );
+  return spellSlots
+    ? spellSlots
+    : subClassSpellSlots
+    ? subClassSpellSlots
+    : undefined;
+};
+
+export const extractSpellSlots = (
+  classTableGroups: ClassTableGroup[],
+  level: number,
+): any => {
+  const spellSlots = classTableGroups
+    ?.filter(
+      tableGroup =>
+        tableGroup.title && tableGroup.title === Title.SpellSlotsPerSpellLevel,
+    )
+    .map(tableGroup => tableGroup.rows[level - 1]);
+  const convertedSlots =
+    spellSlots && spellSlots.length
+      ? spellSlots[0].reduce(
+          (acc, curr, i: number) => ({ ...acc, [i + 1]: curr }),
+          {},
+        )
+      : undefined;
+  return convertedSlots;
+};

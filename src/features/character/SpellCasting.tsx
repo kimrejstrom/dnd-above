@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import {
   CharacterState,
   CHARACTER_STATS,
-  StatsTypes,
 } from 'features/character/characterListSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -13,35 +12,80 @@ import {
   getSpell,
   getSpellSaveDC,
   getSpellAttack,
-  getClass,
+  getSpellSlotsPerLevel,
+  getSpellModifier,
 } from 'utils/character';
 import { isDefined } from 'ts-is-present';
 import { Spells } from 'components/Spells/Spells';
 import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
+import { useForm } from 'react-hook-form';
 
 interface Props {
   character: CharacterState;
 }
 
+const SpellSlotCheckBoxes = ({
+  level,
+  slots,
+}: {
+  level: number;
+  slots: number;
+}) => {
+  const { register } = useForm();
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget);
+    console.log(e.currentTarget.checked);
+  };
+  return (
+    <div className="mx-2 flex flex-end">
+      {Array.from({ length: slots }, () => {
+        return (
+          <input
+            className="form-checkbox text-primary-dark mr-1"
+            type="checkbox"
+            name={`${level}-${slots}`}
+            ref={register}
+            onChange={handleChange}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 const SpellLevel = ({
   level,
   spells,
+  character,
 }: {
   level: number;
   spells: SpellElement[];
-}) => (
-  <div className="my-2">
-    <div className="flex w-full justify-between">
-      <div className="text-lg">
-        {level === 0 ? 'Cantrips' : `Level ${level}`}
+  character: CharacterState;
+}) => {
+  const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
+  return spellSlotsForLevel > 0 || level === 0 ? (
+    <div className="my-2">
+      <div className="flex w-full justify-between">
+        <div className="text-lg">
+          {level === 0 ? 'Cantrips' : `Level ${level}`}
+        </div>
+        <div className="flex items-center">
+          Slots:{' '}
+          {level === 0 ? (
+            '∞'
+          ) : (
+            <SpellSlotCheckBoxes level={level} slots={spellSlotsForLevel} />
+          )}
+        </div>
       </div>
-      <div>SLOTS</div>
+      <Spells spells={spells} />
     </div>
-    <Spells spells={spells} />
-  </div>
-);
+  ) : (
+    <div>You can't cast these spells yet.</div>
+  );
+};
 
 const SpellCasting = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
@@ -49,7 +93,6 @@ const SpellCasting = ({ character }: Props) => {
     .map(spellName => getSpell(spellName))
     .filter(isDefined);
   const spellLevels = _.groupBy(spells, 'level');
-  const classElement = getClass(character.classData.classElement);
 
   return (
     <>
@@ -64,10 +107,7 @@ const SpellCasting = ({ character }: Props) => {
       ></div>
       <div>
         <div className="flex justify-around">
-          <div>
-            Ability:{' '}
-            {CHARACTER_STATS[classElement?.spellcastingAbility as StatsTypes]}
-          </div>
+          <div>Ability: {CHARACTER_STATS[getSpellModifier(character)]}</div>
           <div>Spell Attack: +{getSpellAttack(character)}</div>
           <div>Spell Save DC: {getSpellSaveDC(character)}</div>
         </div>
@@ -78,6 +118,7 @@ const SpellCasting = ({ character }: Props) => {
             {Object.entries(spellLevels).map(([key, value]) => (
               <ContentBlock name={`level ${key}`}>
                 <SpellLevel
+                  character={character}
                   level={Number(key)}
                   spells={value as SpellElement[]}
                 />
