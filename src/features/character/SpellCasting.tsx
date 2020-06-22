@@ -2,8 +2,10 @@ import React, { ChangeEvent } from 'react';
 import {
   CharacterState,
   CHARACTER_STATS,
+  expendSpellSlot,
+  addSpellSlot,
 } from 'features/character/characterListSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import spellcastingDark from 'images/spellcasting-dark.png';
@@ -21,6 +23,7 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
+import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {
   character: CharacterState;
@@ -34,23 +37,34 @@ const SpellSlotCheckBoxes = ({
   slots: number;
 }) => {
   const { register } = useForm();
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget);
-    console.log(e.currentTarget.checked);
+  const dispatch = useDispatch();
+  const character = useSelector(getSelectedCharacter);
+  const usedSpellSlots = character.gameData.spellSlots?.[level].used || 0;
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, level: number) => {
+    dispatch(
+      e.currentTarget.checked
+        ? expendSpellSlot({
+            id: character.id!,
+            data: level,
+          })
+        : addSpellSlot({
+            id: character.id!,
+            data: level,
+          }),
+    );
   };
   return (
     <div className="mx-2 flex flex-end">
-      {Array.from({ length: slots }, () => {
-        return (
-          <input
-            className="form-checkbox text-primary-dark mr-1"
-            type="checkbox"
-            name={`${level}-${slots}`}
-            ref={register}
-            onChange={handleChange}
-          />
-        );
-      })}
+      {Array.from({ length: slots }, (_, i: number) => (
+        <input
+          className="form-checkbox text-primary-dark mr-1"
+          type="checkbox"
+          name={`${level}-${slots}`}
+          defaultChecked={usedSpellSlots > i}
+          ref={register}
+          onChange={e => handleChange(e, level)}
+        />
+      ))}
     </div>
   );
 };

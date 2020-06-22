@@ -62,12 +62,14 @@ export const Spells = ({ spells, columns }: Props) => {
         ),
       ),
   }));
-  const tableColumns = Object.keys(tableData[0])
-    .map(key => ({
-      accessor: key,
-      Header: startCase(key),
-    }))
-    .filter(column => itemColumns.includes(column.accessor));
+  const tableColumns = tableData.length
+    ? Object.keys(tableData[0])
+        .map(key => ({
+          accessor: key,
+          Header: startCase(key),
+        }))
+        .filter(column => itemColumns.includes(column.accessor))
+    : [];
 
   return (
     <div className="text-left mx-auto w-full">

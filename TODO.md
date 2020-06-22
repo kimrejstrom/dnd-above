@@ -4,8 +4,6 @@ Project Description
 
 ### Todo
 
-- [ ] Level Up  
-- [ ] Spellslots Total + Used + Reset at rests  
 - [ ] Manage Selected Spells + Rating / Comments  
 - [ ] Custom data form / Game data form?  
 - [ ] Custom items (w/ use as base)  
@@ -18,9 +16,11 @@ Project Description
 
 ### In Progress
 
+- [ ] Level Up  
 
 ### Done ✓
 
+- [x] Spellslots Total + Used + Reset at rests  
 - [x] Conditions / Defenses  
 - [x] Long Rest / Short Rest  
 - [x] Font  

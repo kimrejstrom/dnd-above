@@ -2,7 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
-import { CharacterList } from 'features/character/characterListSlice';
+import {
+  CharacterList,
+  removeCharacter,
+} from 'features/character/characterListSlice';
 import {
   setInitialFormData,
   loadInitialFormData,
@@ -27,31 +30,47 @@ const CharacterListing = ({ url }: { url: string }) => {
     <>
       <div className="w-full flex flex-wrap">
         {characterList.map(char => (
-          <button
-            key={char.id}
-            onClick={() => {
-              dispatch(loadInitialFormData(char));
-              history.push(`${url}/step-1`);
-            }}
-            className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-40 h-56 flex justify-between items-center flex-col custom-border custom-border-thin"
-          >
-            <img
-              className="rounded w-full h-24 object-cover object-top"
-              src={char.descriptionData.imageUrl}
-              alt="character"
-            />
+          <div className="relative">
+            <button
+              className="absolute right-0 pr-3 pt-2 z-50"
+              onClick={() => dispatch(removeCharacter(char.id))}
+            >
+              <svg
+                className="fill-current dark:text-white opacity-50"
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+              >
+                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+              </svg>
+            </button>
+            <button
+              key={char.id}
+              onClick={() => {
+                dispatch(loadInitialFormData(char));
+                history.push(`${url}/step-1`);
+              }}
+              className="mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-40 h-56 flex justify-between items-center flex-col custom-border custom-border-thin"
+            >
+              <img
+                className="rounded w-full h-24 object-cover object-top"
+                src={char.descriptionData.imageUrl}
+                alt="character"
+              />
 
-            <div className="leading-none text-xl">
-              {char.descriptionData.name}
-            </div>
-            <div className="leading-tight dnd-body text-sm mb-2">
-              <div>
-                <strong>{char.raceData.race}</strong>
+              <div className="leading-none text-xl">
+                {char.descriptionData.name}
               </div>
-              <div>{char.classData.classElement}</div>
-              <div>{char.classData.subClass}</div>
-            </div>
-          </button>
+              <div className="leading-tight dnd-body text-sm mb-2">
+                <div>
+                  <strong>{char.raceData.race}</strong>
+                </div>
+                <div>{char.classData.classElement}</div>
+                <div>{char.classData.subClass}</div>
+              </div>
+            </button>
+          </div>
         ))}
         <button
           onClick={() => {

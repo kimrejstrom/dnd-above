@@ -124,7 +124,6 @@ export interface CharacterGameData {
       number,
       {
         used: number;
-        total: number;
       }
     >;
   };
@@ -350,8 +349,8 @@ const MOE: CharacterListItem = {
     currentHp: 12,
     currentHd: 5,
     spellSlots: {
-      1: { used: 1, total: 3 },
-      2: { used: 0, total: 2 },
+      1: { used: 2 },
+      2: { used: 1 },
     },
   },
 };
@@ -623,7 +622,7 @@ const characterListSlice = createSlice({
       }
     },
     removeCharacter(state, action: PayloadAction<string>) {
-      state.filter(item => item.id !== action.payload);
+      return state.filter(item => item.id !== action.payload);
     },
     setAc(state, action: PayloadAction<{ id: string; ac: number }>) {
       const character = state.find(chara => chara.id === action.payload.id);
@@ -740,6 +739,32 @@ const characterListSlice = createSlice({
         );
       }
     },
+    expendSpellSlot(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: number;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.spellSlots![action.payload.data].used =
+          character.gameData.spellSlots![action.payload.data].used + 1;
+      }
+    },
+    addSpellSlot(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: number;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.spellSlots![action.payload.data].used =
+          character.gameData.spellSlots![action.payload.data].used - 1;
+      }
+    },
   },
 });
 
@@ -756,6 +781,8 @@ export const {
   removeDefense,
   addCondition,
   removeCondition,
+  expendSpellSlot,
+  addSpellSlot,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;
