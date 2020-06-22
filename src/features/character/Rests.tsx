@@ -28,7 +28,7 @@ const LongRestForm = () => {
               character.classData.classElement,
               character.classData.subClass,
             ),
-            'finish a long',
+            ['finish a long', 'finish a short or long rest'],
           ).map((entry: any) => (
             <li>{<Entry entry={entry} highlight=" long " />}</li>
           ))}
@@ -63,7 +63,7 @@ const ShortRestForm = () => {
               character.classData.classElement,
               character.classData.subClass,
             ),
-            'finish a short',
+            ['finish a short'],
           ).map((entry: any) => (
             <li>{<Entry entry={entry} highlight=" short " />}</li>
           ))}

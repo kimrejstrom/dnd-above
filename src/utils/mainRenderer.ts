@@ -3,8 +3,7 @@ export const mainRenderer = new Renderer();
 export const SourceUtil = (window as any).SourceUtil;
 export const Parser = (window as any).Parser;
 
-export function search(array: any[], keyword: string) {
-  const regExp = new RegExp(keyword, 'gi');
+export function search(array: any[], keywords: string[]) {
   const check = (obj: any): boolean => {
     if (obj.source && obj.source.includes('UA')) {
       return false;
@@ -16,8 +15,11 @@ export function search(array: any[], keyword: string) {
       return obj.some(check);
     }
     return (
-      (typeof obj === 'string' || typeof obj === 'number') &&
-      regExp.test(obj as any)
+      typeof obj === 'string' &&
+      keywords.some(word => {
+        const regExp = new RegExp(word, 'gi');
+        return regExp.test(obj as any) || obj.includes(word);
+      })
     );
   };
   return array.filter(check);
