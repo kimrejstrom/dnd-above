@@ -17,8 +17,8 @@ describe('characterListSlice Reducer', () => {
               ...DEAFULT_CHARACTER.gameData,
               currentHd: 1,
               spellSlots: {
-                1: { used: 1, total: 3 },
-                2: { used: 2, total: 2 },
+                1: { used: 1 },
+                2: { used: 2 },
               },
             },
           },
@@ -38,8 +38,8 @@ describe('characterListSlice Reducer', () => {
           currentHd: 1,
           currentHp: 12,
           spellSlots: {
-            1: { used: 0, total: 3 },
-            2: { used: 0, total: 2 },
+            1: { used: 0 },
+            2: { used: 0 },
           },
         },
       },
