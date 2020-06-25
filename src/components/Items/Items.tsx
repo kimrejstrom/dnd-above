@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
@@ -32,24 +32,32 @@ const Items = ({ items, columns }: Props) => {
     'value',
     'source',
   ];
-  const tableData = items.map(item => ({
-    ...item,
-    detailedEntryTrigger: () =>
-      dispatch(
-        setDetailedEntry(
-          <DangerousHtml
-            extraClassName="w-full"
-            data={mainRenderer.item.getCompactRenderedString(item)}
-          />,
-        ),
-      ),
-  }));
-  const tableColumns = Object.keys(tableData[0])
-    .map(key => ({
-      accessor: key,
-      Header: startCase(key),
-    }))
-    .filter(column => itemColumns.includes(column.accessor));
+  const tableData = useMemo(
+    () =>
+      items.map(item => ({
+        ...item,
+        detailedEntryTrigger: () =>
+          dispatch(
+            setDetailedEntry(
+              <DangerousHtml
+                extraClassName="w-full"
+                data={mainRenderer.item.getCompactRenderedString(item)}
+              />,
+            ),
+          ),
+      })),
+    [items, dispatch],
+  );
+  const tableColumns = useMemo(
+    () =>
+      Object.keys(tableData[0])
+        .map(key => ({
+          accessor: key,
+          Header: startCase(key),
+        }))
+        .filter(column => itemColumns.includes(column.accessor)),
+    [itemColumns, tableData],
+  );
 
   return (
     <div className="text-left mx-auto w-full">

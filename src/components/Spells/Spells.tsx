@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { startCase } from 'lodash/fp';
 import Table from 'components/Table/Table';
 import { Cell } from 'react-table';
@@ -51,31 +51,51 @@ export const Spells = ({ spells, columns }: Props) => {
     'range',
     'source',
   ];
-  const tableData = spells.map(sp => ({
-    ...sp,
-    detailedEntryTrigger: () =>
-      dispatch(
-        setDetailedEntry(
-          <DangerousHtml
-            data={mainRenderer.spell.getCompactRenderedString(sp)}
-          />,
-        ),
-      ),
-  }));
-  const tableColumns = tableData.length
-    ? Object.keys(tableData[0])
-        .map(key => ({
-          accessor: key,
-          Header: startCase(key),
-        }))
-        .filter(column => itemColumns.includes(column.accessor))
-    : [];
+
+  const tableData = useMemo(
+    () =>
+      spells.map(sp => ({
+        ...sp,
+        detailedEntryTrigger: () =>
+          dispatch(
+            setDetailedEntry(
+              <DangerousHtml
+                data={mainRenderer.spell.getCompactRenderedString(sp)}
+              />,
+            ),
+          ),
+      })),
+    [spells, dispatch],
+  );
+  const tableColumns = useMemo(
+    () =>
+      tableData.length
+        ? Object.keys(tableData[0])
+            .map(key => ({
+              accessor: key,
+              Header: startCase(key),
+            }))
+            .filter(column => itemColumns.includes(column.accessor))
+        : [],
+    [itemColumns, tableData],
+  );
 
   return (
     <div className="text-left mx-auto w-full">
       <Table
         cellRenderer={handleSpecialCell}
-        tableData={{ columns: tableColumns, data: tableData }}
+        tableData={{
+          columns: tableColumns,
+          data: tableData,
+          initialState: {
+            sortBy: [
+              {
+                id: 'name',
+                desc: false,
+              },
+            ],
+          },
+        }}
       />
     </div>
   );

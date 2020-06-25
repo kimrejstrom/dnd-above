@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
 import { WEAPONS } from 'utils/data';
 import { startCase } from 'lodash';
@@ -14,25 +14,32 @@ const handleSpecialCell = (cell: Cell<object>) => {
 
 export const Weapons: React.FC = () => {
   const allWeapons = WEAPONS;
-  const tableData = Object.values(allWeapons).filter(weapon => !weapon.age);
-  const tableColumns = Object.keys(tableData[0])
-    .map(key => ({
-      accessor: key,
-      Header: startCase(key),
-    }))
-    .filter(column =>
-      [
-        'name',
-        'type',
-        'weaponCategory',
-        'age',
-        'dmg1',
-        'dmgType',
-        'property',
-        'range',
-        'source',
-      ].includes(column.accessor),
-    );
+  const tableData = useMemo(
+    () => Object.values(allWeapons).filter(weapon => !weapon.age),
+    [allWeapons],
+  );
+  const tableColumns = useMemo(
+    () =>
+      Object.keys(tableData[0])
+        .map(key => ({
+          accessor: key,
+          Header: startCase(key),
+        }))
+        .filter(column =>
+          [
+            'name',
+            'type',
+            'weaponCategory',
+            'age',
+            'dmg1',
+            'dmgType',
+            'property',
+            'range',
+            'source',
+          ].includes(column.accessor),
+        ),
+    [tableData],
+  );
 
   return (
     <div className="text-left mx-auto w-full">

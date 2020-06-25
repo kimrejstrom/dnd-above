@@ -1,8 +1,14 @@
 import React from 'react';
-import { useTable, useExpanded, UseTableOptions, Cell } from 'react-table';
+import {
+  useTable,
+  useExpanded,
+  UseTableOptions,
+  Cell,
+  useSortBy,
+} from 'react-table';
 
 interface Props {
-  tableData: UseTableOptions<any>;
+  tableData: UseTableOptions<object>;
   cellRenderer: (cell: Cell<object>) => JSX.Element;
 }
 
@@ -21,6 +27,7 @@ const Table = ({ cellRenderer, tableData }: Props) => {
     {
       ...tableData,
     },
+    useSortBy,
     useExpanded, // Use the useExpanded plugin hook
   );
 
@@ -31,7 +38,9 @@ const Table = ({ cellRenderer, tableData }: Props) => {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
@@ -46,7 +55,11 @@ const Table = ({ cellRenderer, tableData }: Props) => {
               onClick={(row.original as any).detailedEntryTrigger}
             >
               {row.cells.map(cell => (
-                <td {...cell.getCellProps()}>
+                <td
+                  className="truncate"
+                  style={{ maxWidth: '15rem' }}
+                  {...cell.getCellProps()}
+                >
                   {isValidCellValue(cell.value)
                     ? cell.render('Cell')
                     : cellRenderer(cell)}
