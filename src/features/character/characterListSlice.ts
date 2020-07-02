@@ -265,7 +265,7 @@ const MOE: CharacterListItem = {
     ],
     standardClassToolProficiencies: [],
     abilityScores: {
-      rollMethod: 'roll',
+      rollMethod: 'rolled',
       str: 8,
       dex: 15,
       con: 17,
@@ -415,7 +415,7 @@ export const randomize = () => {
         int: Number(abilityScores[3]),
         wis: Number(abilityScores[4]),
         cha: Number(abilityScores[5]),
-        rollMethod: 'roll',
+        rollMethod: 'rolled',
       },
     },
     descriptionData: {
@@ -765,6 +765,23 @@ const characterListSlice = createSlice({
           character.gameData.spellSlots![action.payload.data].used - 1;
       }
     },
+    updateASI(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: AbilityBase;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.customData.customAbilities = [
+          {
+            ...character.customData.customAbilities[0],
+            ...action.payload.data,
+          },
+        ];
+      }
+    },
   },
 });
 
@@ -783,6 +800,7 @@ export const {
   removeCondition,
   expendSpellSlot,
   addSpellSlot,
+  updateASI,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

@@ -6,7 +6,7 @@ interface Props {
 
 const SettingsCog = ({ action }: Props) => {
   return (
-    <button className="absolute right-0 w-6 h-6" onClick={action}>
+    <button className="absolute right-0 top-0 -mt-2 w-6 h-6" onClick={action}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

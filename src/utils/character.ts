@@ -16,23 +16,39 @@ import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
+import { AbilityBase } from 'models/race';
+
+export const getAbilityScoreByType = (
+  ability: StatsTypes,
+  abilities?: AbilityBase[],
+) => (abilities?.length && abilities[0][ability]) || 0;
+
+export const getRaceAbilityBonus = (
+  character: CharacterState,
+  ability: StatsTypes,
+) => {
+  const raceElement = getRace(character.raceData.race);
+  const standardRaceAbility = getAbilityScoreByType(
+    ability,
+    raceElement?.ability,
+  );
+  const chosenRaceAbility = getAbilityScoreByType(
+    ability,
+    character.raceData.chosenRaceAbilities,
+  );
+  return standardRaceAbility + chosenRaceAbility;
+};
 
 export const getAbilityBonus = (
   character: CharacterState,
   ability: StatsTypes,
 ) => {
-  const raceElement = getRace(character.raceData.race);
-  const standardRaceAbility: number = raceElement?.ability
-    ? raceElement.ability[0][ability] || 0
-    : 0;
-  const chosenRaceAbility: number = character.raceData.chosenRaceAbilities
-    .length
-    ? character.raceData.chosenRaceAbilities[0][ability] || 0
-    : 0;
-  const customAbility: number = character.customData?.customAbilities?.length
-    ? character.customData.customAbilities[0][ability] || 0
-    : 0;
-  return standardRaceAbility + chosenRaceAbility + customAbility;
+  const raceAbility = getRaceAbilityBonus(character, ability);
+  const customAbility = getAbilityScoreByType(
+    ability,
+    character.customData?.customAbilities,
+  );
+  return raceAbility + customAbility;
 };
 
 export const calculateStats = (

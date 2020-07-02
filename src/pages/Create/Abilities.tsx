@@ -163,7 +163,7 @@ const Abilities = ({ url }: { url: string }) => {
               className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
             >
               <option value="initial">-</option>
-              <option value="roll">Roll for stats</option>
+              <option value="rolled">Roll for stats</option>
               <option value="standard">Standard Array</option>
             </select>
             {errors.rollMethod && <span>{`You must choose a method`}</span>}

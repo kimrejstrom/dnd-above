@@ -9,6 +9,10 @@ import {
   getProficiencyBonus,
   isProficient,
 } from 'utils/character';
+import SettingsCog from 'components/SettingsCog/SettingsCog';
+import { toggleModal } from 'components/Modal/modalSlice';
+import { useDispatch } from 'react-redux';
+import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 
 const CHARACTER_ABILITIES = {
   athletics: 'str',
@@ -38,9 +42,21 @@ interface Props {
 }
 
 const Skills = ({ character }: Props) => {
+  const dispatch = useDispatch();
   return (
-    <div className="custom-border">
+    <div className="custom-border relative">
       <div className="text-xl text-center leading-none my-1">Skills</div>
+      <SettingsCog
+        action={() =>
+          dispatch(
+            toggleModal({
+              visible: true,
+              title: 'Abilities and Skills',
+              content: <AbilitiesSkillsModal />,
+            }),
+          )
+        }
+      />
       {Object.entries(CHARACTER_ABILITIES).map(([key, value]) => {
         const score = calculateStats(character)[value as StatsTypes];
         const proficient = isProficient(key as SkillTypes, character);
