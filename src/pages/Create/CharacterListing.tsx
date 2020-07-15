@@ -55,6 +55,9 @@ const CharacterListing = ({ url }: { url: string }) => {
             >
               <img
                 className="rounded w-full h-24 object-cover object-top"
+                onError={(ev: any) => {
+                  ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+                }}
                 src={char.descriptionData.imageUrl}
                 alt="character"
               />

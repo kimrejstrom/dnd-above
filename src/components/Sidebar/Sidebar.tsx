@@ -43,6 +43,9 @@ const Sidebar = () => {
               className="h-12 w-12 object-cover object-top"
               src={character.descriptionData.imageUrl}
               alt="character"
+              onError={(ev: any) => {
+                ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+              }}
             />
           </div>
           <div className="text-center text-white opacity-50 text-sm">

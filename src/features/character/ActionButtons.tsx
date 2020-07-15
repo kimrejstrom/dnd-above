@@ -18,11 +18,25 @@ interface Props {
 }
 
 const LongRestForm = () => {
+  const dispatch = useDispatch();
   const character = useSelector(getSelectedCharacter);
   return (
-    <div className="dnd-body">
-      <div>
-        Long Rest features:{' '}
+    <div>
+      <div className="text-xl">
+        <StyledButton
+          onClick={() => {
+            dispatch(longRest({ id: character.id! }));
+            // Close modal
+            setTimeout(() => {
+              dispatch(toggleModal({ visible: false }));
+            }, 1000);
+          }}
+        >
+          Long Rest
+        </StyledButton>
+      </div>
+      <div className="dnd-body mt-3 custom-border custom-border-medium custom-border-t">
+        <div className="text-xl">Long Rest features:</div>
         <ul className="list-disc p-4">
           {search(
             getAllClassFeatures(
@@ -84,7 +98,6 @@ const ActionButtons = ({ character }: Props) => {
         content: <LongRestForm />,
       }),
     );
-    dispatch(longRest({ id: character.id! }));
   };
 
   const handleShortRest = () => {

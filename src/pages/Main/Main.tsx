@@ -69,6 +69,9 @@ export const Main: React.FC<Props> = () => {
                   top: '0.25rem',
                   left: '0.25rem',
                 }}
+                onError={(ev: any) => {
+                  ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+                }}
                 src={character.descriptionData.imageUrl}
                 alt="character"
               />

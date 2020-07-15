@@ -125,6 +125,9 @@ const Summary = ({ url }: { url: string }) => {
               </TextBox>
             </div>
             <img
+              onError={(ev: any) => {
+                ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+              }}
               src={formState.data.descriptionData.imageUrl}
               alt="character portrait"
               className="rounded h-full object-cover object-top shadow my-2 ml-2"
