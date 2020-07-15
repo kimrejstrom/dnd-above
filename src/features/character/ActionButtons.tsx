@@ -11,6 +11,7 @@ import { search } from 'utils/mainRenderer';
 import { getAllClassFeatures } from 'utils/character';
 import Entry from 'components/Entry/Entry';
 import { getSelectedCharacter } from 'app/selectors';
+import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 
 interface Props {
   character: CharacterState;
@@ -73,7 +74,7 @@ const ShortRestForm = () => {
   );
 };
 
-const Rests = ({ character }: Props) => {
+const ActionButtons = ({ character }: Props) => {
   const dispatch = useDispatch();
   const handleLongRest = () => {
     dispatch(
@@ -96,10 +97,19 @@ const Rests = ({ character }: Props) => {
     );
   };
 
+  const handleAbilityScores = () =>
+    dispatch(
+      toggleModal({
+        visible: true,
+        title: 'Ability Scores',
+        content: <AbilitiesSkillsModal />,
+      }),
+    );
+
   return (
     <>
       <StyledButton
-        extraClassName="ml-2 xl:-mt-1 mb-1 h-10 custom-border-medium"
+        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
         onClick={handleShortRest}
       >
         Short Rest
@@ -110,8 +120,26 @@ const Rests = ({ character }: Props) => {
       >
         Long Rest
       </StyledButton>
+      <StyledButton
+        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        onClick={handleAbilityScores}
+      >
+        Ability Scores
+      </StyledButton>
+      <StyledButton
+        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        onClick={() => console.log('TODO')}
+      >
+        Spells
+      </StyledButton>
+      <StyledButton
+        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        onClick={() => console.log('TODO')}
+      >
+        Equipment
+      </StyledButton>
     </>
   );
 };
 
-export default Rests;
+export default ActionButtons;

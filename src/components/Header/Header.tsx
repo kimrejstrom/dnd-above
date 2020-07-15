@@ -7,10 +7,23 @@ import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
 import useKonamiCode from 'utils/konamiHook';
 import { getCookie } from 'utils/cookie';
+import { CharacterList } from 'features/character/characterListSlice';
+import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const allSources = getCookie('allSources') === 'true';
+  const characterList: CharacterList = useSelector(
+    (state: RootState) => state.characterList,
+  ).filter(character => {
+    if (!allSources) {
+      return !character.allSources;
+    }
+    return true;
+  });
+  const selectedCharacterId = useSelector(
+    (state: RootState) => state.selectedCharacter,
+  );
   // Get theme from Redux
   const theme = useSelector((state: RootState) => state.theme);
   // Support for OS level color preference
@@ -44,24 +57,52 @@ export const Header: React.FC = () => {
             )}
           </Link>
         </div>
-        <div className={`block flex flex-grow items-center w-auto`}>
+        <div className={`flex flex-grow items-center w-auto`}>
           <div className="text-lg font-medium flex-grow">
             <NavLink
               exact
               to="/"
-              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
+              className="inline-mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Home
             </NavLink>
             <NavLink
               to="/create"
-              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
+              className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4"
             >
               Create
             </NavLink>
+            <li className="relative py-2 rounded-full mb-0 nav-group-link cursor-pointer inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 mr-4">
+              Character
+              <ul className="absolute z-50 left-0 top-0 mt-10 p-2 rounded-lg shadow-lg bg-white nav-group hidden">
+                <svg
+                  className="block fill-current text-white w-4 h-4 absolute left-0 top-0 ml-3 -mt-3 z-0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                </svg>
+                {characterList.map((character, i) => (
+                  <li
+                    onClick={() => dispatch(setSelectedCharacter(character.id))}
+                    key={i}
+                    className={`${
+                      character.id === selectedCharacterId
+                        ? 'text-gray-900'
+                        : 'text-gray-600'
+                    } p-1 whitespace-no-wrap rounded-full text-sm md:text-base hover:text-gray-800 hover:bg-gray-100`}
+                  >
+                    <div className="px-2 py-1">
+                      {character.descriptionData.name}
+                      {character.id === selectedCharacterId && ' ✓'}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </li>
             <NavLink
               to="/about"
-              className="block inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
+              className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400"
             >
               About
             </NavLink>

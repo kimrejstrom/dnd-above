@@ -16,11 +16,11 @@ interface Props {
 const Inspiration = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
-    <div className="flex justify-center xl:justify-start flex-wrap xl:flex-no-wrap xl:flex-col ml-2 xl:mb-2">
+    <div className="flex justify-center flex-wrap">
       <div
-        className="relative bg-contain bg-center bg-no-repeat"
+        className="relative bg-contain bg-center bg-no-repeat mr-2"
         style={{
-          width: '9em',
+          width: '8.5rem',
           height: '2.5rem',
           backgroundImage: `url(${
             theme === ThemeMode.DARK ? inspirationLight : inspirationDark
@@ -35,8 +35,8 @@ const Inspiration = ({ character }: Props) => {
       <div
         className="relative bg-contain bg-center bg-no-repeat"
         style={{
-          width: '9em',
-          height: '2.75rem',
+          width: '8.5rem',
+          height: '2.5rem',
           backgroundImage: `url(${
             theme === ThemeMode.DARK ? proficiencyLight : proficiencyDark
           })`,

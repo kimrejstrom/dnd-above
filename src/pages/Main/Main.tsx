@@ -17,7 +17,7 @@ import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
-import Rests from 'features/character/Rests';
+import ActionButtons from 'features/character/ActionButtons';
 import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
 import { ThemeMode } from 'features/theme/themeSlice';
@@ -53,14 +53,34 @@ export const Main: React.FC<Props> = () => {
         style={{ maxWidth: '62rem' }}
       >
         <div className="w-full justify-center md:justify-start flex flex-wrap">
-          <div className="flex flex-col mr-2">
+          <div className="flex flex-col">
             <Name character={character} />
             <Alignment character={character} />
           </div>
           <ACHP character={character} />
-          <div className="mt-3 xl:mt-0 flex flex-wrap xl:flex-no-wrap xl:flex-col justify-center xl:justify-start">
+
+          <div className="ml-2" style={{ width: '10.5rem', height: '10.5rem' }}>
+            <div className="relative">
+              <img
+                className="rounded-lg absolute object-cover object-center"
+                style={{
+                  width: '10rem',
+                  height: '10rem',
+                  top: '0.25rem',
+                  left: '0.25rem',
+                }}
+                src={character.descriptionData.imageUrl}
+                alt="character"
+              />
+              <div
+                className="z-10 absolute custom-border custom-border-medium"
+                style={{ width: '10.5rem', height: '10.5rem' }}
+              ></div>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap justify-center">
             <Inspiration character={character} />
-            <Rests character={character} />
+            <ActionButtons character={character} />
           </div>
           <div className="flex flex-wrap text-center mt-3">
             <AbilityScores character={character} />

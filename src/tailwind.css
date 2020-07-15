@@ -228,19 +228,20 @@ a.active {
 }
 
 .conditions-defenses-panel {
-  width: 24rem;
+  width: 25rem;
 }
 
-@media (max-width: 1024px) {
-  .conditions-defenses-panel {
-    width: 19rem;
-  }
-}
 
 @media (max-width: 768px) {
   .conditions-defenses-panel {
     width: 100%;
   }
+}
+
+/* Nav */
+
+.nav-group-link:hover .nav-group {
+  display: block !important;
 }
 
 /* Tabs */
