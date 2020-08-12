@@ -173,10 +173,16 @@ export const isProficient = (skill: SkillTypes, character: CharacterState) => {
       ...character.classData.chosenClassSkillProficiencies,
       ...character.descriptionData.chosenBackgroundSkillProficiencies,
       ...character.descriptionData.standardBackgroundSkillProficiencies,
+      ...character.customData.customSkillProficiencies,
     ],
   );
   return skillProficiencies.includes(skill);
 };
+
+export const isCustomProficiency = (
+  skill: SkillTypes,
+  character: CharacterState,
+) => character.customData.customSkillProficiencies.includes(skill);
 
 export const getClassQuickBuild = (classElement: ClassElement) =>
   _.flatten(

@@ -40,7 +40,7 @@ const RightPanel = (props: Props) => {
         onClick={() => dispatch(togglePanel())}
       >
         <img
-          src={`https://icon.now.sh/view_quilt/24/${
+          src={`https://microicon-clone.vercel.app/view_quilt/24/${
             theme === ThemeMode.DARK ? 'fffff0' : ''
           }`}
           alt="toggle"

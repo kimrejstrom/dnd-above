@@ -782,6 +782,32 @@ const characterListSlice = createSlice({
         ];
       }
     },
+    addCustomProficiency(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: SkillTypes;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.customData.customSkillProficiencies.push(action.payload.data);
+      }
+    },
+    removeCustomProficiency(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: SkillTypes;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.customData.customSkillProficiencies = character.customData.customSkillProficiencies.filter(
+          item => item !== action.payload.data,
+        );
+      }
+    },
   },
 });
 
@@ -801,6 +827,8 @@ export const {
   expendSpellSlot,
   addSpellSlot,
   updateASI,
+  addCustomProficiency,
+  removeCustomProficiency,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

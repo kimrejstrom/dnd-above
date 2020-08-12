@@ -12,9 +12,9 @@ import {
 import SettingsCog from 'components/SettingsCog/SettingsCog';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { useDispatch } from 'react-redux';
-import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
+import SkillsProficienciesModal from 'features/character/SkillsProficienciesModal';
 
-const CHARACTER_ABILITIES = {
+export const CHARACTER_ABILITIES = {
   athletics: 'str',
   acrobatics: 'dex',
   'sleight of hand': 'dex',
@@ -51,8 +51,8 @@ const Skills = ({ character }: Props) => {
           dispatch(
             toggleModal({
               visible: true,
-              title: 'Abilities and Skills',
-              content: <AbilitiesSkillsModal />,
+              title: 'Skills and Proficiencies',
+              content: <SkillsProficienciesModal />,
             }),
           )
         }
