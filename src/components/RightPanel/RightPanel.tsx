@@ -99,7 +99,17 @@ const RightPanel = (props: Props) => {
                 ))}
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
-                <Spells spells={ALL_SPELLS} />
+                <Spells
+                  spells={ALL_SPELLS}
+                  columns={[
+                    'name',
+                    'source',
+                    'level',
+                    'school',
+                    'time',
+                    'range',
+                  ]}
+                />
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
                 <Items items={ALL_ITEMS} />

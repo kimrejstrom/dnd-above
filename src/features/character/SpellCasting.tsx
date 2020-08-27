@@ -94,7 +94,10 @@ const SpellLevel = ({
           )}
         </div>
       </div>
-      <Spells spells={spells} />
+      <Spells
+        spells={spells}
+        columns={['name', 'source', 'level', 'school', 'time', 'range']}
+      />
     </div>
   ) : (
     <div>You can't cast these spells yet.</div>

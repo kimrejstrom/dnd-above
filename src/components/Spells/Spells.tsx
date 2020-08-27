@@ -7,10 +7,14 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { SpellElement } from 'models/spells';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
+import { isDefined } from 'ts-is-present';
 
 interface Props {
   spells: SpellElement[];
   columns?: string[];
+  withSelection?: boolean;
+  selectedRows?: Record<string, boolean>;
+  onSelectedRowsChange?: any;
 }
 
 const handleSpecialCell = (cell: Cell<object>) => {
@@ -32,6 +36,20 @@ const handleSpecialCell = (cell: Cell<object>) => {
         </div>
       );
 
+    case 'classes':
+      return (
+        <div>
+          {cell.value &&
+            cell.value.fromClassList
+              .concat(cell.value.fromClassListVariant)
+              .filter(
+                (elem: any) => isDefined(elem) && !elem.source.includes('UA'),
+              )
+              .map((elem: any) => elem.name)
+              .join(', ')}
+        </div>
+      );
+
     default:
       return (
         <pre>
@@ -41,7 +59,13 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
-export const Spells = ({ spells, columns }: Props) => {
+export const Spells = ({
+  spells,
+  columns,
+  withSelection = false,
+  selectedRows,
+  onSelectedRowsChange,
+}: Props) => {
   const dispatch = useDispatch();
   const itemColumns = columns || [
     'name',
@@ -50,6 +74,7 @@ export const Spells = ({ spells, columns }: Props) => {
     'school',
     'range',
     'source',
+    'classes',
   ];
 
   const tableData = useMemo(
@@ -84,6 +109,9 @@ export const Spells = ({ spells, columns }: Props) => {
     <div className="text-left mx-auto w-full">
       <Table
         cellRenderer={handleSpecialCell}
+        withSelection={withSelection}
+        selectedRows={selectedRows}
+        onSelectedRowsChange={onSelectedRowsChange}
         tableData={{
           columns: tableColumns,
           data: tableData,
