@@ -12,9 +12,11 @@ import {
 interface Props {
   tableData: UseTableOptions<object>;
   cellRenderer: (cell: Cell<object>) => JSX.Element;
-  withSelection?: boolean;
   selectedRows?: Record<string, boolean>;
-  onSelectedRowsChange?: (selectedRows: Record<string, boolean>) => void;
+  onSelectedRowsChange?: (
+    selectedRows: Record<string, boolean>,
+    selectedData: any[],
+  ) => void;
 }
 
 const isValidCellValue = (value: Cell<object>) =>
@@ -43,7 +45,6 @@ const IndeterminateCheckbox = React.forwardRef(
 const Table = ({
   cellRenderer,
   tableData,
-  withSelection = false,
   selectedRows,
   onSelectedRowsChange,
 }: Props) => {
@@ -70,7 +71,7 @@ const Table = ({
     useExpanded, // Use the useExpanded plugin hook
     useRowSelect,
     hooks => {
-      withSelection
+      selectedRows
         ? hooks.visibleColumns.push(columns => [
             // Let's make a column for selection
             {
@@ -99,10 +100,8 @@ const Table = ({
   // Keep parent/store state in sync with local state
   // No need to update on mount since we are passing initial state
   useMountedLayoutEffect(() => {
-    console.log('SELECTED ROWS CHANGED', selectedRowIds);
-    selectedFlatRows.map(d => console.log('SELECTED ROWS DATA', d.original));
-
-    onSelectedRowsChange && onSelectedRowsChange(selectedRowIds);
+    const selectedData = selectedFlatRows.map(d => d.original);
+    onSelectedRowsChange && onSelectedRowsChange(selectedRowIds, selectedData);
   }, [onSelectedRowsChange, selectedRowIds]);
 
   // Render the UI for your table

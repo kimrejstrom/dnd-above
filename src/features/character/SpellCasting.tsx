@@ -107,7 +107,7 @@ const SpellLevel = ({
 const SpellCasting = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const spells = character.gameData.spells
-    .map(spellName => getSpell(spellName))
+    .map(spell => getSpell(spell.name))
     .filter(isDefined);
   const spellLevels = _.groupBy(spells, 'level');
 

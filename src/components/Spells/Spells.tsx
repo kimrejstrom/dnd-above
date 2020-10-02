@@ -12,7 +12,6 @@ import { isDefined } from 'ts-is-present';
 interface Props {
   spells: SpellElement[];
   columns?: string[];
-  withSelection?: boolean;
   selectedRows?: Record<string, boolean>;
   onSelectedRowsChange?: any;
 }
@@ -62,7 +61,6 @@ const handleSpecialCell = (cell: Cell<object>) => {
 export const Spells = ({
   spells,
   columns,
-  withSelection = false,
   selectedRows,
   onSelectedRowsChange,
 }: Props) => {
@@ -109,7 +107,6 @@ export const Spells = ({
     <div className="text-left mx-auto w-full">
       <Table
         cellRenderer={handleSpecialCell}
-        withSelection={withSelection}
         selectedRows={selectedRows}
         onSelectedRowsChange={onSelectedRowsChange}
         tableData={{

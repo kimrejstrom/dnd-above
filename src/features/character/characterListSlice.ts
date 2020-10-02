@@ -113,7 +113,7 @@ export interface CharacterGameData {
     feats: string[];
     conditions: string[];
     defenses: { type: DefenseType; name: string }[];
-    spells: string[];
+    spells: { row: number; name: string }[];
     attunements: string[];
     actions: any[];
     extras: any[];
@@ -325,20 +325,8 @@ const MOE: CharacterListItem = {
     level: 4,
     feats: ['Resilient'],
     spells: [
-      'Guidance',
-      'Produce Flame',
-      'Shillelagh',
-      'Entangle',
-      'Goodberry',
-      'Healing Word',
-      'Thunderwave',
-      'Barkskin',
-      'Flaming Sphere',
-      'Heat Metal',
-      'Thorn Whip',
-      'Shocking Grasp',
-      'Vampiric Touch',
-      'Counterspell',
+      { row: 174, name: 'Guidance' },
+      { row: 150, name: 'Flaming Sphere' },
     ],
     conditions: ['invisible'],
     defenses: [{ type: DefenseType.Immunity, name: 'cold' }],
@@ -808,6 +796,18 @@ const characterListSlice = createSlice({
         );
       }
     },
+    updateSpells(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: { row: number; name: string }[];
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.spells = action.payload.data;
+      }
+    },
   },
 });
 
@@ -829,6 +829,7 @@ export const {
   updateASI,
   addCustomProficiency,
   removeCustomProficiency,
+  updateSpells,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;
