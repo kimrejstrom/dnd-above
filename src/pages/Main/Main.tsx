@@ -25,6 +25,7 @@ import { getSelectedCharacter } from 'app/selectors';
 import ConditionsDefenses from 'features/character/ConditionsDefenses';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import Description from 'features/character/Description';
+import { levelUp } from 'features/character/characterListSlice';
 
 interface Props {}
 
@@ -46,6 +47,10 @@ export const Main: React.FC<Props> = () => {
     dispatch(setSelectedIndex(updatedPanel));
   };
 
+  const handleLevelUp = () => {
+    dispatch(levelUp({ id: character.id }));
+  };
+
   return (
     <div className="w-full flex justify-center z-10">
       <div
@@ -59,7 +64,10 @@ export const Main: React.FC<Props> = () => {
           </div>
           <ACHP character={character} />
 
-          <div className="ml-2" style={{ width: '10.5rem', height: '10.5rem' }}>
+          <div
+            className="hidden sm:block ml-2"
+            style={{ width: '10.5rem', height: '10.5rem' }}
+          >
             <div className="relative">
               <img
                 className="rounded-lg absolute object-cover object-center"
@@ -81,14 +89,17 @@ export const Main: React.FC<Props> = () => {
               ></div>
             </div>
           </div>
-          <div className="mt-3 flex flex-wrap justify-center">
+          <div className="mt-1 sm:mt-3 flex flex-wrap justify-center">
             <Inspiration character={character} />
             <ActionButtons character={character} />
           </div>
           <div className="flex flex-wrap text-center mt-3">
             <AbilityScores character={character} />
             <ConditionsDefenses character={character} />
-            <div className="flex justify-center ml-1 custom-border custom-border-medium h-20 w-full md:w-20">
+            <div
+              onClick={handleLevelUp}
+              className="bg-secondary-light hover:bg-primary-light dark:bg-tertiary-dark dark:text-primary-light dark-hover:bg-primary-dark cursor-pointer flex justify-center ml-1 custom-border custom-border-medium h-20 w-full md:w-20"
+            >
               <div
                 className="flex flex-col justify-center items-center rounded-lg"
                 style={{

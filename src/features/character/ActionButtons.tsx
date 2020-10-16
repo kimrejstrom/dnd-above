@@ -8,10 +8,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { search } from 'utils/mainRenderer';
-import { getAllClassFeatures } from 'utils/character';
+import { getAllClassFeatures, isSpellCaster } from 'utils/character';
 import Entry from 'components/Entry/Entry';
 import { getSelectedCharacter } from 'app/selectors';
 import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
+import SpellsModal from 'features/character/SpellsModal';
 
 interface Props {
   character: CharacterState;
@@ -119,6 +120,15 @@ const ActionButtons = ({ character }: Props) => {
       }),
     );
 
+  const handleSpells = () =>
+    dispatch(
+      toggleModal({
+        visible: true,
+        title: 'Your Spells',
+        content: <SpellsModal />,
+      }),
+    );
+
   return (
     <>
       <StyledButton
@@ -139,12 +149,14 @@ const ActionButtons = ({ character }: Props) => {
       >
         Ability Scores
       </StyledButton>
-      <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
-        onClick={() => console.log('TODO')}
-      >
-        Spells
-      </StyledButton>
+      {isSpellCaster(character) && (
+        <StyledButton
+          extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+          onClick={handleSpells}
+        >
+          Spells
+        </StyledButton>
+      )}
       <StyledButton
         extraClassName="ml-2 mb-1 h-10 custom-border-medium"
         onClick={() => console.log('TODO')}

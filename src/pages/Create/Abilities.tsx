@@ -104,7 +104,7 @@ const Abilities = ({ url }: { url: string }) => {
         { score: 14, used: false },
         { score: 15, used: false },
       ]);
-    } else if (e.currentTarget.value === 'roll') {
+    } else if (e.currentTarget.value === 'rolled') {
       const rollResult = diceRoller
         .roll('{4d6kh3...6}')
         .renderedExpression.split('}')

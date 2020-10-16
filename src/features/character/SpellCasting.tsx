@@ -94,7 +94,10 @@ const SpellLevel = ({
           )}
         </div>
       </div>
-      <Spells spells={spells} />
+      <Spells
+        spells={spells}
+        columns={['name', 'source', 'level', 'school', 'time', 'range']}
+      />
     </div>
   ) : (
     <div>You can't cast these spells yet.</div>
@@ -104,7 +107,7 @@ const SpellLevel = ({
 const SpellCasting = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const spells = character.gameData.spells
-    .map(spellName => getSpell(spellName))
+    .map(spell => getSpell(spell.name))
     .filter(isDefined);
   const spellLevels = _.groupBy(spells, 'level');
 
