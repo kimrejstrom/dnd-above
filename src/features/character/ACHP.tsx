@@ -141,10 +141,10 @@ const ACHP = ({ character }: Props) => {
             {getMaxHP(character)}
           </p>
         </div>
-        <div className="mt-4 md:mt-0 ml-1">
+        <div className="w-full sm:w-auto mt-4 md:mt-0 ml-1">
           <form
             onSubmit={handleSubmit(onHPSubmit)}
-            className="text-xl text-center flex md:flex-col"
+            className="text-xl text-center flex justify-around md:flex-col"
           >
             <button
               className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
@@ -155,7 +155,7 @@ const ACHP = ({ character }: Props) => {
             </button>
             <input
               name="hp"
-              className="text-center my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
+              className="text-center mx-2 sm:mx-0 sm:my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
               ref={register}
             />
             <button
@@ -183,15 +183,16 @@ const ACHP = ({ character }: Props) => {
           className="ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
             height: '2.5rem',
-            width: '10rem',
+            width: '8rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? tempHPLight : tempHPDark
             })`,
           }}
         ></div>
         <div
-          className="invisible hidden md:block md:visible w-8 h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden md:block md:visible h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
           style={{
+            width: '6rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? skullIconLight : skullIconDark
             })`,

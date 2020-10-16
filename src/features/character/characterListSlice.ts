@@ -11,6 +11,7 @@ import {
   calculateStats,
   getMaxHP,
   getHitDice,
+  isSpellCaster,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase, Race } from 'models/race';
@@ -337,8 +338,15 @@ const MOE: CharacterListItem = {
     currentHp: 12,
     currentHd: 5,
     spellSlots: {
-      1: { used: 2 },
-      2: { used: 1 },
+      1: { used: 0 },
+      2: { used: 0 },
+      3: { used: 0 },
+      4: { used: 0 },
+      5: { used: 0 },
+      6: { used: 0 },
+      7: { used: 0 },
+      8: { used: 0 },
+      9: { used: 0 },
     },
   },
 };
@@ -580,6 +588,19 @@ const characterListSlice = createSlice({
                 calculateStats(character.data as CharacterState).dex,
               ),
             currentHd: 1,
+            spellSlots: isSpellCaster(character.data as CharacterState)
+              ? {
+                  1: { used: 0 },
+                  2: { used: 0 },
+                  3: { used: 0 },
+                  4: { used: 0 },
+                  5: { used: 0 },
+                  6: { used: 0 },
+                  7: { used: 0 },
+                  8: { used: 0 },
+                  9: { used: 0 },
+                }
+              : undefined,
           },
         };
         state.push({ ...newCharacter });
@@ -808,6 +829,12 @@ const characterListSlice = createSlice({
         character.gameData.spells = action.payload.data;
       }
     },
+    levelUp(state, action: PayloadAction<{ id: string }>) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.level = character.gameData.level + 1;
+      }
+    },
   },
 });
 
@@ -830,6 +857,7 @@ export const {
   addCustomProficiency,
   removeCustomProficiency,
   updateSpells,
+  levelUp,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;
