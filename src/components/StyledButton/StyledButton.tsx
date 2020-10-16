@@ -26,6 +26,9 @@ const StyledButton: React.FC<ButtonProps> = ({
     className={`${extraClassName} ${DEFAULT_BUTTON_STYLE} ${
       disabled ? 'opacity-50' : ''
     }`}
+    style={{
+      lineHeight: '0.95rem',
+    }}
   >
     {children}
   </button>

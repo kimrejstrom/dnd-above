@@ -41,13 +41,29 @@ const SpellsModal = (props: Props) => {
     }
   };
 
+  const filteredSpells = ALL_SPELLS.filter(spell => {
+    if (spell && spell.classes) {
+      const mainClass = spell.classes.fromClassList.some(
+        entry => entry.name === character.classData.classElement,
+      );
+      const variantClass =
+        spell.classes.fromClassListVariant &&
+        spell.classes.fromClassListVariant!.some(
+          entry => entry.name === character.classData.classElement,
+        );
+      return mainClass || variantClass;
+    } else {
+      return false;
+    }
+  });
+
   return (
     <div>
       <div style={{ height: '20rem' }}>
         <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
           <div className="h-full overflow-y-scroll">
             <Spells
-              spells={ALL_SPELLS}
+              spells={filteredSpells}
               selectedRows={selectedRows}
               onSelectedRowsChange={toggleSpells}
             />

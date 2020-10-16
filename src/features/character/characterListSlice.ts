@@ -326,8 +326,54 @@ const MOE: CharacterListItem = {
     level: 4,
     feats: ['Resilient'],
     spells: [
-      { row: 174, name: 'Guidance' },
-      { row: 150, name: 'Flaming Sphere' },
+      {
+        row: 0,
+        name: 'Acid Splash',
+      },
+      {
+        row: 1,
+        name: 'Animal Friendship',
+      },
+      {
+        row: 12,
+        name: 'Call Lightning',
+      },
+      {
+        row: 17,
+        name: 'Conjure Animals',
+      },
+      {
+        row: 40,
+        name: 'Entangle',
+      },
+      {
+        row: 49,
+        name: 'Flaming Sphere',
+      },
+      {
+        row: 56,
+        name: 'Goodberry',
+      },
+      {
+        row: 59,
+        name: 'Guidance',
+      },
+      {
+        row: 80,
+        name: 'Healing Spirit',
+      },
+      {
+        row: 101,
+        name: 'Moonbeam',
+      },
+      {
+        row: 105,
+        name: 'Shillelagh',
+      },
+      {
+        row: 144,
+        name: 'Spike Growth',
+      },
     ],
     conditions: ['invisible'],
     defenses: [{ type: DefenseType.Immunity, name: 'cold' }],
@@ -347,6 +393,170 @@ const MOE: CharacterListItem = {
       7: { used: 0 },
       8: { used: 0 },
       9: { used: 0 },
+    },
+  },
+};
+
+const JOHNNY: CharacterListItem = {
+  id: 'id-2f1601589cd2b',
+  allSources: true,
+  raceData: {
+    race: 'Dwarf (Hill)',
+    chosenRaceAbilities: [],
+    standardRaceAbilities: [
+      {
+        con: 2,
+        wis: 1,
+      },
+    ],
+    chosenRaceSkillProficiencies: [],
+    standardRaceSkillProficiencies: [],
+    chosenRaceLanguages: [],
+    standardRaceLanguages: ['common', 'dwarvish'],
+  },
+  classData: {
+    classElement: 'Cleric',
+    subClass: 'War Domain',
+    chosenClassSkillProficiencies: ['persuasion', 'religion'],
+    standardClassArmorProficiencies: ['light', 'medium', 'shields'],
+    standardClassWeaponProficiencies: ['simple'],
+    standardClassToolProficiencies: [],
+    abilityScores: {
+      rollMethod: 'rolled',
+      str: 17,
+      dex: 10,
+      con: 14,
+      int: 9,
+      wis: 14,
+      cha: 13,
+    },
+  },
+  descriptionData: {
+    name: 'Johnny WarCler',
+    background: 'Soldier',
+    alignment: 'LN',
+    characteristicsSource: 'Soldier',
+    imageUrl: '/img/races/dwarf (hill).png',
+    hair: 'Brown',
+    skin: 'Fair',
+    eyes: 'Dull',
+    height: 'Short',
+    weight: 'Lots',
+    age: '120',
+    backstory: '',
+    chosenBackgroundSkillProficiencies: [],
+    standardBackgroundSkillProficiencies: ['athletics', 'intimidation'],
+    chosenBackgroundToolProficiencies: [],
+    standardBackgroundToolProficiencies: ['gaming set', 'vehicles (land)'],
+    chosenBackgroundLanguages: [],
+    standardBackgroundLanguages: [],
+    characteristicsPersonalityTrait:
+      'I enjoy being strong and like breaking things.',
+    characteristicsIdeal:
+      "Live and Let Live. Ideals aren't worth killing over or going to war for. (Neutral)",
+    characteristicsBond: 'Those who fight beside me are those worth dying for.',
+    characteristicsFlaw: "I'd rather eat my armor than admit when I'm wrong.",
+  },
+  equipmentData: {
+    items: ['Warhammer', 'Chain Mail', 'Greataxe', 'Shield'],
+  },
+  customData: {
+    customAbilities: [
+      {
+        wis: 2,
+      },
+    ],
+    customSkillProficiencies: [],
+    customArmorProficiencies: [],
+    customWeaponProficiencies: [],
+    customToolProficiencies: [],
+    customLanguages: [],
+  },
+  gameData: {
+    level: 5,
+    feats: [],
+    spells: [
+      {
+        row: 3,
+        name: 'Aid',
+      },
+      {
+        row: 4,
+        name: 'Animate Dead',
+      },
+      {
+        row: 16,
+        name: 'Bless',
+      },
+      {
+        row: 31,
+        name: 'Cure Wounds',
+      },
+      {
+        row: 57,
+        name: 'Guidance',
+      },
+      {
+        row: 58,
+        name: 'Guiding Bolt',
+      },
+      {
+        row: 62,
+        name: 'Healing Word',
+      },
+      {
+        row: 66,
+        name: 'Inflict Wounds',
+      },
+      {
+        row: 102,
+        name: 'Spirit Guardians',
+      },
+      {
+        row: 103,
+        name: 'Spiritual Weapon',
+      },
+      {
+        row: 122,
+        name: 'Toll the Dead',
+      },
+    ],
+    conditions: [],
+    defenses: [],
+    attunements: [],
+    actions: [],
+    extras: [],
+    ac: 19,
+    currentHp: 40,
+    currentHd: 5,
+    spellSlots: {
+      '1': {
+        used: 0,
+      },
+      '2': {
+        used: 0,
+      },
+      '3': {
+        used: 0,
+      },
+      '4': {
+        used: 0,
+      },
+      '5': {
+        used: 0,
+      },
+      '6': {
+        used: 0,
+      },
+      '7': {
+        used: 0,
+      },
+      '8': {
+        used: 0,
+      },
+      '9': {
+        used: 0,
+      },
     },
   },
 };
@@ -501,7 +711,7 @@ export const randomize = () => {
   return randomCharacter;
 };
 
-const initialState: CharacterList = [DEAFULT_CHARACTER, MOE];
+const initialState: CharacterList = [DEAFULT_CHARACTER, MOE, JOHNNY];
 
 const generateID = () =>
   `id-${Math.random()
