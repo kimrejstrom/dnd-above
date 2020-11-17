@@ -4,11 +4,10 @@ Project Description
 
 ### Todo
 
-- [ ] Manage Selected Spells + Rating / Comments  
+- [ ] Spell Rating / Comments  
 - [ ] Custom data form / Game data form?  
 - [ ] Custom items (w/ use as base)  
-- [ ] Attuned items  
-- [ ] Feats select  
+- [ ] Attuned items    
 - [ ] Omni search (Fuse)  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
@@ -16,10 +15,12 @@ Project Description
 
 ### In Progress
 
-- [ ] Level Up  
 
 ### Done ✓
 
+- [x] Feats select
+- [x] Manage Selected Spells  
+- [x] Level Up  
 - [x] Spellslots Total + Used + Reset at rests  
 - [x] Conditions / Defenses  
 - [x] Long Rest / Short Rest  
