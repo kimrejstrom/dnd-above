@@ -2391,7 +2391,7 @@ Renderer.utils = {
   },
 };
 
-Renderer.feat = {
+Renderer.prototype.feat = {
   mergeAbilityIncrease: function(feat) {
     if (!feat.ability || feat._hasMergedAbility) return;
     feat._hasMergedAbility = true;
@@ -2459,7 +2459,7 @@ Renderer.feat = {
     const renderStack = [];
 
     const prerequisite = Renderer.utils.getPrerequisiteText(feat.prerequisite);
-    Renderer.feat.mergeAbilityIncrease(feat);
+    renderer.feat.mergeAbilityIncrease(feat);
     renderStack.push(`
               ${Renderer.utils.getExcludedTr(feat, 'feat')}
               ${Renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}
@@ -3250,7 +3250,7 @@ Renderer.deity = {
   },
 };
 
-Renderer.object = {
+Renderer.prototype.object = {
   getCompactRenderedString(obj) {
     const renderer = Renderer.get();
     const row2Width = 12 / (!!obj.resist + !!obj.vulnerable || 1);
@@ -5210,9 +5210,10 @@ Renderer.action = {
   },
 };
 
-Renderer.language = {
+Renderer.prototype.language = {
   getCompactRenderedString(it) {
-    return Renderer.language.getRenderedString(it);
+    const renderer = Renderer.get();
+    return renderer.language.getRenderedString(it);
   },
 
   getRenderedString(it) {

@@ -958,6 +958,32 @@ const characterListSlice = createSlice({
         );
       }
     },
+    addFeat(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.feats.push(action.payload.data);
+      }
+    },
+    removeFeat(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.find(chara => chara.id === action.payload.id);
+      if (character) {
+        character.gameData.feats = character.gameData.feats.filter(
+          item => item !== action.payload.data,
+        );
+      }
+    },
     expendSpellSlot(
       state,
       action: PayloadAction<{
@@ -1068,6 +1094,8 @@ export const {
   removeCustomProficiency,
   updateSpells,
   levelUp,
+  addFeat,
+  removeFeat,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

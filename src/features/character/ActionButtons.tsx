@@ -13,6 +13,7 @@ import Entry from 'components/Entry/Entry';
 import { getSelectedCharacter } from 'app/selectors';
 import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 import SpellsModal from 'features/character/SpellsModal';
+import FeatsModal from 'features/character/FeatsModal';
 
 interface Props {
   character: CharacterState;
@@ -129,6 +130,15 @@ const ActionButtons = ({ character }: Props) => {
       }),
     );
 
+  const handleFeats = () =>
+    dispatch(
+      toggleModal({
+        visible: true,
+        title: 'Your Feats',
+        content: <FeatsModal />,
+      }),
+    );
+
   return (
     <>
       <StyledButton
@@ -162,6 +172,12 @@ const ActionButtons = ({ character }: Props) => {
         onClick={() => console.log('TODO')}
       >
         Equipment
+      </StyledButton>
+      <StyledButton
+        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        onClick={handleFeats}
+      >
+        Feats
       </StyledButton>
     </>
   );

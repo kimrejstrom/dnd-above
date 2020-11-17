@@ -2,7 +2,7 @@ import React from 'react';
 import {
   useTable,
   useExpanded,
-  UseTableOptions,
+  TableOptions,
   Cell,
   useSortBy,
   useRowSelect,
@@ -10,7 +10,7 @@ import {
 } from 'react-table';
 
 interface Props {
-  tableData: UseTableOptions<object>;
+  tableData: TableOptions<object>;
   cellRenderer: (cell: Cell<object>) => JSX.Element;
   selectedRows?: Record<string, boolean>;
   onSelectedRowsChange?: (

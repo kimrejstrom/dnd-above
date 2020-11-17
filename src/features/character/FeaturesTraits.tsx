@@ -104,7 +104,7 @@ const renderFeats = (feats: string[]) => {
       );
     })
   ) : (
-    <p>No racial traits</p>
+    <p>No feats</p>
   );
 };
 

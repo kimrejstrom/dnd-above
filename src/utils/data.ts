@@ -33,6 +33,8 @@ import items from 'data/items.json';
 import actions from 'data/actions.json';
 // Feats
 import feats from 'data/feats.json';
+// Languages
+import languages from 'data/languages.json';
 // Models
 import { ClassTypes, Class, ClassElement } from 'models/class';
 import { Race } from 'models/race';
@@ -42,6 +44,7 @@ import { RaceFluffElement } from 'models/race-fluff';
 import { Item } from 'models/item';
 import { BackgroundFluffElement } from 'models/background-fluff';
 import { Action } from 'models/actions';
+import { LanguageElement } from 'models/language';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
 import { isDefined } from 'ts-is-present';
@@ -163,6 +166,9 @@ export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
 
 export const ACTIONS = actions as Action;
 export const FEATS = feats.feat.filter(i => filterSources(i)) as FeatElement[];
+export const LANGUAGES = languages.language.filter(i =>
+  filterSources(i),
+) as LanguageElement[];
 
 const createPropertyMaps = (data: any) => {
   data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));

@@ -112,6 +112,7 @@ export const Spells = ({
         tableData={{
           columns: tableColumns,
           data: tableData,
+          autoResetSortBy: false,
           initialState: {
             sortBy: [
               {

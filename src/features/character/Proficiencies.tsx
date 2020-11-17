@@ -5,7 +5,10 @@ import {
   getWeaponProficiencies,
   getToolProficiencies,
   getLanguageProficiencies,
+  getLanguage,
 } from 'utils/character';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
+import { mainRenderer } from 'utils/mainRenderer';
 
 interface Props {
   character: CharacterState;
@@ -36,7 +39,20 @@ const Proficiencies = ({ character }: Props) => {
           <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
           <div className="text-xl">Languages</div>
           <div className="dnd-body">
-            {getLanguageProficiencies(character).join(', ')}
+            {getLanguageProficiencies(character).map((lang, i) => {
+              const lastIndex = getLanguageProficiencies(character).length - 1;
+              return (
+                <DetailedEntryTrigger
+                  extraClassName={'inline'}
+                  data={getLanguage(lang)}
+                  renderer={mainRenderer.language.getCompactRenderedString(
+                    getLanguage(lang),
+                  )}
+                >
+                  {i === lastIndex ? `${lang}` : `${lang}, `}
+                </DetailedEntryTrigger>
+              );
+            })}
           </div>
           <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
         </div>

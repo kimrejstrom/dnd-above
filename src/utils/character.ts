@@ -11,6 +11,7 @@ import {
   ALL_ITEMS,
   ALL_SPELLS,
   FEATS,
+  LANGUAGES,
 } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
@@ -116,6 +117,11 @@ export const getProficiencyBonus = (level: number) => {
   if (!level) return 2;
   return Math.ceil(level / 4) + 1;
 };
+
+export const getLanguage = (languageName: string) =>
+  LANGUAGES.find(
+    lang => lang.name.toLowerCase() === languageName.toLowerCase(),
+  );
 
 export const getFeat = (featName: string) =>
   FEATS.find(feat => feat.name === featName);
