@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { withTracker, initializeGA } from 'utils/analyticsTracker';
 import { About } from 'pages/About/About';
+import Books from 'pages/Books/Books';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
 import { ThemeMode } from 'features/theme/themeSlice';
@@ -62,6 +63,7 @@ const App: React.FC = () => {
                     <Route exact path="/" component={withTracker(Main)} />
                     <Route path="/about" component={withTracker(About)} />
                     <Route path="/create" component={withTracker(Create)} />
+                    <Route path="/books" component={withTracker(Books)} />
                   </Switch>
                 </div>
                 <Modal title={title} content={content} />

@@ -70,7 +70,7 @@ export const Main: React.FC<Props> = () => {
           >
             <div className="relative">
               <img
-                className="rounded-lg absolute object-cover object-center"
+                className="rounded-lg absolute object-cover object-top"
                 style={{
                   width: '10rem',
                   height: '10rem',

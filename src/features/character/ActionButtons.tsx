@@ -142,33 +142,33 @@ const ActionButtons = ({ character }: Props) => {
   return (
     <>
       <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleShortRest}
       >
         Short Rest
       </StyledButton>
       <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleLongRest}
       >
         Long Rest
       </StyledButton>
       <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleAbilityScores}
       >
         Ability Scores
       </StyledButton>
       {isSpellCaster(character) && (
         <StyledButton
-          extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+          extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
           onClick={handleSpells}
         >
           Spells
         </StyledButton>
       )}
       <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={() => console.log('TODO')}
       >
         Equipment

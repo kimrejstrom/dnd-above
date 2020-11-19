@@ -254,6 +254,9 @@ function Renderer() {
         case 'variant':
           this._renderVariant(entry, textStack, meta, options);
           break;
+        case 'variantInner':
+          this._renderVariantInner(entry, textStack, meta, options);
+          break;
         case 'variantSub':
           this._renderVariantSub(entry, textStack, meta, options);
           break;
@@ -294,17 +297,17 @@ function Renderer() {
         case 'bonusSpeed':
           this._renderBonusSpeed(entry, textStack, meta, options);
           break;
+        case 'dice':
+          this._renderDice(entry, textStack, meta, options);
+          break;
+        case 'link':
+          this._renderLink(entry, textStack, meta, options);
+          break;
         case 'actions':
           this._renderActions(entry, textStack, meta, options);
           break;
         case 'attack':
           this._renderAttack(entry, textStack, meta, options);
-          break;
-        case 'link':
-          this._renderLink(entry, textStack, meta, options);
-          break;
-        case 'dice':
-          this._renderDice(entry, textStack, meta, options);
           break;
 
         // list items
@@ -328,6 +331,12 @@ function Renderer() {
         case 'dataTrapHazard':
           this._renderDataTrapHazard(entry, textStack, meta, options);
           break;
+        case 'dataObject':
+          this._renderDataObject(entry, textStack, meta, options);
+          break;
+        case 'dataItem':
+          this._renderDataItem(entry, textStack, meta, options);
+          break;
 
         // flowchart
         case 'flowchart':
@@ -337,7 +346,15 @@ function Renderer() {
           this._renderFlowBlock(entry, textStack, meta, options);
           break;
 
+        // homebrew changes
+        case 'homebrew':
+          this._renderHomebrew(entry, textStack, meta, options);
+          break;
+
         // misc
+        case 'code':
+          this._renderCode(entry, textStack, meta, options);
+          break;
         case 'hr':
           this._renderHr(entry, textStack, meta, options);
           break;
@@ -1084,7 +1101,7 @@ function Renderer() {
 
   this._renderItem = function(entry, textStack, meta, options) {
     this._renderPrefix(entry, textStack, meta, options);
-    textStack[0] += `<p><span class="bold list-item-title">${this.render(
+    textStack[0] += `<p><span class="font-bold list-item-title">${this.render(
       entry.name,
     )}</span> `;
     if (entry.entry) this._recursiveRender(entry.entry, textStack, meta);
@@ -1215,311 +1232,855 @@ function Renderer() {
     for (let i = 0; i < len; ++i) {
       const s = tagSplit[i];
       if (!s) continue;
-      if (s[0] === '@') {
+      if (s.startsWith('@')) {
         const [tag, text] = Renderer.splitFirstSpace(s);
+        this._renderString_renderTag(textStack, meta, options, tag, text);
+      } else textStack[0] += s;
+    }
+  };
+
+  this._renderString_renderTag = function(textStack, meta, options, tag, text) {
+    switch (tag) {
+      // BASIC STYLES/TEXT ///////////////////////////////////////////////////////////////////////////////
+      case '@b':
+      case '@bold':
+        textStack[0] += `<b>`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</b>`;
+        break;
+      case '@i':
+      case '@italic':
+        textStack[0] += `<i>`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</i>`;
+        break;
+      case '@s':
+      case '@strike':
+        textStack[0] += `<s>`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</s>`;
+        break;
+      case '@u':
+      case '@underline':
+        textStack[0] += `<u>`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</u>`;
+        break;
+      case '@note':
+        textStack[0] += `<i class="ve-muted">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</i>`;
+        break;
+      case '@atk':
+        textStack[0] += `<i>${Renderer.attackTagToFull(text)}</i>`;
+        break;
+      case '@h':
+        textStack[0] += `<i>Hit:</i> `;
+        break;
+      case '@color': {
+        const [toDisplay, color] = Renderer.splitTagByPipe(text);
+        const scrubbedColor = BrewUtil.getValidColor(color);
+
+        textStack[0] += `<span style="color: #${scrubbedColor}">`;
+        this._recursiveRender(toDisplay, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      }
+      case '@highlight': {
+        const [toDisplay, color] = Renderer.splitTagByPipe(text);
+        const scrubbedColor = color ? BrewUtil.getValidColor(color) : null;
+
+        textStack[0] += scrubbedColor
+          ? `<span style="background-color: #${scrubbedColor}">`
+          : `<span class="rd__highlight">`;
+        textStack[0] += toDisplay;
+        textStack[0] += `</span>`;
+        break;
+      }
+
+      // Comic styles ////////////////////////////////////////////////////////////////////////////////////
+      case '@comic':
+        textStack[0] += `<span class="rd__comic">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      case '@comicH1':
+        textStack[0] += `<span class="rd__comic rd__comic--h1">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      case '@comicH2':
+        textStack[0] += `<span class="rd__comic rd__comic--h2">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      case '@comicH3':
+        textStack[0] += `<span class="rd__comic rd__comic--h3">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      case '@comicH4':
+        textStack[0] += `<span class="rd__comic rd__comic--h4">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+      case '@comicNote':
+        textStack[0] += `<span class="rd__comic rd__comic--note">`;
+        this._recursiveRender(text, textStack, meta);
+        textStack[0] += `</span>`;
+        break;
+
+      // DCs /////////////////////////////////////////////////////////////////////////////////////////////
+      case '@dc': {
+        textStack[0] += `DC <span class="rd__dc">${text}</span>`;
+        break;
+      }
+
+      // DICE ////////////////////////////////////////////////////////////////////////////////////////////
+      case '@dice':
+      case '@damage':
+      case '@hit':
+      case '@d20':
+      case '@chance':
+      case '@recharge': {
+        const fauxEntry = {
+          type: 'dice',
+          rollable: true,
+        };
+        const [
+          rollText,
+          displayText,
+          name,
+          ...others
+        ] = Renderer.splitTagByPipe(text);
+        if (displayText) fauxEntry.displayText = displayText;
+        if (name) fauxEntry.name = name;
 
         switch (tag) {
-          // BASIC STYLES/TEXT ///////////////////////////////////////////////////////////////////////////////
-          case '@b':
-          case '@bold':
-            textStack[0] += `<b>`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</b>`;
-            break;
-          case '@i':
-          case '@italic':
-            textStack[0] += `<i>`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</i>`;
-            break;
-          case '@s':
-          case '@strike':
-            textStack[0] += `<s>`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</s>`;
-            break;
-          case '@u':
-          case '@underline':
-            textStack[0] += `<u>`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</u>`;
-            break;
-          case '@note':
-            textStack[0] += `<i class="text-muted">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</i>`;
-            break;
-          case '@atk':
-            textStack[0] += `<i>${Renderer.attackTagToFull(text)}</i>`;
-            break;
-          case '@h':
-            textStack[0] += `<i>Hit:</i> `;
-            break;
-          case '@color':
-          case '@highlight': {
-            const parts = text.split('|');
-            const [toDisplay, color] = text.split('|');
-            const scrubbedColor = 'f8f8ba';
-
-            if (tag === '@color')
-              textStack[0] += `<span style="color: #${scrubbedColor}">`;
-            else if (tag === '@highlight')
-              textStack[0] += `<span style="background-color: #${scrubbedColor}">`;
-            else throw new Error(`Unhandled tag!`);
-
-            textStack[0] += toDisplay;
-            textStack[0] += `</span>`;
+          case '@dice': {
+            // format: {@dice 1d2 + 3 + 4d5 - 6}
+            fauxEntry.toRoll = rollText;
+            if (!displayText && rollText.includes(';'))
+              fauxEntry.displayText = rollText.replace(/;/g, '/');
+            if (
+              (!fauxEntry.displayText && rollText.includes('#$')) ||
+              (fauxEntry.displayText && fauxEntry.displayText.includes('#$'))
+            )
+              fauxEntry.displayText = (
+                fauxEntry.displayText || rollText
+              ).replace(/#\$prompt_number[^$]*\$#/g, '(n)');
+            this._recursiveRender(fauxEntry, textStack, meta);
             break;
           }
-
-          // Comic styles ////////////////////////////////////////////////////////////////////////////////////
-          case '@comic':
-            textStack[0] += `<span class="rd__comic">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-          case '@comicH1':
-            textStack[0] += `<span class="rd__comic rd__comic--h1">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-          case '@comicH2':
-            textStack[0] += `<span class="rd__comic rd__comic--h2">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-          case '@comicH3':
-            textStack[0] += `<span class="rd__comic rd__comic--h3">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-          case '@comicH4':
-            textStack[0] += `<span class="rd__comic rd__comic--h4">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-          case '@comicNote':
-            textStack[0] += `<span class="rd__comic rd__comic--note">`;
-            this._recursiveRender(text, textStack, meta);
-            textStack[0] += `</span>`;
-            break;
-
-          // DCs /////////////////////////////////////////////////////////////////////////////////////////////
-          case '@dc': {
-            textStack[0] += `DC <span class="rd__dc">${text}</span>`;
+          case '@damage': {
+            fauxEntry.toRoll = rollText;
+            fauxEntry.subType = 'damage';
+            this._recursiveRender(fauxEntry, textStack, meta);
             break;
           }
-
-          // DICE ////////////////////////////////////////////////////////////////////////////////////////////
-          case '@dice':
-          case '@damage':
-          case '@hit':
           case '@d20':
-          case '@chance':
+          case '@hit': {
+            // format: {@hit +1} or {@hit -2}
+            let mod;
+            if (!isNaN(rollText)) {
+              const n = Number(rollText);
+              mod = `${n >= 0 ? '+' : ''}${n}`;
+            } else mod = rollText;
+            fauxEntry.displayText = fauxEntry.displayText || mod;
+            fauxEntry.toRoll = `1d20${mod}`;
+            fauxEntry.subType = 'd20';
+            fauxEntry.d20mod = mod;
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          }
+          case '@chance': {
+            // format: {@chance 25|display text|rollbox rollee name}
+            fauxEntry.toRoll = `1d100`;
+            fauxEntry.successThresh = Number(rollText);
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          }
           case '@recharge': {
-            const fauxEntry = {
-              type: 'dice',
-              rollable: true,
-            };
-            const [rollText, displayText, name, ...others] = text.split('|');
-            if (displayText) fauxEntry.displayText = displayText;
-            if (name) fauxEntry.name = name;
-
-            switch (tag) {
-              case '@dice': {
-                // format: {@dice 1d2 + 3 + 4d5 - 6}
-                fauxEntry.toRoll = rollText;
-                if (!displayText && rollText.includes(';'))
-                  fauxEntry.displayText = rollText.replace(/;/g, '/');
-                if (
-                  (!fauxEntry.displayText && rollText.includes('#$')) ||
-                  (fauxEntry.displayText &&
-                    fauxEntry.displayText.includes('#$'))
-                )
-                  fauxEntry.displayText = (
-                    fauxEntry.displayText || rollText
-                  ).replace(/#\$prompt_number[^$]*\$#/g, '(n)');
-                this._recursiveRender(fauxEntry, textStack, meta);
-                break;
-              }
-              case '@damage': {
-                fauxEntry.toRoll = rollText;
-                fauxEntry.subType = 'damage';
-                this._recursiveRender(fauxEntry, textStack, meta);
-                break;
-              }
-              case '@d20':
-              case '@hit': {
-                // format: {@hit +1} or {@hit -2}
-                const n = Number(rollText);
-                const mod = `${n >= 0 ? '+' : ''}${n}`;
-                fauxEntry.displayText = fauxEntry.displayText || mod;
-                fauxEntry.toRoll = `1d20${mod}`;
-                fauxEntry.subType = 'd20';
-                fauxEntry.d20mod = mod;
-                this._recursiveRender(fauxEntry, textStack, meta);
-                break;
-              }
-              case '@chance': {
-                // format: {@chance 25|display text|rollbox rollee name}
-                fauxEntry.toRoll = `1d100`;
-                fauxEntry.successThresh = Number(rollText);
-                this._recursiveRender(fauxEntry, textStack, meta);
-                break;
-              }
-              case '@recharge': {
-                // format: {@recharge 4|flags}
-                const flags = displayText ? displayText.split('') : null; // "m" for "minimal" = no brackets
-                fauxEntry.toRoll = '1d6';
-                const asNum = Number(rollText || 6);
-                fauxEntry.successThresh = 7 - asNum;
-                fauxEntry.successMax = 6;
-                textStack[0] += `${
-                  flags && flags.includes('m') ? '' : '('
-                }Recharge `;
-                fauxEntry.displayText = `${asNum}${asNum < 6 ? `\u20136` : ''}`;
-                this._recursiveRender(fauxEntry, textStack, meta);
-                textStack[0] += `${flags && flags.includes('m') ? '' : ')'}`;
-                break;
-              }
-            }
-
-            break;
-          }
-
-          // SCALE DICE //////////////////////////////////////////////////////////////////////////////////////
-          case '@scaledice':
-          case '@scaledamage': {
-            const fauxEntry = Renderer.parseScaleDice(tag, text);
+            // format: {@recharge 4|flags}
+            const flags = displayText ? displayText.split('') : null; // "m" for "minimal" = no brackets
+            fauxEntry.toRoll = '1d6';
+            const asNum = Number(rollText || 6);
+            fauxEntry.successThresh = 7 - asNum;
+            fauxEntry.successMax = 6;
+            textStack[0] += `${
+              flags && flags.includes('m') ? '' : '('
+            }Recharge `;
+            fauxEntry.displayText = `${asNum}${asNum < 6 ? `\u20136` : ''}`;
             this._recursiveRender(fauxEntry, textStack, meta);
-            break;
-          }
-
-          case '@filter': {
-            // format: {@filter Warlock Spells|spells|level=1;2|class=Warlock}
-            const [displayText, page, ...filters] = text.split('|');
-
-            let customHash;
-            const fauxEntry = {
-              type: 'link',
-              text: displayText,
-              href: {
-                type: 'internal',
-                path: `${page}.html`,
-                hash: HASH_BLANK,
-                hashPreEncoded: true,
-                subhashes: filters
-                  .map(f => {
-                    const [fname, fvals, fopts] = f
-                      .split('=')
-                      .map(s => s.trim())
-                      .filter(s => s);
-                    const isBoxData = fname.startsWith('fb');
-                    const key = isBoxData
-                      ? fname
-                      : `flst${UrlUtil.encodeForHash(fname)}`;
-
-                    let value;
-                    // special cases for "search" and "hash" keywords
-                    if (isBoxData) {
-                      return {
-                        key,
-                        value: fvals,
-                        preEncoded: true,
-                      };
-                    } else if (fname === 'search') {
-                      value = UrlUtil.encodeForHash(fvals);
-                    } else if (fname === 'hash') {
-                      customHash = fvals;
-                      return null;
-                    } else if (fvals.startsWith('[') && fvals.endsWith(']')) {
-                      // range
-                      const [min, max] = fvals
-                        .substring(1, fvals.length - 1)
-                        .split(';')
-                        .map(it => it.trim());
-                      if (max == null) {
-                        // shorthand version, with only one value, becomes min _and_ max
-                        value = [`min=${min}`, `max=${min}`].join(
-                          HASH_SUB_LIST_SEP,
-                        );
-                      } else {
-                        value = [
-                          min ? `min=${min}` : '',
-                          max ? `max=${max}` : '',
-                        ]
-                          .filter(Boolean)
-                          .join(HASH_SUB_LIST_SEP);
-                      }
-                    } else {
-                      value = fvals
-                        .split(';')
-                        .map(s => s.trim())
-                        .filter(s => s)
-                        .map(s => {
-                          const spl = s.split('!');
-                          if (spl.length === 2)
-                            return `${UrlUtil.encodeForHash(spl[1])}=2`;
-                          return `${UrlUtil.encodeForHash(s)}=1`;
-                        })
-                        .join(HASH_SUB_LIST_SEP);
-                    }
-
-                    const out = {
-                      key,
-                      value,
-                      preEncoded: true,
-                    };
-
-                    if (fopts) {
-                      return [
-                        out,
-                        {
-                          key: `flmt${UrlUtil.encodeForHash(fname)}`,
-                          value: fopts,
-                          preEncoded: true,
-                        },
-                      ];
-                    }
-                    return out;
-                  })
-                  .flat()
-                  .filter(Boolean),
-              },
-            };
-
-            if (customHash) fauxEntry.href.hash = customHash;
-
-            this._recursiveRender(fauxEntry, textStack, meta);
-
-            break;
-          }
-
-          case '@link': {
-            const [displayText, url] = text.split('|');
-            let outUrl = url == null ? displayText : url;
-            if (!outUrl.startsWith('http')) outUrl = `http://${outUrl}`; // avoid HTTPS, as the D&D homepage doesn't support it
-            const fauxEntry = {
-              type: 'link',
-              href: {
-                type: 'external',
-                url: outUrl,
-              },
-              text: displayText,
-            };
-            this._recursiveRender(fauxEntry, textStack, meta);
-
-            break;
-          }
-
-          default: {
-            const [name, source, displayText, ...others] = text.split('|');
-            const fauxEntry = displayText || name;
-            this._recursiveRender(fauxEntry, textStack, meta);
+            textStack[0] += `${flags && flags.includes('m') ? '' : ')'}`;
             break;
           }
         }
-      } else textStack[0] += s;
+
+        break;
+      }
+
+      case '@hitYourSpellAttack': {
+        const fauxEntry = {
+          type: 'dice',
+          rollable: true,
+          subType: 'd20',
+          displayText: 'your spell attack modifier',
+          toRoll: `1d20 + #$prompt_number:title=Enter your Spell Attack Modifier$#`,
+        };
+        this._recursiveRender(fauxEntry, textStack, meta);
+        break;
+      }
+
+      // SCALE DICE //////////////////////////////////////////////////////////////////////////////////////
+      case '@scaledice':
+      case '@scaledamage': {
+        const fauxEntry = Renderer.parseScaleDice(tag, text);
+        this._recursiveRender(fauxEntry, textStack, meta);
+        break;
+      }
+
+      // LINKS ///////////////////////////////////////////////////////////////////////////////////////////
+      case '@filter': {
+        // format: {@filter Warlock Spells|spells|level=1;2|class=Warlock}
+        const [displayText, page, ...filters] = Renderer.splitTagByPipe(text);
+
+        let customHash;
+        const fauxEntry = {
+          type: 'link',
+          text: displayText,
+          href: {
+            type: 'internal',
+            path: `${page}.html`,
+            hash: HASH_BLANK,
+            hashPreEncoded: true,
+            subhashes: filters
+              .map(f => {
+                const [fName, fVals, fMeta, fOpts] = f
+                  .split('=')
+                  .map(s => s.trim());
+                const isBoxData = fName.startsWith('fb');
+                const key = isBoxData
+                  ? fName
+                  : `flst${UrlUtil.encodeForHash(fName)}`;
+
+                let value;
+                // special cases for "search" and "hash" keywords
+                if (isBoxData) {
+                  return {
+                    key,
+                    value: fVals,
+                    preEncoded: true,
+                  };
+                } else if (fName === 'search') {
+                  // "search" as a filter name is hackily converted to a box meta option
+                  return {
+                    key: VeCt.FILTER_BOX_SUB_HASH_SEARCH_PREFIX,
+                    value: UrlUtil.encodeForHash(fVals),
+                    preEncoded: true,
+                  };
+                } else if (fName === 'hash') {
+                  customHash = fVals;
+                  return null;
+                } else if (fVals.startsWith('[') && fVals.endsWith(']')) {
+                  // range
+                  const [min, max] = fVals
+                    .substring(1, fVals.length - 1)
+                    .split(';')
+                    .map(it => it.trim());
+                  if (max == null) {
+                    // shorthand version, with only one value, becomes min _and_ max
+                    value = [`min=${min}`, `max=${min}`].join(
+                      HASH_SUB_LIST_SEP,
+                    );
+                  } else {
+                    value = [min ? `min=${min}` : '', max ? `max=${max}` : '']
+                      .filter(Boolean)
+                      .join(HASH_SUB_LIST_SEP);
+                  }
+                } else {
+                  value = fVals
+                    .split(';')
+                    .map(s => s.trim())
+                    .filter(s => s)
+                    .map(s => {
+                      const spl = s.split('!');
+                      if (spl.length === 2)
+                        return `${UrlUtil.encodeForHash(spl[1])}=2`;
+                      return `${UrlUtil.encodeForHash(s)}=1`;
+                    })
+                    .join(HASH_SUB_LIST_SEP);
+                }
+
+                const out = [
+                  {
+                    key,
+                    value,
+                    preEncoded: true,
+                  },
+                ];
+
+                if (fMeta) {
+                  out.push({
+                    key: `flmt${UrlUtil.encodeForHash(fName)}`,
+                    value: fMeta,
+                    preEncoded: true,
+                  });
+                }
+
+                if (fOpts) {
+                  out.push({
+                    key: `flop${UrlUtil.encodeForHash(fName)}`,
+                    value: fOpts,
+                    preEncoded: true,
+                  });
+                }
+
+                return out;
+              })
+              .flat()
+              .filter(Boolean),
+          },
+        };
+
+        if (customHash) fauxEntry.href.hash = customHash;
+
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+      case '@link': {
+        const [displayText, url] = Renderer.splitTagByPipe(text);
+        let outUrl = url == null ? displayText : url;
+        if (!outUrl.startsWith('http')) outUrl = `http://${outUrl}`; // avoid HTTPS, as the D&D homepage doesn't support it
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'external',
+            url: outUrl,
+          },
+          text: displayText,
+        };
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+      case '@5etools': {
+        const [displayText, page, hash] = Renderer.splitTagByPipe(text);
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            path: page,
+          },
+          text: displayText,
+        };
+        if (hash) {
+          fauxEntry.hash = hash;
+          fauxEntry.hashPreEncoded = true;
+        }
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+
+      // OTHER HOVERABLES ////////////////////////////////////////////////////////////////////////////////
+      // case '@footnote': {
+      //   const [displayText, footnoteText, optTitle] = Renderer.splitTagByPipe(
+      //     text,
+      //   );
+      //   const hoverMeta = Renderer.hover.getMakePredefinedHover({
+      //     type: 'entries',
+      //     name: optTitle ? optTitle.toTitleCase() : 'Footnote',
+      //     entries: [footnoteText, optTitle ? `{@note ${optTitle}}` : ''].filter(
+      //       Boolean,
+      //     ),
+      //   });
+      //   textStack[0] += `<span class="help" ${hoverMeta.html}>`;
+      //   this._recursiveRender(displayText, textStack, meta);
+      //   textStack[0] += `</span>`;
+
+      //   break;
+      // }
+      // case '@homebrew': {
+      //   const [newText, oldText] = Renderer.splitTagByPipe(text);
+      //   const tooltipEntries = [];
+      //   if (newText && oldText) {
+      //     tooltipEntries.push(
+      //       '{@b This is a homebrew addition, replacing the following:}',
+      //     );
+      //   } else if (newText) {
+      //     tooltipEntries.push('{@b This is a homebrew addition.}');
+      //   } else if (oldText) {
+      //     tooltipEntries.push(
+      //       '{@b The following text has been removed with this homebrew:}',
+      //     );
+      //   }
+      //   if (oldText) {
+      //     tooltipEntries.push(oldText);
+      //   }
+      //   const hoverMeta = Renderer.hover.getMakePredefinedHover({
+      //     type: 'entries',
+      //     name: 'Homebrew Modifications',
+      //     entries: tooltipEntries,
+      //   });
+      //   textStack[0] += `<span class="homebrew-inline" ${hoverMeta.html}>`;
+      //   this._recursiveRender(newText || '[...]', textStack, meta);
+      //   textStack[0] += `</span>`;
+
+      //   break;
+      // }
+      case '@skill':
+      case '@sense': {
+        const expander = (() => {
+          switch (tag) {
+            case '@skill':
+              return Parser.skillToExplanation;
+            case '@sense':
+              return Parser.senseToExplanation;
+          }
+        })();
+        const [name, displayText] = Renderer.splitTagByPipe(text);
+        // const hoverMeta = Renderer.hover.getMakePredefinedHover({
+        //   type: 'entries',
+        //   name: name.toTitleCase(),
+        //   entries: expander(name),
+        // });
+        textStack[0] += `<span class="help--hover">${displayText ||
+          name}</span>`;
+
+        break;
+      }
+      // case '@area': {
+      //   const [compactText, areaId, flags, ...others] = Renderer.splitTagByPipe(
+      //     text,
+      //   );
+
+      //   const renderText =
+      //     flags && flags.includes('x')
+      //       ? compactText
+      //       : `${flags && flags.includes('u') ? 'A' : 'a'}rea ${compactText}`;
+
+      //   if (typeof BookUtil === 'undefined') {
+      //     // for the roll20 script
+      //     textStack[0] += renderText;
+      //   } else {
+      //     const area = BookUtil.curRender.headerMap[areaId] || {
+      //       entry: { name: '' },
+      //     }; // default to prevent rendering crash on bad tag
+      //     // const hoverMeta = Renderer.hover.getMakePredefinedHover(area.entry, {
+      //     //   isLargeBookContent: true,
+      //     //   depth: area.depth,
+      //     // });
+      //     textStack[0] += `<a href="#${BookUtil.curRender.curBookId},${
+      //       area.chapter
+      //     },${UrlUtil.encodeForHash(area.entry.name)},0">${renderText}</a>`;
+      //   }
+
+      //   break;
+      // }
+
+      // HOMEBREW LOADING ////////////////////////////////////////////////////////////////////////////////
+      case '@loader': {
+        const { name, path } = this._renderString_getLoaderTagMeta(text);
+        textStack[0] += `<span onclick="BrewUtil.handleLoadbrewClick(this, '${path.escapeQuotes()}', '${name.escapeQuotes()}')" class="rd__wrp-loadbrew--ready" title="Click to install homebrew">${name}<span class="glyphicon glyphicon-download-alt rd__loadbrew-icon rd__loadbrew-icon"></span></span>`;
+        break;
+      }
+
+      // CONTENT TAGS ////////////////////////////////////////////////////////////////////////////////////
+      case '@book':
+      case '@adventure': {
+        // format: {@tag Display Text|DMG< |chapter< |section >< |number > >}
+        const page = tag === '@book' ? 'book.html' : 'adventure.html';
+        const [
+          displayText,
+          book,
+          chapter,
+          section,
+          rawNumber,
+        ] = Renderer.splitTagByPipe(text);
+        const number = rawNumber || 0;
+        const hash = `${book}${
+          chapter
+            ? `${HASH_PART_SEP}${chapter}${
+                section
+                  ? `${HASH_PART_SEP}${UrlUtil.encodeForHash(section)}${
+                      number != null
+                        ? `${HASH_PART_SEP}${UrlUtil.encodeForHash(number)}`
+                        : ''
+                    }`
+                  : ''
+              }`
+            : ''
+        }`;
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            path: page,
+            hash,
+            hashPreEncoded: true,
+          },
+          text: displayText,
+        };
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+
+      case '@deity': {
+        const [
+          name,
+          pantheon,
+          source,
+          displayText,
+          ...others
+        ] = Renderer.splitTagByPipe(text);
+        const hash = `${name}${pantheon ? `${HASH_LIST_SEP}${pantheon}` : ''}${
+          source ? `${HASH_LIST_SEP}${source}` : ''
+        }`;
+
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            hash,
+          },
+          text: displayText || name,
+        };
+
+        fauxEntry.href.path = UrlUtil.PG_DEITIES;
+        if (!pantheon)
+          fauxEntry.href.hash += `${HASH_LIST_SEP}forgotten realms`;
+        if (!source) fauxEntry.href.hash += `${HASH_LIST_SEP}${SRC_PHB}`;
+        fauxEntry.href.hover = {
+          page: UrlUtil.PG_DEITIES,
+          source: source || SRC_PHB,
+        };
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+
+      case '@classFeature': {
+        const unpacked = DataUtil.class.unpackUidClassFeature(text);
+
+        // const classPageHash = `${UrlUtil.URL_TO_HASH_BUILDER[
+        //   UrlUtil.PG_CLASSES
+        // ]({
+        //   name: unpacked.className,
+        //   source: unpacked.classSource,
+        // })}${HASH_PART_SEP}${UrlUtil.getClassesPageStatePart({
+        //   feature: { ixLevel: unpacked.level - 1, ixFeature: 0 },
+        // })}`;
+
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            path: UrlUtil.PG_CLASSES,
+            // hash: classPageHash,
+            hashPreEncoded: true,
+            // hover: {
+            //   page: 'classfeature',
+            //   source: unpacked.source,
+            //   hash: UrlUtil.URL_TO_HASH_BUILDER['classFeature'](unpacked),
+            //   hashPreEncoded: true,
+            // },
+          },
+          text: unpacked.displayText || unpacked.name,
+        };
+
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+
+      case '@subclassFeature': {
+        const unpacked = DataUtil.class.unpackUidSubclassFeature(text);
+
+        // const classPageHash = `${UrlUtil.URL_TO_HASH_BUILDER[
+        //   UrlUtil.PG_CLASSES
+        // ]({
+        //   name: unpacked.className,
+        //   source: unpacked.classSource,
+        // })}${HASH_PART_SEP}${UrlUtil.getClassesPageStatePart({
+        //   feature: { ixLevel: unpacked.level - 1, ixFeature: 0 },
+        // })}`;
+
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            path: UrlUtil.PG_CLASSES,
+            // hash: classPageHash,
+            hashPreEncoded: true,
+            // hover: {
+            //   page: 'subclassfeature',
+            //   source: unpacked.source,
+            //   hash: UrlUtil.URL_TO_HASH_BUILDER['subclassFeature'](unpacked),
+            //   hashPreEncoded: true,
+            // },
+          },
+          text: unpacked.displayText || unpacked.name,
+        };
+
+        this._recursiveRender(fauxEntry, textStack, meta);
+
+        break;
+      }
+
+      default: {
+        const {
+          name,
+          source,
+          displayText,
+          others,
+        } = DataUtil.generic.unpackUid(text, tag);
+        const hash = `${name}${HASH_LIST_SEP}${source}`;
+
+        const fauxEntry = {
+          type: 'link',
+          href: {
+            type: 'internal',
+            hash,
+          },
+          text: displayText || name,
+        };
+        switch (tag) {
+          case '@spell':
+            fauxEntry.href.path = 'spells.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_SPELLS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@item':
+            fauxEntry.href.path = 'items.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_ITEMS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@class': {
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_CLASSES,
+              source,
+            };
+            if (others.length) {
+              const [subclassShortName, subclassSource, featurePart] = others;
+
+              const classStateOpts = {
+                subclass: {
+                  shortName: subclassShortName.trim(),
+                  source: subclassSource
+                    ? // Subclass state uses the abbreviated form of the source for URL shortness
+                      Parser.sourceJsonToAbv(subclassSource.trim())
+                    : SRC_PHB,
+                },
+              };
+
+              // Don't include the feature part for hovers, as it is unsupported
+              const hoverSubhashObj = UrlUtil.unpackSubHash(
+                UrlUtil.getClassesPageStatePart(classStateOpts),
+              );
+              fauxEntry.href.hover.subhashes = [
+                {
+                  key: 'state',
+                  value: hoverSubhashObj.state,
+                  preEncoded: true,
+                },
+              ];
+
+              if (featurePart) {
+                const featureParts = featurePart.trim().split('-');
+                classStateOpts.feature = {
+                  ixLevel: featureParts[0] || '0',
+                  ixFeature: featureParts[1] || '0',
+                };
+              }
+
+              const subhashObj = UrlUtil.unpackSubHash(
+                UrlUtil.getClassesPageStatePart(classStateOpts),
+              );
+
+              fauxEntry.href.subhashes = [
+                {
+                  key: 'state',
+                  value: subhashObj.state.join(HASH_SUB_LIST_SEP),
+                  preEncoded: true,
+                },
+                { key: 'fltsource', value: 'clear' },
+                { key: 'flstmiscellaneous', value: 'clear' },
+              ];
+            }
+            fauxEntry.href.path = 'classes.html';
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          }
+          case '@creature':
+            fauxEntry.href.path = 'bestiary.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_BESTIARY,
+              source,
+            };
+            // ...|scaledCr}
+            if (others.length) {
+              const targetCrNum = Parser.crToNumber(others[0]);
+              fauxEntry.href.hover.preloadId = `${VeCt.HASH_MON_SCALED}:${targetCrNum}`;
+              fauxEntry.href.subhashes = [
+                { key: VeCt.HASH_MON_SCALED, value: targetCrNum },
+              ];
+              fauxEntry.text = displayText || `${name} (CR ${others[0]})`;
+            }
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@condition':
+          case '@disease':
+          case '@status':
+            fauxEntry.href.path = 'conditionsdiseases.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_CONDITIONS_DISEASES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@background':
+            fauxEntry.href.path = 'backgrounds.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_BACKGROUNDS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@race':
+            fauxEntry.href.path = 'races.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_RACES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@optfeature':
+            fauxEntry.href.path = 'optionalfeatures.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_OPT_FEATURES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@reward':
+            fauxEntry.href.path = 'rewards.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_REWARDS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@feat':
+            fauxEntry.href.path = 'feats.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_FEATS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@psionic':
+            fauxEntry.href.path = 'psionics.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_PSIONICS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@object':
+            fauxEntry.href.path = 'objects.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_OBJECTS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@boon':
+          case '@cult':
+            fauxEntry.href.path = 'cultsboons.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_CULTS_BOONS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@trap':
+          case '@hazard':
+            fauxEntry.href.path = 'trapshazards.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_TRAPS_HAZARDS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@variantrule':
+            fauxEntry.href.path = 'variantrules.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_VARIANTRULES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@table':
+            fauxEntry.href.path = 'tables.html';
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_TABLES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@vehicle':
+            fauxEntry.href.path = UrlUtil.PG_VEHICLES;
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_VEHICLES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@vehupgrade':
+            fauxEntry.href.path = UrlUtil.PG_VEHICLES;
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_VEHICLES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@action':
+            fauxEntry.href.path = UrlUtil.PG_ACTIONS;
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_ACTIONS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@language':
+            fauxEntry.href.path = UrlUtil.PG_LANGUAGES;
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_LANGUAGES,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+          case '@charoption':
+            fauxEntry.href.path = UrlUtil.PG_CHAR_CREATION_OPTIONS;
+            fauxEntry.href.hover = {
+              page: UrlUtil.PG_CHAR_CREATION_OPTIONS,
+              source,
+            };
+            this._recursiveRender(fauxEntry, textStack, meta);
+            break;
+        }
+
+        break;
+      }
     }
   };
 
@@ -1528,10 +2089,15 @@ function Renderer() {
   };
 
   this._renderLink = function(entry, textStack, meta, options) {
+    console.log('LINK', entry, textStack);
     let href = this._renderLink_getHref(entry);
 
+    //TODO Render DetailedEntry Trigger for all links
+
     if (this._isIternalLinksDisabled && entry.href.type === 'internal') {
-      textStack[0] += `<span class="bold">${this.render(entry.text)}</span>`;
+      textStack[0] += `<span class="font-bold underline">${this.render(
+        entry.text,
+      )}</span>`;
     } else {
       textStack[0] += `<a href="${href}" ${
         entry.href.type === 'internal'
@@ -1648,6 +2214,54 @@ Renderer.applyProperties = function(entry, object) {
   return textStack;
 };
 Renderer.applyProperties._leadingAn = new Set(['a', 'e', 'i', 'o', 'u']);
+
+Renderer._splitByPipeBase = function(leadingCharacter) {
+  return function(string) {
+    let tagDepth = 0;
+    let char, char2;
+    const out = [];
+    let curStr = '';
+
+    const len = string.length;
+    for (let i = 0; i < len; ++i) {
+      char = string[i];
+      char2 = string[i + 1];
+
+      switch (char) {
+        case '{':
+          if (char2 === leadingCharacter) tagDepth++;
+          curStr += '{';
+
+          break;
+
+        case '}':
+          if (tagDepth) tagDepth--;
+          curStr += '}';
+
+          break;
+
+        case '|': {
+          if (tagDepth) curStr += '|';
+          else {
+            out.push(curStr);
+            curStr = '';
+          }
+          break;
+        }
+
+        default: {
+          curStr += char;
+          break;
+        }
+      }
+    }
+
+    if (curStr) out.push(curStr);
+    return out;
+  };
+};
+
+Renderer.splitTagByPipe = Renderer._splitByPipeBase('@');
 
 Renderer.applyAllProperties = function(entries, object) {
   const handlers = {
@@ -2543,9 +3157,11 @@ Renderer.prototype.spell = {
     if (spell.classes && spell.classes.fromClassList) {
       const [current] = Parser.spClassesToCurrentAndLegacy(spell.classes);
       renderStack.push(
-        `<div><span class="bold">Classes: </span>${Parser.spMainClassesToFull({
-          fromClassList: current,
-        })}</div>`,
+        `<div><span class="font-bold">Classes: </span>${Parser.spMainClassesToFull(
+          {
+            fromClassList: current,
+          },
+        )}</div>`,
       );
     }
     renderStack.push(`</td></tr>`);
@@ -4591,7 +5207,7 @@ Renderer.prototype.item = {
 
     if (!isCompact && item.lootTables) {
       renderStack.push(
-        `<div><span class="bold">Found On: </span>${item.lootTables
+        `<div><span class="font-bold">Found On: </span>${item.lootTables
           .sort(SortUtil.ascSortLower)
           .map(tbl => renderer.render(`{@table ${tbl}}`))
           .join(', ')}</div>`,
@@ -7856,6 +8472,191 @@ Parser.weightToFull = function(lbs, isSmallUnit) {
     .join(', ');
 };
 
+SRC_CoS = 'CoS';
+SRC_DMG = 'DMG';
+SRC_EEPC = 'EEPC';
+SRC_EET = 'EET';
+SRC_HotDQ = 'HotDQ';
+SRC_LMoP = 'LMoP';
+SRC_Mag = 'Mag';
+SRC_MM = 'MM';
+SRC_OotA = 'OotA';
+SRC_PHB = 'PHB';
+SRC_TCE = 'TCE';
+SRC_PotA = 'PotA';
+SRC_RoT = 'RoT';
+SRC_RoTOS = 'RoTOS';
+SRC_SCAG = 'SCAG';
+SRC_SKT = 'SKT';
+SRC_ToA = 'ToA';
+SRC_ToD = 'ToD';
+SRC_TTP = 'TTP';
+SRC_TYP = 'TftYP';
+SRC_TYP_AtG = 'TftYP-AtG';
+SRC_TYP_DiT = 'TftYP-DiT';
+SRC_TYP_TFoF = 'TftYP-TFoF';
+SRC_TYP_THSoT = 'TftYP-THSoT';
+SRC_TYP_TSC = 'TftYP-TSC';
+SRC_TYP_ToH = 'TftYP-ToH';
+SRC_TYP_WPM = 'TftYP-WPM';
+SRC_VGM = 'VGM';
+SRC_XGE = 'XGE';
+SRC_OGA = 'OGA';
+SRC_MTF = 'MTF';
+SRC_WDH = 'WDH';
+SRC_WDMM = 'WDMM';
+SRC_GGR = 'GGR';
+SRC_KKW = 'KKW';
+SRC_LLK = 'LLK';
+SRC_GoS = 'GoS';
+SRC_AI = 'AI';
+SRC_OoW = 'OoW';
+SRC_ESK = 'ESK';
+SRC_DIP = 'DIP';
+SRC_HftT = 'HftT';
+SRC_DC = 'DC';
+SRC_SLW = 'SLW';
+SRC_SDW = 'SDW';
+SRC_BGDIA = 'BGDIA';
+SRC_LR = 'LR';
+SRC_AL = 'AL';
+SRC_SAC = 'SAC';
+SRC_ERLW = 'ERLW';
+SRC_EFR = 'EFR';
+SRC_RMBRE = 'RMBRE';
+SRC_RMR = 'RMR';
+SRC_MFF = 'MFF';
+SRC_AWM = 'AWM';
+SRC_IMR = 'IMR';
+SRC_SADS = 'SADS';
+SRC_SCREEN = 'Screen';
+
+SRC_AL_PREFIX = 'AL';
+
+SRC_ALCoS = `${SRC_AL_PREFIX}CurseOfStrahd`;
+SRC_ALEE = `${SRC_AL_PREFIX}ElementalEvil`;
+SRC_ALRoD = `${SRC_AL_PREFIX}RageOfDemons`;
+
+SRC_PS_PREFIX = 'PS';
+
+SRC_PSA = `${SRC_PS_PREFIX}A`;
+SRC_PSI = `${SRC_PS_PREFIX}I`;
+SRC_PSK = `${SRC_PS_PREFIX}K`;
+SRC_PSZ = `${SRC_PS_PREFIX}Z`;
+SRC_PSX = `${SRC_PS_PREFIX}X`;
+SRC_PSD = `${SRC_PS_PREFIX}D`;
+
+SRC_UA_PREFIX = 'UA';
+
+SRC_UAA = `${SRC_UA_PREFIX}Artificer`;
+SRC_UAEAG = `${SRC_UA_PREFIX}EladrinAndGith`;
+SRC_UAEBB = `${SRC_UA_PREFIX}Eberron`;
+SRC_UAFFR = `${SRC_UA_PREFIX}FeatsForRaces`;
+SRC_UAFFS = `${SRC_UA_PREFIX}FeatsForSkills`;
+SRC_UAFO = `${SRC_UA_PREFIX}FiendishOptions`;
+SRC_UAFT = `${SRC_UA_PREFIX}Feats`;
+SRC_UAGH = `${SRC_UA_PREFIX}GothicHeroes`;
+SRC_UAMDM = `${SRC_UA_PREFIX}ModernMagic`;
+SRC_UASSP = `${SRC_UA_PREFIX}StarterSpells`;
+SRC_UATMC = `${SRC_UA_PREFIX}TheMysticClass`;
+SRC_UATOBM = `${SRC_UA_PREFIX}ThatOldBlackMagic`;
+SRC_UATRR = `${SRC_UA_PREFIX}TheRangerRevised`;
+SRC_UAWA = `${SRC_UA_PREFIX}WaterborneAdventures`;
+SRC_UAVR = `${SRC_UA_PREFIX}VariantRules`;
+SRC_UALDR = `${SRC_UA_PREFIX}LightDarkUnderdark`;
+SRC_UARAR = `${SRC_UA_PREFIX}RangerAndRogue`;
+SRC_UAATOSC = `${SRC_UA_PREFIX}ATrioOfSubclasses`;
+SRC_UABPP = `${SRC_UA_PREFIX}BarbarianPrimalPaths`;
+SRC_UARSC = `${SRC_UA_PREFIX}RevisedSubclasses`;
+SRC_UAKOO = `${SRC_UA_PREFIX}KitsOfOld`;
+SRC_UABBC = `${SRC_UA_PREFIX}BardBardColleges`;
+SRC_UACDD = `${SRC_UA_PREFIX}ClericDivineDomains`;
+SRC_UAD = `${SRC_UA_PREFIX}Druid`;
+SRC_UARCO = `${SRC_UA_PREFIX}RevisedClassOptions`;
+SRC_UAF = `${SRC_UA_PREFIX}Fighter`;
+SRC_UAM = `${SRC_UA_PREFIX}Monk`;
+SRC_UAP = `${SRC_UA_PREFIX}Paladin`;
+SRC_UAMC = `${SRC_UA_PREFIX}ModifyingClasses`;
+SRC_UAS = `${SRC_UA_PREFIX}Sorcerer`;
+SRC_UAWAW = `${SRC_UA_PREFIX}WarlockAndWizard`;
+SRC_UATF = `${SRC_UA_PREFIX}TheFaithful`;
+SRC_UAWR = `${SRC_UA_PREFIX}WizardRevisited`;
+SRC_UAESR = `${SRC_UA_PREFIX}ElfSubraces`;
+SRC_UAMAC = `${SRC_UA_PREFIX}MassCombat`;
+SRC_UA3PE = `${SRC_UA_PREFIX}ThreePillarExperience`;
+SRC_UAGHI = `${SRC_UA_PREFIX}GreyhawkInitiative`;
+SRC_UATSC = `${SRC_UA_PREFIX}ThreeSubclasses`;
+SRC_UAOD = `${SRC_UA_PREFIX}OrderDomain`;
+SRC_UACAM = `${SRC_UA_PREFIX}CentaursMinotaurs`;
+SRC_UAGSS = `${SRC_UA_PREFIX}GiantSoulSorcerer`;
+SRC_UARoE = `${SRC_UA_PREFIX}RacesOfEberron`;
+SRC_UARoR = `${SRC_UA_PREFIX}RacesOfRavnica`;
+SRC_UAWGE = `${SRC_UA_PREFIX}WGE`;
+SRC_UAOSS = `${SRC_UA_PREFIX}OfShipsAndSea`;
+SRC_UASIK = `${SRC_UA_PREFIX}Sidekicks`;
+SRC_UAAR = `${SRC_UA_PREFIX}ArtificerRevisited`;
+SRC_UABAM = `${SRC_UA_PREFIX}BarbarianAndMonk`;
+SRC_UASAW = `${SRC_UA_PREFIX}SorcererAndWarlock`;
+SRC_UABAP = `${SRC_UA_PREFIX}BardAndPaladin`;
+SRC_UACDW = `${SRC_UA_PREFIX}ClericDruidWizard`;
+SRC_UAFRR = `${SRC_UA_PREFIX}FighterRangerRogue`;
+SRC_UACFV = `${SRC_UA_PREFIX}ClassFeatureVariants`;
+SRC_UAFRW = `${SRC_UA_PREFIX}FighterRogueWizard`;
+SRC_UA2020SC1 = `${SRC_UA_PREFIX}2020SubclassesPt1`;
+SRC_UA2020SC2 = `${SRC_UA_PREFIX}2020SubclassesPt2`;
+
+SRC_3PP_SUFFIX = ' 3pp';
+SRC_STREAM = 'Stream';
+SRC_TWITTER = 'Twitter';
+
+AL_PREFIX = 'Adventurers League: ';
+AL_PREFIX_SHORT = 'AL: ';
+PS_PREFIX = 'Plane Shift: ';
+PS_PREFIX_SHORT = 'PS: ';
+UA_PREFIX = 'Unearthed Arcana: ';
+UA_PREFIX_SHORT = 'UA: ';
+TftYP_NAME = 'Tales from the Yawning Portal';
+
+Parser.TAG_TO_DEFAULT_SOURCE = {
+  spell: SRC_PHB,
+  item: SRC_DMG,
+  class: SRC_PHB,
+  creature: SRC_MM,
+  condition: SRC_PHB,
+  disease: SRC_DMG,
+  background: SRC_PHB,
+  race: SRC_PHB,
+  optfeature: SRC_PHB,
+  reward: SRC_DMG,
+  feat: SRC_PHB,
+  psionic: SRC_UATMC,
+  object: SRC_DMG,
+  cult: SRC_MTF,
+  boon: SRC_MTF,
+  trap: SRC_DMG,
+  hazard: SRC_DMG,
+  deity: SRC_PHB,
+  variantrule: SRC_DMG,
+  vehicle: SRC_GoS,
+  vehupgrade: SRC_GoS,
+  action: SRC_PHB,
+  classFeature: SRC_PHB,
+  subclassFeature: SRC_PHB,
+  table: SRC_DMG,
+  language: SRC_PHB,
+};
+
+Parser.getTagSource = function(tag, source) {
+  if (source && source.trim()) return source;
+
+  tag = tag.trim();
+  if (tag.startsWith('@')) tag = tag.slice(1);
+
+  if (!Parser.TAG_TO_DEFAULT_SOURCE[tag])
+    throw new Error(`Unhandled tag "${tag}"`);
+  return Parser.TAG_TO_DEFAULT_SOURCE[tag];
+};
+
 Parser.ITEM_RARITIES = [
   'None',
   'Common',
@@ -8393,151 +9194,6 @@ Parser.ARMOR_ABV_TO_FULL = {
   'h.': 'heavy',
 };
 
-SRC_CoS = 'CoS';
-SRC_DMG = 'DMG';
-SRC_EEPC = 'EEPC';
-SRC_EET = 'EET';
-SRC_HotDQ = 'HotDQ';
-SRC_LMoP = 'LMoP';
-SRC_Mag = 'Mag';
-SRC_MM = 'MM';
-SRC_OotA = 'OotA';
-SRC_PHB = 'PHB';
-SRC_TCE = 'TCE';
-SRC_PotA = 'PotA';
-SRC_RoT = 'RoT';
-SRC_RoTOS = 'RoTOS';
-SRC_SCAG = 'SCAG';
-SRC_SKT = 'SKT';
-SRC_ToA = 'ToA';
-SRC_ToD = 'ToD';
-SRC_TTP = 'TTP';
-SRC_TYP = 'TftYP';
-SRC_TYP_AtG = 'TftYP-AtG';
-SRC_TYP_DiT = 'TftYP-DiT';
-SRC_TYP_TFoF = 'TftYP-TFoF';
-SRC_TYP_THSoT = 'TftYP-THSoT';
-SRC_TYP_TSC = 'TftYP-TSC';
-SRC_TYP_ToH = 'TftYP-ToH';
-SRC_TYP_WPM = 'TftYP-WPM';
-SRC_VGM = 'VGM';
-SRC_XGE = 'XGE';
-SRC_OGA = 'OGA';
-SRC_MTF = 'MTF';
-SRC_WDH = 'WDH';
-SRC_WDMM = 'WDMM';
-SRC_GGR = 'GGR';
-SRC_KKW = 'KKW';
-SRC_LLK = 'LLK';
-SRC_GoS = 'GoS';
-SRC_AI = 'AI';
-SRC_OoW = 'OoW';
-SRC_ESK = 'ESK';
-SRC_DIP = 'DIP';
-SRC_HftT = 'HftT';
-SRC_DC = 'DC';
-SRC_SLW = 'SLW';
-SRC_SDW = 'SDW';
-SRC_BGDIA = 'BGDIA';
-SRC_LR = 'LR';
-SRC_AL = 'AL';
-SRC_SAC = 'SAC';
-SRC_ERLW = 'ERLW';
-SRC_EFR = 'EFR';
-SRC_RMBRE = 'RMBRE';
-SRC_RMR = 'RMR';
-SRC_MFF = 'MFF';
-SRC_AWM = 'AWM';
-SRC_IMR = 'IMR';
-SRC_SADS = 'SADS';
-SRC_SCREEN = 'Screen';
-
-SRC_AL_PREFIX = 'AL';
-
-SRC_ALCoS = `${SRC_AL_PREFIX}CurseOfStrahd`;
-SRC_ALEE = `${SRC_AL_PREFIX}ElementalEvil`;
-SRC_ALRoD = `${SRC_AL_PREFIX}RageOfDemons`;
-
-SRC_PS_PREFIX = 'PS';
-
-SRC_PSA = `${SRC_PS_PREFIX}A`;
-SRC_PSI = `${SRC_PS_PREFIX}I`;
-SRC_PSK = `${SRC_PS_PREFIX}K`;
-SRC_PSZ = `${SRC_PS_PREFIX}Z`;
-SRC_PSX = `${SRC_PS_PREFIX}X`;
-SRC_PSD = `${SRC_PS_PREFIX}D`;
-
-SRC_UA_PREFIX = 'UA';
-
-SRC_UAA = `${SRC_UA_PREFIX}Artificer`;
-SRC_UAEAG = `${SRC_UA_PREFIX}EladrinAndGith`;
-SRC_UAEBB = `${SRC_UA_PREFIX}Eberron`;
-SRC_UAFFR = `${SRC_UA_PREFIX}FeatsForRaces`;
-SRC_UAFFS = `${SRC_UA_PREFIX}FeatsForSkills`;
-SRC_UAFO = `${SRC_UA_PREFIX}FiendishOptions`;
-SRC_UAFT = `${SRC_UA_PREFIX}Feats`;
-SRC_UAGH = `${SRC_UA_PREFIX}GothicHeroes`;
-SRC_UAMDM = `${SRC_UA_PREFIX}ModernMagic`;
-SRC_UASSP = `${SRC_UA_PREFIX}StarterSpells`;
-SRC_UATMC = `${SRC_UA_PREFIX}TheMysticClass`;
-SRC_UATOBM = `${SRC_UA_PREFIX}ThatOldBlackMagic`;
-SRC_UATRR = `${SRC_UA_PREFIX}TheRangerRevised`;
-SRC_UAWA = `${SRC_UA_PREFIX}WaterborneAdventures`;
-SRC_UAVR = `${SRC_UA_PREFIX}VariantRules`;
-SRC_UALDR = `${SRC_UA_PREFIX}LightDarkUnderdark`;
-SRC_UARAR = `${SRC_UA_PREFIX}RangerAndRogue`;
-SRC_UAATOSC = `${SRC_UA_PREFIX}ATrioOfSubclasses`;
-SRC_UABPP = `${SRC_UA_PREFIX}BarbarianPrimalPaths`;
-SRC_UARSC = `${SRC_UA_PREFIX}RevisedSubclasses`;
-SRC_UAKOO = `${SRC_UA_PREFIX}KitsOfOld`;
-SRC_UABBC = `${SRC_UA_PREFIX}BardBardColleges`;
-SRC_UACDD = `${SRC_UA_PREFIX}ClericDivineDomains`;
-SRC_UAD = `${SRC_UA_PREFIX}Druid`;
-SRC_UARCO = `${SRC_UA_PREFIX}RevisedClassOptions`;
-SRC_UAF = `${SRC_UA_PREFIX}Fighter`;
-SRC_UAM = `${SRC_UA_PREFIX}Monk`;
-SRC_UAP = `${SRC_UA_PREFIX}Paladin`;
-SRC_UAMC = `${SRC_UA_PREFIX}ModifyingClasses`;
-SRC_UAS = `${SRC_UA_PREFIX}Sorcerer`;
-SRC_UAWAW = `${SRC_UA_PREFIX}WarlockAndWizard`;
-SRC_UATF = `${SRC_UA_PREFIX}TheFaithful`;
-SRC_UAWR = `${SRC_UA_PREFIX}WizardRevisited`;
-SRC_UAESR = `${SRC_UA_PREFIX}ElfSubraces`;
-SRC_UAMAC = `${SRC_UA_PREFIX}MassCombat`;
-SRC_UA3PE = `${SRC_UA_PREFIX}ThreePillarExperience`;
-SRC_UAGHI = `${SRC_UA_PREFIX}GreyhawkInitiative`;
-SRC_UATSC = `${SRC_UA_PREFIX}ThreeSubclasses`;
-SRC_UAOD = `${SRC_UA_PREFIX}OrderDomain`;
-SRC_UACAM = `${SRC_UA_PREFIX}CentaursMinotaurs`;
-SRC_UAGSS = `${SRC_UA_PREFIX}GiantSoulSorcerer`;
-SRC_UARoE = `${SRC_UA_PREFIX}RacesOfEberron`;
-SRC_UARoR = `${SRC_UA_PREFIX}RacesOfRavnica`;
-SRC_UAWGE = `${SRC_UA_PREFIX}WGE`;
-SRC_UAOSS = `${SRC_UA_PREFIX}OfShipsAndSea`;
-SRC_UASIK = `${SRC_UA_PREFIX}Sidekicks`;
-SRC_UAAR = `${SRC_UA_PREFIX}ArtificerRevisited`;
-SRC_UABAM = `${SRC_UA_PREFIX}BarbarianAndMonk`;
-SRC_UASAW = `${SRC_UA_PREFIX}SorcererAndWarlock`;
-SRC_UABAP = `${SRC_UA_PREFIX}BardAndPaladin`;
-SRC_UACDW = `${SRC_UA_PREFIX}ClericDruidWizard`;
-SRC_UAFRR = `${SRC_UA_PREFIX}FighterRangerRogue`;
-SRC_UACFV = `${SRC_UA_PREFIX}ClassFeatureVariants`;
-SRC_UAFRW = `${SRC_UA_PREFIX}FighterRogueWizard`;
-SRC_UA2020SC1 = `${SRC_UA_PREFIX}2020SubclassesPt1`;
-SRC_UA2020SC2 = `${SRC_UA_PREFIX}2020SubclassesPt2`;
-
-SRC_3PP_SUFFIX = ' 3pp';
-SRC_STREAM = 'Stream';
-SRC_TWITTER = 'Twitter';
-
-AL_PREFIX = 'Adventurers League: ';
-AL_PREFIX_SHORT = 'AL: ';
-PS_PREFIX = 'Plane Shift: ';
-PS_PREFIX_SHORT = 'PS: ';
-UA_PREFIX = 'Unearthed Arcana: ';
-UA_PREFIX_SHORT = 'UA: ';
-TftYP_NAME = 'Tales from the Yawning Portal';
-
 Parser.SOURCE_JSON_TO_FULL = {};
 Parser.SOURCE_JSON_TO_FULL[SRC_CoS] = 'Curse of Strahd';
 Parser.SOURCE_JSON_TO_FULL[SRC_DMG] = "Dungeon Master's Guide";
@@ -8817,7 +9473,7 @@ Parser.SOURCE_JSON_TO_DATE[SRC_PHB] = '2014-08-19';
 Parser.SOURCE_JSON_TO_DATE[SRC_PotA] = '2015-04-07';
 Parser.SOURCE_JSON_TO_DATE[SRC_RoT] = '2014-11-04';
 Parser.SOURCE_JSON_TO_DATE[SRC_RoTOS] = '2014-11-04';
-Parser.SOURCE_JSON_TO_DATE[SRC_TCE] = "2020-11-17";
+Parser.SOURCE_JSON_TO_DATE[SRC_TCE] = '2020-11-17';
 Parser.SOURCE_JSON_TO_DATE[SRC_SCAG] = '2015-11-03';
 Parser.SOURCE_JSON_TO_DATE[SRC_SKT] = '2016-09-06';
 Parser.SOURCE_JSON_TO_DATE[SRC_ToA] = '2017-09-19';
@@ -9809,6 +10465,1704 @@ MiscUtil = {
 
   pDefer(fn) {
     return (async () => fn())();
+  },
+};
+
+// JSON LOADING ========================================================================================================
+DataUtil = {
+  _loading: {},
+  _loaded: {},
+  _merging: {},
+  _merged: {},
+
+  async _pLoad(url) {
+    if (DataUtil._loading[url]) {
+      await DataUtil._loading[url];
+      return DataUtil._loaded[url];
+    }
+
+    DataUtil._loading[url] = new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.overrideMimeType('application/json');
+      request.onload = function() {
+        try {
+          DataUtil._loaded[url] = JSON.parse(this.response);
+          resolve();
+        } catch (e) {
+          reject(new Error(`Could not parse JSON from ${url}: ${e.message}`));
+        }
+      };
+      request.onerror = e =>
+        reject(new Error(`Error during JSON request: ${e.target.status}`));
+      request.send();
+    });
+
+    await DataUtil._loading[url];
+    return DataUtil._loaded[url];
+  },
+
+  async loadJSON(url, ...otherData) {
+    const procUrl = UrlUtil.link(url);
+
+    let ident = procUrl;
+    let data;
+    try {
+      data = await DataUtil._pLoad(procUrl);
+    } catch (e) {
+      setTimeout(() => {
+        throw e;
+      });
+    }
+
+    // Fallback to the un-processed URL
+    if (!data) {
+      ident = url;
+      data = await DataUtil._pLoad(url);
+    }
+
+    await DataUtil.pDoMetaMerge(ident, data);
+
+    return data;
+  },
+
+  async pDoMetaMerge(ident, data, options) {
+    DataUtil._merging[ident] =
+      DataUtil._merging[ident] || DataUtil._pDoMetaMerge(ident, data, options);
+    await DataUtil._merging[ident];
+    return DataUtil._merged[ident];
+  },
+
+  _pDoMetaMerge_handleCopyProp(prop, arr, entry, options) {
+    if (entry._copy) {
+      switch (prop) {
+        case 'monster':
+          return DataUtil.monster.pMergeCopy(arr, entry, options);
+        case 'monsterFluff':
+          return DataUtil.monsterFluff.pMergeCopy(arr, entry, options);
+        case 'spell':
+          return DataUtil.spell.pMergeCopy(arr, entry, options);
+        case 'spellFluff':
+          return DataUtil.spellFluff.pMergeCopy(arr, entry, options);
+        case 'item':
+          return DataUtil.item.pMergeCopy(arr, entry, options);
+        case 'itemFluff':
+          return DataUtil.itemFluff.pMergeCopy(arr, entry, options);
+        case 'background':
+          return DataUtil.background.pMergeCopy(arr, entry, options);
+        case 'race':
+          return DataUtil.race.pMergeCopy(arr, entry, options);
+        case 'raceFluff':
+          return DataUtil.raceFluff.pMergeCopy(arr, entry, options);
+        case 'deity':
+          return DataUtil.deity.pMergeCopy(arr, entry, options);
+        default:
+          throw new Error(
+            `No dependency _copy merge strategy specified for property "${prop}"`,
+          );
+      }
+    }
+  },
+
+  async _pDoMetaMerge(ident, data, options) {
+    if (data._meta) {
+      if (data._meta.dependencies) {
+        await Promise.all(
+          Object.entries(data._meta.dependencies).map(
+            async ([prop, sources]) => {
+              if (!data[prop]) return; // if e.g. monster dependencies are declared, but there are no monsters to merge with, bail out
+
+              const toLoads = await Promise.all(
+                sources.map(async source =>
+                  DataUtil.pGetLoadableByMeta(prop, source),
+                ),
+              );
+              const dependencyData = await Promise.all(
+                toLoads.map(toLoad => DataUtil.loadJSON(toLoad)),
+              );
+              const flatDependencyData = dependencyData
+                .map(dd => dd[prop])
+                .flat();
+              await Promise.all(
+                data[prop].map(entry =>
+                  DataUtil._pDoMetaMerge_handleCopyProp(
+                    prop,
+                    flatDependencyData,
+                    entry,
+                    options,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+        delete data._meta.dependencies;
+      }
+
+      if (data._meta.internalCopies) {
+        for (const prop of data._meta.internalCopies) {
+          if (!data[prop]) continue;
+          for (const entry of data[prop]) {
+            await DataUtil._pDoMetaMerge_handleCopyProp(
+              prop,
+              data[prop],
+              entry,
+              options,
+            );
+          }
+        }
+        delete data._meta.internalCopies;
+      }
+    }
+
+    if (data._meta && data._meta.otherSources) {
+      await Promise.all(
+        Object.entries(data._meta.otherSources).map(async ([prop, sources]) => {
+          const toLoads = await Promise.all(
+            Object.entries(sources).map(async ([source, findWith]) => ({
+              findWith,
+              url: await DataUtil.pGetLoadableByMeta(prop, source),
+            })),
+          );
+
+          const additionalData = await Promise.all(
+            toLoads.map(async ({ findWith, url }) => ({
+              findWith,
+              sourceData: await DataUtil.loadJSON(url),
+            })),
+          );
+
+          additionalData.forEach(dataAndSource => {
+            const findWith = dataAndSource.findWith;
+            const ad = dataAndSource.sourceData;
+            const toAppend = ad[prop].filter(
+              it =>
+                it.otherSources &&
+                it.otherSources.find(os => os.source === findWith),
+            );
+            if (toAppend.length)
+              data[prop] = (data[prop] || []).concat(toAppend);
+          });
+        }),
+      );
+      delete data._meta.otherSources;
+    }
+    DataUtil._merged[ident] = data;
+  },
+
+  getCleanFilename(filename) {
+    return filename.replace(/[^-_a-zA-Z0-9]/g, '_');
+  },
+
+  getCsv(headers, rows) {
+    function escapeCsv(str) {
+      return `"${str
+        .replace(/"/g, `""`)
+        .replace(/ +/g, ' ')
+        .replace(/\n\n+/gi, '\n\n')}"`;
+    }
+
+    function toCsv(row) {
+      return row.map(str => escapeCsv(str)).join(',');
+    }
+
+    return `${toCsv(headers)}\n${rows.map(r => toCsv(r)).join('\n')}`;
+  },
+
+  userDownload(filename, data) {
+    if (typeof data !== 'string') data = JSON.stringify(data, null, '\t');
+    return DataUtil._userDownload(`${filename}.json`, data, 'text/json');
+  },
+
+  userDownloadText(filename, string) {
+    return DataUtil._userDownload(filename, string, 'text/plain');
+  },
+
+  _userDownload(filename, data, mimeType) {
+    const a = document.createElement('a');
+    const t = new Blob([data], { type: mimeType });
+    a.href = URL.createObjectURL(t);
+    a.download = filename;
+    a.target = '_blank';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  },
+
+  pUserUpload() {
+    return new Promise(resolve => {
+      const $iptAdd = $(
+        `<input type="file" accept=".json" style="position: fixed; top: -100px; left: -100px; display: none;">`,
+      )
+        .on('change', evt => {
+          const input = evt.target;
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            const text = reader.result;
+            const json = JSON.parse(text);
+            resolve(json);
+          };
+
+          reader.readAsText(input.files[0]);
+        })
+        .appendTo($(`body`));
+      $iptAdd.click();
+    });
+  },
+
+  cleanJson(cpy) {
+    cpy.name = cpy._displayName || cpy.name;
+    delete cpy.uniqueId;
+    DataUtil.__cleanJsonObject(cpy);
+    return cpy;
+  },
+
+  __cleanJsonObject(obj) {
+    if (obj == null) return obj;
+    if (typeof obj === 'object') {
+      if (obj instanceof Array) {
+        obj.forEach(it => DataUtil.__cleanJsonObject(it));
+      } else {
+        Object.entries(obj).forEach(([k, v]) => {
+          if (k.startsWith('_') || k === 'customHashId') delete obj[k];
+          else DataUtil.__cleanJsonObject(v);
+        });
+      }
+    }
+  },
+
+  async pGetLoadableByMeta(key, value) {
+    // TODO(future) allow value to be e.g. a string (assumed to be an official data's source); an object e.g. `{type: external, url: <>}`,...
+    // TODO(future) have this return the data, not a URL
+    // TODO(future) handle homebrew dependencies/refactor "monster" and "spell" + have this be the general form.
+    switch (key) {
+      case 'monster': {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/bestiary/index.json`,
+        );
+        if (index[value])
+          return `${Renderer.get().baseUrl}data/bestiary/${index[value]}`;
+        const brewIndex = await DataUtil.brew.pLoadSourceIndex();
+        if (!brewIndex[value])
+          throw new Error(`Bestiary index did not contain source "${value}"`);
+        const urlRoot = await StorageUtil.pGet(`HOMEBREW_CUSTOM_REPO_URL`);
+        const brewUrl = DataUtil.brew.getFileUrl(brewIndex[value], urlRoot);
+        await BrewUtil.pDoHandleBrewJson(
+          await DataUtil.loadJSON(brewUrl),
+          UrlUtil.getCurrentPage(),
+        );
+        return brewUrl;
+      }
+      case 'monsterFluff': {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/bestiary/fluff-index.json`,
+        );
+        if (!index[value])
+          throw new Error(
+            `Bestiary fluff index did not contain source "${value}"`,
+          );
+        return `${Renderer.get().baseUrl}data/bestiary/${index[value]}`;
+      }
+      case 'spell': {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/spells/index.json`,
+        );
+        if (index[value])
+          return `${Renderer.get().baseUrl}data/spells/${index[value]}`;
+        const brewIndex = await DataUtil.brew.pLoadSourceIndex();
+        if (!brewIndex[value])
+          throw new Error(`Spell index did not contain source "${value}"`);
+        const urlRoot = await StorageUtil.pGet(`HOMEBREW_CUSTOM_REPO_URL`);
+        const brewUrl = DataUtil.brew.getFileUrl(brewIndex[value], urlRoot);
+        await BrewUtil.pDoHandleBrewJson(
+          await DataUtil.loadJSON(brewUrl),
+          UrlUtil.getCurrentPage(),
+        );
+        return brewUrl;
+      }
+      case 'spellFluff': {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/spells/fluff-index.json`,
+        );
+        if (!index[value])
+          throw new Error(
+            `Spell fluff index did not contain source "${value}"`,
+          );
+        return `${Renderer.get().baseUrl}data/spells/${index[value]}`;
+      }
+      // case "item":
+      // case "itemFluff":
+      case 'background':
+        return `${Renderer.get().baseUrl}data/backgrounds.json`;
+      // case "race":
+      case 'raceFluff':
+        return `${Renderer.get().baseUrl}data/fluff-races.json`;
+      // case "deity":
+      default:
+        throw new Error(
+          `Could not get loadable URL for \`${JSON.stringify({
+            key,
+            value,
+          })}\``,
+        );
+    }
+  },
+
+  generic: {
+    _walker_replaceTxt: null,
+
+    /**
+     * @param uid
+     * @param tag
+     * @param [opts]
+     * @param [opts.isLower] If the returned values should be lowercase.
+     */
+    unpackUid(uid, tag, opts) {
+      opts = opts || {};
+      if (opts.isLower) uid = uid.toLowerCase();
+      let [name, source, displayText, ...others] = uid
+        .split('|')
+        .map(it => it.trim());
+
+      source = Parser.getTagSource(tag, source);
+      if (opts.isLower) source = source.toLowerCase();
+
+      return {
+        name,
+        source,
+        displayText,
+        others,
+      };
+    },
+
+    async _pMergeCopy(impl, page, entryList, entry, options) {
+      if (entry._copy) {
+        const hash = UrlUtil.URL_TO_HASH_BUILDER[page](entry._copy);
+        const it =
+          impl._mergeCache[hash] ||
+          DataUtil.generic._pMergeCopy_search(
+            impl,
+            page,
+            entryList,
+            entry,
+            options,
+          );
+        if (!it) return;
+        // Handle recursive copy
+        if (it._copy)
+          await DataUtil.generic._pMergeCopy(
+            impl,
+            page,
+            entryList,
+            it,
+            options,
+          );
+        return DataUtil.generic._pApplyCopy(
+          impl,
+          MiscUtil.copy(it),
+          entry,
+          options,
+        );
+      }
+    },
+
+    _pMergeCopy_search(impl, page, entryList, entry, options) {
+      const entryHash = UrlUtil.URL_TO_HASH_BUILDER[page](entry._copy);
+      return entryList.find(it => {
+        const hash = UrlUtil.URL_TO_HASH_BUILDER[page](it);
+        impl._mergeCache[hash] = it;
+        return hash === entryHash;
+      });
+    },
+
+    async _pApplyCopy(impl, copyFrom, copyTo, options = {}) {
+      if (options.doKeepCopy) copyTo.__copy = MiscUtil.copy(copyFrom);
+
+      // convert everything to arrays
+      function normaliseMods(obj) {
+        Object.entries(obj._mod).forEach(([k, v]) => {
+          if (!(v instanceof Array)) obj._mod[k] = [v];
+        });
+      }
+
+      const copyMeta = copyTo._copy || {};
+
+      if (copyMeta._mod) normaliseMods(copyMeta);
+
+      // fetch and apply any external traits -- append them to existing copy mods where available
+      let racials = null;
+      if (copyMeta._trait) {
+        const traitData = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/bestiary/traits.json`,
+        );
+        racials = traitData.trait.find(
+          t =>
+            t.name.toLowerCase() === copyMeta._trait.name.toLowerCase() &&
+            t.source.toLowerCase() === copyMeta._trait.source.toLowerCase(),
+        );
+        if (!racials)
+          throw new Error(
+            `Could not find traits to apply with name "${copyMeta._trait.name}" and source "${copyMeta._trait.source}"`,
+          );
+        racials = MiscUtil.copy(racials);
+
+        if (racials.apply._mod) {
+          normaliseMods(racials.apply);
+
+          if (copyMeta._mod) {
+            Object.entries(racials.apply._mod).forEach(([k, v]) => {
+              if (copyMeta._mod[k])
+                copyMeta._mod[k] = copyMeta._mod[k].concat(v);
+              else copyMeta._mod[k] = v;
+            });
+          } else copyMeta._mod = racials.apply._mod;
+        }
+
+        delete copyMeta._trait;
+      }
+
+      const copyToRootProps = new Set(Object.keys(copyTo));
+
+      // copy over required values
+      Object.keys(copyFrom).forEach(k => {
+        if (copyTo[k] === null) return delete copyTo[k];
+        if (copyTo[k] == null) {
+          if (impl._MERGE_REQUIRES_PRESERVE[k]) {
+            if (copyTo._copy._preserve && copyTo._copy._preserve[k])
+              copyTo[k] = copyFrom[k];
+          } else copyTo[k] = copyFrom[k];
+        }
+      });
+
+      // apply any root racial properties after doing base copy
+      if (racials && racials.apply._root) {
+        Object.entries(racials.apply._root)
+          .filter(([k, v]) => !copyToRootProps.has(k)) // avoid overwriting any real root properties
+          .forEach(([k, v]) => (copyTo[k] = v));
+      }
+
+      // mod helpers /////////////////
+      function doEnsureArray(obj, prop) {
+        if (!(obj[prop] instanceof Array)) obj[prop] = [obj[prop]];
+      }
+
+      function doMod_appendStr(modInfo, prop) {
+        if (copyTo[prop])
+          copyTo[prop] = `${copyTo[prop]}${modInfo.joiner || ''}${modInfo.str}`;
+        else copyTo[prop] = modInfo.str;
+      }
+
+      function doMod_replaceTxt(modInfo, prop) {
+        if (!copyTo[prop]) return;
+
+        DataUtil.generic._walker_replaceTxt =
+          DataUtil.generic._walker_replaceTxt || MiscUtil.getWalker();
+        const re = new RegExp(modInfo.replace, `g${modInfo.flags || ''}`);
+        const handlers = {
+          // TODO(Future) may need to have this handle replaces inside _some_ tags
+          string: str => {
+            const split = Renderer.splitByTags(str);
+            const len = split.length;
+            for (let i = 0; i < len; ++i) {
+              if (split[i].startsWith('{@')) continue;
+              split[i] = split[i].replace(re, modInfo.with);
+            }
+            return split.join('');
+          },
+        };
+
+        // Handle any pure strings, e.g. `"legendaryHeader"`
+        copyTo[prop] = copyTo[prop].map(it => {
+          if (typeof it !== 'string') return it;
+          return DataUtil.generic._walker_replaceTxt.walk(it, handlers);
+        });
+
+        copyTo[prop].forEach(it => {
+          if (it.entries)
+            it.entries = DataUtil.generic._walker_replaceTxt.walk(
+              it.entries,
+              handlers,
+            );
+          if (it.headerEntries)
+            it.headerEntries = DataUtil.generic._walker_replaceTxt.walk(
+              it.headerEntries,
+              handlers,
+            );
+          if (it.footerEntries)
+            it.footerEntries = DataUtil.generic._walker_replaceTxt.walk(
+              it.footerEntries,
+              handlers,
+            );
+        });
+      }
+
+      function doMod_prependArr(modInfo, prop) {
+        doEnsureArray(modInfo, 'items');
+        copyTo[prop] = copyTo[prop]
+          ? modInfo.items.concat(copyTo[prop])
+          : modInfo.items;
+      }
+
+      function doMod_appendArr(modInfo, prop) {
+        doEnsureArray(modInfo, 'items');
+        copyTo[prop] = copyTo[prop]
+          ? copyTo[prop].concat(modInfo.items)
+          : modInfo.items;
+      }
+
+      function doMod_appendIfNotExistsArr(modInfo, prop) {
+        doEnsureArray(modInfo, 'items');
+        if (!copyTo[prop]) return (copyTo[prop] = modInfo.items);
+        copyTo[prop] = copyTo[prop].concat(
+          modInfo.items.filter(
+            it => !copyTo[prop].some(x => CollectionUtil.deepEquals(it, x)),
+          ),
+        );
+      }
+
+      function doMod_replaceArr(modInfo, prop, isThrow = true) {
+        doEnsureArray(modInfo, 'items');
+
+        if (!copyTo[prop]) {
+          if (isThrow) throw new Error(`Could not find "${prop}" array`);
+          return false;
+        }
+
+        let ixOld;
+        if (modInfo.replace.regex) {
+          const re = new RegExp(
+            modInfo.replace.regex,
+            modInfo.replace.flags || '',
+          );
+          ixOld = copyTo[prop].findIndex(it =>
+            it.name
+              ? re.test(it.name)
+              : typeof it === 'string'
+              ? re.test(it)
+              : false,
+          );
+        } else if (modInfo.replace.index != null) {
+          ixOld = modInfo.replace.index;
+        } else {
+          ixOld = copyTo[prop].findIndex(it =>
+            it.name ? it.name === modInfo.replace : it === modInfo.replace,
+          );
+        }
+
+        if (~ixOld) {
+          copyTo[prop].splice(ixOld, 1, ...modInfo.items);
+          return true;
+        } else if (isThrow)
+          throw new Error(
+            `Could not find "${prop}" item with name "${modInfo.replace}" to replace`,
+          );
+        return false;
+      }
+
+      function doMod_replaceOrAppendArr(modInfo, prop) {
+        const didReplace = doMod_replaceArr(modInfo, prop, false);
+        if (!didReplace) doMod_appendArr(modInfo, prop);
+      }
+
+      function doMod_insertArr(modInfo, prop) {
+        doEnsureArray(modInfo, 'items');
+        if (!copyTo[prop]) throw new Error(`Could not find "${prop}" array`);
+        copyTo[prop].splice(modInfo.index, 0, ...modInfo.items);
+      }
+
+      function doMod_removeArr(modInfo, prop) {
+        if (modInfo.names) {
+          doEnsureArray(modInfo, 'names');
+          modInfo.names.forEach(nameToRemove => {
+            const ixOld = copyTo[prop].findIndex(
+              it => it.name === nameToRemove,
+            );
+            if (~ixOld) copyTo[prop].splice(ixOld, 1);
+            else {
+              if (!modInfo.force)
+                throw new Error(
+                  `Could not find "${prop}" item with name "${nameToRemove}" to remove`,
+                );
+            }
+          });
+        } else if (modInfo.items) {
+          doEnsureArray(modInfo, 'items');
+          modInfo.items.forEach(itemToRemove => {
+            const ixOld = copyTo[prop].findIndex(it => it === itemToRemove);
+            if (~ixOld) copyTo[prop].splice(ixOld, 1);
+            else
+              throw new Error(
+                `Could not find "${prop}" item "${itemToRemove}" to remove`,
+              );
+          });
+        } else throw new Error(`One of "names" or "items" must be provided!`);
+      }
+
+      function doMod_calculateProp(modInfo, prop) {
+        copyTo[prop] = copyTo[prop] || {};
+        const toExec = modInfo.formula.replace(/<\$([^$]+)\$>/g, (...m) => {
+          switch (m[1]) {
+            case 'prof_bonus':
+              return Parser.crToPb(copyTo.cr);
+            case 'dex_mod':
+              return Parser.getAbilityModNumber(copyTo.dex);
+            default:
+              throw new Error(`Unknown variable "${m[1]}"`);
+          }
+        });
+        // eslint-disable-next-line no-eval
+        copyTo[prop][modInfo.prop] = eval(toExec);
+      }
+
+      function doMod_scalarAddProp(modInfo, prop) {
+        function applyTo(k) {
+          const out = Number(copyTo[prop][k]) + modInfo.scalar;
+          const isString = typeof copyTo[prop][k] === 'string';
+          copyTo[prop][k] = isString ? `${out >= 0 ? '+' : ''}${out}` : out;
+        }
+
+        if (!copyTo[prop]) return;
+        if (modInfo.prop === '*')
+          Object.keys(copyTo[prop]).forEach(k => applyTo(k));
+        else applyTo(modInfo.prop);
+      }
+
+      function doMod_scalarMultProp(modInfo, prop) {
+        function applyTo(k) {
+          let out = Number(copyTo[prop][k]) * modInfo.scalar;
+          if (modInfo.floor) out = Math.floor(out);
+          const isString = typeof copyTo[prop][k] === 'string';
+          copyTo[prop][k] = isString ? `${out >= 0 ? '+' : ''}${out}` : out;
+        }
+
+        if (!copyTo[prop]) return;
+        if (modInfo.prop === '*')
+          Object.keys(copyTo[prop]).forEach(k => applyTo(k));
+        else applyTo(modInfo.prop);
+      }
+
+      function doMod_addSenses(modInfo) {
+        doEnsureArray(modInfo, 'senses');
+        copyTo.senses = copyTo.senses || [];
+        modInfo.senses.forEach(sense => {
+          let found = false;
+          for (let i = 0; i < copyTo.senses.length; ++i) {
+            const m = new RegExp(`${sense.type} (\\d+)`, 'i').exec(
+              copyTo.senses[i],
+            );
+            if (m) {
+              found = true;
+              // if the creature already has a greater sense of this type, do nothing
+              if (Number(m[1]) < sense.type) {
+                copyTo.senses[i] = `${sense.type} ${sense.range} ft.`;
+              }
+              break;
+            }
+          }
+
+          if (!found) copyTo.senses.push(`${sense.type} ${sense.range} ft.`);
+        });
+      }
+
+      function doMod_addSkills(modInfo) {
+        copyTo.skill = copyTo.skill || [];
+        Object.entries(modInfo.skills).forEach(([skill, mode]) => {
+          // mode: 1 = proficient; 2 = expert
+          const total =
+            mode * Parser.crToPb(copyTo.cr) +
+            Parser.getAbilityModNumber(copyTo[Parser.skillToAbilityAbv(skill)]);
+          const asText = total >= 0 ? `+${total}` : `-${total}`;
+          if (copyTo.skill && copyTo.skill[skill]) {
+            // update only if ours is larger (prevent reduction in skill score)
+            if (Number(copyTo.skill[skill]) < total)
+              copyTo.skill[skill] = asText;
+          } else copyTo.skill[skill] = asText;
+        });
+      }
+
+      function doMod_addSpells(modInfo) {
+        if (!copyTo.spellcasting)
+          throw new Error(`Creature did not have a spellcasting property!`);
+
+        // TODO could accept a "position" or "name" parameter should spells need to be added to other spellcasting traits
+        const spellcasting = copyTo.spellcasting[0];
+
+        if (modInfo.spells) {
+          const spells = spellcasting.spells;
+
+          Object.keys(modInfo.spells).forEach(k => {
+            if (!spells[k]) spells[k] = modInfo.spells[k];
+            else {
+              // merge the objects
+              const spellCategoryNu = modInfo.spells[k];
+              const spellCategoryOld = spells[k];
+              Object.keys(spellCategoryNu).forEach(kk => {
+                if (!spellCategoryOld[kk])
+                  spellCategoryOld[kk] = spellCategoryNu[kk];
+                else {
+                  if (typeof spellCategoryOld[kk] === 'object') {
+                    if (spellCategoryOld[kk] instanceof Array)
+                      spellCategoryOld[kk] = spellCategoryOld[kk]
+                        .concat(spellCategoryNu[kk])
+                        .sort(SortUtil.ascSortLower);
+                    else throw new Error(`Object at key ${kk} not an array!`);
+                  } else spellCategoryOld[kk] = spellCategoryNu[kk];
+                }
+              });
+            }
+          });
+        }
+
+        if (modInfo.will) {
+          modInfo.will.forEach(sp =>
+            (modInfo.will = modInfo.will || []).push(sp),
+          );
+        }
+
+        if (modInfo.daily) {
+          for (let i = 1; i <= 9; ++i) {
+            const e = `${i}e`;
+
+            spellcasting.daily = spellcasting.daily || {};
+
+            if (modInfo.daily[i]) {
+              modInfo.daily[i].forEach(sp =>
+                (spellcasting.daily[i] = spellcasting.daily[i] || []).push(sp),
+              );
+            }
+
+            if (modInfo.daily[e]) {
+              modInfo.daily[e].forEach(sp =>
+                (spellcasting.daily[e] = spellcasting.daily[e] || []).push(sp),
+              );
+            }
+          }
+        }
+      }
+
+      function doMod_replaceSpells(modInfo) {
+        if (!copyTo.spellcasting)
+          throw new Error(`Creature did not have a spellcasting property!`);
+
+        // TODO could accept a "position" or "name" parameter should spells need to be added to other spellcasting traits
+        const spellcasting = copyTo.spellcasting[0];
+
+        const handleReplace = (curSpells, replaceMeta, k) => {
+          doEnsureArray(replaceMeta, 'with');
+
+          const ix = curSpells[k].indexOf(replaceMeta.replace);
+          if (~ix) {
+            curSpells[k].splice(ix, 1, ...replaceMeta.with);
+            curSpells[k].sort(SortUtil.ascSortLower);
+          } else
+            throw new Error(
+              `Could not find spell "${replaceMeta.replace}" to replace`,
+            );
+        };
+
+        if (modInfo.spells) {
+          const trait0 = spellcasting.spells;
+          Object.keys(modInfo.spells).forEach(k => {
+            // k is e.g. "4"
+            if (trait0[k]) {
+              const replaceMetas = modInfo.spells[k];
+              const curSpells = trait0[k];
+              replaceMetas.forEach(replaceMeta =>
+                handleReplace(curSpells, replaceMeta, 'spells'),
+              );
+            }
+          });
+        }
+
+        // TODO should be extended  to handle all non-slot-based spellcasters
+        if (modInfo.daily) {
+          for (let i = 1; i <= 9; ++i) {
+            const e = `${i}e`;
+
+            if (modInfo.daily[i]) {
+              modInfo.daily[i].forEach(replaceMeta =>
+                handleReplace(spellcasting.daily, replaceMeta, i),
+              );
+            }
+
+            if (modInfo.daily[e]) {
+              modInfo.daily[e].forEach(replaceMeta =>
+                handleReplace(spellcasting.daily, replaceMeta, e),
+              );
+            }
+          }
+        }
+      }
+
+      function doMod_scalarAddHit(modInfo, prop) {
+        if (!copyTo[prop]) return;
+        copyTo[prop] = JSON.parse(
+          JSON.stringify(copyTo[prop]).replace(
+            /{@hit ([-+]?\d+)}/g,
+            (m0, m1) => `{@hit ${Number(m1) + modInfo.scalar}}`,
+          ),
+        );
+      }
+
+      function doMod_scalarAddDc(modInfo, prop) {
+        if (!copyTo[prop]) return;
+        copyTo[prop] = JSON.parse(
+          JSON.stringify(copyTo[prop]).replace(
+            /{@dc (\d+)}/g,
+            (m0, m1) => `{@dc ${Number(m1) + modInfo.scalar}}`,
+          ),
+        );
+      }
+
+      function doMod_maxSize(modInfo) {
+        const ixCur = Parser.SIZE_ABVS.indexOf(copyTo.size);
+        const ixMax = Parser.SIZE_ABVS.indexOf(modInfo.max);
+        if (ixCur < 0 || ixMax < 0) throw new Error(`Unhandled size!`);
+        copyTo.size = Parser.SIZE_ABVS[Math.min(ixCur, ixMax)];
+      }
+
+      function doMod_scalarMultXp(modInfo) {
+        function getOutput(input) {
+          let out = input * modInfo.scalar;
+          if (modInfo.floor) out = Math.floor(out);
+          return out;
+        }
+
+        if (copyTo.cr.xp) copyTo.cr.xp = getOutput(copyTo.cr.xp);
+        else {
+          const curXp = Parser.crToXpNumber(copyTo.cr);
+          if (!copyTo.cr.cr) copyTo.cr = { cr: copyTo.cr };
+          copyTo.cr.xp = getOutput(curXp);
+        }
+      }
+
+      function doMod(modInfos, ...properties) {
+        function handleProp(prop) {
+          modInfos.forEach(modInfo => {
+            if (typeof modInfo === 'string') {
+              switch (modInfo) {
+                case 'remove':
+                  return delete copyTo[prop];
+                default:
+                  throw new Error(`Unhandled mode: ${modInfo}`);
+              }
+            } else {
+              switch (modInfo.mode) {
+                case 'appendStr':
+                  return doMod_appendStr(modInfo, prop);
+                case 'replaceTxt':
+                  return doMod_replaceTxt(modInfo, prop);
+                case 'prependArr':
+                  return doMod_prependArr(modInfo, prop);
+                case 'appendArr':
+                  return doMod_appendArr(modInfo, prop);
+                case 'replaceArr':
+                  return doMod_replaceArr(modInfo, prop);
+                case 'replaceOrAppendArr':
+                  return doMod_replaceOrAppendArr(modInfo, prop);
+                case 'appendIfNotExistsArr':
+                  return doMod_appendIfNotExistsArr(modInfo, prop);
+                case 'insertArr':
+                  return doMod_insertArr(modInfo, prop);
+                case 'removeArr':
+                  return doMod_removeArr(modInfo, prop);
+                case 'calculateProp':
+                  return doMod_calculateProp(modInfo, prop);
+                case 'scalarAddProp':
+                  return doMod_scalarAddProp(modInfo, prop);
+                case 'scalarMultProp':
+                  return doMod_scalarMultProp(modInfo, prop);
+                // bestiary specific
+                case 'addSenses':
+                  return doMod_addSenses(modInfo);
+                case 'addSkills':
+                  return doMod_addSkills(modInfo);
+                case 'addSpells':
+                  return doMod_addSpells(modInfo);
+                case 'replaceSpells':
+                  return doMod_replaceSpells(modInfo);
+                case 'scalarAddHit':
+                  return doMod_scalarAddHit(modInfo, prop);
+                case 'scalarAddDc':
+                  return doMod_scalarAddDc(modInfo, prop);
+                case 'maxSize':
+                  return doMod_maxSize(modInfo);
+                case 'scalarMultXp':
+                  return doMod_scalarMultXp(modInfo);
+                default:
+                  throw new Error(`Unhandled mode: ${modInfo.mode}`);
+              }
+            }
+          });
+        }
+
+        properties.forEach(prop => handleProp(prop));
+        // special case for "no property" modifications, i.e. underscore-key'd
+        if (!properties.length) handleProp();
+      }
+
+      // apply mods
+      if (copyMeta._mod) {
+        // pre-convert any dynamic text
+        Object.entries(copyMeta._mod).forEach(([k, v]) => {
+          copyMeta._mod[k] = JSON.parse(
+            JSON.stringify(v).replace(/<\$([^$]+)\$>/g, (...m) => {
+              const parts = m[1].split('__');
+
+              switch (parts[0]) {
+                case 'name':
+                  return copyTo.name;
+                case 'short_name':
+                case 'title_short_name': {
+                  return Renderer.monster.getShortName(
+                    copyTo,
+                    parts[0] === 'title_short_name',
+                  );
+                }
+                case 'spell_dc': {
+                  if (!Parser.ABIL_ABVS.includes(parts[1]))
+                    throw new Error(`Unknown ability score "${parts[1]}"`);
+                  return (
+                    8 +
+                    Parser.getAbilityModNumber(Number(copyTo[parts[1]])) +
+                    Parser.crToPb(copyTo.cr)
+                  );
+                }
+                case 'to_hit': {
+                  if (!Parser.ABIL_ABVS.includes(parts[1]))
+                    throw new Error(`Unknown ability score "${parts[1]}"`);
+                  const total =
+                    Parser.crToPb(copyTo.cr) +
+                    Parser.getAbilityModNumber(Number(copyTo[parts[1]]));
+                  return total >= 0 ? `+${total}` : total;
+                }
+                case 'damage_mod': {
+                  if (!Parser.ABIL_ABVS.includes(parts[1]))
+                    throw new Error(`Unknown ability score "${parts[1]}"`);
+                  const total = Parser.getAbilityModNumber(
+                    Number(copyTo[parts[1]]),
+                  );
+                  return total === 0
+                    ? ''
+                    : total > 0
+                    ? ` +${total}`
+                    : ` ${total}`;
+                }
+                case 'damage_avg': {
+                  const replaced = parts[1].replace(
+                    /(str|dex|con|int|wis|cha)/gi,
+                    (...m2) =>
+                      Parser.getAbilityModNumber(Number(copyTo[m2[0]])),
+                  );
+                  const clean = replaced.replace(/[^-+/*0-9.,]+/g, '');
+                  // eslint-disable-next-line no-eval
+                  return Math.floor(eval(clean));
+                }
+                default:
+                  return m[0];
+              }
+            }),
+          );
+        });
+
+        Object.entries(copyMeta._mod).forEach(([prop, modInfos]) => {
+          if (prop === '*')
+            doMod(
+              modInfos,
+              'action',
+              'bonus',
+              'reaction',
+              'trait',
+              'legendary',
+              'mythic',
+              'variant',
+              'spellcasting',
+              'legendaryHeader',
+            );
+          else if (prop === '_') doMod(modInfos);
+          else doMod(modInfos, prop);
+        });
+      }
+
+      // add filter tag
+      copyTo._isCopy = true;
+
+      // cleanup
+      delete copyTo._copy;
+    },
+  },
+
+  monster: {
+    _MERGE_REQUIRES_PRESERVE: {
+      legendaryGroup: true,
+      environment: true,
+      soundClip: true,
+      page: true,
+      altArt: true,
+      otherSources: true,
+      variant: true,
+      dragonCastingColor: true,
+      srd: true,
+      hasToken: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(monList, mon, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.monster,
+        UrlUtil.PG_BESTIARY,
+        monList,
+        mon,
+        options,
+      );
+    },
+
+    async pPreloadMeta() {
+      if (DataUtil.monster._isMetaLoaded) return;
+
+      const legendaryGroups = await DataUtil.legendaryGroup.pLoadAll();
+      DataUtil.monster.populateMetaReference({
+        legendaryGroup: legendaryGroups,
+      });
+      DataUtil.monster._isMetaLoaded = true;
+    },
+
+    async pLoadAll() {
+      const [index, legendaryGroups] = await Promise.all([
+        DataUtil.loadJSON(`${Renderer.get().baseUrl}data/bestiary/index.json`),
+        DataUtil.legendaryGroup.pLoadAll(),
+      ]);
+
+      if (!DataUtil.monster._isMetaLoaded) {
+        DataUtil.monster.populateMetaReference({
+          legendaryGroup: legendaryGroups,
+        });
+        DataUtil.monster._isMetaLoaded = true;
+      }
+
+      const allData = await Promise.all(
+        Object.entries(index).map(async ([source, file]) => {
+          const data = await DataUtil.loadJSON(
+            `${Renderer.get().baseUrl}data/bestiary/${file}`,
+          );
+          return data.monster.filter(it => it.source === source);
+        }),
+      );
+      return allData.flat();
+    },
+
+    _isMetaLoaded: false,
+    metaGroupMap: {},
+    getMetaGroup(mon) {
+      if (
+        !mon.legendaryGroup ||
+        !mon.legendaryGroup.source ||
+        !mon.legendaryGroup.name
+      )
+        return null;
+      return (DataUtil.monster.metaGroupMap[mon.legendaryGroup.source] || {})[
+        mon.legendaryGroup.name
+      ];
+    },
+    populateMetaReference(data) {
+      (data.legendaryGroup || []).forEach(it => {
+        (DataUtil.monster.metaGroupMap[it.source] =
+          DataUtil.monster.metaGroupMap[it.source] || {})[it.name] =
+          DataUtil.monster.metaGroupMap[it.source][it.name] || it;
+      });
+    },
+  },
+
+  monsterFluff: {
+    _MERGE_REQUIRES_PRESERVE: {},
+    _mergeCache: {},
+    async pMergeCopy(monFlfList, monFlf, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.monsterFluff,
+        UrlUtil.PG_BESTIARY,
+        monFlfList,
+        monFlf,
+        options,
+      );
+    },
+  },
+
+  spell: {
+    _MERGE_REQUIRES_PRESERVE: {
+      page: true,
+      otherSources: true,
+      srd: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(spellList, spell, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.spell,
+        UrlUtil.PG_SPELLS,
+        spellList,
+        spell,
+        options,
+      );
+    },
+
+    async pLoadAll() {
+      const index = await DataUtil.loadJSON(
+        `${Renderer.get().baseUrl}data/spells/index.json`,
+      );
+      const allData = await Promise.all(
+        Object.entries(index).map(async ([source, file]) => {
+          const data = await DataUtil.loadJSON(
+            `${Renderer.get().baseUrl}data/spells/${file}`,
+          );
+          return data.spell.filter(it => it.source === source);
+        }),
+      );
+      return allData.flat();
+    },
+  },
+
+  spellFluff: {
+    _MERGE_REQUIRES_PRESERVE: {},
+    _mergeCache: {},
+    async pMergeCopy(spellFlfList, spellFlf, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.spellFluff,
+        UrlUtil.PG_SPELLS,
+        spellFlfList,
+        spellFlf,
+        options,
+      );
+    },
+  },
+
+  item: {
+    _MERGE_REQUIRES_PRESERVE: {
+      lootTables: true,
+      tier: true,
+      page: true,
+      otherSources: true,
+      srd: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(itemList, item, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.item,
+        UrlUtil.PG_ITEMS,
+        itemList,
+        item,
+        options,
+      );
+    },
+  },
+
+  itemFluff: {
+    _MERGE_REQUIRES_PRESERVE: {},
+    _mergeCache: {},
+    async pMergeCopy(itemFlfList, itemFlf, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.itemFluff,
+        UrlUtil.PG_ITEMS,
+        itemFlfList,
+        itemFlf,
+        options,
+      );
+    },
+  },
+
+  background: {
+    _MERGE_REQUIRES_PRESERVE: {
+      page: true,
+      otherSources: true,
+      srd: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(bgList, bg, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.background,
+        UrlUtil.PG_BACKGROUNDS,
+        bgList,
+        bg,
+        options,
+      );
+    },
+  },
+
+  race: {
+    _MERGE_REQUIRES_PRESERVE: {
+      subraces: true,
+      page: true,
+      otherSources: true,
+      srd: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(raceList, race, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.race,
+        UrlUtil.PG_RACES,
+        raceList,
+        race,
+        options,
+      );
+    },
+  },
+
+  raceFluff: {
+    _MERGE_REQUIRES_PRESERVE: {},
+    _mergeCache: {},
+    async pMergeCopy(raceFlfList, raceFlf, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.raceFluff,
+        UrlUtil.PG_RACES,
+        raceFlfList,
+        raceFlf,
+        options,
+      );
+    },
+  },
+
+  class: {
+    _pLoadingJson: null,
+    _pLoadingRawJson: null,
+    _loadedJson: null,
+    _loadedRawJson: null,
+    async loadJSON() {
+      if (DataUtil.class._loadedJson) return DataUtil.class._loadedJson;
+
+      DataUtil.class._pLoadingJson = (async () => {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/class/index.json`,
+        );
+        const allData = await Promise.all(
+          Object.values(index).map(it =>
+            DataUtil.loadJSON(`${Renderer.get().baseUrl}data/class/${it}`),
+          ),
+        );
+
+        const allDereferencedData = await Promise.all(
+          allData.map(json =>
+            Promise.all(
+              (json.class || []).map(cls =>
+                DataUtil.class.pGetDereferencedClassData(cls),
+              ),
+            ),
+          ),
+        );
+        DataUtil.class._loadedJson = { class: allDereferencedData.flat() };
+      })();
+      await DataUtil.class._pLoadingJson;
+
+      return DataUtil.class._loadedJson;
+    },
+
+    async loadRawJSON() {
+      if (DataUtil.class._loadedRawJson) return DataUtil.class._loadedRawJson;
+
+      DataUtil.class._pLoadingRawJson = (async () => {
+        const index = await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/class/index.json`,
+        );
+        const allData = await Promise.all(
+          Object.values(index).map(it =>
+            DataUtil.loadJSON(`${Renderer.get().baseUrl}data/class/${it}`),
+          ),
+        );
+
+        DataUtil.class._loadedRawJson = {
+          class: allData.map(it => it.class || []).flat(),
+          classFeature: allData.map(it => it.classFeature || []).flat(),
+          subclassFeature: allData.map(it => it.subclassFeature || []).flat(),
+        };
+      })();
+      await DataUtil.class._pLoadingRawJson;
+
+      return DataUtil.class._loadedRawJson;
+    },
+
+    /**
+     * @param uid
+     * @param [opts]
+     * @param [opts.isLower] If the returned values should be lowercase.
+     */
+    unpackUidClassFeature(uid, opts) {
+      opts = opts || {};
+      if (opts.isLower) uid = uid.toLowerCase();
+      let [
+        name,
+        className,
+        classSource,
+        level,
+        source,
+        displayText,
+      ] = uid.split('|').map(it => it.trim());
+      classSource =
+        classSource || (opts.isLower ? SRC_PHB.toLowerCase() : SRC_PHB);
+      source = source || classSource;
+      level = Number(level);
+      return {
+        name,
+        className,
+        classSource,
+        level,
+        source,
+        displayText,
+      };
+    },
+
+    /**
+     * @param uid
+     * @param [opts]
+     * @param [opts.isLower] If the returned values should be lowercase.
+     */
+    unpackUidSubclassFeature(uid, opts) {
+      opts = opts || {};
+      if (opts.isLower) uid = uid.toLowerCase();
+      let [
+        name,
+        className,
+        classSource,
+        subclassShortName,
+        subclassSource,
+        level,
+        source,
+        displayText,
+      ] = uid.split('|').map(it => it.trim());
+      classSource =
+        classSource || (opts.isLower ? SRC_PHB.toLowerCase() : SRC_PHB);
+      subclassSource =
+        subclassSource || (opts.isLower ? SRC_PHB.toLowerCase() : SRC_PHB);
+      source = source || subclassSource;
+      level = Number(level);
+      return {
+        name,
+        className,
+        classSource,
+        subclassShortName,
+        subclassSource,
+        level,
+        source,
+        displayText,
+      };
+    },
+
+    _mutEntryNestLevel(feature) {
+      const depth = (feature.header == null ? 1 : feature.header) - 1;
+      for (let i = 0; i < depth; ++i) {
+        const nxt = {
+          name: feature.name,
+          page: feature.page,
+          source: feature.source,
+          type: 'entries',
+          entries: feature.entries,
+        };
+        if (!nxt.name) delete nxt.name;
+        if (!nxt.page) delete nxt.page;
+        if (!nxt.source) delete nxt.source;
+        feature.entries = [nxt];
+        delete feature.name;
+        delete feature.page;
+        delete feature.source;
+      }
+    },
+
+    async pGetDereferencedClassData(cls) {
+      // Gracefully handle legacy class data
+      if (
+        cls.classFeatures &&
+        cls.classFeatures.every(
+          it => typeof it !== 'string' && !it.classFeature,
+        )
+      )
+        return cls;
+
+      cls = MiscUtil.copy(cls);
+
+      const byLevel = {}; // Build a map of `level: [classFeature]`
+      for (const classFeatureRef of cls.classFeatures || []) {
+        const uid = classFeatureRef.classFeature
+          ? classFeatureRef.classFeature
+          : classFeatureRef;
+        const {
+          name,
+          className,
+          classSource,
+          level,
+          source,
+        } = DataUtil.class.unpackUidClassFeature(uid);
+        if (!name || !className || !level || isNaN(level)) continue; // skip over broken links
+
+        const hash = UrlUtil.URL_TO_HASH_BUILDER['classFeature']({
+          name,
+          className,
+          classSource,
+          level,
+          source,
+        });
+
+        // Skip blacklisted
+        if (
+          ExcludeUtil.isInitialised &&
+          ExcludeUtil.isExcluded(hash, 'classFeature', source, {
+            isNoCount: true,
+          })
+        )
+          continue;
+
+        const classFeature = await Renderer.hover.pCacheAndGet(
+          'classFeature',
+          source,
+          hash,
+          { isCopy: true },
+        );
+        // skip over missing links
+        if (!classFeature) {
+          JqueryUtil.doToast({
+            type: 'danger',
+            content: `Failed to find <code>classFeature</code> <code>${uid}</code>`,
+          });
+          continue;
+        }
+
+        if (classFeatureRef.gainSubclassFeature)
+          classFeature.gainSubclassFeature = true;
+        // Remove sources to avoid colouring e.g. entire UA classes with the "spicy green" styling
+        if (classFeature.source === cls.source) delete classFeature.source;
+
+        DataUtil.class._mutEntryNestLevel(classFeature);
+
+        const key = `${classFeature.level || 1}`;
+        (byLevel[key] = byLevel[key] || []).push(classFeature);
+      }
+
+      const outClassFeatures = [];
+      const maxLevel = Math.max(...Object.keys(byLevel).map(it => Number(it)));
+      for (let i = 1; i <= maxLevel; ++i) {
+        outClassFeatures[i - 1] = byLevel[i] || [];
+      }
+      cls.classFeatures = outClassFeatures;
+
+      if (cls.subclasses) {
+        const outSubclasses = [];
+        for (const sc of cls.subclasses) {
+          outSubclasses.push(
+            await DataUtil.class.pGetDereferencedSubclassData(sc),
+          );
+        }
+        cls.subclasses = outSubclasses;
+      }
+
+      return cls;
+    },
+
+    async pGetDereferencedSubclassData(sc) {
+      // Gracefully handle legacy class data
+      if (
+        sc.subclassFeatures &&
+        sc.subclassFeatures.every(
+          it => typeof it !== 'string' && !it.subclassFeature,
+        )
+      )
+        return sc;
+
+      sc = MiscUtil.copy(sc);
+
+      const byLevel = {}; // Build a map of `level: [subclassFeature]`
+
+      for (const subclassFeatureRef of sc.subclassFeatures || []) {
+        const uid = subclassFeatureRef.subclassFeature
+          ? subclassFeatureRef.subclassFeature
+          : subclassFeatureRef;
+        const {
+          name,
+          className,
+          classSource,
+          subclassShortName,
+          subclassSource,
+          level,
+          source,
+        } = DataUtil.class.unpackUidSubclassFeature(uid);
+        if (!name || !className || !subclassShortName || !level || isNaN(level))
+          continue; // skip over broken links
+
+        const hash = UrlUtil.URL_TO_HASH_BUILDER['subclassFeature']({
+          name,
+          className,
+          classSource,
+          subclassShortName,
+          subclassSource,
+          level,
+          source,
+        });
+
+        // Skip blacklisted
+        if (
+          ExcludeUtil.isInitialised &&
+          ExcludeUtil.isExcluded(hash, 'subclassFeature', source, {
+            isNoCount: true,
+          })
+        )
+          continue;
+
+        const subclassFeature = await Renderer.hover.pCacheAndGet(
+          'subclassFeature',
+          source,
+          hash,
+          { isCopy: true },
+        );
+        // skip over missing links
+        if (!subclassFeature) {
+          JqueryUtil.doToast({
+            type: 'danger',
+            content: `Failed to find <code>subclassFeature</code> <code>${uid}</code>`,
+          });
+          continue;
+        }
+
+        // Remove sources to avoid colouring e.g. entire UA classes with the "spicy green" styling
+        if (subclassFeature.source === sc.source) delete subclassFeature.source;
+
+        DataUtil.class._mutEntryNestLevel(subclassFeature);
+
+        const key = `${subclassFeature.level || 1}`;
+        (byLevel[key] = byLevel[key] || []).push(subclassFeature);
+      }
+
+      sc.subclassFeatures = Object.keys(byLevel)
+        .map(it => Number(it))
+        .sort(SortUtil.ascSort)
+        .map(k => byLevel[k]);
+
+      return sc;
+    },
+  },
+
+  deity: {
+    _MERGE_REQUIRES_PRESERVE: {
+      page: true,
+      otherSources: true,
+      srd: true,
+    },
+    _mergeCache: {},
+    async pMergeCopy(deityList, deity, options) {
+      return DataUtil.generic._pMergeCopy(
+        DataUtil.deity,
+        UrlUtil.PG_DEITIES,
+        deityList,
+        deity,
+        options,
+      );
+    },
+
+    doPostLoad: function(data) {
+      const PRINT_ORDER = [
+        SRC_PHB,
+        SRC_DMG,
+        SRC_SCAG,
+        SRC_VGM,
+        SRC_MTF,
+        SRC_ERLW,
+      ];
+
+      const inSource = {};
+      PRINT_ORDER.forEach(src => {
+        inSource[src] = {};
+        data.deity
+          .filter(it => it.source === src)
+          .forEach(it => (inSource[src][it.reprintAlias || it.name] = it)); // TODO need to handle similar names
+      });
+
+      const laterPrinting = [PRINT_ORDER.last()];
+      [...PRINT_ORDER]
+        .reverse()
+        .slice(1)
+        .forEach(src => {
+          laterPrinting.forEach(laterSrc => {
+            Object.keys(inSource[src]).forEach(name => {
+              const newer = inSource[laterSrc][name];
+              if (newer) {
+                const old = inSource[src][name];
+                old.reprinted = true;
+                if (!newer._isEnhanced) {
+                  newer.previousVersions = newer.previousVersions || [];
+                  newer.previousVersions.push(old);
+                }
+              }
+            });
+          });
+
+          laterPrinting.push(src);
+        });
+      data.deity.forEach(g => (g._isEnhanced = true));
+    },
+
+    loadJSON: async function() {
+      const data = await DataUtil.loadJSON(
+        `${Renderer.get().baseUrl}data/deities.json`,
+      );
+      DataUtil.deity.doPostLoad(data);
+      return data;
+    },
+  },
+
+  table: {
+    async pLoadAll() {
+      const datas = await Promise.all(
+        [
+          `${Renderer.get().baseUrl}data/generated/gendata-tables.json`,
+          `${Renderer.get().baseUrl}data/tables.json`,
+        ].map(url => DataUtil.loadJSON(url)),
+      );
+      const combined = {};
+      datas.forEach(data => {
+        Object.entries(data).forEach(([k, v]) => {
+          if (combined[k] && combined[k] instanceof Array && v instanceof Array)
+            combined[k] = combined[k].concat(v);
+          else if (combined[k] == null) combined[k] = v;
+          else throw new Error(`Could not merge keys for key "${k}"`);
+        });
+      });
+      return combined;
+    },
+  },
+
+  legendaryGroup: {
+    async pLoadAll() {
+      return (
+        await DataUtil.loadJSON(
+          `${Renderer.get().baseUrl}data/bestiary/legendarygroups.json`,
+        )
+      ).legendaryGroup;
+    },
+  },
+
+  brew: {
+    _getCleanUrlRoot(urlRoot) {
+      if (urlRoot && urlRoot.trim()) {
+        urlRoot = urlRoot.trim();
+        if (!urlRoot.endsWith('/')) urlRoot = `${urlRoot}/`;
+      } else
+        urlRoot = `https://raw.githubusercontent.com/TheGiddyLimit/homebrew/master/`;
+      return urlRoot;
+    },
+
+    async pLoadTimestamps(urlRoot) {
+      urlRoot = DataUtil.brew._getCleanUrlRoot(urlRoot);
+      return DataUtil.loadJSON(`${urlRoot}_generated/index-timestamps.json`);
+    },
+
+    async pLoadPropIndex(urlRoot) {
+      urlRoot = DataUtil.brew._getCleanUrlRoot(urlRoot);
+      return DataUtil.loadJSON(`${urlRoot}_generated/index-props.json`);
+    },
+
+    async pLoadSourceIndex(urlRoot) {
+      urlRoot = DataUtil.brew._getCleanUrlRoot(urlRoot);
+      return DataUtil.loadJSON(`${urlRoot}_generated/index-sources.json`);
+    },
+
+    getFileUrl(path, urlRoot) {
+      urlRoot = DataUtil.brew._getCleanUrlRoot(urlRoot);
+      return `${urlRoot}${path}`;
+    },
   },
 };
 
@@ -10913,7 +13267,7 @@ BrewUtil = {
           : '';
 
         const $btnAdd = $(
-          `<span class="col-4 bold manbrew__load_from_url pl-0 clickable"/>`,
+          `<span class="col-4 font-bold manbrew__load_from_url pl-0 clickable"/>`,
         )
           .text(it._brewName)
           .click(() =>
@@ -11245,7 +13599,7 @@ BrewUtil = {
               );
 
               const eleLi = $(`<li class="lst--border"><label class="mb-0 flex-v-center row">
-                                      <span class="col-6 bold">${it.name}</span>
+                                      <span class="col-6 font-bold">${it.name}</span>
                                       <span class="col-5 text-center">${dispCat}${it.extraInfo}</span>
                                       <span class="pr-0 col-1 text-center"><input type="checkbox"></span>
                                   </label></li>`)[0];

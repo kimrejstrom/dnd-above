@@ -31,7 +31,7 @@ export const About: React.FC = () => {
         </p>
         <button className="block mx-auto mt-8" onClick={updateAssets}>
           <svg
-            className="inline-block fill-current h-4 w-4 text-white mr-2"
+            className="inline-block fill-current h-4 w-4 dark:text-white mr-2"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             width="24"
@@ -79,7 +79,7 @@ export const About: React.FC = () => {
               Report a problem
             </a>
           </div>
-          <p className="text-xs text-white opacity-50 mt-2">
+          <p className="text-xs dark:text-white opacity-50 mt-2">
             © 2020 Kim Rejström
           </p>
         </div>

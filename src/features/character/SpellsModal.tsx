@@ -43,9 +43,11 @@ const SpellsModal = (props: Props) => {
 
   const filteredSpells = ALL_SPELLS.filter(spell => {
     if (spell && spell.classes) {
-      const mainClass = spell.classes.fromClassList.some(
-        entry => entry.name === character.classData.classElement,
-      );
+      const mainClass =
+        spell.classes.fromClassList &&
+        spell.classes.fromClassList.some(
+          entry => entry.name === character.classData.classElement,
+        );
       const variantClass =
         spell.classes.fromClassListVariant &&
         spell.classes.fromClassListVariant!.some(

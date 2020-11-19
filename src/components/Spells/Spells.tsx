@@ -18,6 +18,7 @@ interface Props {
 
 const handleSpecialCell = (cell: Cell<object>) => {
   const cellType = cell.column.id;
+  const mainClass = cell.value?.fromClassList ? cell.value?.fromClassList : [];
 
   switch (cellType) {
     case 'time':
@@ -38,14 +39,13 @@ const handleSpecialCell = (cell: Cell<object>) => {
     case 'classes':
       return (
         <div>
-          {cell.value &&
-            cell.value.fromClassList
-              .concat(cell.value.fromClassListVariant)
-              .filter(
-                (elem: any) => isDefined(elem) && !elem.source.includes('UA'),
-              )
-              .map((elem: any) => elem.name)
-              .join(', ')}
+          {mainClass
+            .concat(cell.value.fromClassListVariant)
+            .filter(
+              (elem: any) => isDefined(elem) && !elem.source.includes('UA'),
+            )
+            .map((elem: any) => elem.name)
+            .join(', ')}
         </div>
       );
 
