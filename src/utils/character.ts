@@ -3,7 +3,15 @@ import {
   StatsTypes,
 } from 'features/character/characterListSlice';
 import _, { mapValues } from 'lodash';
-import { ClassElement, ClassTableGroup, Title } from 'models/class';
+import {
+  ArmorClass,
+  ArmorEnum,
+  ClassClassFeature,
+  ClassElement,
+  ClassTableGroup,
+  SubclassFeature,
+  Title,
+} from 'models/class';
 import {
   PLAYABLE_CLASSES,
   PLAYABLE_RACES,
@@ -12,6 +20,7 @@ import {
   ALL_SPELLS,
   FEATS,
   LANGUAGES,
+  CLASSES,
 } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
@@ -94,15 +103,57 @@ export const getAllClassFeatures = (
   className: string,
   subClassName: string,
 ) => {
+  const relevantClassFeatures = getClassFeatures(className);
+  const relevantSubClassFeatures = getSubClassFeatures(className, subClassName);
+  return [
+    ..._.flatten(relevantClassFeatures),
+    ..._.flatten(relevantSubClassFeatures),
+  ];
+};
+
+export const getClassFeatures = (className: string) => {
+  const baseClass = getClass(className);
+  const classFeatures = (CLASSES as any)[className.toLowerCase()]
+    .classFeature as ClassClassFeature[];
+  const relevantClassFeatures = classFeatures
+    .filter(feature => !feature.source.includes('UA'))
+    .filter(feature =>
+      baseClass?.classFeatures.some(feat =>
+        typeof feat === 'string'
+          ? parseClassFeatureString(feat) === feature.name
+          : parseClassFeatureString(feat.classFeature) === feature.name,
+      ),
+    );
+  return relevantClassFeatures;
+};
+
+export const getSubClassFeatures = (
+  className: string,
+  subClassName: string,
+) => {
   const baseClass = getClass(className);
   const subclass = baseClass?.subclasses.find(
     subclass => subclass.name === subClassName,
   );
-  return [
-    ..._.flatten(baseClass?.classFeatures!),
-    ..._.flatten(subclass?.subclassFeatures!),
-  ];
+  const subclassFeatures = (CLASSES as any)[className.toLowerCase()]
+    .subclassFeature as SubclassFeature[];
+  const relevantSubClassFeatures = subclassFeatures
+    .filter(feature => !feature.source.includes('UA'))
+    .filter(feature =>
+      subclass?.subclassFeatures!.some(
+        feat =>
+          parseSubClassFeatureString(feat).toLowerCase() ===
+          feature.subclassShortName.toLowerCase(),
+      ),
+    );
+  return relevantSubClassFeatures;
 };
+
+const parseClassFeatureString = (featureString: string) =>
+  featureString.split('|')[0];
+
+const parseSubClassFeatureString = (featureString: string) =>
+  featureString.split('|')[3];
 
 export const getRace = (raceName: string) =>
   PLAYABLE_RACES.find(race => race.name === raceName);
@@ -237,6 +288,17 @@ export const getIncludedProficiencies = (proficiencies: Array<any>): string[] =>
         ),
       ).filter(isDefined)
     : [];
+
+export const mapArmorProficiencies = (
+  armorProfs: Array<ArmorClass | ArmorEnum>,
+): string[] =>
+  armorProfs.map(armor => {
+    if (typeof armor === 'string') {
+      return armor;
+    } else {
+      return armor.proficiency;
+    }
+  });
 
 export const getSpellSlotsPerLevel = (character: CharacterState) => {
   const classElement = getClass(character.classData.classElement);

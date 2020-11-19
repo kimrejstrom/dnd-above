@@ -21,7 +21,6 @@ const AbilitiesSkillsModal = () => {
   const dispatch = useDispatch();
 
   const onASIChange = (e: ChangeEvent<HTMLInputElement>, stat: StatsTypes) => {
-    console.log(e.currentTarget);
     dispatch(
       updateASI({
         id: character.id!,

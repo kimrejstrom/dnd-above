@@ -12,6 +12,7 @@ import {
   getMaxHP,
   getHitDice,
   isSpellCaster,
+  mapArmorProficiencies,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase, Race } from 'models/race';
@@ -752,7 +753,9 @@ const characterListSlice = createSlice({
           classData: {
             ...character.data.classData,
             standardClassArmorProficiencies:
-              classElement?.startingProficiencies.armor! || [],
+              mapArmorProficiencies(
+                classElement?.startingProficiencies.armor!,
+              ) || [],
             standardClassWeaponProficiencies:
               classElement?.startingProficiencies.weapons! || [],
             standardClassToolProficiencies: getIncludedProficiencies(

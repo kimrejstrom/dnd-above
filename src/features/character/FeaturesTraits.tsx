@@ -1,8 +1,14 @@
 import React from 'react';
 import { CharacterState } from 'features/character/characterListSlice';
-import { ClassFeature, SubclassFeature } from 'models/class';
 import { Race } from 'models/race';
-import { getClass, getRace, getSubClass, getFeat } from 'utils/character';
+import {
+  getClass,
+  getRace,
+  getSubClass,
+  getFeat,
+  getClassFeatures,
+  getSubClassFeatures,
+} from 'utils/character';
 import { ThemeMode } from 'features/theme/themeSlice';
 import characterDark from 'images/character-dark.png';
 import characterLight from 'images/character-light.png';
@@ -20,54 +26,43 @@ interface Props {
   character: CharacterState;
 }
 
-const renderClassFeatures = (classFeatures: ClassFeature[][]) => {
-  return classFeatures.map((feature, level) => {
-    return (
-      <div>
-        {feature.map(feat => {
-          if (feat.source !== 'UAClassFeatureVariants') {
-            return (
-              <div
-                key={feat.name}
-                className="custom-border custom-border-thin my-2"
-              >
-                <DetailedEntryTrigger data={feat} extraClassName="font-bold">
-                  {`Level ${level + 1} – ${feat.name}`}
-                </DetailedEntryTrigger>
-              </div>
-            );
-          } else {
-            return undefined;
-          }
-        })}
-      </div>
-    );
+const renderClassFeatures = (className: string) => {
+  const classFeatures = getClassFeatures(className);
+  return classFeatures.map(feature => {
+    if (!feature.source.includes('UA')) {
+      return (
+        <div
+          key={`${feature.name}-${feature.level}`}
+          className="custom-border custom-border-thin my-2"
+        >
+          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+            {`Level ${feature.level} – ${feature.name}`}
+          </DetailedEntryTrigger>
+        </div>
+      );
+    } else {
+      return undefined;
+    }
   });
 };
 
-const renderSubClassFeatures = (classFeatures: SubclassFeature[][]) => {
-  return classFeatures.map((feature, i) => {
-    const actualFeatures = feature[0].entries;
-    return (
-      <div key={i}>
-        {actualFeatures.map(feat => {
-          if (typeof feat !== 'string') {
-            return (
-              <div
-                key={feat.name}
-                className="custom-border custom-border-thin my-2"
-              >
-                <DetailedEntryTrigger data={feat} extraClassName="font-bold">
-                  {feat.name}
-                </DetailedEntryTrigger>
-              </div>
-            );
-          } else {
-            return undefined;
-          }
-        })}
-      </div>
-    );
+const renderSubClassFeatures = (className: string, subClassName: string) => {
+  const subclassFeatures = getSubClassFeatures(className, subClassName);
+  return subclassFeatures.map(feature => {
+    if (!feature.source.includes('UA')) {
+      return (
+        <div
+          key={`${feature.name}-${feature.level}`}
+          className="custom-border custom-border-thin my-2"
+        >
+          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+            {`Level ${feature.level} – ${feature.name}`}
+          </DetailedEntryTrigger>
+        </div>
+      );
+    } else {
+      return undefined;
+    }
   });
 };
 
@@ -134,9 +129,9 @@ const FeaturesTraits = ({ character }: Props) => {
         </ContentBlock>
         <ContentBlock name="class">
           <div className="text-lg">{classElement!.name} features</div>
-          {renderClassFeatures(classElement!.classFeatures)}
+          {renderClassFeatures(classElement!.name)}
           <div className="text-lg">{subClassElement!.name} features</div>
-          {renderSubClassFeatures(subClassElement!.subclassFeatures)}
+          {renderSubClassFeatures(classElement!.name, subClassElement!.name)}
         </ContentBlock>
         <ContentBlock name="race">
           <div

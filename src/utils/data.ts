@@ -3,7 +3,7 @@ import AI from 'data/spells/spells-ai.json';
 import GGR from 'data/spells/spells-ggr.json';
 import LLK from 'data/spells/spells-llk.json';
 import PHB from 'data/spells/spells-phb.json';
-import SCAG from 'data/spells/spells-scag.json';
+import TCE from 'data/spells/spells-tce.json';
 import XGE from 'data/spells/spells-xge.json';
 // Classes
 import artificer from 'data/class/class-artificer.json';
@@ -69,7 +69,7 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     : 0;
 };
 
-const SPELLS = { AI, GGR, LLK, PHB, SCAG, XGE };
+const SPELLS = { AI, GGR, LLK, PHB, TCE, XGE };
 export const ALL_SPELLS = Object.values(SPELLS)
   .map(spell => spell.spell)
   .flat()

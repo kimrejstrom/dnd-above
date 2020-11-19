@@ -4,7 +4,7 @@ import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useState } from 'react';
-import { ClassElement, SkillProficiency } from 'models/class';
+import { ClassElement, Skill } from 'models/class';
 import { filterSources, PLAYABLE_CLASSES } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import ClassBase from 'pages/Create/ClassBase';
@@ -14,7 +14,12 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer } from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
 import _ from 'lodash';
-import { getClass, getSubClass } from 'utils/character';
+import {
+  getClass,
+  getClassFeatures,
+  getSubClass,
+  getSubClassFeatures,
+} from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 
 const ClassBuilder = ({ url }: { url: string }) => {
@@ -37,7 +42,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
       history.push(`${url}/step-3`);
     };
 
-    const classProficiencies: SkillProficiency[] =
+    const classProficiencies: Skill[] =
       classElement?.startingProficiencies.skills || [];
 
     return (
@@ -125,15 +130,15 @@ const ClassBuilder = ({ url }: { url: string }) => {
             <h2>Select Sub Class: {selectedClass.subclassTitle}</h2>
             {selectedClass.subclasses
               .filter(subclass => filterSources(subclass))
-              .map(feature => (
-                <details key={feature.name}>
+              .map(subclass => (
+                <details key={subclass.name}>
                   <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
-                    <span className="text-xl">{feature.name}</span>
+                    <span className="text-xl">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
                       onClick={() =>
                         onSelect({
                           classElement: selectedClass.name,
-                          subClass: feature.name,
+                          subClass: subclass.name,
                         })
                       }
                       extraClassName="absolute right-0 mr-2"
@@ -141,8 +146,8 @@ const ClassBuilder = ({ url }: { url: string }) => {
                       Select
                     </StyledButton>
                   </summary>
-                  {feature.subclassFeatures.map(feat =>
-                    feat.map((entry, index) => (
+                  {getSubClassFeatures(selectedClass.name, subclass.name).map(
+                    (entry, index) => (
                       <div key={index}>
                         {entry.entries.map((innerEntry, i) => (
                           <div key={i} className="dnd-body">
@@ -150,7 +155,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                           </div>
                         ))}
                       </div>
-                    )),
+                    ),
                   )}
                 </details>
               ))}
@@ -171,7 +176,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
                         filter: 'grayscale(80%)',
                       }}
                     />
-                    {classElement.name}
+                    {`${classElement.name} (${classElement.source})`}
                   </span>
                   <StyledButton
                     onClick={() => setselectedClass(classElement)}
@@ -189,21 +194,20 @@ const ClassBuilder = ({ url }: { url: string }) => {
                     <TabPanel className="overflow-y-scroll px-2">
                       <Entry entry={classElement} />
                       <ClassBase cls={classElement} />
-                      {classElement.classFeatures.map((feature, level) =>
-                        feature.map(feat => {
-                          return (
-                            <div
-                              key={feat.name}
-                              className="custom-border custom-border-thin p-4 my-2"
-                            >
-                              <div className="font-bold">{`Level ${level +
-                                1} – ${feat.name}:`}</div>
-                              {feat.entries.map((entry, index) => {
-                                return <Entry key={index} entry={entry} />;
-                              })}
-                            </div>
-                          );
-                        }),
+                      {getClassFeatures(classElement.name).map(
+                        (feature, level) => (
+                          <div
+                            key={feature.name}
+                            className="custom-border custom-border-thin p-4 my-2"
+                          >
+                            <div className="font-bold">{`Level ${level + 1} – ${
+                              feature.name
+                            }:`}</div>
+                            {feature.entries.map((entry, index) => {
+                              return <Entry key={index} entry={entry} />;
+                            })}
+                          </div>
+                        ),
                       )}
                     </TabPanel>
                     <TabPanel className="overflow-y-scroll px-2">

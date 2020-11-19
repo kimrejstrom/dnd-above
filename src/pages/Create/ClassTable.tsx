@@ -1,12 +1,17 @@
 import React from 'react';
 import {
+  ClassClassFeature,
   ClassElement,
   ClassSubclass,
   ClassTableGroup,
+  SubclassFeature,
   SubclassTableGroup,
 } from 'models/class';
 import Entry from 'components/Entry/Entry';
 import { Parser } from 'utils/mainRenderer';
+import { getAllClassFeatures } from 'utils/character';
+import { isDefined } from 'ts-is-present';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {
   cls: ClassElement;
@@ -48,16 +53,34 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
     return cells;
   };
 
-  return cls.classFeatures.map((lvlFeatures, ixLvl) => {
-    const lvlFeaturesFilt = lvlFeatures.filter(
-      it => it.name && it.type !== 'inset',
-    );
+  const allClassFeatures: Array<(
+    | ClassClassFeature
+    | SubclassFeature
+  )[]> = Array(20).fill([]);
+  getAllClassFeatures(cls.name, subcls.name).forEach(feature => {
+    allClassFeatures[feature.level - 1].push(feature);
+  });
+
+  return allClassFeatures.map((lvlFeatures, ixLvl) => {
+    const lvlFeaturesFiltered = lvlFeatures
+      .map(feature => (feature.level === ixLvl + 1 ? feature : undefined))
+      .filter(isDefined);
     return (
       <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm text-center">
         <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
         <td className="text-left">
-          {lvlFeaturesFilt.length
-            ? lvlFeaturesFilt.map(it => it.name).join(', ')
+          {lvlFeaturesFiltered.length
+            ? lvlFeaturesFiltered.map((feature, i) => {
+                const lastIndex = lvlFeaturesFiltered.length - 1;
+                return (
+                  <DetailedEntryTrigger
+                    extraClassName={'inline'}
+                    data={feature}
+                  >
+                    {i === lastIndex ? `${feature.name}` : `${feature.name}, `}
+                  </DetailedEntryTrigger>
+                );
+              })
             : `\u2014`}
         </td>
         {cls.classTableGroups &&
