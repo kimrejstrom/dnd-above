@@ -281,7 +281,7 @@ const MOE: CharacterListItem = {
     background: 'Far Traveler',
     alignment: 'CG',
     characteristicsSource: 'Far Traveler',
-    imageUrl: '/img/races/halfling (ghostwise).png',
+    imageUrl: 'https://i.imgur.com/fX2c9M5.png',
     hair: 'Orange',
     skin: 'Greenish',
     eyes: 'Orange',
