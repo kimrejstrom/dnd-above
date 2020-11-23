@@ -1,31 +1,25 @@
-import React, { Component, useState } from 'react';
-import netlifyIdentity, { User } from 'netlify-identity-widget';
-import { Redirect, Route, RouteProps, useHistory } from 'react-router-dom';
+import React from 'react';
+import netlifyIdentity from 'netlify-identity-widget';
+import { useHistory, useLocation } from 'react-router-dom';
 import StyledButton from 'components/StyledButton/StyledButton';
+import { useAuth } from 'utils/auth';
+import beholder from 'images/beholder-dark.png';
 
 interface NetlifyAuth {
-  isAuthenticated: boolean;
-  user: User | undefined;
   authenticate(callback: any): void;
   signout(callback: any): void;
 }
 
-const netlifyAuth: NetlifyAuth = {
-  isAuthenticated: false,
-  user: undefined,
+export const netlifyAuth: NetlifyAuth = {
   authenticate(callback: any) {
-    this.isAuthenticated = true;
     netlifyIdentity.open();
     netlifyIdentity.on('login', user => {
-      this.user = user;
       callback(user);
     });
   },
   signout(callback: any) {
-    this.isAuthenticated = false;
     netlifyIdentity.logout();
     netlifyIdentity.on('logout', () => {
-      this.user = undefined;
       callback();
     });
   },
@@ -33,12 +27,13 @@ const netlifyAuth: NetlifyAuth = {
 
 export const AuthButton = () => {
   const history = useHistory();
-  return netlifyAuth.isAuthenticated ? (
+  const auth = useAuth();
+  return auth?.user ? (
     <p>
       Welcome!{' '}
       <StyledButton
         onClick={() => {
-          netlifyAuth.signout(() => history.push('/'));
+          auth.signout(() => history.push('/'));
         }}
       >
         Sign out
@@ -49,7 +44,7 @@ export const AuthButton = () => {
       You are not logged in.{' '}
       <StyledButton
         onClick={() => {
-          netlifyAuth.authenticate(() => history.push('/'));
+          auth?.authenticate(() => history.push('/'));
         }}
       >
         Log In
@@ -58,46 +53,36 @@ export const AuthButton = () => {
   );
 };
 
-export const Login = (props: { location: { state: { from: Location } } }) => {
-  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-  // eslint-disable-next-line no-debugger
-  console.log('redirectToReferrer', redirectToReferrer);
-  const login = () => {
-    netlifyAuth.authenticate(() => {
-      setRedirectToReferrer(true);
+export const Login = () => {
+  let history = useHistory();
+  let location = useLocation();
+  let auth = useAuth();
+
+  let { from } = (location.state as any) || { from: { pathname: '/' } };
+  let login = () => {
+    // auth?.authenticate(() => {
+    //   history.replace(from);
+    // });
+    auth?.fakeLogin(() => {
+      history.replace(from);
     });
   };
 
-  const { from } = props.location.state || { from: { pathname: '/' } };
-  console.log('from', from);
-
-  //   if (redirectToReferrer) return <Redirect to={from} />;
-
   return (
-    <div>
-      <p>You must log in to view the page at {from.pathname}</p>
-      <button onClick={login}>Log in</button>
+    <div className="fixed bg-tertiary-light w-full h-full top-0 left-0 flex flex-col items-center justify-center">
+      <div className="p-20 custom-border bg-yellow-100 flex flex-col items-center justify-center">
+        <img
+          src={beholder}
+          className="h-40 w-40 px-2 py-2 shape-shadow"
+          alt="logo"
+        />
+        <div className="text-center mb-6">
+          <h1>D&amp;D Above</h1>
+          <h3>The ultimate D&D Character Builder and Character Sheet</h3>
+          <div>You must log in to view the page</div>
+        </div>
+        <StyledButton onClick={login}>Log in</StyledButton>
+      </div>
     </div>
-  );
-};
-
-export const PrivateRoute = ({ component, ...rest }: RouteProps) => {
-  console.log(netlifyAuth.isAuthenticated);
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        netlifyAuth.isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location },
-            }}
-          />
-        )
-      }
-    />
   );
 };

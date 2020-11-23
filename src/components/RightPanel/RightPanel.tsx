@@ -12,11 +12,13 @@ import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { togglePanel } from 'features/settings/settingsSlice';
+import { useAuth } from 'utils/auth';
 
 interface Props {}
 
 const RightPanel = (props: Props) => {
   const dispatch = useDispatch();
+  const auth = useAuth();
   const theme = useSelector((state: RootState) => state.theme);
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
@@ -32,7 +34,7 @@ const RightPanel = (props: Props) => {
     dispatch(setSelectedIndex(updatedPanel));
   };
 
-  return (
+  return auth?.user ? (
     <>
       <button
         className="hidden sm:block absolute"
@@ -126,6 +128,8 @@ const RightPanel = (props: Props) => {
         </div>
       </div>
     </>
+  ) : (
+    <></>
   );
 };
 

@@ -25,8 +25,8 @@ export const About: React.FC = () => {
       </div>
       <div className="text-center font-sans">
         <p className="mx-auto w-full m-6">
-          Welcome to D&D Above. The ultimate D&D Character Builder and Character
-          Sheet made using React and Typescript. See{' '}
+          Welcome to D&amp;D Above. The ultimate D&D Character Builder and
+          Character Sheet made using React and Typescript. See{' '}
           <a
             href="https://github.com/kimrejstrom/dnd-above"
             target="_blank"
