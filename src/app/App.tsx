@@ -1,6 +1,11 @@
 import React from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import { Header } from 'components/Header/Header';
 import { Modal } from 'components/Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +21,7 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
+import netlifyIdentity from 'netlify-identity-widget';
 
 // Google Analytics
 initializeGA();
@@ -60,7 +66,16 @@ const App: React.FC = () => {
                 {/* Main content */}
                 <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-4 h-full">
                   <Switch>
-                    <Route exact path="/" component={withTracker(Main)} />
+                    {/* <PrivateRoute path="/" component={withTracker(Main)} /> */}
+                    {/* <Route path="/login" component={withTracker(Login)} /> */}
+                    <Route exact path="/">
+                      {netlifyIdentity.currentUser() ? (
+                        <Redirect to="/dashboard" />
+                      ) : (
+                        <About />
+                      )}
+                    </Route>
+                    <Route path="/dashboard" component={withTracker(Main)} />
                     <Route path="/about" component={withTracker(About)} />
                     <Route path="/create" component={withTracker(Create)} />
                     <Route path="/books" component={withTracker(Books)} />
