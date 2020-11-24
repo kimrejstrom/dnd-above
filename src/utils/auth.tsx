@@ -1,12 +1,32 @@
 import React, { useState, useContext, createContext } from 'react';
-import { User } from 'netlify-identity-widget';
-import { netlifyAuth } from 'app/Auth';
+import netlifyIdentity, { User } from 'netlify-identity-widget';
 
+// Netlify Auth Service
+interface NetlifyAuth {
+  authenticate(callback: any): void;
+  signout(callback: any): void;
+}
+
+const netlifyAuth: NetlifyAuth = {
+  authenticate(callback: any) {
+    netlifyIdentity.open();
+    netlifyIdentity.on('login', user => {
+      callback(user);
+    });
+  },
+  signout(callback: any) {
+    netlifyIdentity.logout();
+    netlifyIdentity.on('logout', () => {
+      callback();
+    });
+  },
+};
+
+// Auth Hook
 interface IAuthContext {
   user: User | null;
   authenticate: (cb: () => void) => void;
   signout: (cb: () => void) => void;
-  fakeLogin: (cb: () => void) => void;
 }
 
 const AuthContext = createContext<IAuthContext | null>(null);
@@ -26,7 +46,8 @@ export const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-  const [user, setUser] = useState<User | null>(null);
+  const initialUser = netlifyIdentity.currentUser();
+  const [user, setUser] = useState<User | null>(initialUser);
 
   const authenticate = (cb: () => void) => {
     return netlifyAuth.authenticate((user: User) => {
@@ -42,16 +63,10 @@ function useProvideAuth() {
     });
   };
 
-  const fakeLogin = (cb: () => void) => {
-    setUser({ email: 'mr.rejstrom@gmai.com', id: '111' } as User);
-    cb();
-  };
-
   // Return the user object and auth methods
   return {
     user,
     authenticate,
     signout,
-    fakeLogin,
   };
 }

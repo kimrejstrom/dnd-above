@@ -1,29 +1,8 @@
 import React from 'react';
-import netlifyIdentity from 'netlify-identity-widget';
 import { useHistory, useLocation } from 'react-router-dom';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { useAuth } from 'utils/auth';
 import beholder from 'images/beholder-dark.png';
-
-interface NetlifyAuth {
-  authenticate(callback: any): void;
-  signout(callback: any): void;
-}
-
-export const netlifyAuth: NetlifyAuth = {
-  authenticate(callback: any) {
-    netlifyIdentity.open();
-    netlifyIdentity.on('login', user => {
-      callback(user);
-    });
-  },
-  signout(callback: any) {
-    netlifyIdentity.logout();
-    netlifyIdentity.on('logout', () => {
-      callback();
-    });
-  },
-};
 
 export const AuthButton = () => {
   const history = useHistory();
@@ -54,16 +33,13 @@ export const AuthButton = () => {
 };
 
 export const Login = () => {
-  let history = useHistory();
-  let location = useLocation();
-  let auth = useAuth();
+  const history = useHistory();
+  const location = useLocation();
+  const auth = useAuth();
 
-  let { from } = (location.state as any) || { from: { pathname: '/' } };
-  let login = () => {
-    // auth?.authenticate(() => {
-    //   history.replace(from);
-    // });
-    auth?.fakeLogin(() => {
+  const { from } = (location.state as any) || { from: { pathname: '/' } };
+  const login = () => {
+    auth?.authenticate(() => {
       history.replace(from);
     });
   };

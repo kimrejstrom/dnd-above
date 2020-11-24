@@ -11,7 +11,7 @@ export const UpdateNotification: React.FC = () => {
   return isUpdateAvailable ? (
     <div className="fixed w-full bottom-0 z-50">
       <div
-        className="p-2 bg-yellow-800 items-center text-yellow-100 leading-none flex justify-center items-center"
+        className="p-2 bg-yellow-800 text-yellow-100 leading-none flex justify-center items-center"
         role="alert"
       >
         <span className="flex rounded-full bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
