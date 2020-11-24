@@ -8,6 +8,10 @@ import { store, persistor } from 'app/store';
 import { apocalypseHandler } from 'apocalypseHandler';
 import { ServiceWorkerProvider } from 'useServiceWorker';
 import { Loading } from 'components/Loading/Loading';
+import netlifyIdentity from 'netlify-identity-widget';
+
+// You must run this once before trying to interact with the widget
+netlifyIdentity.init();
 
 render(
   <Provider store={store}>
