@@ -65,7 +65,7 @@ const Skills = ({ character }: Props) => {
           ? abilityMod + getProficiencyBonus(character.gameData.level)
           : abilityMod;
         return (
-          <div className="flex flex-wrap relative p-1">
+          <div key={key} className="flex flex-wrap relative p-1">
             <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full h-8">
               <div
                 className={`${

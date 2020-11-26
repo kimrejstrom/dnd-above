@@ -26,6 +26,7 @@ const Sidebar = () => {
     <div className="bg-tertiary-dark flex-none w-24 p-6 hidden xl:block font-sans">
       {characterList.map(character => (
         <button
+          key={character.id}
           onClick={() => {
             dispatch(setSelectedCharacter(character.id));
             history.push(`/`);

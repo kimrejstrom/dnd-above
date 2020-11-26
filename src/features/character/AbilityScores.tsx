@@ -18,7 +18,10 @@ const AbilityScores = ({ character }: Props) => {
         const score = calculateStats(character)[key as StatsTypes];
         const mod = getAbilityMod(score);
         return (
-          <div className="mb-6 mx-2 sm:mx-0 sm:mr-1 relative w-20 h-20 bg-yellow-100 dark:bg-primary-dark custom-border flex flex-col items-center">
+          <div
+            key={key}
+            className="mb-6 mx-2 sm:mx-0 sm:mr-1 relative w-20 h-20 bg-yellow-100 dark:bg-primary-dark custom-border flex flex-col items-center"
+          >
             <div className="absolute top-0 -mt-2 uppercase text-xs">
               {value}
             </div>

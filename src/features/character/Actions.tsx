@@ -29,6 +29,7 @@ const getActions = (filterCondition: string) => {
     )
     .map(actionElem => (
       <DetailedEntryTrigger
+        key={actionElem.name}
         data={actionElem}
         extraClassName="inline mr-1 dnd-body"
       >
@@ -48,7 +49,11 @@ const getSpellsByCastingTime = (
       sp => sp.time.filter(entry => entry.unit === filterCondition).length,
     )
     .map(sp => (
-      <DetailedEntryTrigger extraClassName="inline mr-1 dnd-body" data={sp}>
+      <DetailedEntryTrigger
+        key={sp.name}
+        extraClassName="inline mr-1 dnd-body"
+        data={sp}
+      >
         {`${sp.name}, `}
       </DetailedEntryTrigger>
     ));
@@ -141,6 +146,7 @@ const Actions = ({ character }: Props) => {
             )
             .map(actionElem => (
               <DetailedEntryTrigger
+                key={actionElem.name}
                 data={actionElem}
                 extraClassName="inline mr-1 dnd-body"
               >

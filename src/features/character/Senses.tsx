@@ -37,7 +37,7 @@ const Senses = ({ character }: Props) => {
               ? abilityMod + getProficiencyBonus(character.gameData.level)
               : abilityMod) + 10;
           return (
-            <div className="flex w-full p-1">
+            <div key={key} className="flex w-full p-1">
               <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full h-8">
                 <div className="text-lg ml-3 flex-grow">{key}</div>
                 <div className="text-md ml-1">({value.ability})</div>

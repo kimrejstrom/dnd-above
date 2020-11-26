@@ -95,7 +95,7 @@ const RightPanel = (props: Props) => {
               </TabPanel>
               <TabPanel className="overflow-y-scroll px-2">
                 {ACTIONS.action.map(actionElement => (
-                  <TextBox>
+                  <TextBox key={actionElement.name}>
                     <Entry entry={actionElement} />
                   </TextBox>
                 ))}

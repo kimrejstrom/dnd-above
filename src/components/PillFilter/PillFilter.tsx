@@ -29,6 +29,7 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
       <div className="flex justify-center">
         {['all'].concat(pills).map(pill => (
           <button
+            key={pill}
             onClick={() => setSelected(pill)}
             className={`${
               selected === pill

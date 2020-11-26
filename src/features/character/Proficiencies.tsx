@@ -43,6 +43,7 @@ const Proficiencies = ({ character }: Props) => {
               const lastIndex = getLanguageProficiencies(character).length - 1;
               return (
                 <DetailedEntryTrigger
+                  key={`${lang}-${i}`}
                   extraClassName={'inline'}
                   data={getLanguage(lang)}
                   renderer={mainRenderer.language.getCompactRenderedString(

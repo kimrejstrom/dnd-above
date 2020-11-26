@@ -188,7 +188,10 @@ const ConditionsDefenses = ({ character }: Props) => {
           {character.gameData.defenses.length ? (
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.defenses.map(defense => (
-                <li className="leading-tight">{`${defense.name} (${defense.type})`}</li>
+                <li
+                  key={defense.name}
+                  className="leading-tight"
+                >{`${defense.name} (${defense.type})`}</li>
               ))}
             </ul>
           ) : (
@@ -215,7 +218,9 @@ const ConditionsDefenses = ({ character }: Props) => {
           {character.gameData.conditions.length ? (
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.conditions.map(condition => (
-                <li className="leading-tight">{condition}</li>
+                <li key={condition} className="leading-tight">
+                  {condition}
+                </li>
               ))}
             </ul>
           ) : (

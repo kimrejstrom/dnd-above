@@ -33,6 +33,7 @@ const SavingThrows = ({ character }: Props) => {
             : abilityMod;
           return (
             <div
+              key={key}
               className="flex flex-wrap relative p-1"
               style={{ flex: '0 50%' }}
             >
