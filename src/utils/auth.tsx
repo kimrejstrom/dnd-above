@@ -22,6 +22,13 @@ const netlifyAuth: NetlifyAuth = {
   },
 };
 
+// Refresh JWT Token
+netlifyIdentity.on('init', async (user: User | null) => {
+  if (user) {
+    await netlifyIdentity.refresh();
+  }
+});
+
 // Auth Hook
 interface IAuthContext {
   user: User | null;
