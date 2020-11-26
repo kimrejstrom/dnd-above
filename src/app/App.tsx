@@ -1,6 +1,12 @@
 import React from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  RouteProps,
+} from 'react-router-dom';
 import { Header } from 'components/Header/Header';
 import { Modal } from 'components/Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,9 +22,34 @@ import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
+import { AuthContextProvider, useAuth } from 'utils/auth';
+import { Login } from 'app/Auth';
 
 // Google Analytics
 initializeGA();
+
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+function PrivateRoute({ children, ...rest }: RouteProps) {
+  let auth = useAuth();
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        auth?.user ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 
 const App: React.FC = () => {
   // Global Modal state
@@ -42,36 +73,44 @@ const App: React.FC = () => {
       }`}
     >
       <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
-        <Router>
-          <ErrorBoundary>
-            {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-            <main
-              {...handlers}
-              className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark"
-            >
-              <UpdateNotification />
-              <Header />
-              <div
-                className="flex w-full"
-                style={{ minHeight: 'calc(100vh - 5rem)' }}
+        <AuthContextProvider>
+          <Router>
+            <ErrorBoundary>
+              <main
+                {...handlers}
+                className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark"
               >
-                <Sidebar />
-                {/* Main content */}
-                <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-4 h-full">
-                  <Switch>
-                    <Route exact path="/" component={withTracker(Main)} />
-                    <Route path="/about" component={withTracker(About)} />
-                    <Route path="/create" component={withTracker(Create)} />
-                    <Route path="/books" component={withTracker(Books)} />
-                  </Switch>
+                <UpdateNotification />
+                <Header />
+                <div
+                  className="flex w-full"
+                  style={{ minHeight: 'calc(100vh - 5rem)' }}
+                >
+                  <Sidebar />
+                  {/* Main content */}
+                  <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-4 h-full">
+                    {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                    <Switch>
+                      <PrivateRoute exact path="/">
+                        <Main />
+                      </PrivateRoute>
+                      <PrivateRoute path="/create">
+                        <Create />
+                      </PrivateRoute>
+                      <PrivateRoute path="/books">
+                        <Books />
+                      </PrivateRoute>
+                      <Route path="/login" component={withTracker(Login)} />
+                      <Route path="/about" component={withTracker(About)} />
+                    </Switch>
+                  </div>
+                  <Modal title={title} content={content} />
+                  <RightPanel />
                 </div>
-                <Modal title={title} content={content} />
-                <RightPanel />
-              </div>
-            </main>
-          </ErrorBoundary>
-        </Router>
+              </main>
+            </ErrorBoundary>
+          </Router>
+        </AuthContextProvider>
       </div>
     </div>
   );

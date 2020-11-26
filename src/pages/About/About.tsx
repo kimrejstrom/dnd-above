@@ -1,20 +1,32 @@
 import React from 'react';
-import logo from 'images/logo.svg';
+import { useSelector } from 'react-redux';
+import dudeDark from 'images/dude-dark.png';
+import dudeLight from 'images/dude-light.png';
 import { useServiceWorker, IServiceWorkerContext } from 'useServiceWorker';
+import { RootState } from 'app/rootReducer';
+import { ThemeMode } from 'features/theme/themeSlice';
+import { AuthButton } from 'app/Auth';
 
 export const About: React.FC = () => {
   const { updateAssets } = useServiceWorker() as IServiceWorkerContext;
+  // Get theme from Redux
+  const theme = useSelector((state: RootState) => state.theme);
   return (
     <div className="container mx-auto mt-8 max-w-xs pt-4">
+      <div className="flex justify-center items-center flex-shrink-0 text-primary-dark dark:text-primary-light">
+        <div className="flex items-center text-2xl tracking-tighter leading-none">
+          <img
+            src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
+            className="mr-2 h-10"
+            alt="logo"
+          />
+          <div>D&amp;D Above</div>
+        </div>
+      </div>
       <div className="text-center font-sans">
-        <img
-          src={logo}
-          className="m-auto rounded-lg bg-secondary-dark w-24 p-4 shape-shadow"
-          alt="logo"
-        />
         <p className="mx-auto w-full m-6">
-          This is an open source, DnD Character Builder and Character Sheet made
-          using React and Typescript. See{' '}
+          Welcome to D&amp;D Above. The ultimate D&D Character Builder and
+          Character Sheet made using React and Typescript. See{' '}
           <a
             href="https://github.com/kimrejstrom/dnd-above"
             target="_blank"
@@ -23,7 +35,10 @@ export const About: React.FC = () => {
           >
             Github
           </a>{' '}
-          for details.
+          for project details.
+        </p>
+        <p className="mx-4">
+          <AuthButton />
         </p>
         <p>
           It is a fully fledged Progressive Web App (PWA) and can thus be added
