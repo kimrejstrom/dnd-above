@@ -27,17 +27,28 @@ const persistConfig = {
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Custom middleware to auto save characterList in the background
+// Custom middleware to auto save characterList in the background with 10 sec debounce
+let saveTimer: any;
+let debounceTime = 10000;
+
+const saveDebounce = (storeAPI: any) => {
+  if (saveTimer) {
+    clearTimeout(saveTimer);
+  }
+
+  saveTimer = setTimeout(() => {
+    storeAPI.dispatch(backgroundSave());
+  }, debounceTime);
+};
+
 const backgroundSaveMiddleware: Middleware = storeAPI => next => action => {
   // Do something in here, when each action is dispatched
   if (
     action.type.includes('characterList') &&
     !action.type.includes('characterList/backgroundSave')
   ) {
-    console.log(action);
     const result = next(action);
-    console.log('Dispatching backgroundSave');
-    storeAPI.dispatch(backgroundSave());
+    saveDebounce(storeAPI);
     return result;
   }
   return next(action);

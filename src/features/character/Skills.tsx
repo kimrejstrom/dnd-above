@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import {
@@ -38,7 +38,7 @@ export const CHARACTER_ABILITIES = {
 export type SkillTypes = keyof typeof CHARACTER_ABILITIES;
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Skills = ({ character }: Props) => {

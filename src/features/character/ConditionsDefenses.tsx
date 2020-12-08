@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   DefenseType,
   addDefense,
   removeDefense,
@@ -17,7 +17,7 @@ import { getSelectedCharacter } from 'app/selectors';
 import _ from 'lodash';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const DefensesModal = () => {

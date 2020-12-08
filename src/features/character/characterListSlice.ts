@@ -46,7 +46,7 @@ export const CHARACTER_STATS = {
 export type StatsTypes = keyof typeof CHARACTER_STATS;
 
 export interface CharacterBase {
-  id?: string;
+  id: string;
   raceData: {
     race: string;
     chosenRaceAbilities: AbilityBase[];
@@ -134,12 +134,12 @@ export interface CharacterGameData {
   };
 }
 
-export type CharacterState = CharacterBase &
+export type CharacterListItem = CharacterBase &
   CharacterCustom &
   CharacterGameData;
-export interface CharacterListItem extends CharacterState {
-  id: string;
-}
+// export interface CharacterListItem extends CharacterState {
+//   id: string;
+// }
 export type CharacterList = {
   id: string;
   loading: 'idle' | 'pending';
@@ -406,6 +406,7 @@ const MOE: CharacterListItem = {
 };
 
 export const randomize = () => {
+  const id = generateID();
   const race = _.sample(PLAYABLE_RACES) as Race;
   const classElement = _.sample(PLAYABLE_CLASSES) as ClassElement;
   const background = _.sample(BACKGROUNDS) as BackgroundElement;
@@ -418,6 +419,7 @@ export const randomize = () => {
     .split(';')
     .map(roll => roll.split('=')[1].trim());
   const randomCharacter: CharacterBase = {
+    id,
     raceData: {
       race: race.name,
       chosenRaceAbilities: race.ability
@@ -555,7 +557,7 @@ export const randomize = () => {
   return randomCharacter;
 };
 
-const generateID = () =>
+export const generateID = () =>
   `id-${Math.random()
     .toString(16)
     .slice(2)}`;
@@ -663,104 +665,93 @@ const characterListSlice = createSlice({
   name: 'characterList',
   initialState,
   reducers: {
-    addCharacter: {
-      reducer(
-        state,
-        action: PayloadAction<CreateCharacterFormState & { id: string }>,
-      ) {
-        const { id, ...character } = action.payload;
-        const raceElement = getRace(character.data.raceData.race);
-        const classElement = getClass(character.data.classData.classElement);
-        const backgroundElement = getBackground(
-          character.data.descriptionData.background,
-        );
-        const allSources = getCookie('allSources') === 'true';
-        const newCharacter: CharacterListItem = {
-          id,
-          allSources,
-          raceData: {
-            ...character.data.raceData,
-            standardRaceAbilities: raceElement?.ability
-              ? [_.omit(raceElement?.ability[0], 'choose')]
-              : [],
-            standardRaceSkillProficiencies: getIncludedProficiencies(
-              raceElement?.skillProficiencies!,
-            ) as SkillTypes[],
-            standardRaceLanguages: getIncludedProficiencies(
-              raceElement?.languageProficiencies!,
-            ),
-          },
-          classData: {
-            ...character.data.classData,
-            standardClassArmorProficiencies:
-              mapArmorProficiencies(
-                classElement?.startingProficiencies.armor!,
-              ) || [],
-            standardClassWeaponProficiencies:
-              classElement?.startingProficiencies.weapons! || [],
-            standardClassToolProficiencies: getIncludedProficiencies(
-              classElement?.startingProficiencies?.tools!,
-            ),
-          },
-          descriptionData: {
-            ...character.data.descriptionData,
-            standardBackgroundSkillProficiencies: getIncludedProficiencies(
-              backgroundElement?.skillProficiencies!,
-            ) as SkillTypes[],
-            standardBackgroundToolProficiencies: getIncludedProficiencies(
-              backgroundElement?.toolProficiencies!,
-            ),
-            standardBackgroundLanguages: getIncludedProficiencies(
-              backgroundElement?.languageProficiencies!,
-            ),
-          },
-          equipmentData: {
-            items: character.data.equipmentData.items,
-          },
-          customData: {
-            customAbilities: [],
-            customSkillProficiencies: [],
-            customArmorProficiencies: [],
-            customWeaponProficiencies: [],
-            customToolProficiencies: [],
-            customLanguages: [],
-          },
-          gameData: {
-            level: 1,
-            feats: [],
-            spells: [],
-            conditions: [],
-            defenses: [],
-            attunements: [],
-            actions: [],
-            extras: [],
-            ac: 0,
-            currentHp:
-              10 +
-              getAbilityMod(
-                calculateStats(character.data as CharacterState).dex,
-              ),
-            currentHd: 1,
-            spellSlots: isSpellCaster(character.data as CharacterState)
-              ? {
-                  1: { used: 0 },
-                  2: { used: 0 },
-                  3: { used: 0 },
-                  4: { used: 0 },
-                  5: { used: 0 },
-                  6: { used: 0 },
-                  7: { used: 0 },
-                  8: { used: 0 },
-                  9: { used: 0 },
-                }
-              : undefined,
-          },
-        };
-        state.list.push({ ...newCharacter });
-      },
-      prepare(payload: CreateCharacterFormState) {
-        return { payload: { id: generateID(), ...payload } };
-      },
+    addCharacter(state, action: PayloadAction<CreateCharacterFormState>) {
+      const { id, ...character } = action.payload.data;
+      const raceElement = getRace(character.raceData.race);
+      const classElement = getClass(character.classData.classElement);
+      const backgroundElement = getBackground(
+        character.descriptionData.background,
+      );
+      const allSources = getCookie('allSources') === 'true';
+      const newCharacter: CharacterListItem = {
+        id,
+        allSources,
+        raceData: {
+          ...character.raceData,
+          standardRaceAbilities: raceElement?.ability
+            ? [_.omit(raceElement?.ability[0], 'choose')]
+            : [],
+          standardRaceSkillProficiencies: getIncludedProficiencies(
+            raceElement?.skillProficiencies!,
+          ) as SkillTypes[],
+          standardRaceLanguages: getIncludedProficiencies(
+            raceElement?.languageProficiencies!,
+          ),
+        },
+        classData: {
+          ...character.classData,
+          standardClassArmorProficiencies:
+            mapArmorProficiencies(classElement?.startingProficiencies.armor!) ||
+            [],
+          standardClassWeaponProficiencies:
+            classElement?.startingProficiencies.weapons! || [],
+          standardClassToolProficiencies: getIncludedProficiencies(
+            classElement?.startingProficiencies?.tools!,
+          ),
+        },
+        descriptionData: {
+          ...character.descriptionData,
+          standardBackgroundSkillProficiencies: getIncludedProficiencies(
+            backgroundElement?.skillProficiencies!,
+          ) as SkillTypes[],
+          standardBackgroundToolProficiencies: getIncludedProficiencies(
+            backgroundElement?.toolProficiencies!,
+          ),
+          standardBackgroundLanguages: getIncludedProficiencies(
+            backgroundElement?.languageProficiencies!,
+          ),
+        },
+        equipmentData: {
+          items: character.equipmentData.items,
+        },
+        customData: {
+          customAbilities: [],
+          customSkillProficiencies: [],
+          customArmorProficiencies: [],
+          customWeaponProficiencies: [],
+          customToolProficiencies: [],
+          customLanguages: [],
+        },
+        gameData: {
+          level: 1,
+          feats: [],
+          spells: [],
+          conditions: [],
+          defenses: [],
+          attunements: [],
+          actions: [],
+          extras: [],
+          ac: 0,
+          currentHp:
+            10 +
+            getAbilityMod(calculateStats(character as CharacterListItem).dex),
+          currentHd: 1,
+          spellSlots: isSpellCaster(character as CharacterListItem)
+            ? {
+                1: { used: 0 },
+                2: { used: 0 },
+                3: { used: 0 },
+                4: { used: 0 },
+                5: { used: 0 },
+                6: { used: 0 },
+                7: { used: 0 },
+                8: { used: 0 },
+                9: { used: 0 },
+              }
+            : undefined,
+        },
+      };
+      state.list.push({ ...newCharacter });
     },
     updateCharacter(state, action: PayloadAction<CreateCharacterFormState>) {
       const character = state.list.find(
@@ -1083,8 +1074,8 @@ const characterListSlice = createSlice({
       }
     });
     builder.addCase(backgroundSave.rejected, (state, { payload }) => {
-      if (state.loading === 'idle') {
-        state.loading = 'pending';
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
       }
     });
   },

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import {
-  CharacterState,
+  CharacterListItem,
   setAc,
   setHp,
 } from 'features/character/characterListSlice';
@@ -24,7 +24,7 @@ import { useForm } from 'react-hook-form';
 import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const ACHP = ({ character }: Props) => {

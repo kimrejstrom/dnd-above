@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledButton from 'components/StyledButton/StyledButton';
 import {
-  CharacterState,
+  CharacterListItem,
   longRest,
   expendHitDie,
 } from 'features/character/characterListSlice';
@@ -16,7 +16,7 @@ import SpellsModal from 'features/character/SpellsModal';
 import FeatsModal from 'features/character/FeatsModal';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const LongRestForm = () => {

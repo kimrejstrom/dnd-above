@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   CHARACTER_STATS,
   expendSpellSlot,
   addSpellSlot,
@@ -26,7 +26,7 @@ import { useForm } from 'react-hook-form';
 import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const SpellSlotCheckBoxes = ({
@@ -76,7 +76,7 @@ const SpellLevel = ({
 }: {
   level: number;
   spells: SpellElement[];
-  character: CharacterState;
+  character: CharacterListItem;
 }) => {
   const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
   return spellSlotsForLevel > 0 || level === 0 ? (
@@ -133,7 +133,7 @@ const SpellCasting = ({ character }: Props) => {
             pills={Object.keys(spellLevels).map(key => `level ${key}`)}
           >
             {Object.entries(spellLevels).map(([key, value]) => (
-              <ContentBlock name={`level ${key}`}>
+              <ContentBlock key={key} name={`level ${key}`}>
                 <SpellLevel
                   character={character}
                   level={Number(key)}

@@ -5,7 +5,7 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
 import {
-  CharacterState,
+  CharacterListItem,
   setCurrentHd,
 } from 'features/character/characterListSlice';
 import { getRace, getHdTotal, getHitDice } from 'utils/character';
@@ -13,7 +13,7 @@ import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Alignment = ({ character }: Props) => {

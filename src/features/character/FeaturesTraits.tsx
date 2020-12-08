@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import { Race } from 'models/race';
 import {
   getClass,
@@ -23,7 +23,7 @@ import _ from 'lodash';
 import ClassTable from 'pages/Create/ClassTable';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const renderClassFeatures = (className: string) => {

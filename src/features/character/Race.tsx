@@ -1,8 +1,8 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Race = ({ character }: Props) => {

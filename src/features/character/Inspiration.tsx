@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
@@ -10,7 +10,7 @@ import proficiencyDark from 'images/proficiency-dark.png';
 import proficiencyLight from 'images/proficiency-light.png';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Inspiration = ({ character }: Props) => {

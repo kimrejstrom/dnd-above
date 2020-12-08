@@ -13,7 +13,7 @@ import {
   updateCharacter,
   addCharacter,
   CHARACTER_STATS,
-  CharacterState,
+  CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import TextBox from 'components/TextBox/TextBox';
@@ -27,6 +27,11 @@ const Summary = ({ url }: { url: string }) => {
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
+  const existingCharacter = useSelector((state: RootState) => {
+    const list = state.characterList;
+    const id = state.createCharacterForm.data.id;
+    return list.list.find(char => char.id === id);
+  });
   const history = useHistory();
   const dispatch = useDispatch();
   const race = getRace(formState.data.raceData.race);
@@ -41,7 +46,7 @@ const Summary = ({ url }: { url: string }) => {
           extraClassName="mr-2"
           disabled={!characterSummaryAvailable}
           onClick={() => {
-            formState.data.id
+            existingCharacter
               ? dispatch(updateCharacter(formState))
               : dispatch(addCharacter(formState));
             history.push(`/`);
@@ -110,7 +115,7 @@ const Summary = ({ url }: { url: string }) => {
                     <ul className="ml-2">
                       {Object.entries(CHARACTER_STATS).map(([key, value]) => {
                         const score = calculateStats(
-                          formState.data as CharacterState,
+                          formState.data as CharacterListItem,
                         )[key as StatsTypes];
                         const mod = getAbilityMod(score);
                         return (
