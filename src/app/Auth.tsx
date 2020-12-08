@@ -3,6 +3,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { useAuth } from 'utils/auth';
 import beholder from 'images/beholder-dark.png';
+import { useDispatch } from 'react-redux';
+import { getCharacterList } from 'features/character/characterListSlice';
 
 export const AuthButton = () => {
   const history = useHistory();
@@ -35,11 +37,13 @@ export const AuthButton = () => {
 export const Login = () => {
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
   const auth = useAuth();
 
   const { from } = (location.state as any) || { from: { pathname: '/' } };
   const login = () => {
     auth?.authenticate(() => {
+      dispatch(getCharacterList());
       history.replace(from);
     });
   };

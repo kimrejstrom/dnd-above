@@ -9,7 +9,7 @@ export const getSelectedCharacter = createSelector(
   [getCharacterList, getSelectedCharacterId],
   (characterList, selectedCharacterId) => {
     return (
-      characterList.find(char => char.id === selectedCharacterId) ||
+      characterList.list.find(char => char.id === selectedCharacterId) ||
       DEAFULT_CHARACTER
     );
   },

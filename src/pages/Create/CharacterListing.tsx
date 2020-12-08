@@ -2,10 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
-import {
-  CharacterList,
-  removeCharacter,
-} from 'features/character/characterListSlice';
+import { removeCharacter } from 'features/character/characterListSlice';
 import {
   setInitialFormData,
   loadInitialFormData,
@@ -15,9 +12,9 @@ import { getCookie } from 'utils/cookie';
 
 const CharacterListing = ({ url }: { url: string }) => {
   const allSources = getCookie('allSources') === 'true';
-  const characterList: CharacterList = useSelector(
+  const characterList = useSelector(
     (state: RootState) => state.characterList,
-  ).filter(character => {
+  ).list.filter(character => {
     if (!allSources) {
       return !character.allSources;
     }

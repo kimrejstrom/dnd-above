@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { CharacterList } from 'features/character/characterListSlice';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 import { setInitialFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useHistory } from 'react-router-dom';
@@ -9,9 +8,9 @@ import { getCookie } from 'utils/cookie';
 
 const Sidebar = () => {
   const allSources = getCookie('allSources') === 'true';
-  const characterList: CharacterList = useSelector(
+  const characterList = useSelector(
     (state: RootState) => state.characterList,
-  ).filter(character => {
+  ).list.filter(character => {
     if (!allSources) {
       return !character.allSources;
     }

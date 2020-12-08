@@ -81,8 +81,10 @@ const ShortRestForm = () => {
               character.classData.subClass,
             ),
             ['finish a short'],
-          ).map((entry: any) => (
-            <li>{<Entry entry={entry} highlight=" short " />}</li>
+          ).map((entry: any, i) => (
+            <li key={`entry-${i}`}>
+              {<Entry entry={entry} highlight=" short " />}
+            </li>
           ))}
         </ul>
       </div>

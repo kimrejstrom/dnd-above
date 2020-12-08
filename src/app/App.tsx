@@ -31,7 +31,7 @@ initializeGA();
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }: RouteProps) {
-  let auth = useAuth();
+  const auth = useAuth();
   return (
     <Route
       {...rest}
@@ -66,6 +66,7 @@ const App: React.FC = () => {
       dispatch(setPanelClose());
     },
   });
+
   return (
     <div
       className={`flex flex-col min-h-screen theme ${

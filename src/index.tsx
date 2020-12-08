@@ -10,7 +10,7 @@ import { ServiceWorkerProvider } from 'useServiceWorker';
 import { Loading } from 'components/Loading/Loading';
 import netlifyIdentity from 'netlify-identity-widget';
 
-// You must run this once before trying to interact with the widget
+// You must run this once before trying to interact with the Identity widget
 netlifyIdentity.init();
 
 render(

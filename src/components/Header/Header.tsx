@@ -7,15 +7,14 @@ import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
 import useKonamiCode from 'utils/konamiHook';
 import { getCookie } from 'utils/cookie';
-import { CharacterList } from 'features/character/characterListSlice';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const allSources = getCookie('allSources') === 'true';
-  const characterList: CharacterList = useSelector(
+  const characterList = useSelector(
     (state: RootState) => state.characterList,
-  ).filter(character => {
+  ).list.filter(character => {
     if (!allSources) {
       return !character.allSources;
     }

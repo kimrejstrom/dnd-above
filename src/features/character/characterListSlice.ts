@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CreateCharacterFormState } from 'features/createCharacterForm/createCharacterFormSlice';
 import { SkillTypes } from 'features/character/Skills';
 import { ArmorEnum, ClassElement } from 'models/class';
@@ -30,6 +30,9 @@ import {
 import { BackgroundElement } from 'models/background';
 import { Parser } from 'utils/mainRenderer';
 import { generate_name } from 'utils/name';
+import { RootState } from 'app/rootReducer';
+import { AppDispatch } from 'app/store';
+import DnDAboveAPI from 'utils/api';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -137,7 +140,11 @@ export type CharacterState = CharacterBase &
 export interface CharacterListItem extends CharacterState {
   id: string;
 }
-export type CharacterList = Array<CharacterListItem>;
+export type CharacterList = {
+  id: string;
+  loading: 'idle' | 'pending';
+  list: Array<CharacterListItem>;
+};
 export const DEFAULT_ID = 'id-DEFAULT';
 export const DEAFULT_CHARACTER: CharacterListItem = {
   id: DEFAULT_ID,
@@ -398,170 +405,6 @@ const MOE: CharacterListItem = {
   },
 };
 
-const JOHNNY: CharacterListItem = {
-  id: 'id-2f1601589cd2b',
-  allSources: true,
-  raceData: {
-    race: 'Dwarf (Hill)',
-    chosenRaceAbilities: [],
-    standardRaceAbilities: [
-      {
-        con: 2,
-        wis: 1,
-      },
-    ],
-    chosenRaceSkillProficiencies: [],
-    standardRaceSkillProficiencies: [],
-    chosenRaceLanguages: [],
-    standardRaceLanguages: ['common', 'dwarvish'],
-  },
-  classData: {
-    classElement: 'Cleric',
-    subClass: 'War Domain',
-    chosenClassSkillProficiencies: ['persuasion', 'religion'],
-    standardClassArmorProficiencies: ['light', 'medium', 'shields'],
-    standardClassWeaponProficiencies: ['simple'],
-    standardClassToolProficiencies: [],
-    abilityScores: {
-      rollMethod: 'rolled',
-      str: 17,
-      dex: 10,
-      con: 14,
-      int: 9,
-      wis: 14,
-      cha: 13,
-    },
-  },
-  descriptionData: {
-    name: 'Johnny WarCler',
-    background: 'Soldier',
-    alignment: 'LN',
-    characteristicsSource: 'Soldier',
-    imageUrl: '/img/races/dwarf (hill).png',
-    hair: 'Brown',
-    skin: 'Fair',
-    eyes: 'Dull',
-    height: 'Short',
-    weight: 'Lots',
-    age: '120',
-    backstory: '',
-    chosenBackgroundSkillProficiencies: [],
-    standardBackgroundSkillProficiencies: ['athletics', 'intimidation'],
-    chosenBackgroundToolProficiencies: [],
-    standardBackgroundToolProficiencies: ['gaming set', 'vehicles (land)'],
-    chosenBackgroundLanguages: [],
-    standardBackgroundLanguages: [],
-    characteristicsPersonalityTrait:
-      'I enjoy being strong and like breaking things.',
-    characteristicsIdeal:
-      "Live and Let Live. Ideals aren't worth killing over or going to war for. (Neutral)",
-    characteristicsBond: 'Those who fight beside me are those worth dying for.',
-    characteristicsFlaw: "I'd rather eat my armor than admit when I'm wrong.",
-  },
-  equipmentData: {
-    items: ['Warhammer', 'Chain Mail', 'Greataxe', 'Shield'],
-  },
-  customData: {
-    customAbilities: [
-      {
-        wis: 2,
-      },
-    ],
-    customSkillProficiencies: [],
-    customArmorProficiencies: [],
-    customWeaponProficiencies: [],
-    customToolProficiencies: [],
-    customLanguages: [],
-  },
-  gameData: {
-    level: 5,
-    feats: [],
-    spells: [
-      {
-        row: 3,
-        name: 'Aid',
-      },
-      {
-        row: 4,
-        name: 'Animate Dead',
-      },
-      {
-        row: 16,
-        name: 'Bless',
-      },
-      {
-        row: 31,
-        name: 'Cure Wounds',
-      },
-      {
-        row: 57,
-        name: 'Guidance',
-      },
-      {
-        row: 58,
-        name: 'Guiding Bolt',
-      },
-      {
-        row: 62,
-        name: 'Healing Word',
-      },
-      {
-        row: 66,
-        name: 'Inflict Wounds',
-      },
-      {
-        row: 102,
-        name: 'Spirit Guardians',
-      },
-      {
-        row: 103,
-        name: 'Spiritual Weapon',
-      },
-      {
-        row: 122,
-        name: 'Toll the Dead',
-      },
-    ],
-    conditions: [],
-    defenses: [],
-    attunements: [],
-    actions: [],
-    extras: [],
-    ac: 19,
-    currentHp: 40,
-    currentHd: 5,
-    spellSlots: {
-      '1': {
-        used: 0,
-      },
-      '2': {
-        used: 0,
-      },
-      '3': {
-        used: 0,
-      },
-      '4': {
-        used: 0,
-      },
-      '5': {
-        used: 0,
-      },
-      '6': {
-        used: 0,
-      },
-      '7': {
-        used: 0,
-      },
-      '8': {
-        used: 0,
-      },
-      '9': {
-        used: 0,
-      },
-    },
-  },
-};
-
 export const randomize = () => {
   const race = _.sample(PLAYABLE_RACES) as Race;
   const classElement = _.sample(PLAYABLE_CLASSES) as ClassElement;
@@ -712,12 +555,109 @@ export const randomize = () => {
   return randomCharacter;
 };
 
-const initialState: CharacterList = [DEAFULT_CHARACTER, MOE, JOHNNY];
-
 const generateID = () =>
   `id-${Math.random()
     .toString(16)
     .slice(2)}`;
+
+const initialState: CharacterList = {
+  id: 'NOT_SAVED_YET',
+  loading: 'idle',
+  list: [DEAFULT_CHARACTER, MOE],
+};
+
+// Async Thunks
+export const backgroundCreate: any = createAsyncThunk<
+  any,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>(
+  'characterList/backgroundCreate',
+  async (_, thunkAPI) => {
+    const response = await DnDAboveAPI.create(
+      thunkAPI.getState().characterList,
+    );
+    const data = await response.json();
+    console.log('backgroundCreate', data);
+    return data;
+  },
+  {
+    condition: (_, { getState }) => {
+      const { characterList } = getState();
+      const fetchStatus = characterList.loading;
+      if (fetchStatus === 'pending') {
+        // Already fetching, don't need to re-fetch
+        return false;
+      }
+    },
+  },
+);
+
+export const backgroundSave: any = createAsyncThunk<
+  any,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>(
+  'characterList/backgroundSave',
+  async (_, thunkAPI) => {
+    const response = await DnDAboveAPI.update(
+      thunkAPI.getState().characterList,
+    );
+    console.log(response);
+    return await response.json();
+  },
+  {
+    condition: (_, { getState }) => {
+      const { characterList } = getState();
+      const fetchStatus = characterList.loading;
+      if (fetchStatus === 'pending') {
+        // Already fetching, don't need to re-fetch
+        return false;
+      }
+    },
+  },
+);
+
+export const getCharacterList = createAsyncThunk<
+  CharacterList,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>(
+  'characterList/getList',
+  async (_, thunkAPI) => {
+    const response = await DnDAboveAPI.readAll();
+    console.log(response);
+
+    if (response.status === 404) {
+      thunkAPI.dispatch(backgroundCreate());
+    }
+
+    if (response.status === 400) {
+      // Return the known error for future handling
+      return thunkAPI.rejectWithValue(await response.json());
+    }
+    return await response.json();
+  },
+  {
+    condition: (_, { getState }) => {
+      const { characterList } = getState();
+      const fetchStatus = characterList.loading;
+      if (fetchStatus === 'pending') {
+        // Already fetching, don't need to re-fetch
+        return false;
+      }
+    },
+  },
+);
 
 const characterListSlice = createSlice({
   name: 'characterList',
@@ -816,14 +756,16 @@ const characterListSlice = createSlice({
               : undefined,
           },
         };
-        state.push({ ...newCharacter });
+        state.list.push({ ...newCharacter });
       },
       prepare(payload: CreateCharacterFormState) {
         return { payload: { id: generateID(), ...payload } };
       },
     },
     updateCharacter(state, action: PayloadAction<CreateCharacterFormState>) {
-      const character = state.find(char => char.id === action.payload.data.id);
+      const character = state.list.find(
+        char => char.id === action.payload.data.id,
+      );
       if (character) {
         character.raceData = {
           ...character.raceData,
@@ -844,10 +786,12 @@ const characterListSlice = createSlice({
       }
     },
     removeCharacter(state, action: PayloadAction<string>) {
-      return state.filter(item => item.id !== action.payload);
+      state.list.filter(item => item.id !== action.payload);
     },
     setAc(state, action: PayloadAction<{ id: string; ac: number }>) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.ac = Number(action.payload.ac);
       }
@@ -857,7 +801,7 @@ const characterListSlice = createSlice({
       action: PayloadAction<{ id: string; hp: number; type: string }>,
     ) {
       const { id, hp, type } = action.payload;
-      const character = state.find(chara => chara.id === id);
+      const character = state.list.find(chara => chara.id === id);
       if (character) {
         character.gameData.currentHp =
           type === 'heal'
@@ -869,13 +813,17 @@ const characterListSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; currentHd: number }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.currentHd = Number(action.payload.currentHd);
       }
     },
     longRest(state, action: PayloadAction<{ id: string }>) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         const gainedHDs =
           character.gameData.currentHd +
@@ -895,7 +843,9 @@ const characterListSlice = createSlice({
       }
     },
     expendHitDie(state, action: PayloadAction<{ id: string }>) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.currentHd = character.gameData.currentHd - 1;
         const mod = getAbilityMod(calculateStats(character)['con']);
@@ -912,7 +862,9 @@ const characterListSlice = createSlice({
         data: { type: DefenseType; name: string };
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.defenses.push(action.payload.data);
       }
@@ -924,7 +876,9 @@ const characterListSlice = createSlice({
         data: { type: DefenseType; name: string };
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.defenses = character.gameData.defenses.filter(
           item =>
@@ -942,7 +896,9 @@ const characterListSlice = createSlice({
         data: string;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.conditions.push(action.payload.data);
       }
@@ -954,7 +910,9 @@ const characterListSlice = createSlice({
         data: string;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.conditions = character.gameData.conditions.filter(
           item => item !== action.payload.data,
@@ -968,7 +926,9 @@ const characterListSlice = createSlice({
         data: string;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.feats.push(action.payload.data);
       }
@@ -980,7 +940,9 @@ const characterListSlice = createSlice({
         data: string;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.feats = character.gameData.feats.filter(
           item => item !== action.payload.data,
@@ -994,7 +956,9 @@ const characterListSlice = createSlice({
         data: number;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.spellSlots![action.payload.data].used =
           character.gameData.spellSlots![action.payload.data].used + 1;
@@ -1007,7 +971,9 @@ const characterListSlice = createSlice({
         data: number;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.spellSlots![action.payload.data].used =
           character.gameData.spellSlots![action.payload.data].used - 1;
@@ -1020,7 +986,9 @@ const characterListSlice = createSlice({
         data: AbilityBase;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.customData.customAbilities = [
           {
@@ -1037,7 +1005,9 @@ const characterListSlice = createSlice({
         data: SkillTypes;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.customData.customSkillProficiencies.push(action.payload.data);
       }
@@ -1049,7 +1019,9 @@ const characterListSlice = createSlice({
         data: SkillTypes;
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.customData.customSkillProficiencies = character.customData.customSkillProficiencies.filter(
           item => item !== action.payload.data,
@@ -1063,17 +1035,58 @@ const characterListSlice = createSlice({
         data: { row: number; name: string }[];
       }>,
     ) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.spells = action.payload.data;
       }
     },
     levelUp(state, action: PayloadAction<{ id: string }>) {
-      const character = state.find(chara => chara.id === action.payload.id);
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
       if (character) {
         character.gameData.level = character.gameData.level + 1;
       }
     },
+  },
+  extraReducers: builder => {
+    // Reducers for additional action types here, and handle loading state as needed
+    // backgroundCreate
+    builder.addCase(backgroundCreate.pending, (state, { payload }) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    });
+    builder.addCase(backgroundCreate.fulfilled, (state, { payload }) => {
+      const { ref } = payload;
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+        state.id = ref['@ref'].id;
+      }
+    });
+    builder.addCase(backgroundCreate.rejected, (state, { payload }) => {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+      }
+    });
+    // backgroundSave
+    builder.addCase(backgroundSave.pending, (state, { payload }) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    });
+    builder.addCase(backgroundSave.fulfilled, (state, { payload }) => {
+      if (state.loading === 'pending') {
+        state.loading = 'idle';
+      }
+    });
+    builder.addCase(backgroundSave.rejected, (state, { payload }) => {
+      if (state.loading === 'idle') {
+        state.loading = 'pending';
+      }
+    });
   },
 });
 

@@ -6,10 +6,10 @@
   "engines": {
     "node": ">=12"
   },
+  "proxy": "http://localhost:9000",
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
     "@tailwindcss/custom-forms": "^0.2.1",
-    "@types/axios": "^0.14.0",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.2.3",
@@ -24,9 +24,9 @@
     "@types/react-tabs": "^2.3.2",
     "@types/tti-polyfill": "^0.2.0",
     "@types/webpack-env": "^1.15.2",
-    "axios": "^0.19.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
+    "faunadb": "^4.0.0",
     "jest-enzyme": "^7.1.2",
     "localforage": "^1.9.0",
     "lodash": "^4.17.20",
@@ -51,8 +51,13 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "npm run watch:styles & sleep 2 && react-scripts start",
-    "build": "react-scripts build",
+    "bootstrap": "node ./scripts/bootstrap-db.js",
+    "start": "run-p start:app start:server",
+    "start:app": "npm run watch:styles & sleep 2 && react-scripts start",
+    "start:server": "netlify-lambda serve functions",
+    "build": "run-p build:app build:functions",
+    "build:app": "react-scripts build",
+    "build:functions": "netlify-lambda build functions",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "typecheck": "tsc --noEmit --skipLibCheck",
@@ -96,8 +101,11 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.3.0",
     "autoprefixer": "^9.8.6",
+    "chalk": "^4.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "netlify-lambda": "^2.0.1",
+    "npm-run-all": "^4.1.5",
     "postcss-cli": "^7.1.1",
     "prettier": "^1.19.1",
     "tailwindcss": "^1.7.3",
