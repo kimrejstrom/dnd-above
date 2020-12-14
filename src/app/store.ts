@@ -19,8 +19,8 @@ const persistConfig = {
     'settings',
     'theme',
     'tabs',
-    'selectedCharacter',
-    'characterList',
+    // 'selectedCharacter',
+    // 'characterList',
   ],
 };
 
@@ -29,7 +29,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Custom middleware to auto save characterList in the background with 10 sec debounce
 let saveTimer: any;
-let debounceTime = 10000;
+let debounceTime = 5000;
 
 const saveDebounce = (storeAPI: any) => {
   if (saveTimer) {

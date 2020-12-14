@@ -4,15 +4,18 @@ import { ALL_SPELLS } from 'utils/data';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { getSelectedCharacter } from 'app/selectors';
-import { updateSpells } from 'features/character/characterListSlice';
+import {
+  CharacterListItem,
+  updateSpells,
+} from 'features/character/characterListSlice';
 import _ from 'lodash';
 
-interface Props {}
+interface Props {
+  character: CharacterListItem;
+}
 
-const SpellsModal = (props: Props) => {
+const SpellsModal: React.FC<Props> = ({ character }) => {
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );

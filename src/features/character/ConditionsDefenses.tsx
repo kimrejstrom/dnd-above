@@ -8,20 +8,18 @@ import {
   removeCondition,
 } from 'features/character/characterListSlice';
 import SettingsCog from 'components/SettingsCog/SettingsCog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
-import { getSelectedCharacter } from 'app/selectors';
 import _ from 'lodash';
 
 interface Props {
   character: CharacterListItem;
 }
 
-const DefensesModal = () => {
-  const character = useSelector(getSelectedCharacter);
+const DefensesModal: React.FC<Props> = ({ character }) => {
   const [itemDefenses, setItemDefenses] = useState<
     { formId: string; type: DefenseType }[]
   >([]);
@@ -122,8 +120,7 @@ const DefensesModal = () => {
   );
 };
 
-const ConditionsModal = () => {
-  const character = useSelector(getSelectedCharacter);
+const ConditionsModal: React.FC<Props> = ({ character }) => {
   const conditionsList = character.gameData.conditions;
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -178,7 +175,7 @@ const ConditionsDefenses = ({ character }: Props) => {
                 toggleModal({
                   visible: true,
                   title: 'Defenses',
-                  content: <DefensesModal />,
+                  content: <DefensesModal character={character} />,
                 }),
               )
             }
@@ -208,7 +205,7 @@ const ConditionsDefenses = ({ character }: Props) => {
                 toggleModal({
                   visible: true,
                   title: 'Conditions',
-                  content: <ConditionsModal />,
+                  content: <ConditionsModal character={character} />,
                 }),
               )
             }

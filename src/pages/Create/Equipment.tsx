@@ -13,9 +13,7 @@ import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
 
-interface Props {}
-
-const Equipment = ({ url }: { url: string }) => {
+const Equipment = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -30,7 +28,7 @@ const Equipment = ({ url }: { url: string }) => {
         },
       }),
     );
-    history.push(`${url}/summary`);
+    history.push(`/create/summary`);
   };
 
   type FormData = {
@@ -63,7 +61,7 @@ const Equipment = ({ url }: { url: string }) => {
     <div>
       <h1>Step 5: Equipment</h1>
       <div className="flex justify-between my-4">
-        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-4`}>
+        <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-4`}>
           Previous
         </Link>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>

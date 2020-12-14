@@ -4,15 +4,19 @@ import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { getSelectedCharacter } from 'app/selectors';
-import { addFeat, removeFeat } from 'features/character/characterListSlice';
+import {
+  addFeat,
+  CharacterListItem,
+  removeFeat,
+} from 'features/character/characterListSlice';
 import { useForm } from 'react-hook-form';
 import { mainRenderer } from 'utils/mainRenderer';
 
-interface Props {}
+interface Props {
+  character: CharacterListItem;
+}
 
-const FeatsModal = (props: Props) => {
-  const character = useSelector(getSelectedCharacter);
+const FeatsModal: React.FC<Props> = ({ character }) => {
   const featsList = character.gameData.feats;
   const dispatch = useDispatch();
   const { register } = useForm();

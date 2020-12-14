@@ -5,12 +5,11 @@ import {
   longRest,
   expendHitDie,
 } from 'features/character/characterListSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { search } from 'utils/mainRenderer';
 import { getAllClassFeatures, isSpellCaster } from 'utils/character';
 import Entry from 'components/Entry/Entry';
-import { getSelectedCharacter } from 'app/selectors';
 import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 import SpellsModal from 'features/character/SpellsModal';
 import FeatsModal from 'features/character/FeatsModal';
@@ -19,9 +18,8 @@ interface Props {
   character: CharacterListItem;
 }
 
-const LongRestForm = () => {
+const LongRestForm: React.FC<Props> = ({ character }) => {
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   return (
     <div>
       <div className="text-xl">
@@ -55,9 +53,8 @@ const LongRestForm = () => {
   );
 };
 
-const ShortRestForm = () => {
+const ShortRestForm: React.FC<Props> = ({ character }) => {
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   const isDisabled = character.gameData.currentHd <= 0;
 
   return (
@@ -99,7 +96,7 @@ const ActionButtons = ({ character }: Props) => {
       toggleModal({
         visible: true,
         title: 'Long Rest',
-        content: <LongRestForm />,
+        content: <LongRestForm character={character} />,
       }),
     );
   };
@@ -109,7 +106,7 @@ const ActionButtons = ({ character }: Props) => {
       toggleModal({
         visible: true,
         title: 'Short Rest',
-        content: <ShortRestForm />,
+        content: <ShortRestForm character={character} />,
       }),
     );
   };
@@ -119,7 +116,7 @@ const ActionButtons = ({ character }: Props) => {
       toggleModal({
         visible: true,
         title: 'Ability Scores',
-        content: <AbilitiesSkillsModal />,
+        content: <AbilitiesSkillsModal character={character} />,
       }),
     );
 
@@ -128,7 +125,7 @@ const ActionButtons = ({ character }: Props) => {
       toggleModal({
         visible: true,
         title: 'Your Spells',
-        content: <SpellsModal />,
+        content: <SpellsModal character={character} />,
       }),
     );
 
@@ -137,7 +134,7 @@ const ActionButtons = ({ character }: Props) => {
       toggleModal({
         visible: true,
         title: 'Your Feats',
-        content: <FeatsModal />,
+        content: <FeatsModal character={character} />,
       }),
     );
 

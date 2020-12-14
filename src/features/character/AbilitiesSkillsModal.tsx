@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { getSelectedCharacter } from 'app/selectors';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
+  CharacterListItem,
   CHARACTER_STATS,
   StatsTypes,
   updateASI,
@@ -14,9 +14,12 @@ import {
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
 
-const AbilitiesSkillsModal = () => {
+interface Props {
+  character: CharacterListItem;
+}
+
+const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
   const { register } = useForm();
-  const character = useSelector(getSelectedCharacter);
   const abilityScores = character.classData.abilityScores;
   const dispatch = useDispatch();
 

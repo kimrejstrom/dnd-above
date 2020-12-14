@@ -19,11 +19,7 @@ import { isBoolean } from 'util';
 import { getRace } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 
-interface Props {
-  url: string;
-}
-
-const RaceBuilder = ({ url }: Props) => {
+const RaceBuilder = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -60,7 +56,7 @@ const RaceBuilder = ({ url }: Props) => {
           },
         }),
       );
-      history.push(`${url}/step-2`);
+      history.push(`/create/step-2`);
     };
     const abilities = race?.ability || [];
     const skillProficiencies = race?.skillProficiencies || [];

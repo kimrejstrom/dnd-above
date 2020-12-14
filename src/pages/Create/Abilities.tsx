@@ -15,7 +15,7 @@ import StyledButton, {
 } from 'components/StyledButton/StyledButton';
 import { diceRoller } from 'utils/dice';
 
-const Abilities = ({ url }: { url: string }) => {
+const Abilities = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -33,7 +33,7 @@ const Abilities = ({ url }: { url: string }) => {
       cha: Number(data.cha),
     };
     dispatch(updateFormData({ classData: { abilityScores: parsedData } }));
-    history.push(`${url}/step-4`);
+    history.push(`/create/step-4`);
   };
 
   type FormData = {
@@ -129,7 +129,7 @@ const Abilities = ({ url }: { url: string }) => {
     <div>
       <h1>Step 3: Abilities</h1>
       <div className="flex justify-between my-4">
-        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-2`}>
+        <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-2`}>
           Previous
         </Link>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>

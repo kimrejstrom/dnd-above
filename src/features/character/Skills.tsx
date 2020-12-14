@@ -52,7 +52,7 @@ const Skills = ({ character }: Props) => {
             toggleModal({
               visible: true,
               title: 'Skills and Proficiencies',
-              content: <SkillsProficienciesModal />,
+              content: <SkillsProficienciesModal character={character} />,
             }),
           )
         }

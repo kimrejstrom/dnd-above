@@ -15,7 +15,7 @@ import StyledButton, {
 } from 'components/StyledButton/StyledButton';
 import { Parser } from 'utils/mainRenderer';
 
-const Description = ({ url }: { url: string }) => {
+const Description = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -31,7 +31,7 @@ const Description = ({ url }: { url: string }) => {
         },
       }),
     );
-    history.push(`${url}/step-5`);
+    history.push(`/create/step-5`);
   };
 
   type FormData = {
@@ -76,7 +76,7 @@ const Description = ({ url }: { url: string }) => {
     <div>
       <h1>Step 4: Description</h1>
       <div className="flex justify-between my-4">
-        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-3`}>
+        <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-3`}>
           Previous
         </Link>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>

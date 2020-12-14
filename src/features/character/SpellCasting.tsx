@@ -23,7 +23,6 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
-import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {
   character: CharacterListItem;
@@ -32,13 +31,14 @@ interface Props {
 const SpellSlotCheckBoxes = ({
   level,
   slots,
+  character,
 }: {
   level: number;
   slots: number;
+  character: CharacterListItem;
 }) => {
   const { register } = useForm();
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   const usedSpellSlots = character.gameData.spellSlots?.[level].used || 0;
   const handleChange = (e: ChangeEvent<HTMLInputElement>, level: number) => {
     dispatch(
@@ -90,7 +90,11 @@ const SpellLevel = ({
           {level === 0 ? (
             '∞'
           ) : (
-            <SpellSlotCheckBoxes level={level} slots={spellSlotsForLevel} />
+            <SpellSlotCheckBoxes
+              character={character}
+              level={level}
+              slots={spellSlotsForLevel}
+            />
           )}
         </div>
       </div>

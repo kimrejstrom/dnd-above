@@ -1,11 +1,20 @@
 # Project Name - DnD Above
 
-Project Description
+
+### Notes / Ideas
+- Public page + public link to specific character
+- New character list component with loading based on store state
+- Proper API typings and testing
+- Admin edit + paste 
+- Redo graphics and typography
+- Update to Tailwind 2
 
 ### Todo
 
+- [ ] Add all sources capabilities to Netlify identity
+- [ ] Type Async action types and exclude save on those
+- [ ] Clickable link thing on all detailed entries
 - [ ] Spell Rating / Comments  
-- [ ] Custom data form / Game data form?  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items    
 - [ ] Omni search (Fuse)  
@@ -15,6 +24,9 @@ Project Description
 
 ### In Progress
 
+- [ ] Empty Character List
+- [ ] No default characters
+- [ ] Characters not persisted to local storage
 
 ### Done ✓
 

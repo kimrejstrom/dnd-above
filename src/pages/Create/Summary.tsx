@@ -23,7 +23,7 @@ import ClassBase from 'pages/Create/ClassBase';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { setGeneratedFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 
-const Summary = ({ url }: { url: string }) => {
+const Summary = () => {
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
