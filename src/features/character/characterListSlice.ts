@@ -570,6 +570,11 @@ const initialState: CharacterList = {
 };
 
 // Async Thunks
+export const CHARACTERLIST_SLICE = 'characterList';
+export const BACKGROUND_SAVE_ACTION = `${CHARACTERLIST_SLICE}/backgroundSave`;
+export const BACKGROUND_CREATE_ACTION = `${CHARACTERLIST_SLICE}/backgroundCreate`;
+export const GET_LIST_ACTION = `${CHARACTERLIST_SLICE}/getList`;
+
 export const backgroundCreate: any = createAsyncThunk<
   any,
   undefined,
@@ -577,7 +582,7 @@ export const backgroundCreate: any = createAsyncThunk<
     dispatch: AppDispatch;
     state: RootState;
   }
->('characterList/backgroundCreate', async (_, thunkAPI) => {
+>(BACKGROUND_CREATE_ACTION, async (_, thunkAPI) => {
   const response = await DnDAboveAPI.create(thunkAPI.getState().characterList);
   const data = await response.json();
   console.log('backgroundCreate', data);
@@ -592,7 +597,7 @@ export const backgroundSave: any = createAsyncThunk<
     state: RootState;
   }
 >(
-  'characterList/backgroundSave',
+  BACKGROUND_SAVE_ACTION,
   async (_, thunkAPI) => {
     const response = await DnDAboveAPI.update(
       thunkAPI.getState().characterList,
@@ -621,7 +626,7 @@ export const getCharacterList = createAsyncThunk<
     state: RootState;
   }
 >(
-  'characterList/getList',
+  GET_LIST_ACTION,
   async (_, thunkAPI) => {
     const response = await DnDAboveAPI.readAll();
     console.log(response);
@@ -645,7 +650,7 @@ export const getCharacterList = createAsyncThunk<
 );
 
 const characterListSlice = createSlice({
-  name: 'characterList',
+  name: CHARACTERLIST_SLICE,
   initialState,
   reducers: {
     addCharacter(state, action: PayloadAction<CreateCharacterFormState>) {
@@ -673,9 +678,10 @@ const characterListSlice = createSlice({
         },
         classData: {
           ...character.classData,
-          standardClassArmorProficiencies:
-            mapArmorProficiencies(classElement?.startingProficiencies.armor!) ||
-            [],
+          standardClassArmorProficiencies: classElement?.startingProficiencies
+            .armor
+            ? mapArmorProficiencies(classElement?.startingProficiencies.armor)
+            : [],
           standardClassWeaponProficiencies:
             classElement?.startingProficiencies.weapons! || [],
           standardClassToolProficiencies: getIncludedProficiencies(

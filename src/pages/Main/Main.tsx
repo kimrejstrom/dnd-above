@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { getSelectedCharacter } from 'app/selectors';
-import CharacterListing from 'pages/Create/CharacterListing';
+import CharacterList from 'pages/Main/CharacterList';
 import { CharacterSheet } from 'pages/Main/CharacterSheet';
 
 interface Props {}
@@ -12,6 +12,6 @@ export const Main: React.FC<Props> = () => {
   return character && character.id ? (
     <CharacterSheet character={character} />
   ) : (
-    <CharacterListing />
+    <CharacterList />
   );
 };

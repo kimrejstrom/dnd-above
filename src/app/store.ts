@@ -9,7 +9,11 @@ import { persistStore, persistReducer } from 'redux-persist';
 import localForage from 'localforage';
 
 import rootReducer, { RootState } from './rootReducer';
-import { backgroundSave } from 'features/character/characterListSlice';
+import {
+  backgroundSave,
+  BACKGROUND_SAVE_ACTION,
+  CHARACTERLIST_SLICE,
+} from 'features/character/characterListSlice';
 
 const persistConfig = {
   key: 'root',
@@ -42,10 +46,10 @@ const saveDebounce = (storeAPI: any) => {
 };
 
 const backgroundSaveMiddleware: Middleware = storeAPI => next => action => {
-  // Do something in here, when each action is dispatched
+  // Trigger (debounced) the background save any time the characterList slice is updated
   if (
-    action.type.includes('characterList') &&
-    !action.type.includes('characterList/backgroundSave')
+    action.type.includes(CHARACTERLIST_SLICE) &&
+    !action.type.includes(BACKGROUND_SAVE_ACTION)
   ) {
     const result = next(action);
     saveDebounce(storeAPI);
