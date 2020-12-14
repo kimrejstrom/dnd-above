@@ -962,7 +962,7 @@
     {
       "name": "Eldritch Adept",
       "source": "TCE",
-      "prerequisite": [{ "spellcasting2020": true }],
+      "prerequisite": [{ "spellcasting": true }],
       "entries": [
         "Studying occult lore, you have unlocked eldritch power within yourself: you learn one {@filter Eldritch Invocation|optionalfeatures|Feature Type=EI} option of your choice from the warlock class. If the invocation has a prerequisite of any kind, you can choose that invocation only if you're a warlock who meets the prerequisite.",
         "Whenever you gain a level, you can replace the invocation with another one from the warlock class."
@@ -972,7 +972,7 @@
       "name": "Eldritch Adept",
       "source": "UA2020Feats",
       "page": 1,
-      "prerequisite": [{ "spellcasting2020": true }],
+      "prerequisite": [{ "spellcasting": true }],
       "entries": [
         "Studying occult lore, you have unlocked eldritch power within yourself: you learn one {@filter Eldritch Invocation|optionalfeatures|Feature Type=EI} option of your choice from the warlock class. If the invocation has a prerequisite, you can choose that invocation only if you're a warlock and only if you meet the prerequisite.",
         "Whenever you gain a level, you can replace the invocation with another one from the warlock class."
@@ -1654,7 +1654,7 @@
     {
       "name": "Metamagic Adept",
       "source": "TCE",
-      "prerequisite": [{ "spellcasting2020": true }],
+      "prerequisite": [{ "spellcasting": true }],
       "entries": [
         "You've learned how to exert your will on your spells to alter how they function:",
         {
@@ -1670,7 +1670,7 @@
       "name": "Metamagic Adept",
       "source": "UA2020Feats",
       "page": 2,
-      "prerequisite": [{ "spellcasting2020": true }],
+      "prerequisite": [{ "spellcasting": true }],
       "entries": [
         "You've learned how to exert your will on your spells to alter how they function. You gain the following benefits:",
         {

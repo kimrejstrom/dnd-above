@@ -24,6 +24,7 @@ import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 import { AuthContextProvider, useAuth } from 'utils/auth';
 import { Login } from 'app/Auth';
+import { useBeforeWindowUnload } from 'utils/customHooks';
 
 // Google Analytics
 initializeGA();
@@ -66,6 +67,9 @@ const App: React.FC = () => {
       dispatch(setPanelClose());
     },
   });
+
+  // Hook to cleanup on window unload
+  useBeforeWindowUnload();
 
   return (
     <div

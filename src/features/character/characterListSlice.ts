@@ -1080,7 +1080,6 @@ const characterListSlice = createSlice({
         state.loading = 'idle';
       }
       const { ref, data } = payload;
-      console.log('got it', data);
       state.id = ref['@ref'].id;
       state.list = data.list;
     });

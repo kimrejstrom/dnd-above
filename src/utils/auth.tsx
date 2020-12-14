@@ -2,6 +2,7 @@ import React, { useState, useContext, createContext } from 'react';
 import netlifyIdentity, { User } from 'netlify-identity-widget';
 import { store } from 'app/store';
 import { getCharacterList } from 'features/character/characterListSlice';
+import { setCookie } from 'utils/cookie';
 
 // Netlify Auth Service
 interface NetlifyAuth {
@@ -28,6 +29,9 @@ const netlifyAuth: NetlifyAuth = {
 netlifyIdentity.on('init', async (user: User | null) => {
   if (user) {
     await netlifyIdentity.refresh();
+    if (user.app_metadata.roles.includes('power')) {
+      setCookie('allSources', 'true');
+    }
     store.dispatch(getCharacterList());
   }
 });

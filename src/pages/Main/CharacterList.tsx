@@ -5,9 +5,18 @@ import { RootState } from 'app/rootReducer';
 import { removeCharacter } from 'features/character/characterListSlice';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 import StyledButton from 'components/StyledButton/StyledButton';
+import { getCookie } from 'utils/cookie';
 
 const CharacterList = () => {
-  const characterList = useSelector((state: RootState) => state.characterList);
+  const allSources = getCookie('allSources') === 'true';
+  const characterList = useSelector(
+    (state: RootState) => state.characterList,
+  ).list.filter(character => {
+    if (!allSources) {
+      return !character.allSources;
+    }
+    return true;
+  });
   const dispatch = useDispatch();
   const history = useHistory();
   return (
@@ -22,8 +31,8 @@ const CharacterList = () => {
           </div>
         </div>
         <div className="mt-3 w-full flex flex-wrap">
-          {characterList.list.length > 0 ? (
-            characterList.list.map(char => (
+          {characterList.length > 0 ? (
+            characterList.map(char => (
               <div key={char.id} className="m-1 relative">
                 <button
                   className="absolute right-0 pr-3 pt-2 z-50"

@@ -5,7 +5,6 @@ import { RootState } from 'app/rootReducer';
 import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
 import dudeDark from 'images/dude-dark.png';
 import dudeLight from 'images/dude-light.png';
-import useKonamiCode from 'utils/konamiHook';
 import { getCookie } from 'utils/cookie';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 
@@ -35,7 +34,6 @@ export const Header: React.FC = () => {
       dispatch(setThemeMode(ThemeMode.DARK));
     }
   });
-  const [konamiCode] = useKonamiCode();
 
   return (
     <header className="border-b-2 border-tertiary-dark bg-yellow-100 dark:border-primary-light dark:bg-primary-dark h-24 sm:h-20">
@@ -51,7 +49,7 @@ export const Header: React.FC = () => {
               alt="logo"
             />
             <div>D&amp;D Above</div>
-            {(konamiCode || allSources) && (
+            {allSources && (
               <sup className="text-yellow-500 text-sm ml-1">Adv</sup>
             )}
           </Link>
