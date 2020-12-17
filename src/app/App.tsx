@@ -12,7 +12,6 @@ import { Modal } from 'components/Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { withTracker, initializeGA } from 'utils/analyticsTracker';
-import { About } from 'pages/About/About';
 import Books from 'pages/Books/Books';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
@@ -23,7 +22,7 @@ import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 import { AuthContextProvider, useAuth } from 'utils/auth';
-import { Login } from 'app/Auth';
+import { Login } from 'pages/Login/Login';
 import { useBeforeWindowUnload } from 'utils/customHooks';
 
 // Google Analytics
@@ -68,8 +67,9 @@ const App: React.FC = () => {
     },
   });
 
+  const auth = useAuth();
   // Hook to cleanup on window unload
-  useBeforeWindowUnload();
+  useBeforeWindowUnload(auth?.user);
 
   return (
     <div
@@ -89,7 +89,7 @@ const App: React.FC = () => {
                 <Header />
                 <div
                   className="flex w-full"
-                  style={{ minHeight: 'calc(100vh - 5rem)' }}
+                  style={{ minHeight: 'calc(100vh - 4rem)' }}
                 >
                   <Sidebar />
                   {/* Main content */}
@@ -106,7 +106,6 @@ const App: React.FC = () => {
                         <Books />
                       </PrivateRoute>
                       <Route path="/login" component={withTracker(Login)} />
-                      <Route path="/about" component={withTracker(About)} />
                     </Switch>
                   </div>
                   <Modal title={title} content={content} />

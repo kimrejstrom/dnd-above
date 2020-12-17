@@ -10,8 +10,6 @@ import { ALL_ITEMS, ACTIONS, ALL_SPELLS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
-import { ThemeMode } from 'features/theme/themeSlice';
-import { togglePanel } from 'features/settings/settingsSlice';
 import { useAuth } from 'utils/auth';
 
 interface Props {}
@@ -19,7 +17,6 @@ interface Props {}
 const RightPanel = (props: Props) => {
   const dispatch = useDispatch();
   const auth = useAuth();
-  const theme = useSelector((state: RootState) => state.theme);
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
   const { selectedEntry } = useSelector(
@@ -36,18 +33,6 @@ const RightPanel = (props: Props) => {
 
   return auth?.user ? (
     <>
-      <button
-        className="hidden sm:block absolute"
-        style={{ top: '1.8rem', right: '4rem' }}
-        onClick={() => dispatch(togglePanel())}
-      >
-        <img
-          src={`https://microicon-clone.vercel.app/view_quilt/24/${
-            theme === ThemeMode.DARK ? 'fffff0' : ''
-          }`}
-          alt="toggle"
-        />
-      </button>
       <div
         style={{ minHeight: 'calc(100% - 5rem)' }}
         className={`${

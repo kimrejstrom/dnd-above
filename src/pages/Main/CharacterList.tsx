@@ -1,22 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { RootState } from 'app/rootReducer';
 import { removeCharacter } from 'features/character/characterListSlice';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 import StyledButton from 'components/StyledButton/StyledButton';
-import { getCookie } from 'utils/cookie';
+import { getFilteredCharacterList } from 'app/selectors';
 
 const CharacterList = () => {
-  const allSources = getCookie('allSources') === 'true';
-  const characterList = useSelector(
-    (state: RootState) => state.characterList,
-  ).list.filter(character => {
-    if (!allSources) {
-      return !character.allSources;
-    }
-    return true;
-  });
+  const characterList = useSelector(getFilteredCharacterList);
   const dispatch = useDispatch();
   const history = useHistory();
   return (
@@ -35,7 +26,7 @@ const CharacterList = () => {
             characterList.map(char => (
               <div key={char.id} className="m-1 relative">
                 <button
-                  className="absolute right-0 pr-3 pt-2 z-50"
+                  className="absolute right-0 pr-3 pt-2"
                   onClick={() => dispatch(removeCharacter(char.id))}
                 >
                   <svg

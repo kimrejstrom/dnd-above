@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
 import { removeCharacter } from 'features/character/characterListSlice';
 import {
@@ -8,18 +7,10 @@ import {
   loadInitialFormData,
   setGeneratedFormData,
 } from 'features/createCharacterForm/createCharacterFormSlice';
-import { getCookie } from 'utils/cookie';
+import { getFilteredCharacterList } from 'app/selectors';
 
 const CharacterListing = () => {
-  const allSources = getCookie('allSources') === 'true';
-  const characterList = useSelector(
-    (state: RootState) => state.characterList,
-  ).list.filter(character => {
-    if (!allSources) {
-      return !character.allSources;
-    }
-    return true;
-  });
+  const characterList = useSelector(getFilteredCharacterList);
   const dispatch = useDispatch();
   const history = useHistory();
 
