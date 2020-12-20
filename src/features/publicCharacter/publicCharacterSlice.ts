@@ -34,8 +34,8 @@ export const getPublicById = createAsyncThunk<
   },
   {
     condition: (_, { getState }) => {
-      const { characterList } = getState();
-      const fetchStatus = characterList.loading;
+      const { publicCharacter } = getState();
+      const fetchStatus = publicCharacter.loading;
       if (fetchStatus === 'pending') {
         // Already fetching, don't need to re-fetch
         return false;
