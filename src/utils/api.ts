@@ -38,31 +38,18 @@ const update = (data: CharacterList) => {
   });
 };
 
-// const deleteCharacters = characterId => {
-//   return fetch(`/.netlify/functions/characters-delete/${characterId}`, {
-//     method: 'POST',
-//     headers: getHeaders(),
-//   }).then(response => {
-//     return response.json();
-//   });
-// };
-
-// const batchDeleteCharacters = characterIds => {
-//   return fetch(`/.netlify/functions/characters-delete-batch`, {
-//     body: JSON.stringify({
-//       ids: characterIds,
-//     }),
-//     method: 'POST',
-//     headers: getHeaders(),
-//   }).then(response => {
-//     return response.json();
-//   });
-// };
+const publicReadById = (listId: string, characterId: string) => {
+  return fetch(
+    `/.netlify/functions/character-list-public-read-id/${listId}/${characterId}`,
+    {
+      method: 'GET',
+    },
+  );
+};
 
 export default {
   create: create,
   readAll: readAll,
   update: update,
-  // delete: deleteCharacters,
-  // batchDelete: batchDeleteCharacters,
+  publicReadById: publicReadById,
 };

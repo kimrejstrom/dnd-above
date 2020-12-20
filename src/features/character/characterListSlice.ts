@@ -559,7 +559,7 @@ export const randomize = () => {
 };
 
 export const generateID = () =>
-  `id-${Math.random()
+  `${Math.random()
     .toString(16)
     .slice(2)}`;
 
@@ -584,9 +584,10 @@ export const backgroundCreate: any = createAsyncThunk<
   }
 >(BACKGROUND_CREATE_ACTION, async (_, thunkAPI) => {
   const response = await DnDAboveAPI.create(thunkAPI.getState().characterList);
-  const data = await response.json();
-  console.log('backgroundCreate', data);
-  return data;
+  if (response.status >= 400) {
+    return thunkAPI.rejectWithValue(await response.json());
+  }
+  return await response.json();
 });
 
 export const backgroundSave: any = createAsyncThunk<
@@ -602,9 +603,10 @@ export const backgroundSave: any = createAsyncThunk<
     const response = await DnDAboveAPI.update(
       thunkAPI.getState().characterList,
     );
-    const data = await response.json();
-    console.log('backgroundSave', data);
-    return data;
+    if (response.status >= 400) {
+      return thunkAPI.rejectWithValue(await response.json());
+    }
+    return await response.json();
   },
   {
     condition: (_, { getState }) => {
@@ -633,6 +635,9 @@ export const getCharacterList = createAsyncThunk<
 
     if (response.status === 404) {
       thunkAPI.dispatch(backgroundCreate());
+      return thunkAPI.rejectWithValue(await response.json());
+    }
+    if (response.status >= 400) {
       return thunkAPI.rejectWithValue(await response.json());
     }
     return await response.json();

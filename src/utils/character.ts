@@ -26,7 +26,7 @@ import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
-import { AbilityBase } from 'models/race';
+import { AbilityBase, Race } from 'models/race';
 
 export const getAbilityScoreByType = (
   ability: StatsTypes,
@@ -347,4 +347,14 @@ export const extractSpellSlots = (
         )
       : undefined;
   return convertedSlots;
+};
+
+export const parseSpeed = (speed: Race['speed']) => {
+  if (speed) {
+    if (typeof speed === 'string' || typeof speed === 'number') {
+      return speed;
+    } else {
+      return speed.walk;
+    }
+  }
 };

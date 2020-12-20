@@ -115,7 +115,7 @@ const RaceBuilder = () => {
                   </label>
                 );
               } else {
-                return <></>;
+                return undefined;
               }
             })}
 

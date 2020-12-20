@@ -93,7 +93,7 @@ export const Header: React.FC = () => {
 
   const ProfileMenu = () => (
     <li className="nav-item font-sans">
-      <div className="lg:mr-4">
+      <div className="lg:mr-3">
         <div className="relative inline-block text-left">
           <div>
             <button
@@ -228,7 +228,7 @@ export const Header: React.FC = () => {
                 </li>
                 {!navbarOpen ? <ProfileMenu /> : <MobileProfileMenu />}
 
-                <li className="p-2 lg:p-0">
+                <li className="p-2 lg:p-1">
                   <div className="flex">
                     {theme === ThemeMode.DARK ? (
                       <>
@@ -281,7 +281,7 @@ export const Header: React.FC = () => {
               <ul className="flex flex-col lg:flex-row list-none lg:ml-auto items-center">
                 <li className="nav-item">
                   <button
-                    className="hidden lg:block cursor-pointer text-xl px-3 py-1 leading-none border border-solid border-transparent rounded bg-transparent outline-none focus:outline-none"
+                    className="hidden lg:block cursor-pointer text-xl px-1 py-1 leading-none border border-solid border-transparent rounded bg-transparent outline-none focus:outline-none"
                     onClick={() => dispatch(togglePanel())}
                   >
                     <svg

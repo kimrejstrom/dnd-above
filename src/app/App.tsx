@@ -24,6 +24,7 @@ import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 import { AuthContextProvider, useAuth } from 'utils/auth';
 import { Login } from 'pages/Login/Login';
 import { useBeforeWindowUnload } from 'utils/customHooks';
+import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
 
 // Google Analytics
 initializeGA();
@@ -106,6 +107,10 @@ const App: React.FC = () => {
                         <Books />
                       </PrivateRoute>
                       <Route path="/login" component={withTracker(Login)} />
+                      <Route
+                        path="/character/:listId/:characterId"
+                        component={withTracker(PublicCharacter)}
+                      />
                     </Switch>
                   </div>
                   <Modal title={title} content={content} />

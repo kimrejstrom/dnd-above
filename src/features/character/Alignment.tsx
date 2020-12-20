@@ -8,7 +8,7 @@ import {
   CharacterListItem,
   setCurrentHd,
 } from 'features/character/characterListSlice';
-import { getRace, getHdTotal, getHitDice } from 'utils/character';
+import { getRace, getHdTotal, getHitDice, parseSpeed } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
 
@@ -84,7 +84,7 @@ const Alignment = ({ character }: Props) => {
           left: '9.6rem',
         }}
       >
-        {getRace(character.raceData.race)!.speed}
+        {parseSpeed(getRace(character.raceData.race)!.speed)}
       </div>
       <div
         className="text-2xl absolute w-8 inset-0 text-center"

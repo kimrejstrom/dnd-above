@@ -2,35 +2,38 @@
 
 
 ### Notes / Ideas
-- Public page + public link to specific character
-- New character list component with loading based on store state
-- Proper API typings and testing
-- Admin edit + paste 
-- Redo graphics and typography
-- Update to Tailwind 2
+
+- Redo graphics and typography  
+- Update to Tailwind 2  
 
 ### Todo
 
-- [ ] Add all sources capabilities to Netlify identity
-- [ ] Type Async action types and exclude save on those
-- [ ] Clickable link thing on all detailed entries
+- [ ] Omni search (Fuse)  
+- [ ] Clickable link thing on all detailed entries  
 - [ ] Spell Rating / Comments  
 - [ ] Custom items (w/ use as base)  
-- [ ] Attuned items    
-- [ ] Omni search (Fuse)  
+- [ ] Attuned items  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [ ] XP  
 
 ### In Progress
 
-- [ ] Empty Character List
-- [ ] No default characters
-- [ ] Characters not persisted to local storage
+- Admin edit + paste  
+- Share link  
+- ReadOnly Character Sheet  
 
 ### Done ✓
 
-- [x] Feats select
+- Proper API typings and testing  
+- [x] Type Async action types and exclude save on those  
+- New character list component with loading based on store state  
+- Public page + public link to specific character  
+- [x] Add all sources capabilities to Netlify identity  
+- [x] Characters not persisted to local storage  
+- [x] No default characters  
+- [x] Empty Character List  
+- [x] Feats select  
 - [x] Manage Selected Spells  
 - [x] Level Up  
 - [x] Spellslots Total + Used + Reset at rests  
