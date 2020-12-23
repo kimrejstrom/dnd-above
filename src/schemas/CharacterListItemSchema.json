@@ -1,0 +1,785 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/object1608661313.json",
+  "title": "Root",
+  "type": "object",
+  "required": [
+    "id",
+    "allSources",
+    "raceData",
+    "classData",
+    "descriptionData",
+    "equipmentData",
+    "customData",
+    "gameData"
+  ],
+  "properties": {
+    "id": {
+      "$id": "#root/id",
+      "title": "Id",
+      "type": "string",
+      "default": "",
+      "examples": ["cb5de106a9e47"],
+      "pattern": "^.*$"
+    },
+    "allSources": {
+      "$id": "#root/allSources",
+      "title": "Allsources",
+      "type": "boolean",
+      "examples": [true],
+      "default": true
+    },
+    "raceData": {
+      "$id": "#root/raceData",
+      "title": "Racedata",
+      "type": "object",
+      "required": [
+        "race",
+        "chosenRaceAbilities",
+        "standardRaceAbilities",
+        "chosenRaceSkillProficiencies",
+        "standardRaceSkillProficiencies",
+        "chosenRaceLanguages",
+        "standardRaceLanguages"
+      ],
+      "properties": {
+        "race": {
+          "$id": "#root/raceData/race",
+          "title": "Race",
+          "type": "string",
+          "default": "",
+          "examples": ["Halfling (Ghostwise)"],
+          "pattern": "^.*$"
+        },
+        "chosenRaceAbilities": {
+          "$id": "#root/raceData/chosenRaceAbilities",
+          "title": "Chosenraceabilities",
+          "type": "array",
+          "default": []
+        },
+        "standardRaceAbilities": {
+          "$id": "#root/raceData/standardRaceAbilities",
+          "title": "Standardraceabilities",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$id": "#root/raceData/standardRaceAbilities/items",
+            "title": "Items",
+            "type": "object"
+          }
+        }
+      },
+      "chosenRaceSkillProficiencies": {
+        "$id": "#root/raceData/chosenRaceSkillProficiencies",
+        "title": "Chosenraceskillproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "standardRaceSkillProficiencies": {
+        "$id": "#root/raceData/standardRaceSkillProficiencies",
+        "title": "Standardraceskillproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "chosenRaceLanguages": {
+        "$id": "#root/raceData/chosenRaceLanguages",
+        "title": "Chosenracelanguages",
+        "type": "array",
+        "default": []
+      },
+      "standardRaceLanguages": {
+        "$id": "#root/raceData/standardRaceLanguages",
+        "title": "Standardracelanguages",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/raceData/standardRaceLanguages/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["common"],
+          "pattern": "^.*$"
+        }
+      }
+    }
+  },
+  "classData": {
+    "$id": "#root/classData",
+    "title": "Classdata",
+    "type": "object",
+    "required": [
+      "classElement",
+      "subClass",
+      "chosenClassSkillProficiencies",
+      "standardClassArmorProficiencies",
+      "standardClassWeaponProficiencies",
+      "standardClassToolProficiencies",
+      "abilityScores"
+    ],
+    "properties": {
+      "classElement": {
+        "$id": "#root/classData/classElement",
+        "title": "Classelement",
+        "type": "string",
+        "default": "",
+        "examples": ["Druid"],
+        "pattern": "^.*$"
+      },
+      "subClass": {
+        "$id": "#root/classData/subClass",
+        "title": "Subclass",
+        "type": "string",
+        "default": "",
+        "examples": ["Circle of the Shepherd"],
+        "pattern": "^.*$"
+      },
+      "chosenClassSkillProficiencies": {
+        "$id": "#root/classData/chosenClassSkillProficiencies",
+        "title": "Chosenclassskillproficiencies",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/classData/chosenClassSkillProficiencies/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["insight"],
+          "pattern": "^.*$"
+        }
+      },
+      "standardClassArmorProficiencies": {
+        "$id": "#root/classData/standardClassArmorProficiencies",
+        "title": "Standardclassarmorproficiencies",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/classData/standardClassArmorProficiencies/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["light"],
+          "pattern": "^.*$"
+        }
+      },
+      "standardClassWeaponProficiencies": {
+        "$id": "#root/classData/standardClassWeaponProficiencies",
+        "title": "Standardclassweaponproficiencies",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/classData/standardClassWeaponProficiencies/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["clubs"],
+          "pattern": "^.*$"
+        }
+      },
+      "standardClassToolProficiencies": {
+        "$id": "#root/classData/standardClassToolProficiencies",
+        "title": "Standardclasstoolproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "abilityScores": {
+        "$id": "#root/classData/abilityScores",
+        "title": "Abilityscores",
+        "type": "object",
+        "required": ["rollMethod", "str", "dex", "con", "int", "wis", "cha"],
+        "properties": {
+          "rollMethod": {
+            "$id": "#root/classData/abilityScores/rollMethod",
+            "title": "Rollmethod",
+            "type": "string",
+            "default": "",
+            "examples": ["rolled"],
+            "pattern": "^.*$"
+          },
+          "str": {
+            "$id": "#root/classData/abilityScores/str",
+            "title": "Str",
+            "type": "integer",
+            "examples": [8],
+            "default": 0
+          },
+          "dex": {
+            "$id": "#root/classData/abilityScores/dex",
+            "title": "Dex",
+            "type": "integer",
+            "examples": [15],
+            "default": 0
+          },
+          "con": {
+            "$id": "#root/classData/abilityScores/con",
+            "title": "Con",
+            "type": "integer",
+            "examples": [17],
+            "default": 0
+          },
+          "int": {
+            "$id": "#root/classData/abilityScores/int",
+            "title": "Int",
+            "type": "integer",
+            "examples": [11],
+            "default": 0
+          },
+          "wis": {
+            "$id": "#root/classData/abilityScores/wis",
+            "title": "Wis",
+            "type": "integer",
+            "examples": [17],
+            "default": 0
+          },
+          "cha": {
+            "$id": "#root/classData/abilityScores/cha",
+            "title": "Cha",
+            "type": "integer",
+            "examples": [11],
+            "default": 0
+          }
+        }
+      }
+    }
+  },
+  "descriptionData": {
+    "$id": "#root/descriptionData",
+    "title": "Descriptiondata",
+    "type": "object",
+    "required": [
+      "name",
+      "background",
+      "alignment",
+      "characteristicsSource",
+      "imageUrl",
+      "hair",
+      "skin",
+      "eyes",
+      "height",
+      "weight",
+      "age",
+      "backstory",
+      "chosenBackgroundSkillProficiencies",
+      "standardBackgroundSkillProficiencies",
+      "chosenBackgroundToolProficiencies",
+      "standardBackgroundToolProficiencies",
+      "chosenBackgroundLanguages",
+      "standardBackgroundLanguages",
+      "characteristicsPersonalityTrait",
+      "characteristicsIdeal",
+      "characteristicsBond",
+      "characteristicsFlaw"
+    ],
+    "properties": {
+      "name": {
+        "$id": "#root/descriptionData/name",
+        "title": "Name",
+        "type": "string",
+        "default": "",
+        "examples": ["Moe Glee, The Minionmancer"],
+        "pattern": "^.*$"
+      },
+      "background": {
+        "$id": "#root/descriptionData/background",
+        "title": "Background",
+        "type": "string",
+        "default": "",
+        "examples": ["Far Traveler"],
+        "pattern": "^.*$"
+      },
+      "alignment": {
+        "$id": "#root/descriptionData/alignment",
+        "title": "Alignment",
+        "type": "string",
+        "default": "",
+        "examples": ["CG"],
+        "pattern": "^.*$"
+      },
+      "characteristicsSource": {
+        "$id": "#root/descriptionData/characteristicsSource",
+        "title": "Characteristicssource",
+        "type": "string",
+        "default": "",
+        "examples": ["Far Traveler"],
+        "pattern": "^.*$"
+      },
+      "imageUrl": {
+        "$id": "#root/descriptionData/imageUrl",
+        "title": "Imageurl",
+        "type": "string",
+        "default": "",
+        "examples": ["https://i.imgur.com/fX2c9M5.png"],
+        "pattern": "^.*$"
+      },
+      "hair": {
+        "$id": "#root/descriptionData/hair",
+        "title": "Hair",
+        "type": "string",
+        "default": "",
+        "examples": ["Orange"],
+        "pattern": "^.*$"
+      },
+      "skin": {
+        "$id": "#root/descriptionData/skin",
+        "title": "Skin",
+        "type": "string",
+        "default": "",
+        "examples": ["Greenish"],
+        "pattern": "^.*$"
+      },
+      "eyes": {
+        "$id": "#root/descriptionData/eyes",
+        "title": "Eyes",
+        "type": "string",
+        "default": "",
+        "examples": ["Orange"],
+        "pattern": "^.*$"
+      },
+      "height": {
+        "$id": "#root/descriptionData/height",
+        "title": "Height",
+        "type": "string",
+        "default": "",
+        "examples": ["3ft"],
+        "pattern": "^.*$"
+      },
+      "weight": {
+        "$id": "#root/descriptionData/weight",
+        "title": "Weight",
+        "type": "string",
+        "default": "",
+        "examples": ["40"],
+        "pattern": "^.*$"
+      },
+      "age": {
+        "$id": "#root/descriptionData/age",
+        "title": "Age",
+        "type": "string",
+        "default": "",
+        "examples": ["19"],
+        "pattern": "^.*$"
+      },
+      "backstory": {
+        "$id": "#root/descriptionData/backstory",
+        "title": "Backstory",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Born to a poor farmer family, Moe remembers very little about his parents. He still sees the flames that took them from him in his dreams, violently raging as they consume the last parts of his childhood home.\nMoe can’t remember how the fire started, but it haunts his dreams - night after night he is tormented by these visions. Again and again the flames erupt out of nowhere and each night he fails to escape them.\nShira, the fey spirit that watched over Moe and his tribe often walks the earth in the form of black panther. She managed to pull Moe from the flames on that fateful night, carrying the small boy to safety. She tried going back in for the others but was blocked by the flames.\nOrphaned, and with no-one of his kin left to care for him, Shira decided to bring the boy with her, deep into the forest where he would live with a new kind of tribe.\nFor fifteen years Moe lived together with the animals as a part of their herd. When Moe was seven Shira brought one of her old friends to the camp, a 250 year old tortle druid named Grok. Together Grok and Shira set out to teach Moe about the power of nature, the Great Balance and about the elements that guide it: the power of tooth and claw, of sun and moon and of fire and storm.\nWhen Moe turned 17, Shira came to Moe with a request. She had sensed a growing power, a darkness somewhere far away, disrupting the Great Balance. A force that seeks to hold sway over nature and life. She sent him on a mission to find out what this force is, and to try and restore the balance to their world.\nSo Moe set off towards the foreign lands of Asteria."
+        ],
+        "pattern": "^.*$"
+      },
+      "chosenBackgroundSkillProficiencies": {
+        "$id": "#root/descriptionData/chosenBackgroundSkillProficiencies",
+        "title": "Chosenbackgroundskillproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "standardBackgroundSkillProficiencies": {
+        "$id": "#root/descriptionData/standardBackgroundSkillProficiencies",
+        "title": "Standardbackgroundskillproficiencies",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/descriptionData/standardBackgroundSkillProficiencies/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["arcana"],
+          "pattern": "^.*$"
+        }
+      },
+      "chosenBackgroundToolProficiencies": {
+        "$id": "#root/descriptionData/chosenBackgroundToolProficiencies",
+        "title": "Chosenbackgroundtoolproficiencies",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/descriptionData/chosenBackgroundToolProficiencies/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["gaming set"],
+          "pattern": "^.*$"
+        }
+      },
+      "standardBackgroundToolProficiencies": {
+        "$id": "#root/descriptionData/standardBackgroundToolProficiencies",
+        "title": "Standardbackgroundtoolproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "chosenBackgroundLanguages": {
+        "$id": "#root/descriptionData/chosenBackgroundLanguages",
+        "title": "Chosenbackgroundlanguages",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/descriptionData/chosenBackgroundLanguages/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["primordial"],
+          "pattern": "^.*$"
+        }
+      },
+      "standardBackgroundLanguages": {
+        "$id": "#root/descriptionData/standardBackgroundLanguages",
+        "title": "Standardbackgroundlanguages",
+        "type": "array",
+        "default": []
+      },
+      "characteristicsPersonalityTrait": {
+        "$id": "#root/descriptionData/characteristicsPersonalityTrait",
+        "title": "Characteristicspersonalitytrait",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "I have different assumptions from those around me concerning personal space, blithely invading others' space in innocence, or reacting to ignorant invasion of my own."
+        ],
+        "pattern": "^.*$"
+      },
+      "characteristicsIdeal": {
+        "$id": "#root/descriptionData/characteristicsIdeal",
+        "title": "Characteristicsideal",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Adventure. I'm far from home, and everything is strange and wonderful! (Chaotic)"
+        ],
+        "pattern": "^.*$"
+      },
+      "characteristicsBond": {
+        "$id": "#root/descriptionData/characteristicsBond",
+        "title": "Characteristicsbond",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Though I had no choice, I lament having to leave my loved one(s) behind. I hope to see them again one day."
+        ],
+        "pattern": "^.*$"
+      },
+      "characteristicsFlaw": {
+        "$id": "#root/descriptionData/characteristicsFlaw",
+        "title": "Characteristicsflaw",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "I have a weakness for the new intoxicants and other pleasures of this land."
+        ],
+        "pattern": "^.*$"
+      }
+    }
+  },
+  "equipmentData": {
+    "$id": "#root/equipmentData",
+    "title": "Equipmentdata",
+    "type": "object",
+    "required": ["items"],
+    "properties": {
+      "items": {
+        "$id": "#root/equipmentData/items",
+        "title": "Items",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/equipmentData/items/items",
+          "title": "Items",
+          "type": "string",
+          "default": "",
+          "examples": ["Quarterstaff"],
+          "pattern": "^.*$"
+        }
+      }
+    }
+  },
+  "customData": {
+    "$id": "#root/customData",
+    "title": "Customdata",
+    "type": "object",
+    "required": [
+      "customAbilities",
+      "customSkillProficiencies",
+      "customArmorProficiencies",
+      "customWeaponProficiencies",
+      "customToolProficiencies",
+      "customLanguages"
+    ],
+    "properties": {
+      "customAbilities": {
+        "$id": "#root/customData/customAbilities",
+        "title": "Customabilities",
+        "type": "array",
+        "default": [],
+        "items": {
+          "$id": "#root/customData/customAbilities/items",
+          "title": "Items",
+          "type": "object"
+        }
+      },
+      "customSkillProficiencies": {
+        "$id": "#root/customData/customSkillProficiencies",
+        "title": "Customskillproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "customArmorProficiencies": {
+        "$id": "#root/customData/customArmorProficiencies",
+        "title": "Customarmorproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "customWeaponProficiencies": {
+        "$id": "#root/customData/customWeaponProficiencies",
+        "title": "Customweaponproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "customToolProficiencies": {
+        "$id": "#root/customData/customToolProficiencies",
+        "title": "Customtoolproficiencies",
+        "type": "array",
+        "default": []
+      },
+      "customLanguages": {
+        "$id": "#root/customData/customLanguages",
+        "title": "Customlanguages",
+        "type": "array",
+        "default": []
+      }
+    }
+  },
+  "gameData": {
+    "$id": "#root/gameData",
+    "title": "Gamedata",
+    "type": "object",
+    "required": [
+      "level",
+      "feats",
+      "spells",
+      "conditions",
+      "defenses",
+      "attunements",
+      "actions",
+      "extras",
+      "ac",
+      "currentHp",
+      "currentHd"
+    ],
+    "properties": {
+      "level": {
+        "$id": "#root/gameData/level",
+        "title": "Level",
+        "type": "integer",
+        "examples": [4],
+        "default": 0
+      },
+      "feats": {
+        "$id": "#root/gameData/feats",
+        "title": "Feats",
+        "type": "array",
+        "default": []
+      },
+      "spells": {
+        "$id": "#root/gameData/spells",
+        "title": "Spells",
+        "type": "array",
+        "default": []
+      },
+      "conditions": {
+        "$id": "#root/gameData/conditions",
+        "title": "Conditions",
+        "type": "array",
+        "default": []
+      },
+      "defenses": {
+        "$id": "#root/gameData/defenses",
+        "title": "Defenses",
+        "type": "array",
+        "default": []
+      },
+      "attunements": {
+        "$id": "#root/gameData/attunements",
+        "title": "Attunements",
+        "type": "array",
+        "default": []
+      },
+      "actions": {
+        "$id": "#root/gameData/actions",
+        "title": "Actions",
+        "type": "array",
+        "default": []
+      },
+      "extras": {
+        "$id": "#root/gameData/extras",
+        "title": "Extras",
+        "type": "array",
+        "default": []
+      },
+      "ac": {
+        "$id": "#root/gameData/ac",
+        "title": "Ac",
+        "type": "integer",
+        "examples": [16],
+        "default": 0
+      },
+      "currentHp": {
+        "$id": "#root/gameData/currentHp",
+        "title": "Currenthp",
+        "type": "integer",
+        "examples": [12],
+        "default": 0
+      },
+      "currentHd": {
+        "$id": "#root/gameData/currentHd",
+        "title": "Currenthd",
+        "type": "integer",
+        "examples": [5],
+        "default": 0
+      },
+      "spellSlots": {
+        "$id": "#root/gameData/spellSlots",
+        "title": "Spellslots",
+        "type": "object",
+        "required": ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+        "properties": {
+          "1": {
+            "$id": "#root/gameData/spellSlots/1",
+            "title": "1",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/1/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "2": {
+            "$id": "#root/gameData/spellSlots/2",
+            "title": "2",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/2/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "3": {
+            "$id": "#root/gameData/spellSlots/3",
+            "title": "3",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/3/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "4": {
+            "$id": "#root/gameData/spellSlots/4",
+            "title": "4",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/4/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "5": {
+            "$id": "#root/gameData/spellSlots/5",
+            "title": "5",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/5/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "6": {
+            "$id": "#root/gameData/spellSlots/6",
+            "title": "6",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/6/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "7": {
+            "$id": "#root/gameData/spellSlots/7",
+            "title": "7",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/7/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "8": {
+            "$id": "#root/gameData/spellSlots/8",
+            "title": "8",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/8/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          },
+          "9": {
+            "$id": "#root/gameData/spellSlots/9",
+            "title": "9",
+            "type": "object",
+            "required": ["used"],
+            "properties": {
+              "used": {
+                "$id": "#root/gameData/spellSlots/9/used",
+                "title": "Used",
+                "type": "integer",
+                "examples": [0],
+                "default": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

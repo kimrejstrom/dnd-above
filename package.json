@@ -23,6 +23,7 @@
     "@types/react-tabs": "^2.3.2",
     "@types/tti-polyfill": "^0.2.0",
     "@types/webpack-env": "^1.15.2",
+    "ajv": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "faunadb": "^4.0.0",

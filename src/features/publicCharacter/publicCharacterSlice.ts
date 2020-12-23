@@ -47,14 +47,7 @@ export const getPublicById = createAsyncThunk<
 const publicCharacterSlice = createSlice({
   name: 'publicCharacter',
   initialState: initialState,
-  reducers: {
-    addCharacter(state, action) {
-      state.character = action.payload;
-    },
-    removeCharacter(state) {
-      state.character = undefined;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     // getPublicById
     builder.addCase(getPublicById.pending, (state, { payload }) => {
@@ -77,7 +70,5 @@ const publicCharacterSlice = createSlice({
     });
   },
 });
-
-export const { addCharacter, removeCharacter } = publicCharacterSlice.actions;
 
 export default publicCharacterSlice.reducer;

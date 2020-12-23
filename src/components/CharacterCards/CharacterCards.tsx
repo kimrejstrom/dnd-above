@@ -8,6 +8,9 @@ import { setSelectedCharacter } from 'features/character/selectedCharacterSlice'
 import StyledButton from 'components/StyledButton/StyledButton';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { RootState } from 'app/rootReducer';
+import Notification, {
+  NotificationType,
+} from 'components/Notification/Notification';
 
 interface Props {
   type: 'CREATE' | 'LOAD';
@@ -17,33 +20,17 @@ const ShareModal: React.FC<{ characterId: string }> = ({ characterId }) => {
   const dispatch = useDispatch();
   const { id } = useSelector((state: RootState) => state.characterList);
   const shareableLink = `${window.location.origin}/character/${id}/${characterId}`;
-  console.log(shareableLink);
   const [isCopied, setIsCopied] = useState(false);
   return (
     <div className="flex flex-col justify-center items-center">
-      <div
-        className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-yellow-100 leading-none flex justify-center items-center"
-        role="alert"
-      >
-        <span className="flex rounded-full text-yellow-100 bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            width="20"
-            height="20"
-            className="fill-current"
-          >
-            <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
-            <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
-          </svg>
-        </span>
+      <Notification type={NotificationType.Info}>
         <div className="flex items-center">
           <div className="mr-3">Link:</div>
-          <div className="text-sm bg-gray-300 font-mono rounded-md p-3">
+          <div className="text-sm bg-gray-300 dark:bg-gray-900 font-mono rounded-md p-3">
             {shareableLink}
           </div>
         </div>
-      </div>
+      </Notification>
       <StyledButton
         disabled={isCopied}
         onClick={() => {
@@ -75,7 +62,10 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
           <div className="flex justify-between w-full px-1 -mt-1">
             <button
               className="w-10 h-10 flex justify-center items-center"
-              onClick={() => dispatch(removeCharacter(char.id))}
+              onClick={() => {
+                dispatch(setSelectedCharacter(char.id));
+                history.push(`/edit`);
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

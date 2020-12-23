@@ -25,6 +25,7 @@ import { AuthContextProvider, useAuth } from 'utils/auth';
 import { Login } from 'pages/Login/Login';
 import { useBeforeWindowUnload } from 'utils/customHooks';
 import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
+import Edit from 'pages/Edit/Edit';
 
 // Google Analytics
 initializeGA();
@@ -102,6 +103,9 @@ const App: React.FC = () => {
                       </PrivateRoute>
                       <PrivateRoute path="/create">
                         <Create />
+                      </PrivateRoute>
+                      <PrivateRoute path="/edit">
+                        <Edit />
                       </PrivateRoute>
                       <PrivateRoute path="/books">
                         <Books />

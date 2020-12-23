@@ -4,6 +4,9 @@ import { useHistory } from 'react-router-dom';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { getFilteredCharacterList } from 'app/selectors';
 import CharacterCards from 'components/CharacterCards/CharacterCards';
+import Notification, {
+  NotificationType,
+} from 'components/Notification/Notification';
 
 const CharacterList = () => {
   const characterList = useSelector(getFilteredCharacterList);
@@ -23,15 +26,9 @@ const CharacterList = () => {
           {characterList.length > 0 ? (
             <CharacterCards type={'LOAD'} />
           ) : (
-            <div
-              className="p-2 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-secondary-light leading-none flex items-center"
-              role="alert"
-            >
-              <span className="flex rounded-full text-yellow-100 bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
-                !
-              </span>
-              <div>You don't have any characters yet.</div>
-            </div>
+            <Notification type={NotificationType.Info}>
+              You don't have any characters yet.
+            </Notification>
           )}
         </div>
       </div>
