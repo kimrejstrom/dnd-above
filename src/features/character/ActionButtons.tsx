@@ -16,9 +16,14 @@ import FeatsModal from 'features/character/FeatsModal';
 
 interface Props {
   character: CharacterListItem;
+  readonly: boolean;
 }
 
-const LongRestForm: React.FC<Props> = ({ character }) => {
+interface ModalProps {
+  character: CharacterListItem;
+}
+
+const LongRestForm: React.FC<ModalProps> = ({ character }) => {
   const dispatch = useDispatch();
   return (
     <div>
@@ -53,7 +58,7 @@ const LongRestForm: React.FC<Props> = ({ character }) => {
   );
 };
 
-const ShortRestForm: React.FC<Props> = ({ character }) => {
+const ShortRestForm: React.FC<ModalProps> = ({ character }) => {
   const dispatch = useDispatch();
   const isDisabled = character.gameData.currentHd <= 0;
 
@@ -89,7 +94,7 @@ const ShortRestForm: React.FC<Props> = ({ character }) => {
   );
 };
 
-const ActionButtons = ({ character }: Props) => {
+const ActionButtons = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   const handleLongRest = () => {
     dispatch(
@@ -143,18 +148,21 @@ const ActionButtons = ({ character }: Props) => {
       <StyledButton
         extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleShortRest}
+        disabled={readonly}
       >
         Short Rest
       </StyledButton>
       <StyledButton
         extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleLongRest}
+        disabled={readonly}
       >
         Long Rest
       </StyledButton>
       <StyledButton
         extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={handleAbilityScores}
+        disabled={readonly}
       >
         Ability Scores
       </StyledButton>
@@ -162,6 +170,7 @@ const ActionButtons = ({ character }: Props) => {
         <StyledButton
           extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
           onClick={handleSpells}
+          disabled={readonly}
         >
           Spells
         </StyledButton>
@@ -169,12 +178,14 @@ const ActionButtons = ({ character }: Props) => {
       <StyledButton
         extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
         onClick={() => console.log('TODO')}
+        disabled={readonly}
       >
         Equipment
       </StyledButton>
       <StyledButton
         extraClassName="ml-2 mb-1 h-10 custom-border-medium"
         onClick={handleFeats}
+        disabled={readonly}
       >
         Feats
       </StyledButton>

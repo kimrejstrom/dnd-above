@@ -14,9 +14,10 @@ import { useForm } from 'react-hook-form';
 
 interface Props {
   character: CharacterListItem;
+  readonly: boolean;
 }
 
-const Alignment = ({ character }: Props) => {
+const Alignment = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   type FormData = {
@@ -24,7 +25,9 @@ const Alignment = ({ character }: Props) => {
   };
   const { register, handleSubmit, setValue } = useForm<FormData>();
   const onHDSubmit = (data: FormData) => {
-    dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
+    if (!readonly) {
+      dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
+    }
   };
   useEffect(() => {
     setValue('currentHd', character.gameData.currentHd);
@@ -115,6 +118,7 @@ const Alignment = ({ character }: Props) => {
             className="text-2xl text-center mb-3"
           >
             <input
+              disabled={readonly}
               name="currentHd"
               className="text-center text-2xl w-6 h-6 bg-white dark:bg-secondary-dark"
               onChange={handleSubmit(onHDSubmit)}

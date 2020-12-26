@@ -26,16 +26,19 @@ import { useForm } from 'react-hook-form';
 
 interface Props {
   character: CharacterListItem;
+  readonly: boolean;
 }
 
 const SpellSlotCheckBoxes = ({
   level,
   slots,
   character,
+  readonly,
 }: {
   level: number;
   slots: number;
   character: CharacterListItem;
+  readonly: boolean;
 }) => {
   const { register } = useForm();
   const dispatch = useDispatch();
@@ -57,6 +60,7 @@ const SpellSlotCheckBoxes = ({
     <div className="mx-2 flex flex-end">
       {Array.from({ length: slots }, (_, i: number) => (
         <input
+          disabled={readonly}
           className="form-checkbox text-primary-dark mr-1"
           type="checkbox"
           name={`${level}-${slots}`}
@@ -73,10 +77,12 @@ const SpellLevel = ({
   level,
   spells,
   character,
+  readonly,
 }: {
   level: number;
   spells: SpellElement[];
   character: CharacterListItem;
+  readonly: boolean;
 }) => {
   const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
   return spellSlotsForLevel > 0 || level === 0 ? (
@@ -94,6 +100,7 @@ const SpellLevel = ({
               character={character}
               level={level}
               slots={spellSlotsForLevel}
+              readonly={readonly}
             />
           )}
         </div>
@@ -108,7 +115,7 @@ const SpellLevel = ({
   );
 };
 
-const SpellCasting = ({ character }: Props) => {
+const SpellCasting = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const spells = character.gameData.spells
     .map(spell => getSpell(spell.name))
@@ -142,6 +149,7 @@ const SpellCasting = ({ character }: Props) => {
                   character={character}
                   level={Number(key)}
                   spells={value as SpellElement[]}
+                  readonly={readonly}
                 />
               </ContentBlock>
             ))}

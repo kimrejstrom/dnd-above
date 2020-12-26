@@ -19,12 +19,12 @@
 
 ### In Progress
 
-- Admin edit + paste  
-- Share link  
-- ReadOnly Character Sheet  
 
 ### Done ✓
 
+- ReadOnly Character Sheet  
+- Share link  
+- Admin edit + paste  
 - Proper API typings and testing  
 - [x] Type Async action types and exclude save on those  
 - New character list component with loading based on store state  

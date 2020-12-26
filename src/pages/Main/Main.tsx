@@ -10,7 +10,7 @@ export const Main: React.FC<Props> = () => {
   const character = useSelector(getSelectedCharacter);
 
   return character && character.id ? (
-    <CharacterSheet character={character} />
+    <CharacterSheet character={character} readonly={false} />
   ) : (
     <CharacterList />
   );

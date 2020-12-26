@@ -40,7 +40,7 @@ const PublicCharacter = (props: Props) => {
   return loading === 'pending' ? (
     <Loading />
   ) : character && character.id ? (
-    <CharacterSheet character={character} />
+    <CharacterSheet character={character} readonly={true} />
   ) : (
     <div
       className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center"
