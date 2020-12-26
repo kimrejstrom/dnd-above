@@ -119,7 +119,7 @@ const Summary = () => {
                         )[key as StatsTypes];
                         const mod = getAbilityMod(score);
                         return (
-                          <li>
+                          <li key={key}>
                             <strong>{value}: </strong> {`${score} (${mod})`}
                           </li>
                         );

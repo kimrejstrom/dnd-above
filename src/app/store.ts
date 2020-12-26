@@ -18,14 +18,7 @@ import {
 const persistConfig = {
   key: 'root',
   storage: localForage,
-  whitelist: [
-    'presets',
-    'settings',
-    'theme',
-    'tabs',
-    // 'selectedCharacter',
-    // 'characterList',
-  ],
+  whitelist: ['presets', 'settings', 'theme', 'tabs'],
 };
 
 // Middleware: Redux Persist Persisted Reducer

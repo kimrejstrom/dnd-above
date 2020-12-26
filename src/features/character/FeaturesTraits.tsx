@@ -72,8 +72,8 @@ const renderRaceTraits = (race: Race) => {
   );
   return raceTraits?.length ? (
     raceTraits?.map(trait => (
-      <DetailedEntryTrigger data={trait}>
-        <div key={trait.name} className="custom-border custom-border-thin my-2">
+      <DetailedEntryTrigger key={trait.name} data={trait}>
+        <div className="custom-border custom-border-thin my-2">
           {trait.name}
         </div>
       </DetailedEntryTrigger>

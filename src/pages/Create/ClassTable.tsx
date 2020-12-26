@@ -21,13 +21,21 @@ interface Props {
 const renderTableGroupsHeaderTitle = (
   tableGroups: (ClassTableGroup | SubclassTableGroup)[],
 ) =>
-  tableGroups.map(tableGroup =>
+  tableGroups.map((tableGroup, i) =>
     tableGroup.title ? (
-      <th className="text-sm" colSpan={tableGroup.colLabels.length}>
+      <th
+        key={tableGroup.title}
+        className="text-sm"
+        colSpan={tableGroup.colLabels.length}
+      >
         {tableGroup.title}
       </th>
     ) : (
-      <th className="text-sm" colSpan={tableGroup.colLabels.length}></th>
+      <th
+        key={`empty-${i}`}
+        className="text-sm"
+        colSpan={tableGroup.colLabels.length}
+      ></th>
     ),
   );
 
