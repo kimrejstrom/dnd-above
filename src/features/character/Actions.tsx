@@ -5,7 +5,7 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import actionsDark from 'images/actions-dark.png';
 import actionsLight from 'images/actions-light.png';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import { getItem, isSpellCaster, getSpell } from 'utils/character';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
@@ -16,7 +16,7 @@ import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const getActions = (filterCondition: string) => {
@@ -39,7 +39,7 @@ const getActions = (filterCondition: string) => {
 };
 
 const getSpellsByCastingTime = (
-  character: CharacterState,
+  character: CharacterListItem,
   filterCondition: string,
 ) =>
   character.gameData.spells
@@ -58,7 +58,7 @@ const getSpellsByCastingTime = (
       </DetailedEntryTrigger>
     ));
 
-const getAttackEquipment = (character: CharacterState) =>
+const getAttackEquipment = (character: CharacterListItem) =>
   character.equipmentData.items
     .map(itemName => getItem(itemName))
     .map(item => {
@@ -86,7 +86,7 @@ const getAttackEquipment = (character: CharacterState) =>
     })
     .filter(isDefined);
 
-const getAttackSpells = (character: CharacterState) =>
+const getAttackSpells = (character: CharacterListItem) =>
   character.gameData.spells
     .map(sp => getSpell(sp.name))
     .filter(isDefined)
@@ -119,11 +119,13 @@ const Actions = ({ character }: Props) => {
       <PillFilter pills={['attack', 'action', 'bonus action', 'reaction']}>
         <ContentBlock name="attack">
           <div>Weapons</div>
-          <Items
-            items={getAttackEquipment(character) as any}
-            columns={['name', 'range', 'damage', 'type', 'notes']}
-          />
-          {isSpellCasterClass && (
+          {getAttackEquipment(character).length > 0 && (
+            <Items
+              items={getAttackEquipment(character) as any}
+              columns={['name', 'range', 'damage', 'type', 'notes']}
+            />
+          )}
+          {isSpellCasterClass && getAttackSpells(character).length > 0 && (
             <>
               <div>Spells</div>
               <Spells

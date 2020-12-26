@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import {
@@ -18,7 +18,7 @@ const PASSIVE_SENSES = {
 };
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Senses = ({ character }: Props) => {

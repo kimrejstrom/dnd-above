@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   CHARACTER_STATS,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import { calculateStats, getAbilityMod } from 'utils/character';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
   customBorder?: boolean;
 }
 

@@ -19,11 +19,7 @@ import { isBoolean } from 'util';
 import { getRace } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 
-interface Props {
-  url: string;
-}
-
-const RaceBuilder = ({ url }: Props) => {
+const RaceBuilder = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -60,7 +56,7 @@ const RaceBuilder = ({ url }: Props) => {
           },
         }),
       );
-      history.push(`${url}/step-2`);
+      history.push(`/create/step-2`);
     };
     const abilities = race?.ability || [];
     const skillProficiencies = race?.skillProficiencies || [];
@@ -119,7 +115,7 @@ const RaceBuilder = ({ url }: Props) => {
                   </label>
                 );
               } else {
-                return <></>;
+                return undefined;
               }
             })}
 
@@ -212,7 +208,7 @@ const RaceBuilder = ({ url }: Props) => {
 
             <h3>Languages</h3>
             {languages.length
-              ? languages.map(lang => {
+              ? languages.map((lang, i) => {
                   if (lang.anyStandard) {
                     return (
                       <>
@@ -256,10 +252,10 @@ const RaceBuilder = ({ url }: Props) => {
                     );
                   } else {
                     return (
-                      <div className="capitalize">
-                        {_.keys(_.pickBy(lang, key => isBoolean(key))).join(
-                          ', ',
-                        )}
+                      <div key={i} className="capitalize">
+                        {_.keys(
+                          _.pickBy(lang, key => typeof key === 'boolean'),
+                        ).join(', ')}
                       </div>
                     );
                   }
@@ -308,7 +304,7 @@ const RaceBuilder = ({ url }: Props) => {
     return (
       <div>
         {PLAYABLE_RACES.map((race: Race, index) => (
-          <details>
+          <details key={race.name}>
             <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl">{race.name}</span>
               <StyledButton
@@ -340,12 +336,12 @@ const RaceBuilder = ({ url }: Props) => {
                         width: '20rem',
                       }}
                     />
-                    <p>
+                    <div>
                       <DangerousHtml
                         key={index}
                         data={mainRenderer.race.getCompactRenderedString(race)}
                       />
-                    </p>
+                    </div>
                   </div>
                 </TabPanel>
                 <TabPanel className="overflow-y-scroll px-2">

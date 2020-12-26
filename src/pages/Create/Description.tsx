@@ -15,7 +15,7 @@ import StyledButton, {
 } from 'components/StyledButton/StyledButton';
 import { Parser } from 'utils/mainRenderer';
 
-const Description = ({ url }: { url: string }) => {
+const Description = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -31,7 +31,7 @@ const Description = ({ url }: { url: string }) => {
         },
       }),
     );
-    history.push(`${url}/step-5`);
+    history.push(`/create/step-5`);
   };
 
   type FormData = {
@@ -76,7 +76,7 @@ const Description = ({ url }: { url: string }) => {
     <div>
       <h1>Step 4: Description</h1>
       <div className="flex justify-between my-4">
-        <Link className={DEFAULT_BUTTON_STYLE} to={`${url}/step-3`}>
+        <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-3`}>
           Previous
         </Link>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
@@ -114,7 +114,12 @@ const Description = ({ url }: { url: string }) => {
                 >
                   <option value="initial">-</option>
                   {BACKGROUNDS.map(background => (
-                    <option value={background.name}>{background.name}</option>
+                    <option
+                      key={`${background.name}-${background.source}`}
+                      value={background.name}
+                    >
+                      {background.name}
+                    </option>
                   ))}
                 </select>
                 {errors.background && (
@@ -124,7 +129,7 @@ const Description = ({ url }: { url: string }) => {
               {selectedBackground && (
                 <div>
                   <h3>Skill Proficiencies</h3>
-                  {selectedBackground.skillProficiencies?.map(prof => {
+                  {selectedBackground.skillProficiencies?.map((prof, i) => {
                     if (prof.choose) {
                       let count = prof.choose.count || 1;
                       return (
@@ -154,7 +159,7 @@ const Description = ({ url }: { url: string }) => {
                                       </option>
                                     );
                                   } else {
-                                    return <></>;
+                                    return undefined;
                                   }
                                 })}
                               </select>
@@ -167,7 +172,7 @@ const Description = ({ url }: { url: string }) => {
                       );
                     } else {
                       return (
-                        <div>
+                        <div key={i}>
                           {_.keys(_.pickBy(prof, key => isBoolean(key))).join(
                             ', ',
                           )}
@@ -177,7 +182,7 @@ const Description = ({ url }: { url: string }) => {
                   })}
 
                   <h3>Tool Proficiencies</h3>
-                  {selectedBackground.toolProficiencies?.map(prof => {
+                  {selectedBackground.toolProficiencies?.map((prof, i) => {
                     if (prof.choose) {
                       let count = 1;
                       return (
@@ -202,12 +207,16 @@ const Description = ({ url }: { url: string }) => {
                                 {prof.choose.from.map(pr => {
                                   if (typeof pr === 'string') {
                                     return (
-                                      <option className="capitalize" value={pr}>
+                                      <option
+                                        key={pr}
+                                        className="capitalize"
+                                        value={pr}
+                                      >
                                         {pr}
                                       </option>
                                     );
                                   } else {
-                                    return <></>;
+                                    return undefined;
                                   }
                                 })}
                               </select>
@@ -220,7 +229,7 @@ const Description = ({ url }: { url: string }) => {
                       );
                     } else {
                       return (
-                        <div>
+                        <div key={i}>
                           {_.keys(_.pickBy(prof, key => isBoolean(key))).join(
                             ', ',
                           )}
@@ -230,7 +239,7 @@ const Description = ({ url }: { url: string }) => {
                   })}
 
                   <h3>Languages</h3>
-                  {selectedBackground.languageProficiencies?.map(lang => {
+                  {selectedBackground.languageProficiencies?.map((lang, i) => {
                     if (lang.anyStandard) {
                       return (
                         <>
@@ -259,6 +268,7 @@ const Description = ({ url }: { url: string }) => {
                                 Parser.LANGUAGES_EXOTIC,
                               ).map((allLang: any) => (
                                 <option
+                                  key={allLang.toLowerCase()}
                                   className="capitalize"
                                   value={allLang.toLowerCase()}
                                 >
@@ -274,7 +284,7 @@ const Description = ({ url }: { url: string }) => {
                       );
                     } else {
                       return (
-                        <div>
+                        <div key={i}>
                           {_.keys(_.pickBy(lang, key => isBoolean(key))).join(
                             ', ',
                           )}
@@ -337,7 +347,7 @@ const Description = ({ url }: { url: string }) => {
                 >
                   <option value="initial">-</option>
                   {Object.entries(Parser.ALIGNMENTS).map(([key, value]) => (
-                    <option className="capitalize" value={key}>
+                    <option key={key} className="capitalize" value={key}>
                       {value as any}
                     </option>
                   ))}
@@ -366,14 +376,18 @@ const Description = ({ url }: { url: string }) => {
                     setCharacteristicsSource(e.currentTarget.value);
                   }}
                   ref={register}
-                  value={characteristicsSource}
+                  // value={characteristicsSource}
                   defaultValue={
                     formState.data.descriptionData.characteristicsSource
                   }
                 >
                   <option value="initial">-</option>
                   {CHARACTERISTICS.map(entry => (
-                    <option className="capitalize" value={entry.name}>
+                    <option
+                      key={entry.name}
+                      className="capitalize"
+                      value={entry.name}
+                    >
                       {entry.name}
                     </option>
                   ))}
@@ -391,7 +405,7 @@ const Description = ({ url }: { url: string }) => {
                     ?.tables.map(x => x)
                     .map(item => {
                       if (typeof item === 'string') {
-                        return <div>{item}</div>;
+                        return <div key={item}>{item}</div>;
                       } else {
                         const heading = item!.colLabels
                           ? item!.colLabels[1]
@@ -414,6 +428,7 @@ const Description = ({ url }: { url: string }) => {
                                 {item!.rows &&
                                   item!.rows.map(row => (
                                     <option
+                                      key={row[1]}
                                       className="capitalize"
                                       value={row[1]}
                                     >

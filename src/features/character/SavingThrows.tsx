@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   CHARACTER_STATS,
   StatsTypes,
 } from 'features/character/characterListSlice';
@@ -13,7 +13,7 @@ import {
 import { SpellcastingAbility } from 'models/class';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const SavingThrows = ({ character }: Props) => {

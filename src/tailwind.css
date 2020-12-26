@@ -23,7 +23,7 @@ body {
 }
 
 .h-body {
-  height: calc(100vh - 5rem);
+  height: calc(100vh - 4rem);
 }
 
 .modal {
@@ -69,7 +69,7 @@ body.modal-active {
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;
-  border-image-source: url(./images/border-image-small-dark.png);
+  border-image-source: url(./images/border-image.png);
 }
 
 .mode-dark .custom-border-small {
@@ -77,7 +77,7 @@ body.modal-active {
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;
-  border-image-source: url(./images/border-image-small-light.png);
+  border-image-source: url(./images/border-image-light.png);
 }
 
 .mode-dark .custom-border-thin,
@@ -224,16 +224,18 @@ a.active {
 }
 
 .right-panel {
-  transition: all 200ms ease-in-out;
+  transition: all 300ms ease-in-out;
 }
 
 .right-panel-open {
-  transform: translateX(0%);
+  transform: translateX(50%);
+  opacity: 100%;
   width: 25rem;
 }
 
 .right-panel-close {
   transform: translateX(100%);
+  opacity: 0%;
   visibility: hidden !important;
   width: 0;
 }
@@ -248,7 +250,6 @@ a.active {
 .conditions-defenses-panel {
   width: 25rem;
 }
-
 
 @media (max-width: 768px) {
   .conditions-defenses-panel {

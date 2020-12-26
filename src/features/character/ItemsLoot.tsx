@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import { ThemeMode } from 'features/theme/themeSlice';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import itemsDark from 'images/items-dark.png';
@@ -11,7 +11,7 @@ import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const ItemsLoot = ({ character }: Props) => {

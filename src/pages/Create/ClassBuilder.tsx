@@ -22,7 +22,7 @@ import {
 } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 
-const ClassBuilder = ({ url }: { url: string }) => {
+const ClassBuilder = () => {
   const dispatch = useDispatch();
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
@@ -39,7 +39,7 @@ const ClassBuilder = ({ url }: { url: string }) => {
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
       dispatch(updateFormData({ classData: data }));
-      history.push(`${url}/step-3`);
+      history.push(`/create/step-3`);
     };
 
     const classProficiencies: Skill[] =

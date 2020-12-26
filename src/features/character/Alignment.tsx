@@ -5,18 +5,19 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import alignmentDark from 'images/alignment-dark.png';
 import alignmentLight from 'images/alignment-light.png';
 import {
-  CharacterState,
+  CharacterListItem,
   setCurrentHd,
 } from 'features/character/characterListSlice';
-import { getRace, getHdTotal, getHitDice } from 'utils/character';
+import { getRace, getHdTotal, getHitDice, parseSpeed } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }
 
-const Alignment = ({ character }: Props) => {
+const Alignment = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   type FormData = {
@@ -24,7 +25,9 @@ const Alignment = ({ character }: Props) => {
   };
   const { register, handleSubmit, setValue } = useForm<FormData>();
   const onHDSubmit = (data: FormData) => {
-    dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
+    if (!readonly) {
+      dispatch(setCurrentHd({ id: character.id!, currentHd: data.currentHd }));
+    }
   };
   useEffect(() => {
     setValue('currentHd', character.gameData.currentHd);
@@ -84,7 +87,7 @@ const Alignment = ({ character }: Props) => {
           left: '9.6rem',
         }}
       >
-        {getRace(character.raceData.race)!.speed}
+        {parseSpeed(getRace(character.raceData.race)!.speed)}
       </div>
       <div
         className="text-2xl absolute w-8 inset-0 text-center"
@@ -115,6 +118,7 @@ const Alignment = ({ character }: Props) => {
             className="text-2xl text-center mb-3"
           >
             <input
+              disabled={readonly}
               name="currentHd"
               className="text-center text-2xl w-6 h-6 bg-white dark:bg-secondary-dark"
               onChange={handleSubmit(onHDSubmit)}

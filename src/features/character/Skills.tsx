@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import {
@@ -38,25 +38,29 @@ export const CHARACTER_ABILITIES = {
 export type SkillTypes = keyof typeof CHARACTER_ABILITIES;
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }
 
-const Skills = ({ character }: Props) => {
+const Skills = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   return (
     <div className="custom-border relative">
       <div className="text-xl text-center leading-none my-1">Skills</div>
-      <SettingsCog
-        action={() =>
-          dispatch(
-            toggleModal({
-              visible: true,
-              title: 'Skills and Proficiencies',
-              content: <SkillsProficienciesModal />,
-            }),
-          )
-        }
-      />
+      {!readonly && (
+        <SettingsCog
+          action={() =>
+            dispatch(
+              toggleModal({
+                visible: true,
+                title: 'Skills and Proficiencies',
+                content: <SkillsProficienciesModal character={character} />,
+              }),
+            )
+          }
+        />
+      )}
+
       {Object.entries(CHARACTER_ABILITIES).map(([key, value]) => {
         const score = calculateStats(character)[value as StatsTypes];
         const proficient = isProficient(key as SkillTypes, character);

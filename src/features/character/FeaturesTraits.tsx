@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import { Race } from 'models/race';
 import {
   getClass,
@@ -23,7 +23,7 @@ import _ from 'lodash';
 import ClassTable from 'pages/Create/ClassTable';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const renderClassFeatures = (className: string) => {
@@ -32,7 +32,7 @@ const renderClassFeatures = (className: string) => {
     if (!feature.source.includes('UA')) {
       return (
         <div
-          key={`${feature.name}-${feature.level}`}
+          key={`${className}-${feature.name}-${feature.level}`}
           className="custom-border custom-border-thin my-2"
         >
           <DetailedEntryTrigger data={feature} extraClassName="font-bold">
@@ -52,7 +52,7 @@ const renderSubClassFeatures = (className: string, subClassName: string) => {
     if (!feature.source.includes('UA')) {
       return (
         <div
-          key={`${feature.name}-${feature.level}`}
+          key={`${subClassName}-${feature.name}-${feature.level}`}
           className="custom-border custom-border-thin my-2"
         >
           <DetailedEntryTrigger data={feature} extraClassName="font-bold">
@@ -72,8 +72,8 @@ const renderRaceTraits = (race: Race) => {
   );
   return raceTraits?.length ? (
     raceTraits?.map(trait => (
-      <DetailedEntryTrigger data={trait}>
-        <div key={trait.name} className="custom-border custom-border-thin my-2">
+      <DetailedEntryTrigger key={trait.name} data={trait}>
+        <div className="custom-border custom-border-thin my-2">
           {trait.name}
         </div>
       </DetailedEntryTrigger>

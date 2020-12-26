@@ -1,3 +1,6 @@
+[build]
+  functions = "build/functions"
+
 [[headers]]
   for = "/service-worker.js"
   [headers.values]

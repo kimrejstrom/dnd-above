@@ -1,22 +1,13 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { CharacterList } from 'features/character/characterListSlice';
 import { setSelectedCharacter } from 'features/character/selectedCharacterSlice';
 import { setInitialFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useHistory } from 'react-router-dom';
-import { getCookie } from 'utils/cookie';
+import { getFilteredCharacterList } from 'app/selectors';
 
 const Sidebar = () => {
-  const allSources = getCookie('allSources') === 'true';
-  const characterList: CharacterList = useSelector(
-    (state: RootState) => state.characterList,
-  ).filter(character => {
-    if (!allSources) {
-      return !character.allSources;
-    }
-    return true;
-  });
+  const characterList = useSelector(getFilteredCharacterList);
   const selectedCharacterId = useSelector(
     (state: RootState) => state.selectedCharacter,
   );

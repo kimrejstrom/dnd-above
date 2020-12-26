@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   CHARACTER_STATS,
   expendSpellSlot,
   addSpellSlot,
@@ -23,22 +23,25 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
-import { getSelectedCharacter } from 'app/selectors';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }
 
 const SpellSlotCheckBoxes = ({
   level,
   slots,
+  character,
+  readonly,
 }: {
   level: number;
   slots: number;
+  character: CharacterListItem;
+  readonly: boolean;
 }) => {
   const { register } = useForm();
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   const usedSpellSlots = character.gameData.spellSlots?.[level].used || 0;
   const handleChange = (e: ChangeEvent<HTMLInputElement>, level: number) => {
     dispatch(
@@ -57,6 +60,8 @@ const SpellSlotCheckBoxes = ({
     <div className="mx-2 flex flex-end">
       {Array.from({ length: slots }, (_, i: number) => (
         <input
+          key={`${level}-${i}`}
+          disabled={readonly}
           className="form-checkbox text-primary-dark mr-1"
           type="checkbox"
           name={`${level}-${slots}`}
@@ -73,10 +78,12 @@ const SpellLevel = ({
   level,
   spells,
   character,
+  readonly,
 }: {
   level: number;
   spells: SpellElement[];
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }) => {
   const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
   return spellSlotsForLevel > 0 || level === 0 ? (
@@ -90,7 +97,12 @@ const SpellLevel = ({
           {level === 0 ? (
             '∞'
           ) : (
-            <SpellSlotCheckBoxes level={level} slots={spellSlotsForLevel} />
+            <SpellSlotCheckBoxes
+              character={character}
+              level={level}
+              slots={spellSlotsForLevel}
+              readonly={readonly}
+            />
           )}
         </div>
       </div>
@@ -104,7 +116,7 @@ const SpellLevel = ({
   );
 };
 
-const SpellCasting = ({ character }: Props) => {
+const SpellCasting = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const spells = character.gameData.spells
     .map(spell => getSpell(spell.name))
@@ -133,11 +145,12 @@ const SpellCasting = ({ character }: Props) => {
             pills={Object.keys(spellLevels).map(key => `level ${key}`)}
           >
             {Object.entries(spellLevels).map(([key, value]) => (
-              <ContentBlock name={`level ${key}`}>
+              <ContentBlock key={key} name={`level ${key}`}>
                 <SpellLevel
                   character={character}
                   level={Number(key)}
                   spells={value as SpellElement[]}
+                  readonly={readonly}
                 />
               </ContentBlock>
             ))}

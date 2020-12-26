@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import {
-  CharacterState,
+  CharacterListItem,
   setAc,
   setHp,
 } from 'features/character/characterListSlice';
@@ -24,10 +24,11 @@ import { useForm } from 'react-hook-form';
 import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }
 
-const ACHP = ({ character }: Props) => {
+const ACHP = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
   type FormData = {
@@ -44,12 +45,16 @@ const ACHP = ({ character }: Props) => {
   });
 
   const onACSubmit = (data: FormData) => {
-    dispatch(setAc({ id: character.id!, ac: data.ac }));
+    if (!readonly) {
+      dispatch(setAc({ id: character.id!, ac: data.ac }));
+    }
   };
 
   const onHPChange = (type: string) => {
-    const { hp } = getValues();
-    dispatch(setHp({ id: character.id!, hp, type }));
+    if (!readonly) {
+      const { hp } = getValues();
+      dispatch(setHp({ id: character.id!, hp, type }));
+    }
   };
 
   const onHPSubmit = (data: FormData) => {
@@ -99,6 +104,7 @@ const ACHP = ({ character }: Props) => {
               name="ac"
               className="text-center w-8 h-6 bg-white dark:bg-secondary-dark"
               onChange={handleSubmit(onACSubmit)}
+              disabled={readonly}
               ref={register({ required: true })}
             />
             {errors.ac && <div>AC is required</div>}
@@ -147,6 +153,7 @@ const ACHP = ({ character }: Props) => {
             className="text-xl text-center flex justify-around md:flex-col"
           >
             <button
+              disabled={readonly}
               className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
               onClick={() => onHPChange('heal')}
               type="button"
@@ -154,11 +161,13 @@ const ACHP = ({ character }: Props) => {
               Heal
             </button>
             <input
+              disabled={readonly}
               name="hp"
               className="text-center mx-2 sm:mx-0 sm:my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
               ref={register}
             />
             <button
+              disabled={readonly}
               className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
               onClick={() => onHPChange('damage')}
               type="button"

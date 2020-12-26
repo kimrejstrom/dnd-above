@@ -1,5 +1,5 @@
 import {
-  CharacterState,
+  CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
 import _, { mapValues } from 'lodash';
@@ -26,7 +26,7 @@ import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
-import { AbilityBase } from 'models/race';
+import { AbilityBase, Race } from 'models/race';
 
 export const getAbilityScoreByType = (
   ability: StatsTypes,
@@ -34,7 +34,7 @@ export const getAbilityScoreByType = (
 ) => (abilities?.length && abilities[0][ability]) || 0;
 
 export const getRaceAbilityBonus = (
-  character: CharacterState,
+  character: CharacterListItem,
   ability: StatsTypes,
 ) => {
   const raceElement = getRace(character.raceData.race);
@@ -50,7 +50,7 @@ export const getRaceAbilityBonus = (
 };
 
 export const getAbilityBonus = (
-  character: CharacterState,
+  character: CharacterListItem,
   ability: StatsTypes,
 ) => {
   const raceAbility = getRaceAbilityBonus(character, ability);
@@ -62,7 +62,7 @@ export const getAbilityBonus = (
 };
 
 export const calculateStats = (
-  character: CharacterState,
+  character: CharacterListItem,
 ): Record<StatsTypes, number> => {
   const baseStats = _.omit(character.classData.abilityScores, 'rollMethod');
 
@@ -73,7 +73,7 @@ export const calculateStats = (
   );
 };
 
-export const getMaxHP = (character: CharacterState) => {
+export const getMaxHP = (character: CharacterListItem) => {
   const hitDie = getClass(character.classData.classElement)?.hd.faces || 10;
   const level = character.gameData.level;
   const con = getAbilityMod(calculateStats(character).con);
@@ -183,7 +183,7 @@ export const getItem = (itemName: string): Item | BaseItem | undefined =>
 export const getSpell = (spellName: string) =>
   ALL_SPELLS.find(sp => sp.name === spellName);
 
-export const isSpellCaster = (character: CharacterState) => {
+export const isSpellCaster = (character: CharacterListItem) => {
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
     character.classData.classElement,
@@ -195,13 +195,13 @@ export const isSpellCaster = (character: CharacterState) => {
   return isSpellCaster;
 };
 
-export const getHitDice = (character: CharacterState) =>
+export const getHitDice = (character: CharacterListItem) =>
   `d${getClass(character.classData.classElement)!.hd.faces}`;
 
-export const getHdTotal = (character: CharacterState) =>
+export const getHdTotal = (character: CharacterListItem) =>
   character.gameData.level;
 
-export const getSpellModifier = (character: CharacterState) => {
+export const getSpellModifier = (character: CharacterListItem) => {
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
     character.classData.classElement,
@@ -211,19 +211,22 @@ export const getSpellModifier = (character: CharacterState) => {
     subClassElement?.spellcastingAbility) as StatsTypes;
 };
 
-export const getSpellSaveDC = (character: CharacterState) => {
+export const getSpellSaveDC = (character: CharacterListItem) => {
   const score = calculateStats(character)[getSpellModifier(character)];
   const mod = getAbilityMod(score);
   return 8 + mod + getProficiencyBonus(character.gameData.level);
 };
 
-export const getSpellAttack = (character: CharacterState) => {
+export const getSpellAttack = (character: CharacterListItem) => {
   const score = calculateStats(character)[getSpellModifier(character)];
   const mod = getAbilityMod(score);
   return mod + getProficiencyBonus(character.gameData.level);
 };
 
-export const isProficient = (skill: SkillTypes, character: CharacterState) => {
+export const isProficient = (
+  skill: SkillTypes,
+  character: CharacterListItem,
+) => {
   const skillProficiencies = character.raceData.chosenRaceSkillProficiencies.concat(
     [
       ...character.raceData.standardRaceSkillProficiencies,
@@ -238,7 +241,7 @@ export const isProficient = (skill: SkillTypes, character: CharacterState) => {
 
 export const isCustomProficiency = (
   skill: SkillTypes,
-  character: CharacterState,
+  character: CharacterListItem,
 ) => character.customData.customSkillProficiencies.includes(skill);
 
 export const getClassQuickBuild = (classElement: ClassElement) =>
@@ -253,24 +256,28 @@ export const getClassQuickBuild = (classElement: ClassElement) =>
     ),
   );
 
-export const getArmorProficiencies = (character: CharacterState): string[] =>
+export const getArmorProficiencies = (character: CharacterListItem): string[] =>
   character.classData.standardClassArmorProficiencies.concat(
     character.customData.customArmorProficiencies,
   );
 
-export const getWeaponProficiencies = (character: CharacterState): string[] =>
+export const getWeaponProficiencies = (
+  character: CharacterListItem,
+): string[] =>
   character.classData.standardClassWeaponProficiencies.concat(
     character.customData.customWeaponProficiencies,
   );
 
-export const getToolProficiencies = (character: CharacterState): string[] =>
+export const getToolProficiencies = (character: CharacterListItem): string[] =>
   character.classData.standardClassToolProficiencies.concat(
     character.descriptionData.standardBackgroundToolProficiencies,
     character.descriptionData.chosenBackgroundToolProficiencies,
     character.customData.customToolProficiencies,
   );
 
-export const getLanguageProficiencies = (character: CharacterState): string[] =>
+export const getLanguageProficiencies = (
+  character: CharacterListItem,
+): string[] =>
   character.raceData.standardRaceLanguages.concat(
     character.raceData.chosenRaceLanguages,
     character.descriptionData.standardBackgroundLanguages,
@@ -300,7 +307,7 @@ export const mapArmorProficiencies = (
     }
   });
 
-export const getSpellSlotsPerLevel = (character: CharacterState) => {
+export const getSpellSlotsPerLevel = (character: CharacterListItem) => {
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
     character.classData.classElement,
@@ -340,4 +347,14 @@ export const extractSpellSlots = (
         )
       : undefined;
   return convertedSlots;
+};
+
+export const parseSpeed = (speed: Race['speed']) => {
+  if (speed) {
+    if (typeof speed === 'string' || typeof speed === 'number') {
+      return speed;
+    } else {
+      return speed.walk;
+    }
+  }
 };

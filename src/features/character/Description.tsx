@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import descriptionDark from 'images/description-dark.png';
 import descriptionLight from 'images/description-light.png';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { Parser } from 'utils/mainRenderer';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Description = ({ character }: Props) => {

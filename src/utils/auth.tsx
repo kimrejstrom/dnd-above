@@ -1,5 +1,8 @@
 import React, { useState, useContext, createContext } from 'react';
 import netlifyIdentity, { User } from 'netlify-identity-widget';
+import { store } from 'app/store';
+import { getCharacterList } from 'features/character/characterListSlice';
+import { getCookie, setCookie } from 'utils/cookie';
 
 // Netlify Auth Service
 interface NetlifyAuth {
@@ -22,10 +25,20 @@ const netlifyAuth: NetlifyAuth = {
   },
 };
 
+export const isPowerUser = (user: User) =>
+  user.app_metadata.roles.includes('power');
+
 // Refresh JWT Token
 netlifyIdentity.on('init', async (user: User | null) => {
   if (user) {
     await netlifyIdentity.refresh();
+
+    // Check if user is Power user
+    if (isPowerUser(user) && !(getCookie('allSources') === 'true')) {
+      setCookie('allSources', 'true');
+      window.location.reload();
+    }
+    store.dispatch(getCharacterList());
   }
 });
 

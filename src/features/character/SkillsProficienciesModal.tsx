@@ -1,17 +1,20 @@
 import React, { ChangeEvent } from 'react';
-import { getSelectedCharacter } from 'app/selectors';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import {
   addCustomProficiency,
+  CharacterListItem,
   removeCustomProficiency,
 } from 'features/character/characterListSlice';
 import { CHARACTER_ABILITIES, SkillTypes } from 'features/character/Skills';
 import _ from 'lodash';
 import { isProficient, isCustomProficiency } from 'utils/character';
 
-const SkillsProficienciesModal = () => {
-  const character = useSelector(getSelectedCharacter);
+interface Props {
+  character: CharacterListItem;
+}
+
+const SkillsProficienciesModal: React.FC<Props> = ({ character }) => {
   const dispatch = useDispatch();
   const { register } = useForm();
   const toggleProficiency = (e: ChangeEvent<HTMLInputElement>) => {

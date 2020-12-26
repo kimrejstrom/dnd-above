@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   CharacterBase,
+  generateID,
   randomize,
 } from 'features/character/characterListSlice';
 import { CharacterListItem } from 'features/character/characterListSlice';
@@ -11,6 +12,7 @@ export interface CreateCharacterFormState {
 
 const initialState: CreateCharacterFormState = {
   data: {
+    id: generateID(),
     raceData: {
       race: '',
       chosenRaceAbilities: [],

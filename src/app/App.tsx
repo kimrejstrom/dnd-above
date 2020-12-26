@@ -12,7 +12,6 @@ import { Modal } from 'components/Modal/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { withTracker, initializeGA } from 'utils/analyticsTracker';
-import { About } from 'pages/About/About';
 import Books from 'pages/Books/Books';
 import { UpdateNotification } from 'components/UpdateNotification/UpdateNotification';
 import { Main } from 'pages/Main/Main';
@@ -23,7 +22,10 @@ import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
 import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 import { AuthContextProvider, useAuth } from 'utils/auth';
-import { Login } from 'app/Auth';
+import { Login } from 'pages/Login/Login';
+import { useBeforeWindowUnload } from 'utils/customHooks';
+import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
+import Edit from 'pages/Edit/Edit';
 
 // Google Analytics
 initializeGA();
@@ -31,7 +33,7 @@ initializeGA();
 // A wrapper for <Route> that redirects to the login
 // screen if you're not yet authenticated.
 function PrivateRoute({ children, ...rest }: RouteProps) {
-  let auth = useAuth();
+  const auth = useAuth();
   return (
     <Route
       {...rest}
@@ -66,6 +68,11 @@ const App: React.FC = () => {
       dispatch(setPanelClose());
     },
   });
+
+  const auth = useAuth();
+  // Hook to cleanup on window unload
+  useBeforeWindowUnload(auth?.user);
+
   return (
     <div
       className={`flex flex-col min-h-screen theme ${
@@ -84,7 +91,7 @@ const App: React.FC = () => {
                 <Header />
                 <div
                   className="flex w-full"
-                  style={{ minHeight: 'calc(100vh - 5rem)' }}
+                  style={{ minHeight: 'calc(100vh - 4rem)' }}
                 >
                   <Sidebar />
                   {/* Main content */}
@@ -97,11 +104,17 @@ const App: React.FC = () => {
                       <PrivateRoute path="/create">
                         <Create />
                       </PrivateRoute>
+                      <PrivateRoute path="/edit">
+                        <Edit />
+                      </PrivateRoute>
                       <PrivateRoute path="/books">
                         <Books />
                       </PrivateRoute>
                       <Route path="/login" component={withTracker(Login)} />
-                      <Route path="/about" component={withTracker(About)} />
+                      <Route
+                        path="/character/:listId/:characterId"
+                        component={withTracker(PublicCharacter)}
+                      />
                     </Switch>
                   </div>
                   <Modal title={title} content={content} />

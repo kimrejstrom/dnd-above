@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import {
-  CharacterState,
+  CharacterListItem,
   DefenseType,
   addDefense,
   removeDefense,
@@ -8,20 +8,23 @@ import {
   removeCondition,
 } from 'features/character/characterListSlice';
 import SettingsCog from 'components/SettingsCog/SettingsCog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
-import { getSelectedCharacter } from 'app/selectors';
 import _ from 'lodash';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
+  readonly: boolean;
 }
 
-const DefensesModal = () => {
-  const character = useSelector(getSelectedCharacter);
+interface ModalProps {
+  character: CharacterListItem;
+}
+
+const DefensesModal: React.FC<ModalProps> = ({ character }) => {
   const [itemDefenses, setItemDefenses] = useState<
     { formId: string; type: DefenseType }[]
   >([]);
@@ -122,8 +125,7 @@ const DefensesModal = () => {
   );
 };
 
-const ConditionsModal = () => {
-  const character = useSelector(getSelectedCharacter);
+const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
   const conditionsList = character.gameData.conditions;
   const dispatch = useDispatch();
   const { register } = useForm();
@@ -165,24 +167,26 @@ const ConditionsModal = () => {
   );
 };
 
-const ConditionsDefenses = ({ character }: Props) => {
+const ConditionsDefenses = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   return (
     <div className="conditions-defenses-panel text-left text-sm custom-border h-20 flex">
       <div className="w-1/2 relative">
         <div className="flex -mt-2">
           <div>Defenses</div>
-          <SettingsCog
-            action={() =>
-              dispatch(
-                toggleModal({
-                  visible: true,
-                  title: 'Defenses',
-                  content: <DefensesModal />,
-                }),
-              )
-            }
-          />
+          {!readonly && (
+            <SettingsCog
+              action={() =>
+                dispatch(
+                  toggleModal({
+                    visible: true,
+                    title: 'Defenses',
+                    content: <DefensesModal character={character} />,
+                  }),
+                )
+              }
+            />
+          )}
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.defenses.length ? (
@@ -202,17 +206,19 @@ const ConditionsDefenses = ({ character }: Props) => {
       <div className="w-1/2 custom-border custom-border-medium custom-border-l relative">
         <div className="flex -mt-2">
           <div>Conditions</div>
-          <SettingsCog
-            action={() =>
-              dispatch(
-                toggleModal({
-                  visible: true,
-                  title: 'Conditions',
-                  content: <ConditionsModal />,
-                }),
-              )
-            }
-          />
+          {!readonly && (
+            <SettingsCog
+              action={() =>
+                dispatch(
+                  toggleModal({
+                    visible: true,
+                    title: 'Conditions',
+                    content: <ConditionsModal character={character} />,
+                  }),
+                )
+              }
+            />
+          )}
         </div>
         <div className="-mt-1 text-xs">
           {character.gameData.conditions.length ? (

@@ -37,25 +37,25 @@ const Create = (props: Props) => {
         <div className="custom-border bg-secondary-light dark:bg-secondary-dark p-2">
           <Switch>
             <Route exact path={path}>
-              <CharacterListing url={url} />
+              <CharacterListing />
             </Route>
             <Route path={`${path}/step-1`}>
-              <RaceBuilder url={url} />
+              <RaceBuilder />
             </Route>
             <Route path={`${path}/step-2`}>
-              <ClassBuilder url={url} />
+              <ClassBuilder />
             </Route>
             <Route path={`${path}/step-3`}>
-              <Abilities url={url} />
+              <Abilities />
             </Route>
             <Route path={`${path}/step-4`}>
-              <Description url={url} />
+              <Description />
             </Route>
             <Route path={`${path}/step-5`}>
-              <Equipment url={url} />
+              <Equipment />
             </Route>
             <Route path={`${path}/summary`}>
-              <Summary url={url} />
+              <Summary />
             </Route>
           </Switch>
         </div>

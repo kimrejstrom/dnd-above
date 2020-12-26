@@ -1,5 +1,5 @@
 import React from 'react';
-import { CharacterState } from 'features/character/characterListSlice';
+import { CharacterListItem } from 'features/character/characterListSlice';
 import {
   getArmorProficiencies,
   getWeaponProficiencies,
@@ -11,7 +11,7 @@ import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { mainRenderer } from 'utils/mainRenderer';
 
 interface Props {
-  character: CharacterState;
+  character: CharacterListItem;
 }
 
 const Proficiencies = ({ character }: Props) => {
