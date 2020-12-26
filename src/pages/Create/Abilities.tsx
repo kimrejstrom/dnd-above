@@ -173,8 +173,9 @@ const Abilities = () => {
           <div className="my-4">
             <h4 className="text-center">Scores:</h4>
             <div className="w-full flex justify-center">
-              {abilityScores.map(ab => (
+              {abilityScores.map((ab, i) => (
                 <div
+                  key={i}
                   className={`${
                     ab.used ? 'opacity-25' : ''
                   } w-10 h-10 mr-2 custom-border custom-border-thin flex flex-col items-center`}
@@ -188,7 +189,7 @@ const Abilities = () => {
 
         <div className="flex w-full my-4">
           {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
-            <div className="w-1/6 text-center">
+            <div key={key} className="w-1/6 text-center">
               <label className="block mx-1">
                 {value}
                 <select
@@ -201,8 +202,8 @@ const Abilities = () => {
                   className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
                 >
                   <option value="0">-</option>
-                  {abilityScores.map(ab => (
-                    <option disabled={ab.used} value={ab.score}>
+                  {abilityScores.map((ab, i) => (
+                    <option key={i} disabled={ab.used} value={ab.score}>
                       {ab.score}
                     </option>
                   ))}
@@ -217,7 +218,10 @@ const Abilities = () => {
       </form>
       <div className="flex flex-wrap w-full my-4">
         {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
-          <div className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark">
+          <div
+            key={key}
+            className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark"
+          >
             <div className="w-full px-4 py-1 bg-primary-dark text-yellow-100">
               {value as any}
             </div>

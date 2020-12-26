@@ -18,16 +18,16 @@ const Background = ({ background }: Props) => {
       <DetailedEntryTrigger data={backgroundElement} extraClassName="text-xl">
         {`${backgroundElement?.name}, ${backgroundElement?.source}  ${backgroundElement?.page}`}
       </DetailedEntryTrigger>
-      {backgroundElement?.entries?.map(entry => (
-        <div className="dnd-body my-2 custom-border custom-border-thin">
+      {backgroundElement?.entries?.map((entry, i) => (
+        <div key={i} className="dnd-body my-2 custom-border custom-border-thin">
           <Entry entry={entry} />
         </div>
       ))}
       {fluff && (
         <div className="dnd-body my-2 custom-border custom-border-thin">
           <h3>Additional Info</h3>
-          {fluff.entries?.map(entry => (
-            <Entry entry={entry} />
+          {fluff.entries?.map((entry, i) => (
+            <Entry key={i} entry={entry} />
           ))}
         </div>
       )}

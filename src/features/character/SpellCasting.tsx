@@ -60,6 +60,7 @@ const SpellSlotCheckBoxes = ({
     <div className="mx-2 flex flex-end">
       {Array.from({ length: slots }, (_, i: number) => (
         <input
+          key={`${level}-${i}`}
           disabled={readonly}
           className="form-checkbox text-primary-dark mr-1"
           type="checkbox"
