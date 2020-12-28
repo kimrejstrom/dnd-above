@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
 
   try {
     const response = await client.query(
-      q.Get(q.Ref(`classes/character_lists/${pathVariables[2]}`)),
+      q.Get(q.Ref(`classes/character_lists/${pathVariables[0]}`)),
     );
 
     return {
@@ -22,7 +22,7 @@ exports.handler = async (event, context) => {
         ...response,
         data: {
           ...response.data,
-          list: response.data.list.filter(item => item.id === pathVariables[3]),
+          list: response.data.list.filter(item => item.id === pathVariables[1]),
         },
       }),
     };
