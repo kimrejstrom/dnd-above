@@ -26,7 +26,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Custom middleware to auto save characterList in the background with 10 sec debounce
 let saveTimer: any;
-let debounceTime = 5000;
+let debounceTime = 1500;
 
 const saveDebounce = (storeAPI: any) => {
   if (saveTimer) {

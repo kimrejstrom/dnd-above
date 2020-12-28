@@ -17,16 +17,18 @@ export const Armor: React.FC = () => {
   const tableData = useMemo(() => Object.values(allArmor), [allArmor]);
   const tableColumns = useMemo(
     () =>
-      Object.keys(tableData[0])
-        .map(key => ({
-          accessor: key,
-          Header: startCase(key),
-        }))
-        .filter(column =>
-          ['name', 'type', 'ac', 'stealth', 'strength', 'source'].includes(
-            column.accessor,
-          ),
-        ),
+      tableData.length
+        ? Object.keys(tableData[0])
+            .map(key => ({
+              accessor: key,
+              Header: startCase(key),
+            }))
+            .filter(column =>
+              ['name', 'type', 'ac', 'stealth', 'strength', 'source'].includes(
+                column.accessor,
+              ),
+            )
+        : [],
     [tableData],
   );
 

@@ -520,7 +520,7 @@ const characterListSlice = createSlice({
       const characterIndex = state.list.findIndex(
         chara => chara.id === action.payload.id,
       );
-      if (characterIndex) {
+      if (characterIndex !== -1) {
         state.list[characterIndex] = action.payload.character;
       }
     },

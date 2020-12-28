@@ -32,10 +32,12 @@ const RaceBuilder = () => {
   ) => {
     if (abs) {
       const chosenAbs = Array.isArray(abs) ? abs : [abs];
-      return chosenAbs.reduce(
-        (acc: any, curr: string) => ({ ...acc, [curr]: abilityAmount }),
-        {},
-      );
+      return [
+        chosenAbs.reduce(
+          (acc: any, curr: string) => ({ ...acc, [curr]: abilityAmount }),
+          {},
+        ),
+      ];
     }
     return [];
   };
@@ -44,6 +46,7 @@ const RaceBuilder = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
+      console.log(data);
       const chosenAbs = parseChosenRaceAbilities(
         abilityAmount,
         data.chosenRaceAbilities,
@@ -52,7 +55,15 @@ const RaceBuilder = () => {
         updateFormData({
           raceData: {
             ...data,
+            chosenRaceLanguages: Array.isArray(data.chosenRaceLanguages)
+              ? data.chosenRaceLanguages
+              : [data.chosenRaceLanguages],
             chosenRaceAbilities: chosenAbs,
+            chosenRaceSkillProficiencies: Array.isArray(
+              data.chosenRaceSkillProficiencies,
+            )
+              ? data.chosenRaceSkillProficiencies
+              : [data.chosenRaceSkillProficiencies],
           },
         }),
       );

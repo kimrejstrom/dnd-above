@@ -38,7 +38,18 @@ const ClassBuilder = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
-      dispatch(updateFormData({ classData: data }));
+      dispatch(
+        updateFormData({
+          classData: {
+            ...data,
+            chosenClassSkillProficiencies: Array.isArray(
+              data.chosenClassSkillProficiencies,
+            )
+              ? data.chosenClassSkillProficiencies
+              : [data.chosenClassSkillProficiencies],
+          },
+        }),
+      );
       history.push(`/create/step-3`);
     };
 

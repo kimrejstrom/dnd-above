@@ -20,24 +20,26 @@ export const Weapons: React.FC = () => {
   );
   const tableColumns = useMemo(
     () =>
-      Object.keys(tableData[0])
-        .map(key => ({
-          accessor: key,
-          Header: startCase(key),
-        }))
-        .filter(column =>
-          [
-            'name',
-            'type',
-            'weaponCategory',
-            'age',
-            'dmg1',
-            'dmgType',
-            'property',
-            'range',
-            'source',
-          ].includes(column.accessor),
-        ),
+      tableData.length
+        ? Object.keys(tableData[0])
+            .map(key => ({
+              accessor: key,
+              Header: startCase(key),
+            }))
+            .filter(column =>
+              [
+                'name',
+                'type',
+                'weaponCategory',
+                'age',
+                'dmg1',
+                'dmgType',
+                'property',
+                'range',
+                'source',
+              ].includes(column.accessor),
+            )
+        : [],
     [tableData],
   );
 

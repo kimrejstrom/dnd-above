@@ -28,6 +28,21 @@ const Description = () => {
         descriptionData: {
           ...data,
           background: selectedBackground?.name,
+          chosenBackgroundSkillProficiencies: Array.isArray(
+            data.chosenBackgroundSkillProficiencies,
+          )
+            ? data.chosenBackgroundSkillProficiencies
+            : [data.chosenBackgroundSkillProficiencies],
+          chosenBackgroundToolProficiencies: Array.isArray(
+            data.chosenBackgroundToolProficiencies,
+          )
+            ? data.chosenBackgroundToolProficiencies
+            : [data.chosenBackgroundToolProficiencies],
+          chosenBackgroundLanguages: Array.isArray(
+            data.chosenBackgroundLanguages,
+          )
+            ? data.chosenBackgroundLanguages
+            : [data.chosenBackgroundLanguages],
         },
       }),
     );
