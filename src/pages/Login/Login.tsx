@@ -31,7 +31,7 @@ export const Login = () => {
       className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center"
       style={{ maxWidth: '62rem' }}
     >
-      <div className="p-20 custom-border bg-tertiary-light dark:bg-tertiary-dark flex flex-col items-center justify-center">
+      <div className="p-10 md:p-20 custom-border bg-tertiary-light dark:bg-tertiary-dark flex flex-col items-center justify-center">
         <img
           src={theme === ThemeMode.DARK ? beholderLight : beholderDark}
           className="h-40 w-40 px-2 py-2 shape-shadow"

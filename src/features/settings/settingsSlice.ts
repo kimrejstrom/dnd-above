@@ -7,7 +7,7 @@ interface SettingsState {
 
 const initialState: SettingsState = {
   animations: true,
-  panelOpen: true,
+  panelOpen: false,
 };
 
 const settingsSlice = createSlice({

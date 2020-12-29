@@ -36,7 +36,7 @@ const RightPanel = (props: Props) => {
         panelOpen
           ? 'right-panel-open bg-secondary-light dark:bg-secondary-dark custom-border custom-border-l dark:border-primary-light'
           : 'right-panel-close w-0'
-      } z-20 right-panel xl:relative absolute right-0 flex flex-shrink-0 flex-col overflow-hidden`}
+      } hidden z-20 right-panel xl:relative absolute right-0 lg:flex flex-shrink-0 flex-col overflow-hidden`}
     >
       {/* Search bar */}
       <div className="flex pl-1 pr-3 py-4 items-center">
