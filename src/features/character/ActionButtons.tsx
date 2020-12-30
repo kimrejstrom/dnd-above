@@ -143,24 +143,26 @@ const ActionButtons = ({ character, readonly }: Props) => {
       }),
     );
 
+  const actionBtnCls = `sm:ml-2 ml-1 mb-1 h-10 custom-border-medium w-28 sm:w-auto`;
+
   return (
     <>
       <StyledButton
-        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
+        extraClassName={actionBtnCls}
         onClick={handleShortRest}
         disabled={readonly}
       >
         Short Rest
       </StyledButton>
       <StyledButton
-        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
+        extraClassName={actionBtnCls}
         onClick={handleLongRest}
         disabled={readonly}
       >
         Long Rest
       </StyledButton>
       <StyledButton
-        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
+        extraClassName={actionBtnCls}
         onClick={handleAbilityScores}
         disabled={readonly}
       >
@@ -168,7 +170,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
       </StyledButton>
       {isSpellCaster(character) && (
         <StyledButton
-          extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
+          extraClassName={actionBtnCls}
           onClick={handleSpells}
           disabled={readonly}
         >
@@ -176,14 +178,14 @@ const ActionButtons = ({ character, readonly }: Props) => {
         </StyledButton>
       )}
       <StyledButton
-        extraClassName="sm:ml-2 ml-1 mb-1 h-10 custom-border-medium"
+        extraClassName={actionBtnCls}
         onClick={() => console.log('TODO')}
         disabled={readonly}
       >
         Equipment
       </StyledButton>
       <StyledButton
-        extraClassName="ml-2 mb-1 h-10 custom-border-medium"
+        extraClassName={actionBtnCls}
         onClick={handleFeats}
         disabled={readonly}
       >

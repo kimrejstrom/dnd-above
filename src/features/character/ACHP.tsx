@@ -65,7 +65,7 @@ const ACHP = ({ character, readonly }: Props) => {
     <div className="flex flex-col mt-4 md:mt-0">
       <div className="flex justify-center md:justify-start flex-wrap md:flex-no-wrap">
         <div
-          className="ml-1 relative bg-contain bg-center bg-no-repeat"
+          className="md:ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
             height: '7.5rem',
             width: '7.5rem',
@@ -84,7 +84,7 @@ const ACHP = ({ character, readonly }: Props) => {
           </p>
         </div>
         <div
-          className="mr-1 relative bg-contain bg-center bg-no-repeat"
+          className="md:mr-1 relative bg-contain bg-center bg-no-repeat"
           style={{
             height: '7.5rem',
             width: '7.5rem',

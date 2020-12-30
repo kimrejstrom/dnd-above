@@ -95,7 +95,7 @@ const App: React.FC = () => {
                 >
                   <Sidebar />
                   {/* Main content */}
-                  <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-4 h-full">
+                  <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-2 md:p-4 h-full">
                     {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                     <Switch>
                       <PrivateRoute exact path="/">
