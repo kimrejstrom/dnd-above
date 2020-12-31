@@ -65,15 +65,6 @@ export const Spells = ({
   onSelectedRowsChange,
 }: Props) => {
   const dispatch = useDispatch();
-  const itemColumns = columns || [
-    'name',
-    'level',
-    'time',
-    'school',
-    'range',
-    'source',
-    'classes',
-  ];
 
   const tableData = useMemo(
     () =>
@@ -90,18 +81,25 @@ export const Spells = ({
       })),
     [spells, dispatch],
   );
-  const tableColumns = useMemo(
-    () =>
-      tableData.length
-        ? Object.keys(tableData[0])
-            .map(key => ({
-              accessor: key,
-              Header: startCase(key),
-            }))
-            .filter(column => itemColumns.includes(column.accessor))
-        : [],
-    [itemColumns, tableData],
-  );
+  const tableColumns = useMemo(() => {
+    const itemColumns = columns || [
+      'name',
+      'level',
+      'time',
+      'school',
+      'range',
+      'source',
+      'classes',
+    ];
+    return tableData.length
+      ? Object.keys(tableData[0])
+          .map(key => ({
+            accessor: key,
+            Header: startCase(key),
+          }))
+          .filter(column => itemColumns.includes(column.accessor))
+      : [];
+  }, [columns, tableData]);
 
   return (
     <div className="text-left mx-auto w-full">

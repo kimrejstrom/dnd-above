@@ -24,14 +24,6 @@ const handleSpecialCell = (cell: Cell<object>) => {
 
 const Items = ({ items, columns }: Props) => {
   const dispatch = useDispatch();
-  const itemColumns = columns || [
-    'name',
-    'type',
-    'weight',
-    'quantity',
-    'value',
-    'source',
-  ];
   const tableData = useMemo(
     () =>
       items.map(item => ({
@@ -48,18 +40,24 @@ const Items = ({ items, columns }: Props) => {
       })),
     [items, dispatch],
   );
-  const tableColumns = useMemo(
-    () =>
-      tableData.length
-        ? Object.keys(tableData[0])
-            .map(key => ({
-              accessor: key,
-              Header: startCase(key),
-            }))
-            .filter(column => itemColumns.includes(column.accessor))
-        : [],
-    [itemColumns, tableData],
-  );
+  const tableColumns = useMemo(() => {
+    const itemColumns = columns || [
+      'name',
+      'type',
+      'weight',
+      'quantity',
+      'value',
+      'source',
+    ];
+    return tableData.length
+      ? Object.keys(tableData[0])
+          .map(key => ({
+            accessor: key,
+            Header: startCase(key),
+          }))
+          .filter(column => itemColumns.includes(column.accessor))
+      : [];
+  }, [columns, tableData]);
 
   return (
     <div className="text-left mx-auto w-full">

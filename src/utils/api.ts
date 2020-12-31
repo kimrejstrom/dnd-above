@@ -47,9 +47,11 @@ const publicReadById = (listId: string, characterId: string) => {
   );
 };
 
-export default {
+const DnDAboveAPI = {
   create: create,
   readAll: readAll,
   update: update,
   publicReadById: publicReadById,
 };
+
+export default DnDAboveAPI;
