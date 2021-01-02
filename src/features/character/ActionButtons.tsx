@@ -146,7 +146,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
   const actionBtnCls = `sm:ml-2 ml-1 mb-1 h-10 custom-border-medium w-28 sm:w-auto`;
 
   return (
-    <>
+    <div className="flex flex-wrap justify-center">
       <StyledButton
         extraClassName={actionBtnCls}
         onClick={handleShortRest}
@@ -191,7 +191,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
       >
         Feats
       </StyledButton>
-    </>
+    </div>
   );
 };
 

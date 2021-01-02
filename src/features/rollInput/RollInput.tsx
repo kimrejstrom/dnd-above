@@ -110,7 +110,7 @@ export const RollInput = () => {
           />
 
           <input
-            className="dark-hover:bg-primary-dark bg-yellow-100 dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-primary-dark dark:border-primary-light rounded"
+            className="dark:hover:bg-primary-dark bg-yellow-100 dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-primary-dark dark:border-primary-light rounded"
             type="submit"
             value="Roll"
             disabled={loading}

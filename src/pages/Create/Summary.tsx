@@ -69,7 +69,7 @@ const Summary = () => {
           <h1>
             {`${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}
           </h1>
-          <div className="flex flex-wrap lg:flex-no-wrap">
+          <div className="flex flex-wrap lg:flex-nowrap">
             <div className="flex-grow">
               <TextBox>
                 <DangerousHtml

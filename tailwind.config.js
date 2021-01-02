@@ -1,20 +1,16 @@
 module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        gray: {
-          '100': '#f5f5f5',
-          '200': '#eeeeee',
-          '300': '#e0e0e0',
-          '400': '#bdbdbd',
-          '500': '#9e9e9e',
-          '600': '#757575',
-          '700': '#616161',
-          '800': '#424242',
-          '900': '#212121',
-        },
-      },
+  darkMode: 'class',
+  purge: {
+    content: [
+      './src/**/*.html',
+      './src/**/*.tsx',
+      // etc.
+    ],
+    options: {
+      safelist: ['dark'],
     },
+  },
+  theme: {
     backgroundColor: theme => ({
       ...theme('colors'),
       'primary-dark': '#252020',
@@ -44,39 +40,9 @@ module.exports = {
     }),
   },
   variants: {
-    backgroundColor: [
-      'odd',
-      'responsive',
-      'hover',
-      'focus',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-      'dark-odd',
-    ],
-    borderColor: [
-      'responsive',
-      'hover',
-      'focus',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-    ],
-    textColor: [
-      'responsive',
-      'hover',
-      'focus',
-      'group-hover',
-      'focus-within',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-      'dark-group-hover',
-      'dark-focus-within',
-    ],
+    backgroundColor: ['odd', 'responsive', 'hover', 'focus', 'dark'],
+    borderColor: ['responsive', 'hover', 'focus', 'dark'],
+    textColor: ['responsive', 'hover', 'focus', 'dark'],
   },
-  plugins: [
-    require('tailwindcss-dark-mode')(),
-    require('@tailwindcss/custom-forms'),
-  ],
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };

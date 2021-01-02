@@ -7,8 +7,8 @@
     "node": ">=14"
   },
   "dependencies": {
+    "@craco/craco": "^6.0.0",
     "@reduxjs/toolkit": "^1.5.0",
-    "@tailwindcss/custom-forms": "^0.2.1",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^26.0.19",
@@ -54,20 +54,17 @@
   "scripts": {
     "bootstrap": "node ./scripts/bootstrap-db.js",
     "start": "run-p start:app start:server",
-    "start:app": "npm run watch:styles & sleep 2 && react-scripts start",
+    "start:app": "craco start",
     "start:server": "netlify-lambda serve functions",
     "build": "run-p build:app build:functions",
-    "build:app": "react-scripts build",
+    "build:app": "craco build",
     "build:functions": "netlify-lambda build functions",
-    "test": "react-scripts test --env=jsdom",
+    "test": "craco test --env=jsdom",
     "eject": "react-scripts eject",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint --ignore-path .eslintignore . --ext ts --ext tsx --ext js --ext jsx",
     "lint:fix": "eslint --fix --ignore-path .eslintignore . --ext ts --ext tsx --ext js --ext jsx",
-    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
-    "build:styles": "postcss src/tailwind.css -o src/styles.css",
-    "watch:styles": "postcss -w src/tailwind.css -o src/styles.css",
-    "prebuild": "NODE_ENV=production npm run build:styles"
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'"
   },
   "scriptsComments": {
     "start": "Runs development build on a local server configured by server.js",
@@ -100,16 +97,17 @@
     ]
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
+    "@tailwindcss/forms": "^0.2.1",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "@tailwindcss/typography": "^0.3.1",
     "autoprefixer": "^9.8.6",
     "chalk": "^4.1.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.3.0",
     "netlify-lambda": "^2.0.2",
     "npm-run-all": "^4.1.5",
-    "postcss-cli": "^7.1.2",
+    "postcss": "^7.0.35",
     "prettier": "^1.19.1",
-    "tailwindcss": "^1.9.6",
-    "tailwindcss-dark-mode": "^1.1.7"
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2"
   }
 }

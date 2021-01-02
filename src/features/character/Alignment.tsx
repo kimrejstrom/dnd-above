@@ -112,15 +112,15 @@ const Alignment = ({ character, readonly }: Props) => {
         className="absolute flex flex-col"
         style={{ top: '0.55rem', right: '-3rem' }}
       >
-        <div className="flex leading-none mt-1 z-20">
+        <div className="flex leading-none -mt-0.5 z-20">
           <form
             onSubmit={handleSubmit(onHDSubmit)}
-            className="text-2xl text-center mb-3"
+            className="text-2xl text-center mb-2.5"
           >
             <input
               disabled={readonly}
               name="currentHd"
-              className="text-center text-2xl w-6 h-6 bg-white dark:bg-secondary-dark"
+              className="text-center text-2xl w-6 h-6 bg-yellow-100 dark:bg-primary-dark"
               onChange={handleSubmit(onHDSubmit)}
               ref={register}
             />

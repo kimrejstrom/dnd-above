@@ -76,7 +76,7 @@ const App: React.FC = () => {
   return (
     <div
       className={`flex flex-col min-h-screen theme ${
-        theme === ThemeMode.LIGHT ? 'mode-light' : 'mode-dark'
+        theme === ThemeMode.LIGHT ? 'light' : 'dark'
       }`}
     >
       <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">

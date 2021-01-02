@@ -445,7 +445,7 @@ function Renderer() {
     bodyStack[0] += '<tbody>';
     const len = entry.rows.length;
     for (let ixRow = 0; ixRow < len; ++ixRow) {
-      bodyStack[0] += '<tr class="odd:bg-gray-100 dark-odd:bg-secondary-dark">';
+      bodyStack[0] += '<tr class="odd:bg-gray-100 dark:odd:bg-secondary-dark">';
       const r = entry.rows[ixRow];
       let roRender = r.type === 'row' ? r.row : r;
 

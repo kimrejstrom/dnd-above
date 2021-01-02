@@ -10,7 +10,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   };
 
   const HitDice = () => (
-    <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+    <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
       <td>
         <h3>Hit Points</h3>
         <div>
@@ -54,7 +54,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   const StartingEquipment = () => {
     const equip = cls.startingEquipment;
     return (
-      <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+      <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
         <td>
           <h3>Starting Equipment</h3>
           <div>
@@ -102,7 +102,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
     if (cls.multiclassing) {
       const mc = cls.multiclassing;
       return (
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+        <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
           <td colSpan={6}>
             <h3>Multiclassing</h3>
             {mc.requirements && (
@@ -159,11 +159,11 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   return (
     <table className="w-full dnd-body">
       <tbody>
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+        <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
           <th className="border"></th>
         </tr>
         <HitDice />
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+        <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
           <td>
             <h3>Proficiencies</h3>
             <div>
@@ -200,7 +200,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
         </tr>
         <StartingEquipment />
         <MultiClassing />
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
+        <tr className="odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm">
           <th className="border"></th>
         </tr>
       </tbody>

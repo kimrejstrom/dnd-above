@@ -197,15 +197,15 @@ export const Header: React.FC = () => {
             <div
               className={
                 'lg:flex lg:flex-grow items-center justify-center' +
-                (navbarOpen ? ' flex' : ' hidden')
+                (navbarOpen ? ' flex w-full' : ' hidden')
               }
             >
-              <ul className="flex flex-col lg:flex-row justify-center list-none mt-2 lg:mt-0 lg:ml-auto lg:items-center divide-y divide-gray-200 lg:divide-opacity-0">
+              <ul className="flex flex-col lg:flex-row w-full lg:w-auto justify-center list-none mt-2 lg:mt-0 lg:ml-auto lg:items-center divide-y divide-gray-200 lg:divide-opacity-0">
                 <li className="p-2 lg:p-0">
                   <NavLink
                     exact
                     to="/"
-                    className="inline-block mt-0 hover:text-secondaryfw-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-secondaryfw-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Home
                   </NavLink>
@@ -213,7 +213,7 @@ export const Header: React.FC = () => {
                 <li className="p-2 lg:p-0">
                   <NavLink
                     to="/create"
-                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Create
                   </NavLink>
@@ -221,7 +221,7 @@ export const Header: React.FC = () => {
                 <li className="p-2 lg:p-0">
                   <NavLink
                     to="/books"
-                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Books
                   </NavLink>

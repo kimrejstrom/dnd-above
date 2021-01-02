@@ -63,7 +63,7 @@ const ACHP = ({ character, readonly }: Props) => {
 
   return (
     <div className="flex flex-col mt-4 md:mt-0">
-      <div className="flex justify-center md:justify-start flex-wrap md:flex-no-wrap">
+      <div className="flex justify-center md:justify-start flex-wrap md:flex-nowrap">
         <div
           className="md:ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{

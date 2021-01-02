@@ -55,9 +55,8 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
     <>
       {characterList.map(char => (
         <div
-          className="mt-1 mr-1 bg-tertiary-light dark:bg-primary-dark custom-border custom-border-thin dark-hover:bg-secondary-dark hover:bg-yellow-100 h-60"
+          className="w-44 md:w-48 mt-1 mr-0 md:mr-1 bg-tertiary-light dark:bg-primary-dark custom-border custom-border-thin dark:hover:bg-secondary-dark hover:bg-yellow-100 h-72"
           key={char.id}
-          style={{ width: '12rem' }}
         >
           <div className="flex justify-between w-full px-1 -mt-1">
             <button
@@ -137,7 +136,7 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
                   break;
               }
             }}
-            className="text-center h-56 flex justify-between items-center flex-col"
+            className="text-center h-56 flex justify-evenly items-center flex-col"
           >
             <img
               className="rounded w-full h-24 object-cover object-top"

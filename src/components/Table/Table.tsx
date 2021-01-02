@@ -123,7 +123,7 @@ const Table = ({
           prepareRow(row);
           return (
             <tr
-              className="cursor-pointer odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
+              className="cursor-pointer odd:bg-gray-100 dark:odd:bg-secondary-dark text-sm"
               {...row.getRowProps()}
               onClick={(row.original as any).detailedEntryTrigger}
             >
