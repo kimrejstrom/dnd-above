@@ -62,99 +62,101 @@ const ACHP = ({ character, readonly }: Props) => {
   };
 
   return (
-    <div className="flex flex-col mt-4 md:mt-0">
-      <div className="flex justify-center md:justify-start flex-wrap md:flex-nowrap">
-        <div
-          className="md:ml-1 relative bg-contain bg-center bg-no-repeat"
-          style={{
-            height: '7.5rem',
-            width: '7.5rem',
-            backgroundImage: `url(${
-              theme === ThemeMode.DARK ? initiativeLight : initiativeDark
-            })`,
-          }}
-        >
-          <p
-            className="text-2xl absolute inset-0 text-center"
+    <div className="flex flex-col mt-4 md:mt-0 w-full md:w-auto">
+      <div className="flex flex-col lg:flex-row justify-center md:justify-start flex-wrap lg:flex-nowrap">
+        <div className="flex justify-center md:justify-start">
+          <div
+            className="lg:ml-1 relative bg-contain bg-center bg-no-repeat"
             style={{
-              top: '2.5rem',
+              height: '7.5rem',
+              width: '7.5rem',
+              backgroundImage: `url(${
+                theme === ThemeMode.DARK ? initiativeLight : initiativeDark
+              })`,
             }}
           >
-            {getAbilityMod(calculateStats(character).dex)}
-          </p>
-        </div>
-        <div
-          className="md:mr-1 relative bg-contain bg-center bg-no-repeat"
-          style={{
-            height: '7.5rem',
-            width: '7.5rem',
-            backgroundImage: `url(${
-              theme === ThemeMode.DARK ? acLight : acDark
-            })`,
-          }}
-        >
-          <form
-            onSubmit={handleSubmit(onACSubmit)}
-            className="text-2xl absolute inset-0 text-center"
+            <p
+              className="text-2xl absolute inset-0 text-center"
+              style={{
+                top: '2.5rem',
+              }}
+            >
+              {getAbilityMod(calculateStats(character).dex)}
+            </p>
+          </div>
+          <div
+            className="lg:mr-1 relative bg-contain bg-center bg-no-repeat"
             style={{
-              top: '2.8rem',
+              height: '7.5rem',
+              width: '7.5rem',
+              backgroundImage: `url(${
+                theme === ThemeMode.DARK ? acLight : acDark
+              })`,
             }}
           >
-            <input
-              name="ac"
-              className="text-center w-8 h-6 bg-white dark:bg-secondary-dark"
-              onChange={handleSubmit(onACSubmit)}
-              disabled={readonly}
-              ref={register({ required: true })}
-            />
-            {errors.ac && <div>AC is required</div>}
-          </form>
+            <form
+              onSubmit={handleSubmit(onACSubmit)}
+              className="text-2xl absolute inset-0 text-center"
+              style={{
+                top: '2.8rem',
+              }}
+            >
+              <input
+                name="ac"
+                className="text-center w-8 h-6 bg-white dark:bg-secondary-dark"
+                onChange={handleSubmit(onACSubmit)}
+                disabled={readonly}
+                ref={register({ required: true })}
+              />
+              {errors.ac && <div>AC is required</div>}
+            </form>
 
-          <p
-            className="text-md absolute inset-0 text-center"
+            <p
+              className="text-md absolute inset-0 text-center"
+              style={{
+                top: '6.05rem',
+              }}
+            >
+              {10 + getAbilityMod(calculateStats(character).dex)}
+            </p>
+          </div>
+          <div
+            className="relative -ml-2 bg-contain bg-center bg-no-repeat"
             style={{
-              top: '6.05rem',
+              height: '7.5rem',
+              width: '7.5rem',
+              backgroundImage: `url(${
+                theme === ThemeMode.DARK ? hpLight : hpDark
+              })`,
             }}
           >
-            {10 + getAbilityMod(calculateStats(character).dex)}
-          </p>
+            <p
+              className="text-2xl absolute inset-0 text-center"
+              style={{
+                top: '1.2rem',
+                left: '0.1rem',
+              }}
+            >
+              {character.gameData.currentHp}
+            </p>
+            <p
+              className="text-md absolute inset-0 text-center"
+              style={{
+                top: '6.05rem',
+              }}
+            >
+              {getMaxHP(character)}
+            </p>
+          </div>
         </div>
-        <div
-          className="relative -ml-2 bg-contain bg-center bg-no-repeat"
-          style={{
-            height: '7.5rem',
-            width: '7.5rem',
-            backgroundImage: `url(${
-              theme === ThemeMode.DARK ? hpLight : hpDark
-            })`,
-          }}
-        >
-          <p
-            className="text-2xl absolute inset-0 text-center"
-            style={{
-              top: '1.2rem',
-              left: '0.1rem',
-            }}
-          >
-            {character.gameData.currentHp}
-          </p>
-          <p
-            className="text-md absolute inset-0 text-center"
-            style={{
-              top: '6.05rem',
-            }}
-          >
-            {getMaxHP(character)}
-          </p>
-        </div>
-        <div className="w-full sm:w-auto mt-4 md:mt-0 ml-1">
+        <div className="w-full md:w-auto lg:w-auto mt-4 lg:mt-0 lg:ml-1">
           <form
             onSubmit={handleSubmit(onHPSubmit)}
-            className="text-xl text-center flex justify-around md:flex-col"
+            className="text-xl text-center flex justify-center lg:flex-col"
           >
             <button
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
+              className={`${DEFAULT_BUTTON_STYLE} h-10 w-28 lg:w-24 custom-border-medium`}
               onClick={() => onHPChange('heal')}
               type="button"
             >
@@ -163,12 +165,12 @@ const ACHP = ({ character, readonly }: Props) => {
             <input
               disabled={readonly}
               name="hp"
-              className="text-center mx-2 sm:mx-0 sm:my-1 h-10 w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
+              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
               ref={register}
             />
             <button
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-24 custom-border-medium`}
+              className={`${DEFAULT_BUTTON_STYLE} h-10 w-28 lg:w-24 custom-border-medium`}
               onClick={() => onHPChange('damage')}
               type="button"
             >
@@ -189,7 +191,7 @@ const ACHP = ({ character, readonly }: Props) => {
           }}
         ></div>
         <div
-          className="ml-1 relative bg-contain bg-center bg-no-repeat"
+          className="ml-3 lg:ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
             height: '2.5rem',
             width: '8rem',
@@ -199,7 +201,7 @@ const ACHP = ({ character, readonly }: Props) => {
           }}
         ></div>
         <div
-          className="invisible hidden md:block md:visible h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden lg:block lg:visible h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
           style={{
             width: '6rem',
             backgroundImage: `url(${

@@ -57,77 +57,79 @@ const Alignment = ({ character, readonly }: Props) => {
     }
   };
   return (
-    <div
-      className="mt-5 relative bg-contain bg-center bg-no-repeat"
-      style={{
-        width: '17rem',
-        height: '4rem',
-        backgroundImage: `url(${
-          theme === ThemeMode.DARK ? alignmentLight : alignmentDark
-        })`,
-      }}
-    >
+    <div className="flex justify-start" style={{ width: '22rem' }}>
       <div
-        className="absolute rounded-full w-2 h-2 bg-primary-dark dark:bg-primary-light"
-        style={getAlignmentPosition(character.descriptionData.alignment)}
-      ></div>
-      <div
-        className="text-2xl absolute w-8 inset-0 text-center"
+        className="mt-5 relative bg-contain bg-center bg-no-repeat"
         style={{
-          top: '0.55rem',
-          left: '5.4rem',
+          width: '17rem',
+          height: '4rem',
+          backgroundImage: `url(${
+            theme === ThemeMode.DARK ? alignmentLight : alignmentDark
+          })`,
         }}
       >
-        {character.gameData.level}
-      </div>
-      <div
-        className="text-2xl absolute w-8 inset-0 text-center"
-        style={{
-          top: '0.6rem',
-          left: '9.6rem',
-        }}
-      >
-        {parseSpeed(getRace(character.raceData.race)!.speed)}
-      </div>
-      <div
-        className="text-2xl absolute w-8 inset-0 text-center"
-        style={{
-          top: '0.55rem',
-          left: '14rem',
-        }}
-      >
-        {getHitDice(character)}
-      </div>
-      <div
-        className="z-0 custom-border absolute"
-        style={{
-          borderLeft: '0',
-          top: '0.25rem',
-          right: '-4.1rem',
-          width: '5rem',
-          height: '2.5rem',
-        }}
-      ></div>
-      <div
-        className="absolute flex flex-col"
-        style={{ top: '0.55rem', right: '-3rem' }}
-      >
-        <div className="flex leading-none -mt-0.5 z-20">
-          <form
-            onSubmit={handleSubmit(onHDSubmit)}
-            className="text-2xl text-center mb-2.5"
-          >
-            <input
-              disabled={readonly}
-              name="currentHd"
-              className="text-center text-2xl w-6 h-6 bg-yellow-100 dark:bg-primary-dark"
-              onChange={handleSubmit(onHDSubmit)}
-              ref={register}
-            />
-          </form>
-          <div className="text-2xl">{`/ ${getHdTotal(character)}`}</div>
+        <div
+          className="absolute rounded-full w-2 h-2 bg-primary-dark dark:bg-primary-light"
+          style={getAlignmentPosition(character.descriptionData.alignment)}
+        ></div>
+        <div
+          className="text-2xl absolute w-8 inset-0 text-center"
+          style={{
+            top: '0.55rem',
+            left: '5.4rem',
+          }}
+        >
+          {character.gameData.level}
         </div>
-        <div className="text-sm opacity-75">HD Total</div>
+        <div
+          className="text-2xl absolute w-8 inset-0 text-center"
+          style={{
+            top: '0.6rem',
+            left: '9.6rem',
+          }}
+        >
+          {parseSpeed(getRace(character.raceData.race)!.speed)}
+        </div>
+        <div
+          className="text-2xl absolute w-8 inset-0 text-center"
+          style={{
+            top: '0.55rem',
+            left: '14rem',
+          }}
+        >
+          {getHitDice(character)}
+        </div>
+        <div
+          className="z-0 custom-border absolute"
+          style={{
+            borderLeft: '0',
+            top: '0.25rem',
+            right: '-4.1rem',
+            width: '5rem',
+            height: '2.5rem',
+          }}
+        ></div>
+        <div
+          className="absolute flex flex-col"
+          style={{ top: '0.55rem', right: '-3rem' }}
+        >
+          <div className="flex leading-none -mt-0.5 z-20">
+            <form
+              onSubmit={handleSubmit(onHDSubmit)}
+              className="text-2xl text-center mb-2.5"
+            >
+              <input
+                disabled={readonly}
+                name="currentHd"
+                className="text-center text-2xl w-6 h-6 bg-yellow-100 dark:bg-primary-dark"
+                onChange={handleSubmit(onHDSubmit)}
+                ref={register}
+              />
+            </form>
+            <div className="text-2xl">{`/ ${getHdTotal(character)}`}</div>
+          </div>
+          <div className="text-sm opacity-75">HD Total</div>
+        </div>
       </div>
     </div>
   );

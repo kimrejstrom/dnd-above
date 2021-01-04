@@ -53,31 +53,73 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
         className="flex flex-wrap overflow-hidden"
         style={{ maxWidth: '62rem' }}
       >
-        <div className="w-full justify-center md:justify-start flex flex-wrap">
+        <div className="w-full justify-center md:justify-between lg:justify-start flex flex-wrap">
           <div className="flex flex-col">
+            <div className="lg:hidden w-full md:w-1/2 flex justify-center md:justify-start mr-2">
+              <CharacterPortrait character={character} size={'small'} />
+              <div className="ml-2">
+                <h1 className="whitespace-nowrap">
+                  {character.descriptionData.name}
+                </h1>
+                <div className="flex justify-start items-start">
+                  <img
+                    className="w-8 mt-0.5 mr-2 rounded bg-contain"
+                    src={`${
+                      process.env.PUBLIC_URL
+                    }/img/${character.classData.classElement.toLowerCase()}.jpeg`}
+                    alt={character.classData.classElement}
+                    style={{
+                      filter: 'grayscale(80%)',
+                    }}
+                  />
+                  <div>
+                    <div className="flex flex-col">
+                      <div className="text-lg leading-none">
+                        {character.classData.classElement}
+                      </div>
+                      <div className="text-lg leading-none">
+                        {character.classData.subClass}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-lg leading-none mt-1">
+                  Race: {character.raceData.race}
+                </div>
+                <div className="text-lg leading-none">
+                  Level: {character.gameData.level}
+                </div>
+              </div>
+            </div>
             <Name character={character} />
             <Alignment character={character} readonly={readonly} />
           </div>
           <ACHP character={character} readonly={readonly} />
-          <CharacterPortrait character={character} />
-          <div className="mt-1 sm:mt-3 flex flex-wrap justify-center">
+          <div className="hidden lg:block ml-2">
+            <CharacterPortrait character={character} size={'large'} />
+          </div>
+          <div className="mt-1 md:mt-3 flex flex-wrap justify-center md:justify-start w-96 md:w-full">
             <Inspiration character={character} />
             <ActionButtons character={character} readonly={readonly} />
           </div>
-          <div className="flex flex-wrap text-center mt-3">
-            <AbilityScores character={character} />
-            <ConditionsDefenses character={character} readonly={readonly} />
-            <LevelUp character={character} readonly={readonly} />
+          <div className="flex flex-wrap justify-between text-center mt-3 w-full">
+            <div className="w-full md:w-1/2 lg:w-auto">
+              <AbilityScores character={character} />
+            </div>
+            <div className="w-full flex flex-wrap md:w-1/2 lg:w-auto">
+              <ConditionsDefenses character={character} readonly={readonly} />
+              <LevelUp character={character} readonly={readonly} />
+            </div>
           </div>
         </div>
-        <div className="w-full md:w-1/2 lg:w-3/12">
+        <div className="w-full sm:w-1/2 lg:w-3/12">
           <div className="flex flex-col">
             <SavingThrows character={character} />
             <Senses character={character} />
             <Proficiencies character={character} />
           </div>
         </div>
-        <div className="w-full md:w-1/2 lg:w-3/12">
+        <div className="w-full sm:w-1/2 lg:w-3/12">
           <Skills character={character} readonly={readonly} />
         </div>
         <div className="w-full lg:w-6/12">

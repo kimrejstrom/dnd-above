@@ -3,8 +3,9 @@
 
 ### Notes / Ideas
 
-- Redo graphics and typography  
-- Update to Tailwind 2  
+- Redo graphics and typography, new colors, custom border only on character sheet?  
+- Initial loading screen (non render blocking)  
+- Split data loading from main js?  
 
 ### Todo
 
@@ -22,6 +23,7 @@
 
 ### Done ✓
 
+- Update to Tailwind 2  
 - ReadOnly Character Sheet  
 - Share link  
 - Admin edit + paste  

@@ -3,23 +3,27 @@ import React from 'react';
 
 interface Props {
   character: CharacterListItem;
+  size: 'small' | 'large';
 }
 
-const CharacterPortrait = ({ character }: Props) => {
+const CharacterPortrait: React.FC<Props> = ({ character, size }) => {
+  const isLarge = size === 'large';
+  const imageSize = {
+    width: isLarge ? '10rem' : '7rem',
+    height: isLarge ? '10rem' : '7rem',
+    top: '0.25rem',
+    left: '0.25rem',
+  };
+  const containerSize = {
+    width: isLarge ? '10.5rem' : '7.5rem',
+    height: isLarge ? '10.5rem' : '7.5rem',
+  };
   return (
-    <div
-      className="hidden sm:block ml-2"
-      style={{ width: '10.5rem', height: '10.5rem' }}
-    >
+    <div className="flex-shrink-0" style={containerSize}>
       <div className="relative">
         <img
           className="rounded-lg absolute object-cover object-top"
-          style={{
-            width: '10rem',
-            height: '10rem',
-            top: '0.25rem',
-            left: '0.25rem',
-          }}
+          style={imageSize}
           onError={(ev: any) => {
             ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
           }}
@@ -28,7 +32,7 @@ const CharacterPortrait = ({ character }: Props) => {
         />
         <div
           className="z-10 absolute custom-border custom-border-medium"
-          style={{ width: '10.5rem', height: '10.5rem' }}
+          style={containerSize}
         ></div>
       </div>
     </div>

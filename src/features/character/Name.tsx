@@ -14,7 +14,7 @@ const Name = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
     <div
-      className="bg-contain bg-left bg-no-repeat mb-2"
+      className="hidden lg:block bg-contain bg-left bg-no-repeat mb-2"
       style={{
         width: '22rem',
         height: '5rem',
