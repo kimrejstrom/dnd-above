@@ -165,9 +165,9 @@ export const Header: React.FC = () => {
   );
 
   return (
-    <header className="bg-yellow-100 dark:bg-primary-dark">
+    <header className="bg-primary-light dark:bg-primary-dark">
       <>
-        <nav className="border-b-2 border-tertiary-dark dark:border-primary-light bg-yellow-100 dark:bg-secondary-dark relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg text-primary-dark dark:text-primary-light">
+        <nav className="border-b-2 border-tertiary-dark dark:border-primary-light bg-secondary-light dark:bg-secondary-dark relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg text-primary-dark dark:text-primary-light">
           <div className="px-4 w-full mx-auto flex flex-wrap items-center justify-between">
             <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
               <div className="flex items-center flex-shrink-0 text-primary-dark dark:text-primary-light mr-1 md:mr-6">

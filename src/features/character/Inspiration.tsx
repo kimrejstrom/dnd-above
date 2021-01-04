@@ -28,8 +28,8 @@ const Inspiration = ({ character }: Props) => {
         }}
       >
         <div
-          className="absolute rounded-full w-4 h-4 bg-primary-dark dark:bg-primary-light"
-          style={{ right: '1rem', top: '0.75rem' }}
+          className="absolute rounded-full w-3.5 h-3.5 bg-gray-900 dark:bg-yellow-300"
+          style={{ right: '1rem', top: '0.8rem' }}
         ></div>
       </div>
       <div

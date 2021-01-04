@@ -104,14 +104,14 @@ const Description = () => {
             <input
               name="name"
               defaultValue={formState.data.descriptionData.name}
-              className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+              className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
               ref={register({ required: true })}
             />
             {errors.name && 'Name is required'}
           </label>
           {/* BACKGROUND */}
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">Background</span>
             </summary>
             <div>
@@ -125,7 +125,7 @@ const Description = () => {
                     validate: data => data !== 'initial',
                   })}
                   defaultValue={formState.data.descriptionData.background}
-                  className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                  className={`form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                 >
                   <option value="initial">-</option>
                   {BACKGROUNDS.map(background => (
@@ -164,7 +164,7 @@ const Description = () => {
                                 })}
                                 className={`${
                                   count > 1 ? 'form-multiselect' : 'form-select'
-                                } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                                } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                               >
                                 {prof.choose.from.map(pr => {
                                   if (typeof pr === 'string') {
@@ -217,7 +217,7 @@ const Description = () => {
                                 })}
                                 className={`${
                                   count > 1 ? 'form-multiselect' : 'form-select'
-                                } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                                } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                               >
                                 {prof.choose.from.map(pr => {
                                   if (typeof pr === 'string') {
@@ -268,7 +268,7 @@ const Description = () => {
                                 lang.anyStandard > 1
                                   ? 'form-multiselect'
                                   : 'form-select'
-                              } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                              } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                               multiple={lang.anyStandard > 1}
                               name="chosenBackgroundLanguages"
                               ref={register({
@@ -319,7 +319,7 @@ const Description = () => {
           </details>
           {/* ALIGNMENT */}
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">Character Details</span>
             </summary>
             <div>
@@ -349,7 +349,7 @@ const Description = () => {
               <label className="block">
                 {`Choose Alignment`}
                 <select
-                  className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                  className="form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                   name="alignment"
                   onChange={() => {
                     setSelectedAlignment((getValues() as any).alignment);
@@ -378,14 +378,14 @@ const Description = () => {
           </details>
           {/* PERSONAL CHARACTERISTICS */}
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">Personal Characteristics</span>
             </summary>
             <div>
               <label className="block">
                 {`From Background ${characteristicsSource}`}
                 <select
-                  className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                  className="form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                   name="characteristicsSource"
                   onChange={e => {
                     setCharacteristicsSource(e.currentTarget.value);
@@ -431,7 +431,7 @@ const Description = () => {
                             <label className="block">
                               {heading}
                               <select
-                                className="form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                                className="form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                                 name={`characteristics${heading
                                   .split(' ')
                                   .join('')}`}
@@ -465,7 +465,7 @@ const Description = () => {
           </details>
           {/* PHYSICAL CHARACTERISTICS */}
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">Physical Characteristics</span>
             </summary>
             <div className="flex w-full">
@@ -484,7 +484,7 @@ const Description = () => {
                 <label className="block">
                   Character Image
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="imageUrl"
                     ref={register}
                     defaultValue={charaterImageURL}
@@ -514,7 +514,7 @@ const Description = () => {
                 <label className="block">
                   Hair
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="hair"
                     ref={register}
                     defaultValue={formState.data.descriptionData.hair}
@@ -523,7 +523,7 @@ const Description = () => {
                 <label className="block">
                   Skin
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="skin"
                     ref={register}
                     defaultValue={formState.data.descriptionData.skin}
@@ -532,7 +532,7 @@ const Description = () => {
                 <label className="block">
                   Eyes
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="eyes"
                     ref={register}
                     defaultValue={formState.data.descriptionData.eyes}
@@ -541,7 +541,7 @@ const Description = () => {
                 <label className="block">
                   Height
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="height"
                     ref={register}
                     defaultValue={formState.data.descriptionData.height}
@@ -550,7 +550,7 @@ const Description = () => {
                 <label className="block">
                   Weight
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="weight"
                     ref={register}
                     defaultValue={formState.data.descriptionData.weight}
@@ -559,7 +559,7 @@ const Description = () => {
                 <label className="block">
                   Age
                   <input
-                    className="form-input block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                    className="form-input block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                     name="age"
                     ref={register}
                     defaultValue={formState.data.descriptionData.age}
@@ -570,14 +570,14 @@ const Description = () => {
           </details>
           {/* NOTES */}
           <details>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
               <span className="text-xl">Notes</span>
             </summary>
             <div>
               <label className="block">
                 Backstory (Markdown Supported)
                 <textarea
-                  className="form-textarea block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded"
+                  className="form-textarea block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded"
                   name="backstory"
                   rows={5}
                   ref={register}

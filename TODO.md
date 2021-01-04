@@ -3,13 +3,12 @@
 
 ### Notes / Ideas
 
-- Redo graphics and typography, new colors, custom border only on character sheet?  
 - Initial loading screen (non render blocking)  
-- Split data loading from main js?  
+- Split data loading from main js (lazy/suspense) for json  
 
 ### Todo
 
-- [ ] Omni search (Fuse)  
+- [ ] Omni search (Fuse) create index when mapping json  
 - [ ] Clickable link thing on all detailed entries  
 - [ ] Spell Rating / Comments  
 - [ ] Custom items (w/ use as base)  
@@ -20,9 +19,15 @@
 
 ### In Progress
 
+- Check gray color usage  
+- Style Inputs  
+- harmonize font usage  
+- Redo dark mode image colors  
 
 ### Done ✓
 
+- fix tertiary-light  
+- Redo graphics and typography, new colors, custom border only on character sheet?  
 - Update to Tailwind 2  
 - ReadOnly Character Sheet  
 - Share link  

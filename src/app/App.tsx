@@ -79,13 +79,13 @@ const App: React.FC = () => {
         theme === ThemeMode.LIGHT ? 'light' : 'dark'
       }`}
     >
-      <div className="m-auto bg-yellow-100 dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
+      <div className="m-auto bg-primary-light dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
         <AuthContextProvider>
           <Router>
             <ErrorBoundary>
               <main
                 // {...handlers}
-                className="h-full min-h-screen text-primary-dark dark:text-yellow-100 bg-yellow-100 dark:bg-primary-dark"
+                className="h-full min-h-screen text-primary-dark dark:text-primary-light bg-primary-light dark:bg-primary-dark"
               >
                 <UpdateNotification />
                 <Header />
@@ -95,7 +95,7 @@ const App: React.FC = () => {
                 >
                   <Sidebar />
                   {/* Main content */}
-                  <div className="flex w-full bg-yellow-100 dark:bg-primary-dark p-2 md:p-4 h-full">
+                  <div className="flex w-full bg-primary-light dark:bg-primary-dark p-2 md:p-4 h-full">
                     {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                     <Switch>
                       <PrivateRoute exact path="/">

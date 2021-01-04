@@ -56,7 +56,7 @@ const PublicCharacter = (props: Props) => {
           <h1 className="leading-tight">D&amp;D Above</h1>
           <h3>Whoops! Something went wrong.</h3>
           <div
-            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-yellow-100 leading-none flex justify-center items-center"
+            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-primary-light leading-none flex justify-center items-center"
             role="alert"
           >
             <span className="flex rounded-full text-yellow-100 bg-primary-dark px-2 py-1 text-xs font-bold mr-3">

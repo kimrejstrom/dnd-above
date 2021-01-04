@@ -11,7 +11,7 @@ export const RollList: React.FC = () => {
   return (
     <details className="m-auto text-center">
       <summary>View history</summary>
-      <div className="rounded bg-yellow-100 dark:bg-secondary-dark mt-4 p-4">
+      <div className="rounded bg-primary-light dark:bg-secondary-dark mt-4 p-4">
         <div className="text-center text-xl dark:text-primary-light mb-2">
           Previous Rolls
         </div>

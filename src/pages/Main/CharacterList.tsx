@@ -22,7 +22,7 @@ const CharacterList = () => {
             </StyledButton>
           </div>
         </div>
-        <div className="mt-3 w-full flex flex-wrap">
+        <div className="mt-3 w-full flex flex-wrap justify-center md:justify-start">
           {characterList.length > 0 ? (
             <CharacterCards type={'LOAD'} />
           ) : (

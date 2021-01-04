@@ -102,7 +102,7 @@ const DefensesModal: React.FC<ModalProps> = ({ character }) => {
               <select
                 name={selectData.formId}
                 ref={register}
-                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                className={`form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                 onChange={e => addDefenseToList(e, selectData.type)}
               >
                 <option value="initial">-</option>

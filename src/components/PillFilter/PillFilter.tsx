@@ -33,8 +33,8 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
             onClick={() => setSelected(pill)}
             className={`${
               selected === pill
-                ? 'text-white dark:text-black bg-primary-dark dark:bg-primary-light'
-                : 'text-black bg-gray-200 dark:bg-yellow-500'
+                ? 'text-white dark:text-black bg-primary-dark dark:bg-yellow-500'
+                : 'text-black bg-gray-200 dark:bg-primary-light'
             } tracking-tighter rounded-full p-1 md:px-4 uppercase mx-1 my-2`}
           >
             {pill}

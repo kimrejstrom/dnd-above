@@ -119,7 +119,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
       <div className="w-full">
         <div className="flex justify-center mt-4">
           <Button
-            className="w-2/5 m-1 bg-yellow-100 dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark:hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
+            className="w-2/5 m-1 bg-primary-light dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark:hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
             title="Add Preset"
             onClick={() =>
               dispatch(
@@ -132,7 +132,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
             }
           />
           <Button
-            className="w-2/5 m-1 bg-yellow-100 dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark:hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
+            className="w-2/5 m-1 bg-primary-light dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark:hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
             title="Reset defaults"
             onClick={() => dispatch(resetPresets())}
           />

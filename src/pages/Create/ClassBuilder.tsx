@@ -93,7 +93,7 @@ const ClassBuilder = () => {
                   <select
                     className={`${
                       count > 1 ? 'form-multiselect' : 'form-select'
-                    } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                    } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
                     multiple={count > 1}
                     name="chosenClassSkillProficiencies"
                     ref={register({
@@ -143,8 +143,8 @@ const ClassBuilder = () => {
               .filter(subclass => filterSources(subclass))
               .map(subclass => (
                 <details key={subclass.name}>
-                  <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
-                    <span className="text-xl">{`${subclass.name} (${subclass.source})`}</span>
+                  <summary className="flex items-center justify-start bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2">
+                    <span className="text-xl flex-grow">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
                       onClick={() =>
                         onSelect({
@@ -152,7 +152,6 @@ const ClassBuilder = () => {
                           subClass: subclass.name,
                         })
                       }
-                      extraClassName="absolute right-0 mr-2"
                     >
                       Select
                     </StyledButton>
@@ -175,8 +174,8 @@ const ClassBuilder = () => {
           <div>
             {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
-                  <span className="text-xl">
+                <summary className="flex items-center justify-start bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
+                  <span className="text-xl flex-grow">
                     <img
                       className="inline w-8 mr-2 rounded bg-contain"
                       src={`${

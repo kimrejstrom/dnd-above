@@ -20,13 +20,13 @@ const AbilityScores = ({ character }: Props) => {
         return (
           <div
             key={key}
-            className="mb-6 mx-2 md:mx-0 md:mr-1 relative w-20 h-20 bg-yellow-100 dark:bg-primary-dark custom-border flex flex-col items-center"
+            className="mb-6 mx-2 md:mx-0 md:mr-1 relative w-20 h-20 bg-primary-light dark:bg-primary-dark custom-border flex flex-col items-center"
           >
             <div className="absolute top-0 -mt-2 uppercase text-xs">
               {value}
             </div>
             <div className="text-3xl leading-none mt-3">{mod}</div>
-            <div className="leading-5 text-lg rounded bg-yellow-100 dark:bg-primary-dark custom-border custom-border-thin h-10 w-10">
+            <div className="leading-5 text-lg rounded bg-primary-light dark:bg-primary-dark custom-border custom-border-thin h-10 w-10">
               {score}
             </div>
           </div>

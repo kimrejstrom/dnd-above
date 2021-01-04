@@ -16,7 +16,10 @@ interface Props {
 
 const Proficiencies = ({ character }: Props) => {
   return (
-    <div className="custom-border w-full px-2" style={{ height: '26.25rem' }}>
+    <div
+      className="custom-border w-full px-2 overflow-y-scroll"
+      style={{ height: '26.25rem' }}
+    >
       <div className="text-xl text-center leading-none mt-1 mb-2">
         Proficiencies &amp; Languages
       </div>

@@ -121,7 +121,7 @@ const Alignment = ({ character, readonly }: Props) => {
               <input
                 disabled={readonly}
                 name="currentHd"
-                className="text-center text-2xl w-6 h-6 bg-yellow-100 dark:bg-primary-dark"
+                className="text-center text-2xl w-6 h-6 bg-primary-light dark:bg-primary-dark"
                 onChange={handleSubmit(onHDSubmit)}
                 ref={register}
               />

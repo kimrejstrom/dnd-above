@@ -45,7 +45,7 @@ const RightPanel = (props: Props) => {
             <input
               type="search"
               placeholder="Search"
-              className="appearance-none bg-yellow-100 border border-gray-400 text-primary-dark rounded pl-8 pr-4 py-2 w-full"
+              className="appearance-none bg-primary-light border border-gray-400 text-primary-dark rounded pl-8 pr-4 py-2 w-full"
             />
             <div className="absolute top-0 left-0 p-3 flex items-center justify-center">
               <svg
@@ -71,7 +71,7 @@ const RightPanel = (props: Props) => {
             <Tab>Spells</Tab>
             <Tab>Items</Tab>
           </TabList>
-          <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+          <div className="h-full my-2 custom-border custom-border-thin bg-primary-light dark:bg-tertiary-dark rounded-lg">
             <TabPanel className="overflow-y-scroll px-2">
               <Roller />
             </TabPanel>
@@ -95,7 +95,7 @@ const RightPanel = (props: Props) => {
         </Tabs>
       </div>
       <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '29rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-primary-light dark:bg-tertiary-dark rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>
