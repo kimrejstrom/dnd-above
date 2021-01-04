@@ -15,17 +15,17 @@
 - [ ] Attuned items  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
-- [ ] XP  
 
 ### In Progress
 
-- Check gray color usage  
 - Style Inputs  
 - harmonize font usage  
 - Redo dark mode image colors  
+- Character builder styling (prose etc)  
 
 ### Done ✓
 
+- Check gray color usage  
 - fix tertiary-light  
 - Redo graphics and typography, new colors, custom border only on character sheet?  
 - Update to Tailwind 2  
