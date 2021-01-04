@@ -98,7 +98,7 @@ export const Header: React.FC = () => {
           <div>
             <button
               type="button"
-              className="inline-flex justify-center w-full p-1 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+              className="inline-flex justify-center w-full p-1 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500"
               aria-haspopup="true"
               aria-expanded="true"
               onClick={() => setDropDownOpen(!dropDownOpen)}

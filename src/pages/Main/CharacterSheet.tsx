@@ -24,6 +24,7 @@ import Description from 'features/character/Description';
 import { CharacterListItem } from 'features/character/characterListSlice';
 import LevelUp from 'features/character/LevelUp';
 import CharacterPortrait from 'features/character/CharacterPortrait';
+import MobileCharacterPortrait from 'features/character/MobileCharacterPortrait';
 
 interface Props {
   character: CharacterListItem;
@@ -56,40 +57,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
         <div className="w-full justify-center md:justify-between lg:justify-start flex flex-wrap">
           <div className="flex flex-col">
             <div className="lg:hidden w-full md:w-1/2 flex justify-center md:justify-start mr-2">
-              <CharacterPortrait character={character} size={'small'} />
-              <div className="ml-2">
-                <h1 className="whitespace-nowrap">
-                  {character.descriptionData.name}
-                </h1>
-                <div className="flex justify-start items-start">
-                  <img
-                    className="w-8 mt-0.5 mr-2 rounded bg-contain"
-                    src={`${
-                      process.env.PUBLIC_URL
-                    }/img/${character.classData.classElement.toLowerCase()}.jpeg`}
-                    alt={character.classData.classElement}
-                    style={{
-                      filter: 'grayscale(80%)',
-                    }}
-                  />
-                  <div>
-                    <div className="flex flex-col">
-                      <div className="text-lg leading-none">
-                        {character.classData.classElement}
-                      </div>
-                      <div className="text-lg leading-none">
-                        {character.classData.subClass}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-lg leading-none mt-1">
-                  Race: {character.raceData.race}
-                </div>
-                <div className="text-lg leading-none">
-                  Level: {character.gameData.level}
-                </div>
-              </div>
+              <MobileCharacterPortrait character={character} />
             </div>
             <Name character={character} />
             <Alignment character={character} readonly={readonly} />
