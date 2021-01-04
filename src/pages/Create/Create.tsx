@@ -34,7 +34,7 @@ const Create = (props: Props) => {
           </li>
         </ul>
 
-        <div className="custom-border bg-secondary-light dark:bg-secondary-dark p-2">
+        <div className="custom-border bg-secondary-light dark:bg-secondary-dark p-0 md:p-2">
           <Switch>
             <Route exact path={path}>
               <CharacterListing />
