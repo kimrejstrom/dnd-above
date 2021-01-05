@@ -18,12 +18,12 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
     <div className="modal z-40 fixed w-full h-full top-0 left-0 flex items-center justify-center">
       <div
         onClick={() => dispatch(toggleModal({ visible: false }))}
-        className="modal-overlay absolute w-full h-full bg-primary-dark opacity-75"
+        className="modal-overlay absolute w-full h-full bg-dark-100 opacity-75"
       ></div>
 
       <div
         style={{ maxHeight: '40rem' }}
-        className="modal-container bg-tertiary-light dark:bg-secondary-dark w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto"
+        className="modal-container bg-light-300 dark:bg-dark-200 w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto"
       >
         <div className="modal-content py-4 text-left px-6">
           <div className="flex justify-between items-center pb-3 overflow-y-scroll">

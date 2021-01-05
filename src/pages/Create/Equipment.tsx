@@ -107,7 +107,7 @@ const Equipment = () => {
           <h2>Current Equipment</h2>
           <div className="w-full flex flex-wrap">
             {itemList.map((itemName, index) => (
-              <div className="leading-none dnd-body mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-40 flex justify-center items-center flex-col custom-border custom-border-thin">
+              <div className="leading-none dnd-body mx-1 bg-light-300 dark:bg-dark-100 text-center w-32 h-40 flex justify-center items-center flex-col custom-border custom-border-thin">
                 <DangerousHtml
                   data={mainRenderer.item.getCompactRenderedString(
                     getItem(itemName),
@@ -167,7 +167,7 @@ const Equipment = () => {
               <select
                 name={selectData.formId}
                 ref={register}
-                className={`form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                 onChange={addItemToList}
               >
                 <option value="initial">-</option>

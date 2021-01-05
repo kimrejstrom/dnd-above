@@ -40,7 +40,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
   return (
     <div>
       <div style={{ height: '20rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-primary-light dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll">
             <form className="ml-3 flex flex-col">
               {FEATS.map(feat => (
@@ -50,7 +50,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
                 >
                   <label className="inline-flex items-center">
                     <input
-                      className="form-checkbox text-primary-dark"
+                      className="form-checkbox text-dark-100"
                       type="checkbox"
                       defaultChecked={featsList.includes(feat.name)}
                       name={feat.name}
@@ -67,7 +67,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
         </div>
       </div>
       <div className="mt-2 h-full" style={{ height: '12rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-primary-light dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>

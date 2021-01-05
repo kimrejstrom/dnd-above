@@ -9,6 +9,9 @@ import { getCharacterList } from 'features/character/characterListSlice';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { useServiceWorker, IServiceWorkerContext } from 'useServiceWorker';
+import Notification, {
+  NotificationType,
+} from 'components/Notification/Notification';
 
 export const Login = () => {
   const history = useHistory();
@@ -27,11 +30,8 @@ export const Login = () => {
   };
 
   return (
-    <div
-      className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center"
-      style={{ maxWidth: '62rem' }}
-    >
-      <div className="p-10 md:p-20 custom-border bg-tertiary-light dark:bg-tertiary-dark flex flex-col items-center justify-center">
+    <div className="mx-auto pt-2 flex flex-col items-center justify-center">
+      <div className="p-10 md:p-12 custom-border bg-light-400 dark:bg-dark-300 flex flex-col items-center justify-center">
         <img
           src={theme === ThemeMode.DARK ? beholderLight : beholderDark}
           className="h-40 w-40 px-2 py-2 shape-shadow"
@@ -40,15 +40,20 @@ export const Login = () => {
         <div className="text-center mb-4">
           <h1 className="leading-tight">D&amp;D Above</h1>
           <h3>Play with True advantage</h3>
-          <div
-            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-primary-light leading-none flex justify-center items-center"
+          <Notification type={NotificationType.Warning}>
+            <div className="dnd-body text-sm">
+              You must be logged in to use D&D Above.
+            </div>
+          </Notification>
+          {/* <div
+            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-light-100 leading-none flex justify-center items-center"
             role="alert"
           >
-            <span className="flex rounded-full text-yellow-100 bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
+            <span className="flex rounded-full text-yellow-100 bg-dark-100 px-2 py-1 text-xs font-bold mr-3">
               !
             </span>
             <div>You must be logged in to use D&D Above.</div>
-          </div>
+          </div> */}
         </div>
         <div className="flex">
           <StyledButton extraClassName="mr-2" onClick={login}>

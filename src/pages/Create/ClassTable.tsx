@@ -74,7 +74,7 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
       .map(feature => (feature.level === ixLvl + 1 ? feature : undefined))
       .filter(isDefined);
     return (
-      <tr className="odd:bg-tertiary-light dark:odd:bg-secondary-dark text-sm text-center">
+      <tr className="odd:bg-light-300 dark:odd:bg-dark-200 text-sm text-center">
         <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
         <td className="text-left">
           {lvlFeaturesFiltered.length

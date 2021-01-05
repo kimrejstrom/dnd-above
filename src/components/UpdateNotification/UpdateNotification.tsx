@@ -14,13 +14,13 @@ export const UpdateNotification: React.FC = () => {
         className="p-2 bg-yellow-800 text-yellow-100 leading-none flex justify-center items-center"
         role="alert"
       >
-        <span className="flex rounded-full bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
+        <span className="flex rounded-full bg-dark-100 px-2 py-1 text-xs font-bold mr-3">
           New
         </span>
         <div>
           A new version is available
           <Button
-            className="hover:bg-primary-dark bg-secondary-dark text-yellow-100 py-1 px-2 border border-yellow-600 rounded ml-4"
+            className="hover:bg-dark-100 bg-dark-200 text-yellow-100 py-1 px-2 border border-yellow-600 rounded ml-4"
             onClick={updateAssets}
             title="Update now"
           />

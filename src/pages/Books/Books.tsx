@@ -29,44 +29,42 @@ const books = {
 const Books = (props: Props) => {
   const [chosenBook, setChosenBook] = useState<any>();
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full flex flex-col" style={{ maxWidth: '62rem' }}>
-        <h1 className="text-center">Source Books</h1>
-        <div className="w-full flex justify-evenly lg:justify-between flex-wrap">
-          {Object.entries(books)
-            .sort()
-            .map(([name, data]) => {
-              return (
-                <div className="w-56 mb-3">
-                  <StyledButton
-                    extraClassName="h-full"
-                    onClick={() => setChosenBook(data.data)}
-                  >
-                    <img
-                      className="rounded w-full object-cover object-top"
-                      onError={(ev: any) => {
-                        ev.target.src = `${process.env.PUBLIC_URL}/img/books/default.jpeg`;
-                      }}
-                      src={`${process.env.PUBLIC_URL}/img/books/${name}.jpeg`}
-                      alt="book cover"
-                    />
-                    <div className="mt-2 leading-none text-xl">
-                      {Parser.SOURCE_JSON_TO_FULL[name]}
-                    </div>
-                  </StyledButton>
-                </div>
-              );
-            })}
-          {chosenBook && (
-            <div className="w-full mb-4 h-screen">
-              <div className="h-full my-2 custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark rounded-lg">
-                <div className="h-full overflow-y-scroll px-2 overflow-x-hidden">
-                  <DetailedEntry data={<Entry entry={chosenBook} />} />
-                </div>
+    <div className="w-full flex flex-col">
+      <h1 className="text-center">Source Books</h1>
+      <div className="my-3 w-full flex justify-evenly lg:justify-between flex-wrap">
+        {Object.entries(books)
+          .sort()
+          .map(([name, data]) => {
+            return (
+              <div className="w-56 mb-3">
+                <StyledButton
+                  extraClassName="h-full"
+                  onClick={() => setChosenBook(data.data)}
+                >
+                  <img
+                    className="rounded w-full object-cover object-top"
+                    onError={(ev: any) => {
+                      ev.target.src = `${process.env.PUBLIC_URL}/img/books/default.jpeg`;
+                    }}
+                    src={`${process.env.PUBLIC_URL}/img/books/${name}.jpeg`}
+                    alt="book cover"
+                  />
+                  <div className="mt-2 leading-none text-xl">
+                    {Parser.SOURCE_JSON_TO_FULL[name]}
+                  </div>
+                </StyledButton>
+              </div>
+            );
+          })}
+        {chosenBook && (
+          <div className="w-full mb-4 h-screen">
+            <div className="h-full my-2 custom-border custom-border-thin bg-light-200 dark:bg-dark-300 rounded-lg">
+              <div className="h-full overflow-y-scroll px-2 overflow-x-hidden">
+                <DetailedEntry data={<Entry entry={chosenBook} />} />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

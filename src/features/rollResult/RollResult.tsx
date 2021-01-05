@@ -40,10 +40,10 @@ export const RollResult: React.FC<{ result: DiceResult }> = ({ result }) => {
             </>
           )}
         </div>
-        <div className="m-auto text-center tracking-tight font-mono p-4 dark:bg-secondary-dark rounded">
+        <div className="m-auto text-center tracking-tight font-mono p-4 dark:bg-dark-200 rounded">
           {difficulty.hasDifficulty && (
             <div key="target" className="font-bold mb-4">
-              <span className="border-b-2 dark:border-primary-light">
+              <span className="border-b-2 dark:border-light-100">
                 {difficulty.expression}
               </span>
             </div>

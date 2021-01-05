@@ -23,7 +23,7 @@ const CharacterListing = () => {
             dispatch(setInitialFormData());
             history.push(`/create/step-1`);
           }}
-          className="w-44 md:w-48 mt-1 mr-1 px-2 bg-tertiary-light dark:bg-primary-dark text-center h-72 flex justify-center items-center flex-col custom-border custom-border-thin"
+          className="w-44 md:w-48 mt-1 mr-1 px-2 bg-light-300 dark:bg-dark-100 text-center h-72 flex justify-center items-center flex-col custom-border custom-border-thin"
         >
           <span className="text-xl">Create</span>
           <span className="leading-none text-6xl">+</span>
@@ -34,7 +34,7 @@ const CharacterListing = () => {
             dispatch(setGeneratedFormData());
             history.push(`/create/summary`);
           }}
-          className="w-44 md:w-48 mt-1 mr-1 px-2 bg-tertiary-light dark:bg-primary-dark text-center h-72 flex justify-center items-center flex-col custom-border custom-border-thin"
+          className="w-44 md:w-48 mt-1 mr-1 px-2 bg-light-300 dark:bg-dark-100 text-center h-72 flex justify-center items-center flex-col custom-border custom-border-thin"
         >
           <span className="text-xl">Generate</span>
           <span className="leading-none text-6xl">?</span>

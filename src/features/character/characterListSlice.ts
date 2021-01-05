@@ -107,7 +107,7 @@ export interface CharacterCustom {
 }
 
 export enum DefenseType {
-  Resistance = 'Resistacne',
+  Resistance = 'Resistance',
   Immunity = 'Immunity',
   Vulnerability = 'Vulnerability',
 }

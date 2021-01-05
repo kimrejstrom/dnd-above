@@ -29,17 +29,17 @@ const Proficiencies = ({ character }: Props) => {
           <div className="dnd-body">
             {getArmorProficiencies(character).join(', ')}
           </div>
-          <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
+          <div className="mt-1 w-full border-b-2 border-dark-100 dark:border-light-100"></div>
           <div className="text-xl">Weapons</div>
           <div className="dnd-body">
             {getWeaponProficiencies(character).join(', ')}
           </div>
-          <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
+          <div className="mt-1 w-full border-b-2 border-dark-100 dark:border-light-100"></div>
           <div className="text-xl">Tools</div>
           <div className="dnd-body">
             {getToolProficiencies(character).join(', ')}
           </div>
-          <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
+          <div className="mt-1 w-full border-b-2 border-dark-100 dark:border-light-100"></div>
           <div className="text-xl">Languages</div>
           <div className="dnd-body">
             {getLanguageProficiencies(character).map((lang, i) => {
@@ -58,7 +58,7 @@ const Proficiencies = ({ character }: Props) => {
               );
             })}
           </div>
-          <div className="mt-1 w-full border-b-2 border-primary-dark dark:border-primary-light"></div>
+          <div className="mt-1 w-full border-b-2 border-dark-100 dark:border-light-100"></div>
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
   children,
 }) => (
   <>
-    <div className="leading-tight w-full custom-border custom-border-thin custom-border-b border-primary-dark dark:border-primary-light text-xl">
+    <div className="leading-tight w-full custom-border custom-border-thin custom-border-b border-dark-100 dark:border-light-100 text-xl">
       {name}
     </div>
     <div className="mt-2 mb-4">{children}</div>
@@ -33,8 +33,8 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
             onClick={() => setSelected(pill)}
             className={`${
               selected === pill
-                ? 'text-white dark:text-black bg-primary-dark dark:bg-yellow-500'
-                : 'text-black bg-gray-200 dark:bg-primary-light'
+                ? 'text-white dark:text-black bg-dark-100 dark:bg-yellow-500'
+                : 'text-black bg-gray-200 dark:bg-light-100'
             } tracking-tighter rounded-full p-1 md:px-4 uppercase mx-1 my-2`}
           >
             {pill}

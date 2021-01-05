@@ -12,25 +12,23 @@ const CharacterList = () => {
   const characterList = useSelector(getFilteredCharacterList);
   const history = useHistory();
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full flex flex-col" style={{ maxWidth: '62rem' }}>
-        <div className="w-full custom-border-small custom-border-thin custom-border-b">
-          <div className="flex justify-between items-center">
-            <h1>Your Characters</h1>
-            <StyledButton onClick={() => history.push('/create')}>
-              Create Character
-            </StyledButton>
-          </div>
+    <div className="w-full flex flex-col" style={{ maxWidth: '62rem' }}>
+      <div className="w-full custom-border-small custom-border-thin custom-border-b">
+        <div className="flex justify-between items-center">
+          <h1>Your Characters</h1>
+          <StyledButton onClick={() => history.push('/create')}>
+            Create Character
+          </StyledButton>
         </div>
-        <div className="mt-3 w-full flex flex-wrap justify-center md:justify-start">
-          {characterList.length > 0 ? (
-            <CharacterCards type={'LOAD'} />
-          ) : (
-            <Notification type={NotificationType.Info}>
-              You don't have any characters yet.
-            </Notification>
-          )}
-        </div>
+      </div>
+      <div className="mt-3 w-full flex flex-wrap justify-center md:justify-start">
+        {characterList.length > 0 ? (
+          <CharacterCards type={'LOAD'} />
+        ) : (
+          <Notification type={NotificationType.Info}>
+            You don't have any characters yet.
+          </Notification>
+        )}
       </div>
     </div>
   );

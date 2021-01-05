@@ -53,53 +53,51 @@ const Edit = (props: Props) => {
     }
   };
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full flex flex-col" style={{ maxWidth: '62rem' }}>
-        <h1 className="text-center">Character Edit</h1>
-        <Notification type={NotificationType.Warning}>
-          <div className="dnd-body text-sm">
-            Here be dragons. Be extremely careful with what you change here. You
-            can easily corrupt your character data if you make a mistake!
-          </div>
-        </Notification>
-        <form onSubmit={handleSubmit(onEditSubmit)} className="mt-2 text-2xl">
-          <label className="block">
-            <span className="text-gray-700">Character Data (JSON)</span>
-            <textarea
-              className="form-textarea font-mono mt-1 block w-full dark:bg-tertiary-dark"
-              rows={20}
-              name="characterJSON"
-              ref={register({ required: true })}
-            ></textarea>
-          </label>
-          {errors.characterJSON && (
-            <div className="mt-3">
-              <Notification type={NotificationType.Error}>
-                <div className="dnd-body text-sm">
-                  {errors.characterJSON.message
-                    ? errors.characterJSON.message
-                    : 'There was an unexpected problem'}
-                </div>
-              </Notification>
-            </div>
-          )}
-          <div className="flex w-full justify-end">
-            <StyledButton
-              extraClassName="mt-2"
-              onClick={handleSubmit(onEditSubmit)}
-            >
-              Save
-            </StyledButton>
-          </div>
-        </form>
-        {submitSuccessful && (
+    <div className="w-full flex flex-col">
+      <h1 className="text-center">Character Edit</h1>
+      <Notification type={NotificationType.Warning}>
+        <div className="dnd-body text-sm">
+          Here be dragons. Be extremely careful with what you change here. You
+          can easily corrupt your character data if you make a mistake!
+        </div>
+      </Notification>
+      <form onSubmit={handleSubmit(onEditSubmit)} className="mt-2 text-2xl">
+        <label className="block">
+          <span className="text-gray-700">Character Data (JSON)</span>
+          <textarea
+            className="form-textarea font-mono mt-1 block w-full dark:bg-dark-300"
+            rows={20}
+            name="characterJSON"
+            ref={register({ required: true })}
+          ></textarea>
+        </label>
+        {errors.characterJSON && (
           <div className="mt-3">
-            <Notification type={NotificationType.Success}>
-              Character Data updated
+            <Notification type={NotificationType.Error}>
+              <div className="dnd-body text-sm">
+                {errors.characterJSON.message
+                  ? errors.characterJSON.message
+                  : 'There was an unexpected problem'}
+              </div>
             </Notification>
           </div>
         )}
-      </div>
+        <div className="flex w-full justify-end">
+          <StyledButton
+            extraClassName="mt-2"
+            onClick={handleSubmit(onEditSubmit)}
+          >
+            Save
+          </StyledButton>
+        </div>
+      </form>
+      {submitSuccessful && (
+        <div className="mt-3">
+          <Notification type={NotificationType.Success}>
+            Character Data updated
+          </Notification>
+        </div>
+      )}
     </div>
   );
 };

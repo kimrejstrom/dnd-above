@@ -102,7 +102,7 @@ export const Spells = ({
   }, [columns, tableData]);
 
   return (
-    <div className="text-left mx-auto w-full">
+    <div className="dnd-body text-sm text-left mx-auto w-full">
       <Table
         cellRenderer={handleSpecialCell}
         selectedRows={selectedRows}

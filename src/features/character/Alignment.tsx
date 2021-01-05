@@ -69,7 +69,7 @@ const Alignment = ({ character, readonly }: Props) => {
         }}
       >
         <div
-          className="absolute rounded-full w-2 h-2 bg-primary-dark dark:bg-primary-light"
+          className="absolute rounded-full w-2 h-2 bg-dark-100 dark:bg-light-100"
           style={getAlignmentPosition(character.descriptionData.alignment)}
         ></div>
         <div
@@ -121,7 +121,7 @@ const Alignment = ({ character, readonly }: Props) => {
               <input
                 disabled={readonly}
                 name="currentHd"
-                className="text-center text-2xl w-6 h-6 bg-primary-light dark:bg-primary-dark"
+                className="text-center text-2xl w-6 h-6 bg-light-100 dark:bg-dark-100"
                 onChange={handleSubmit(onHDSubmit)}
                 ref={register}
               />

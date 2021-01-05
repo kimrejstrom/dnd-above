@@ -88,7 +88,7 @@ const RaceBuilder = () => {
           <h1>{race?.name}</h1>
         </div>
 
-        <div className="custom-border custom-border-thin bg-primary-light dark:bg-primary-dark">
+        <div className="custom-border custom-border-thin bg-light-100 dark:bg-dark-100">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
@@ -112,7 +112,7 @@ const RaceBuilder = () => {
                       })}
                       className={`${
                         count > 1 ? 'form-multiselect' : 'form-select'
-                      } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                      } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                     >
                       {ab.choose.from.map(abil => (
                         <option value={abil}>
@@ -157,7 +157,7 @@ const RaceBuilder = () => {
                               })}
                               className={`${
                                 count > 1 ? 'form-multiselect' : 'form-select'
-                              } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                              } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                             >
                               {prof.choose.from.map(pr => {
                                 if (typeof pr === 'string') {
@@ -182,7 +182,7 @@ const RaceBuilder = () => {
                             <select
                               className={`${
                                 count > 1 ? 'form-multiselect' : 'form-select'
-                              } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                              } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                               name="chosenRaceTools"
                               ref={register({
                                 required: true,
@@ -233,7 +233,7 @@ const RaceBuilder = () => {
                               lang.anyStandard > 1
                                 ? 'form-multiselect'
                                 : 'form-select'
-                            } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                            } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                             multiple={lang.anyStandard > 1}
                             name={`chosenRaceLanguages`}
                             ref={register({
@@ -316,7 +316,7 @@ const RaceBuilder = () => {
       <div>
         {PLAYABLE_RACES.map((race: Race, index) => (
           <details key={race.name}>
-            <summary className="flex items-center justify-start bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
+            <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl flex-grow">{race.name}</span>
               <StyledButton
                 onClick={(e: any) => onSelect({ race: race.name }, e)}
@@ -341,10 +341,7 @@ const RaceBuilder = () => {
                         addDefaultImageSrc(ev, race.name.toLowerCase())
                       }
                       alt={race.name.toLowerCase()}
-                      className="custom-border custom-border-thin shadow float-right ml-2"
-                      style={{
-                        width: '20rem',
-                      }}
+                      className="w-80 custom-border custom-border-thin shadow float-right ml-2"
                     />
                     <div>
                       <DangerousHtml

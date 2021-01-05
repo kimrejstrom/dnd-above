@@ -80,7 +80,7 @@ export const Success = () => (
 );
 
 const Notification: React.FC<Props> = ({ type, children }) => {
-  const notificationCls = `p-3 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-secondary-light leading-none flex items-center`;
+  const notificationCls = `p-3 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-light-200 leading-none flex items-center`;
   const notificationIconCls = `flex rounded-full text-yellow-100 px-2 py-2 text-xs font-bold mr-3`;
   switch (type) {
     case NotificationType.Error:

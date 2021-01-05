@@ -78,7 +78,7 @@ const ClassBuilder = () => {
         <div className="flex relative">
           <h1>{`${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}</h1>
         </div>
-        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark my-2">
+        <div className="custom-border custom-border-thin bg-light-200 dark:bg-dark-300 my-2">
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
@@ -93,7 +93,7 @@ const ClassBuilder = () => {
                   <select
                     className={`${
                       count > 1 ? 'form-multiselect' : 'form-select'
-                    } block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                    } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                     multiple={count > 1}
                     name="chosenClassSkillProficiencies"
                     ref={register({
@@ -143,7 +143,7 @@ const ClassBuilder = () => {
               .filter(subclass => filterSources(subclass))
               .map(subclass => (
                 <details key={subclass.name}>
-                  <summary className="flex items-center justify-start bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2">
+                  <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin px-2 my-2">
                     <span className="text-xl flex-grow">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
                       onClick={() =>
@@ -174,7 +174,7 @@ const ClassBuilder = () => {
           <div>
             {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="flex items-center justify-start bg-primary-light dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
+                <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
                   <span className="text-xl flex-grow">
                     <img
                       className="inline w-8 mr-2 rounded bg-contain"

@@ -41,9 +41,9 @@ const SavingThrows = ({ character }: Props) => {
                 <div
                   className={`${
                     proficient
-                      ? 'bg-primary-dark dark:bg-yellow-100'
-                      : 'bg-primary-light dark:bg-primary-dark'
-                  } border-2 border-primary-dark dark:border-primary-light left-0 absolute rounded-full w-3 h-3`}
+                      ? 'bg-dark-100 dark:bg-yellow-100'
+                      : 'bg-light-100 dark:bg-dark-100'
+                  } border-2 border-dark-100 dark:border-light-100 left-0 absolute rounded-full w-3 h-3`}
                 ></div>
                 <div className="text-lg ml-2">{key}</div>
                 <div className="ml-2 mr-1 text-2xl text-center">

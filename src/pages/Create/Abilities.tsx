@@ -160,7 +160,7 @@ const Abilities = () => {
                 required: true,
                 validate: data => data !== 'initial',
               })}
-              className={`form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+              className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
             >
               <option value="initial">-</option>
               <option value="rolled">Roll for stats</option>
@@ -199,7 +199,7 @@ const Abilities = () => {
                     required: true,
                     validate: data => data !== '0',
                   })}
-                  className={`form-select block w-full mt-1 bg-primary-light border border-gray-400 text-primary-dark rounded`}
+                  className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
                 >
                   <option value="0">-</option>
                   {abilityScores.map((ab, i) => (
@@ -220,12 +220,12 @@ const Abilities = () => {
         {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
           <div
             key={key}
-            className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark"
+            className="my-4 flex-shrink-0 w-1/3 border-1 border-dark-300"
           >
-            <div className="w-full px-4 py-1 bg-primary-dark text-yellow-100">
+            <div className="w-full px-4 py-1 bg-dark-100 text-yellow-100">
               {value as any}
             </div>
-            <table className="bg-primary-light dark:bg-tertiary-dark w-full rounded border-collapse border border-gray-400 dark:border-primary-dark">
+            <table className="bg-light-100 dark:bg-dark-300 w-full rounded border-collapse border border-gray-400 dark:border-dark-100">
               <tbody>
                 <tr>
                   <td className="px-4">Total Score</td>

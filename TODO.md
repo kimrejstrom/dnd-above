@@ -26,7 +26,7 @@
 ### Done ✓
 
 - Check gray color usage  
-- fix tertiary-light  
+- fix light-300  
 - Redo graphics and typography, new colors, custom border only on character sheet?  
 - Update to Tailwind 2  
 - ReadOnly Character Sheet  

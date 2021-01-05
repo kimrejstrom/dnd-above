@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useSwipeable } from 'react-swipeable';
 import {
   BrowserRouter as Router,
   Switch,
@@ -20,7 +19,6 @@ import Create from 'pages/Create/Create';
 import Sidebar from 'components/Sidebar/Sidebar';
 import RightPanel from 'components/RightPanel/RightPanel';
 import ErrorBoundary from 'components/ErrorBoundary/ErrorBoundary';
-// import { setPanelClose, setPanelOpen } from 'features/settings/settingsSlice';
 import { AuthContextProvider, useAuth } from 'utils/auth';
 import { Login } from 'pages/Login/Login';
 import { useBeforeWindowUnload } from 'utils/customHooks';
@@ -58,16 +56,7 @@ const App: React.FC = () => {
   const { title, content } = useSelector(
     (state: RootState) => state.modalVisibility,
   );
-  // const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
-  // const handlers = useSwipeable({
-  //   onSwipedLeft: () => {
-  //     dispatch(setPanelOpen());
-  //   },
-  //   onSwipedRight: () => {
-  //     dispatch(setPanelClose());
-  //   },
-  // });
 
   const auth = useAuth();
   // Hook to cleanup on window unload
@@ -79,14 +68,11 @@ const App: React.FC = () => {
         theme === ThemeMode.LIGHT ? 'light' : 'dark'
       }`}
     >
-      <div className="m-auto bg-primary-light dark:bg-primary-dark w-full shadow-xxl relative min-h-screen">
+      <div className="m-auto bg-light-100 dark:bg-dark-100 w-full shadow-xxl relative min-h-screen">
         <AuthContextProvider>
           <Router>
             <ErrorBoundary>
-              <main
-                // {...handlers}
-                className="h-full min-h-screen text-primary-dark dark:text-primary-light bg-primary-light dark:bg-primary-dark"
-              >
+              <main className="h-full min-h-screen text-dark-100 dark:text-light-100 bg-light-100 dark:bg-dark-100">
                 <UpdateNotification />
                 <Header />
                 <div
@@ -95,27 +81,29 @@ const App: React.FC = () => {
                 >
                   <Sidebar />
                   {/* Main content */}
-                  <div className="flex w-full bg-primary-light dark:bg-primary-dark p-2 md:p-4 h-full">
-                    {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
-                    <Switch>
-                      <PrivateRoute exact path="/">
-                        <Main />
-                      </PrivateRoute>
-                      <PrivateRoute path="/create">
-                        <Create />
-                      </PrivateRoute>
-                      <PrivateRoute path="/edit">
-                        <Edit />
-                      </PrivateRoute>
-                      <PrivateRoute path="/books">
-                        <Books />
-                      </PrivateRoute>
-                      <Route path="/login" component={withTracker(Login)} />
-                      <Route
-                        path="/character/:listId/:characterId"
-                        component={withTracker(PublicCharacter)}
-                      />
-                    </Switch>
+                  <div className="flex justify-center w-full bg-light-100 dark:bg-dark-100 p-2 md:p-4 h-full">
+                    <div className="w-full flex justify-center max-w-5xl">
+                      {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                      <Switch>
+                        <PrivateRoute exact path="/">
+                          <Main />
+                        </PrivateRoute>
+                        <PrivateRoute path="/create">
+                          <Create />
+                        </PrivateRoute>
+                        <PrivateRoute path="/edit">
+                          <Edit />
+                        </PrivateRoute>
+                        <PrivateRoute path="/books">
+                          <Books />
+                        </PrivateRoute>
+                        <Route path="/login" component={withTracker(Login)} />
+                        <Route
+                          path="/character/:listId/:characterId"
+                          component={withTracker(PublicCharacter)}
+                        />
+                      </Switch>
+                    </div>
                   </div>
                   <Modal title={title} content={content} />
                   <RightPanel />

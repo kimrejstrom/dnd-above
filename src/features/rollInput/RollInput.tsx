@@ -103,14 +103,14 @@ export const RollInput = () => {
           </button>
           <input
             id="formula-input"
-            className="text-lg w-full appearance-none font-mono flex bg-primary-light dark:bg-primary-dark text-center font-bold py-2 px-4 rounded mt-2 border border-primary-dark dark:border-primary-light focus:outline-none focus:border-yellow-400"
+            className="text-lg w-full appearance-none font-mono flex bg-light-100 dark:bg-dark-100 text-center font-bold py-2 px-4 rounded mt-2 border border-dark-100 dark:border-light-100 focus:outline-none focus:border-yellow-400"
             type="text"
             value={currentRoll}
             onChange={e => dispatch(setCurrentRoll(e.target.value))}
           />
 
           <input
-            className="dark:hover:bg-primary-dark bg-primary-light dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-primary-dark dark:border-primary-light rounded"
+            className="dark:hover:bg-dark-100 bg-light-100 dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-dark-100 dark:border-light-100 rounded"
             type="submit"
             value="Roll"
             disabled={loading}

@@ -72,7 +72,7 @@ const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
                   name={key}
                   type="number"
                   defaultValue={customScore}
-                  className="form-input text-center block w-full bg-primary-light border border-gray-400 text-primary-dark rounded"
+                  className="form-input text-center block w-full bg-light-100 border border-gray-400 text-dark-100 rounded"
                   ref={register}
                   onChange={e => onASIChange(e, key as StatsTypes)}
                 />
@@ -91,11 +91,11 @@ const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
           );
           const totalScore = baseScore + raceScore + customScore;
           return (
-            <div className="my-4 flex-shrink-0 w-1/3 border-1 border-tertiary-dark">
-              <div className="w-full px-4 py-1 bg-primary-dark text-yellow-100">
+            <div className="my-4 flex-shrink-0 w-1/3 border-1 border-dark-300">
+              <div className="w-full px-4 py-1 bg-dark-100 text-yellow-100">
                 {value as any}
               </div>
-              <table className="bg-primary-light dark:bg-tertiary-dark w-full rounded border-collapse border border-gray-400 dark:border-primary-dark">
+              <table className="bg-light-100 dark:bg-dark-300 w-full rounded border-collapse border border-gray-400 dark:border-dark-100">
                 <tbody>
                   <tr>
                     <td className="px-4">Total Score</td>

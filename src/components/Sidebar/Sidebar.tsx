@@ -14,7 +14,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   return (
-    <div className="bg-tertiary-dark flex-none w-24 p-6 hidden xl:block font-sans">
+    <div className="bg-dark-300 flex-none w-24 p-6 hidden xl:block font-sans">
       {characterList.map(character => (
         <button
           key={character.id}

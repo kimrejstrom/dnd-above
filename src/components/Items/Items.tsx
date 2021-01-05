@@ -60,7 +60,7 @@ const Items = ({ items, columns }: Props) => {
   }, [columns, tableData]);
 
   return (
-    <div className="text-left mx-auto w-full">
+    <div className="text-left mx-auto w-full dnd-body text-sm">
       <Table
         cellRenderer={handleSpecialCell}
         tableData={{ columns: tableColumns, data: tableData }}

@@ -103,7 +103,7 @@ const ACHP = ({ character, readonly }: Props) => {
             >
               <input
                 name="ac"
-                className="text-center w-8 h-6 bg-white dark:bg-secondary-dark"
+                className="text-center w-8 h-6 bg-white dark:bg-dark-200"
                 onChange={handleSubmit(onACSubmit)}
                 disabled={readonly}
                 ref={register({ required: true })}
@@ -165,7 +165,7 @@ const ACHP = ({ character, readonly }: Props) => {
             <input
               disabled={readonly}
               name="hp"
-              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-secondary-dark custom-border custom-border-medium rounded dark:border-primary-light border-secondary-dark"
+              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-dark-200 custom-border custom-border-medium rounded dark:border-light-100 border-dark-200"
               ref={register}
             />
             <button
@@ -181,29 +181,24 @@ const ACHP = ({ character, readonly }: Props) => {
       </div>
       <div className="flex items-center justify-center md:justify-start">
         <div
-          className="ml-1 relative bg-contain bg-center bg-no-repeat"
+          className="ml-1 relative bg-contain bg-center bg-no-repeat w-52 h-12"
           style={{
-            height: '3rem',
-            width: '13rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? deathSavesLight : deathSavesDark
             })`,
           }}
         ></div>
         <div
-          className="ml-3 lg:ml-1 relative bg-contain bg-center bg-no-repeat"
+          className="ml-3 lg:ml-1 relative bg-contain bg-center bg-no-repeat w-32 h-10"
           style={{
-            height: '2.5rem',
-            width: '8rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? tempHPLight : tempHPDark
             })`,
           }}
         ></div>
         <div
-          className="invisible hidden lg:block lg:visible h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden lg:block lg:visible w-24 h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
           style={{
-            width: '6rem',
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? skullIconLight : skullIconDark
             })`,

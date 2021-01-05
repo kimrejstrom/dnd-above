@@ -142,7 +142,7 @@ h3 {
 
 /* Code blocks */
 pre {
-  @apply bg-primary-dark p-4 rounded mt-4 mb-4;
+  @apply bg-dark-100 p-4 rounded mt-4 mb-4;
 }
 
 .mdx {
@@ -164,11 +164,11 @@ pre {
 }
 
 .mdx code {
-  @apply bg-primary-dark text-yellow-300;
+  @apply bg-dark-100 text-yellow-300;
 }
 
 .mdx pre code {
-  @apply text-sm bg-primary-dark text-yellow-300;
+  @apply text-sm bg-dark-100 text-yellow-300;
 }
 
 /* Spinner */
@@ -216,7 +216,7 @@ pre {
 
 /* Nav */
 a.active {
-  @apply border-b-2 border-primary-dark text-primary-dark;
+  @apply border-b-2 border-dark-100 text-dark-100;
 }
 
 .dark a.active {
@@ -265,7 +265,7 @@ a.active {
 
 /* Tabs */
 .react-tabs__tab {
-  @apply text-secondary-dark cursor-pointer;
+  @apply text-dark-200 cursor-pointer;
 }
 
 .react-tabs__tab:hover {
@@ -273,11 +273,11 @@ a.active {
 }
 
 .react-tabs__tab--selected {
-  @apply border-b-2 border-primary-dark text-primary-dark;
+  @apply border-b-2 border-dark-100 text-dark-100;
 }
 
 .react-tabs__tab--selected:hover {
-  @apply text-tertiary-dark;
+  @apply text-dark-300;
 }
 
 .react-tabs__tab-panel--selected {
@@ -285,7 +285,7 @@ a.active {
 }
 
 .dark .react-tabs__tab {
-  @apply text-primary-light;
+  @apply text-light-100;
 }
 
 .dark .react-tabs__tab:hover {
