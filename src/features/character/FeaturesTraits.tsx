@@ -26,8 +26,7 @@ interface Props {
   character: CharacterListItem;
 }
 
-const featureBoxCls =
-  'custom-border custom-border-thin my-2 bg-light-200 dark:bg-dark-200';
+const featureBoxCls = 'custom-border-xs my-2 bg-light-200 dark:bg-dark-200';
 
 const renderClassFeatures = (className: string) => {
   const classFeatures = getClassFeatures(className);

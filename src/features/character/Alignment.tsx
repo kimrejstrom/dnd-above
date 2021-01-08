@@ -75,8 +75,8 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.55rem',
-            left: '5.4rem',
+            top: '0.7rem',
+            left: '5.45rem',
           }}
         >
           {character.gameData.level}
@@ -84,7 +84,7 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.6rem',
+            top: '0.7rem',
             left: '9.6rem',
           }}
         >
@@ -93,14 +93,14 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.55rem',
+            top: '0.7rem',
             left: '14rem',
           }}
         >
           {getHitDice(character)}
         </div>
         <div
-          className="z-0 custom-border absolute"
+          className="z-0 custom-border-xs absolute"
           style={{
             borderLeft: '0',
             top: '0.25rem',
@@ -111,7 +111,7 @@ const Alignment = ({ character, readonly }: Props) => {
         ></div>
         <div
           className="absolute flex flex-col"
-          style={{ top: '0.55rem', right: '-3rem' }}
+          style={{ top: '0.7rem', right: '-3rem' }}
         >
           <div className="flex leading-none -mt-0.5 z-20">
             <form

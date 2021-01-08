@@ -31,7 +31,7 @@ const CharacterPortrait: React.FC<Props> = ({ character, size }) => {
           alt="character"
         />
         <div
-          className="z-10 absolute custom-border custom-border-medium"
+          className="z-10 absolute custom-border-sm custom-border-thin"
           style={containerSize}
         ></div>
       </div>

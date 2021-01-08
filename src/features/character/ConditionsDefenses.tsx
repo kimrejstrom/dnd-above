@@ -170,7 +170,7 @@ const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
 const ConditionsDefenses = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   return (
-    <div className="flex-grow text-left text-sm custom-border h-20 flex">
+    <div className="flex-grow text-left text-sm custom-border-sm h-20 flex">
       <div className="w-1/2 relative">
         <div className="flex -mt-2">
           <div>Defenses</div>
@@ -203,7 +203,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
           )}
         </div>
       </div>
-      <div className="w-1/2 custom-border custom-border-medium custom-border-l relative">
+      <div className="w-1/2 custom-border-xs custom-border-medium custom-border-l relative">
         <div className="flex -mt-2">
           <div>Conditions</div>
           {!readonly && (

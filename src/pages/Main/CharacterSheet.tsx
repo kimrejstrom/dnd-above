@@ -76,7 +76,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
           </div>
         </div>
       </div>
-      <div className="w-full sm:w-1/2 lg:w-3/12">
+      <div className="w-full sm:w-1/2 lg:w-3/12 box-border pr-1">
         <div className="flex flex-col">
           <SavingThrows character={character} />
           <Senses character={character} />
@@ -86,8 +86,8 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
       <div className="w-full sm:w-1/2 lg:w-3/12">
         <Skills character={character} readonly={readonly} />
       </div>
-      <div className="w-full lg:w-6/12">
-        <div className="custom-border pb-10" style={{ height: '48.75rem' }}>
+      <div className="w-full lg:w-6/12 box-border pl-1">
+        <div className="custom-border pb-10" style={{ height: '49rem' }}>
           <Tabs
             selectedIndex={characterTabPanel.selectedIndex}
             onSelect={tabIndex => handleTabChange(tabIndex)}

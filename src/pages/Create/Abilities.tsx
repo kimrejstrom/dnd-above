@@ -178,7 +178,7 @@ const Abilities = () => {
                   key={i}
                   className={`${
                     ab.used ? 'opacity-25' : ''
-                  } w-10 h-10 mr-2 custom-border custom-border-thin flex flex-col items-center`}
+                  } w-10 h-10 mr-2 custom-border-xs custom-border-thin flex flex-col items-center`}
                 >
                   <div className={`text-xl leading-tight`}>{ab.score}</div>
                 </div>

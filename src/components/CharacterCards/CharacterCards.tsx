@@ -55,7 +55,7 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
     <>
       {characterList.map(char => (
         <div
-          className="w-44 md:w-48 mt-1 mr-0 md:mr-1 bg-light-300 dark:bg-dark-100 custom-border custom-border-thin dark:hover:bg-dark-200 hover:bg-light-200 h-72"
+          className="w-44 md:w-48 mt-1 mr-0 md:mr-1 bg-light-300 dark:bg-dark-100 custom-border-lg custom-border-thin dark:hover:bg-dark-200 hover:bg-light-200 h-72"
           key={char.id}
         >
           <div className="flex justify-between w-full px-1 -mt-1">

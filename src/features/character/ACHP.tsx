@@ -156,7 +156,7 @@ const ACHP = ({ character, readonly }: Props) => {
           >
             <button
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-28 lg:w-24 custom-border-medium`}
+              className={`${DEFAULT_BUTTON_STYLE} w-28 lg:w-24`}
               onClick={() => onHPChange('heal')}
               type="button"
             >
@@ -165,12 +165,12 @@ const ACHP = ({ character, readonly }: Props) => {
             <input
               disabled={readonly}
               name="hp"
-              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-dark-200 custom-border custom-border-medium rounded dark:border-light-100 border-dark-200"
+              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-dark-200 custom-border-xs custom-border-thin rounded dark:border-light-100 border-dark-200"
               ref={register}
             />
             <button
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} h-10 w-28 lg:w-24 custom-border-medium`}
+              className={`${DEFAULT_BUTTON_STYLE} w-28 lg:w-24`}
               onClick={() => onHPChange('damage')}
               type="button"
             >

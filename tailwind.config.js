@@ -58,7 +58,7 @@ module.exports = {
       'dark-100': '#252020',
       'dark-200': '#393232',
       'dark-300': '#1b1616',
-      'light-100': '#f8f8ba',
+      'light-100': '#ebe2bc',
       'light-200': '#f3e7dc',
       'light-300': '#efeee9',
     }),
