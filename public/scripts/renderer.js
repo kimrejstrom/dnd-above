@@ -613,9 +613,7 @@ function Renderer() {
 
     const headerSpan = entry.name
       ? `<span class="rd__h ${headerClass}" data-title-index="${this
-          ._headerIndex++}" ${this._getEnumeratedTitleRel(
-          entry.name,
-        )}> <span class="text-xl"${
+          ._headerIndex++}" ${this._getEnumeratedTitleRel(entry.name)}> <span ${
           !pagePart && entry.source
             ? ` title="Source: ${Parser.sourceJsonToFull(entry.source)}${
                 entry.page ? `, p${entry.page}` : ''
@@ -625,12 +623,6 @@ function Renderer() {
           isInlineTitle ? '.' : ''
         }</span>${pagePart}</span> `
       : '';
-
-    if (meta.depth === -1) {
-      if (!this._firstSection)
-        textStack[0] += `<hr class="rd__hr rd__hr--section">`;
-      this._firstSection = false;
-    }
 
     if (entry.entries || entry.name) {
       textStack[0] += `<${this.wrapperTag} ${dataString} ${styleString}>${headerSpan}`;
@@ -1646,8 +1638,7 @@ function Renderer() {
         //   name: name.toTitleCase(),
         //   entries: expander(name),
         // });
-        textStack[0] += `<span class="help--hover">${displayText ||
-          name}</span>`;
+        textStack[0] += `${displayText || name}`;
 
         break;
       }
@@ -2654,7 +2645,7 @@ Renderer.utils = {
               }" colspan="6">
                   <div class="name-inner">
                       <div class="flex-v-center">
-                          <span class="font-bold stats-name copyable">${opts.prefix ||
+                          <span class="font-bold stats-name">${opts.prefix ||
                             ''}${it._displayName || it.name}${opts.suffix ||
       ''}</span>
                           ${opts.pronouncePart || ''}
@@ -3527,7 +3518,7 @@ Renderer.prototype.race = {
     const renderStack = [];
 
     const ability = renderer.getAbilityData(race.ability);
-    renderStack.push(`<div><table>
+    renderStack.push(`<div><table class="race-table shadow">
               ${Renderer.utils.getExcludedTr(race, 'race')}
               ${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
               ${

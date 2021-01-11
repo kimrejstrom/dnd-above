@@ -167,7 +167,7 @@ const Equipment = () => {
               <select
                 name={selectData.formId}
                 ref={register}
-                className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                className={`form-input`}
                 onChange={addItemToList}
               >
                 <option value="initial">-</option>

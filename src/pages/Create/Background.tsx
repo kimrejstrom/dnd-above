@@ -19,12 +19,12 @@ const Background = ({ background }: Props) => {
         {`${backgroundElement?.name}, ${backgroundElement?.source}  ${backgroundElement?.page}`}
       </DetailedEntryTrigger>
       {backgroundElement?.entries?.map((entry, i) => (
-        <div key={i} className="dnd-body my-2 custom-border custom-border-thin">
+        <div key={i} className="dnd-body my-2">
           <Entry entry={entry} />
         </div>
       ))}
       {fluff && (
-        <div className="dnd-body my-2 custom-border custom-border-thin">
+        <div className="dnd-body my-2">
           <h3>Additional Info</h3>
           {fluff.entries?.map((entry, i) => (
             <Entry key={i} entry={entry} />

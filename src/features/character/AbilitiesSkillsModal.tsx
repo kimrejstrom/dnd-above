@@ -72,7 +72,7 @@ const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
                   name={key}
                   type="number"
                   defaultValue={customScore}
-                  className="form-input text-center block w-full bg-light-100 border border-gray-400 text-dark-100 rounded"
+                  className="form-input"
                   ref={register}
                   onChange={e => onASIChange(e, key as StatsTypes)}
                 />

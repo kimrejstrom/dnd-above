@@ -50,7 +50,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
                 >
                   <label className="inline-flex items-center">
                     <input
-                      className="form-checkbox text-dark-100"
+                      className="form-checkbox"
                       type="checkbox"
                       defaultChecked={featsList.includes(feat.name)}
                       name={feat.name}

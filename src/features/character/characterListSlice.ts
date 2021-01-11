@@ -808,7 +808,9 @@ const characterListSlice = createSlice({
     builder.addCase(backgroundCreate.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message;
+        state.error = (payload as any).message
+          ? (payload as any)
+          : 'Unknown error';
       }
     });
     // backgroundSave
@@ -825,7 +827,9 @@ const characterListSlice = createSlice({
     builder.addCase(backgroundSave.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message;
+        state.error = (payload as any).message
+          ? (payload as any)
+          : 'Unknown error';
       }
     });
     // getCharacterList
@@ -845,7 +849,9 @@ const characterListSlice = createSlice({
     builder.addCase(getCharacterList.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message;
+        state.error = (payload as any).message
+          ? (payload as any)
+          : 'Unknown error';
       }
     });
   },

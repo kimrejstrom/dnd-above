@@ -132,122 +132,131 @@ const Abilities = () => {
         <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-2`}>
           Previous
         </Link>
+        <div className="flex relative">
+          <h1>Ability Scores</h1>
+        </div>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
-      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Ability Scores</h2>
+      <TextBox>
         {formState.data.classData.classElement && (
-          <TextBox>
-            <DangerousHtml
-              data={mainRenderer.render(
-                {
-                  type: 'entries',
-                  entries: getClassQuickBuild(classElement!),
-                },
-                1,
+          <DangerousHtml
+            data={mainRenderer.render(
+              {
+                type: 'entries',
+                entries: getClassQuickBuild(classElement!),
+              },
+              1,
+            )}
+          />
+        )}
+        <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          <div className="w-full">
+            <label className="block">
+              {`Method`}
+              <select
+                name="rollMethod"
+                onChange={handleMethodSelect}
+                defaultValue={formState.data.classData.abilityScores.rollMethod}
+                ref={register({
+                  required: true,
+                  validate: data => data !== 'initial',
+                })}
+                className="form-input"
+              >
+                <option value="initial">-</option>
+                <option value="rolled">Roll for stats</option>
+                <option value="standard">Standard Array</option>
+              </select>
+              {errors.rollMethod && (
+                <span className="text-red-500">{`You must choose a method`}</span>
               )}
-            />
-          </TextBox>
-        )}
-        <div className="w-full">
-          <label className="block">
-            {`Method`}
-            <select
-              name="rollMethod"
-              onChange={handleMethodSelect}
-              defaultValue={formState.data.classData.abilityScores.rollMethod}
-              ref={register({
-                required: true,
-                validate: data => data !== 'initial',
-              })}
-              className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
-            >
-              <option value="initial">-</option>
-              <option value="rolled">Roll for stats</option>
-              <option value="standard">Standard Array</option>
-            </select>
-            {errors.rollMethod && <span>{`You must choose a method`}</span>}
-          </label>
-        </div>
-        {abilityScores.length > 0 && (
-          <div className="my-4">
-            <h4 className="text-center">Scores:</h4>
-            <div className="w-full flex justify-center">
-              {abilityScores.map((ab, i) => (
-                <div
-                  key={i}
-                  className={`${
-                    ab.used ? 'opacity-25' : ''
-                  } w-10 h-10 mr-2 custom-border-xs custom-border-thin flex flex-col items-center`}
-                >
-                  <div className={`text-xl leading-tight`}>{ab.score}</div>
-                </div>
-              ))}
-            </div>
+            </label>
           </div>
-        )}
+          {abilityScores.length > 0 && (
+            <div className="my-4 dnd-header">
+              <h4 className="text-center">Scores:</h4>
+              <div className="w-full flex justify-center">
+                {abilityScores.map((ab, i) => (
+                  <div
+                    key={i}
+                    className={`${
+                      ab.used ? 'opacity-25' : ''
+                    } w-10 h-10 mr-2 custom-border-xs custom-border-thin flex flex-col items-center bg-gray-100 dark:bg-dark-200`}
+                  >
+                    <div className={`text-xl leading-tight`}>{ab.score}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        <div className="flex w-full my-4">
+          <div className="flex w-full my-4">
+            {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
+              <div key={key} className="w-1/6 text-center">
+                <label className="block mx-1">
+                  {value}
+                  <select
+                    name={key}
+                    onChange={handleScoreSelect}
+                    ref={register({
+                      required: true,
+                      validate: data => data !== '0',
+                    })}
+                    className={`form-input`}
+                    defaultValue={
+                      (formState.data.classData.abilityScores as any)[key]
+                    }
+                  >
+                    <option value="0">-</option>
+                    {abilityScores.map((ab, i) => (
+                      <option key={i} disabled={ab.used} value={ab.score}>
+                        {ab.score}
+                      </option>
+                    ))}
+                  </select>
+                  {(errors as any)[key] && (
+                    <span>{`You must choose a score`}</span>
+                  )}
+                </label>
+              </div>
+            ))}
+          </div>
+        </form>
+        <div className="flex flex-wrap w-full my-4">
           {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
-            <div key={key} className="w-1/6 text-center">
-              <label className="block mx-1">
-                {value}
-                <select
-                  name={key}
-                  onChange={handleScoreSelect}
-                  ref={register({
-                    required: true,
-                    validate: data => data !== '0',
-                  })}
-                  className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
-                >
-                  <option value="0">-</option>
-                  {abilityScores.map((ab, i) => (
-                    <option key={i} disabled={ab.used} value={ab.score}>
-                      {ab.score}
-                    </option>
-                  ))}
-                </select>
-                {(errors as any)[key] && (
-                  <span>{`You must choose a score`}</span>
-                )}
-              </label>
+            <div
+              key={key}
+              className="dnd-header my-4 flex-shrink-0 w-1/3 border-1 border-dark-300"
+            >
+              <div className="w-full px-4 py-1 bg-dark-100 text-yellow-100">
+                {value as any}
+              </div>
+              <table className="bg-light-100 dark:bg-dark-300 w-full rounded border-collapse border border-gray-400 dark:border-dark-100">
+                <tbody>
+                  <tr>
+                    <td className="px-4">Total Score</td>
+                    <td className="text-2xl text-center">
+                      {getRacialBonus(key) + getBaseScore(key)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4">Base Score</td>
+                    <td className="text-2xl text-center">
+                      {getBaseScore(key)}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="px-4">Racial Bonus</td>
+                    <td className="text-2xl text-center">
+                      {getRacialBonus(key)}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           ))}
         </div>
-      </form>
-      <div className="flex flex-wrap w-full my-4">
-        {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => (
-          <div
-            key={key}
-            className="my-4 flex-shrink-0 w-1/3 border-1 border-dark-300"
-          >
-            <div className="w-full px-4 py-1 bg-dark-100 text-yellow-100">
-              {value as any}
-            </div>
-            <table className="bg-light-100 dark:bg-dark-300 w-full rounded border-collapse border border-gray-400 dark:border-dark-100">
-              <tbody>
-                <tr>
-                  <td className="px-4">Total Score</td>
-                  <td className="text-2xl text-center">
-                    {getRacialBonus(key) + getBaseScore(key)}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-4">Base Score</td>
-                  <td className="text-2xl text-center">{getBaseScore(key)}</td>
-                </tr>
-                <tr>
-                  <td className="px-4">Racial Bonus</td>
-                  <td className="text-2xl text-center">
-                    {getRacialBonus(key)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        ))}
-      </div>
+      </TextBox>
     </div>
   );
 };

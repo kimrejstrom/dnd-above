@@ -46,7 +46,7 @@ const SkillsProficienciesModal: React.FC<Props> = ({ character }) => {
                 }`}
               >
                 <input
-                  className={`form-checkbox text-dark-100`}
+                  className={`form-checkbox`}
                   type="checkbox"
                   defaultChecked={isProficient(key as SkillTypes, character)}
                   disabled={isDisabled}

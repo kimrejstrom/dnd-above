@@ -10,7 +10,6 @@
 
 # production
 /build
-/src/styles.css
 /PlayStore
 
 # misc

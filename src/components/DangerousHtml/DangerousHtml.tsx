@@ -5,6 +5,7 @@ interface Props {
   data: string;
   highlight?: string;
   extraClassName?: string;
+  prose?: boolean;
 }
 
 const getHighlightedText = (text: string, highlight: string) => {
@@ -22,7 +23,12 @@ const getHighlightedText = (text: string, highlight: string) => {
   return result.join('');
 };
 
-const DangerousHtml = ({ data, highlight, extraClassName }: Props) => {
+const DangerousHtml = ({
+  data,
+  highlight,
+  extraClassName,
+  prose = true,
+}: Props) => {
   if (isTableElement(data)) {
     return (
       <table
@@ -35,7 +41,11 @@ const DangerousHtml = ({ data, highlight, extraClassName }: Props) => {
   } else {
     return (
       <div
-        className={`${extraClassName ? extraClassName : ''}`}
+        className={`${
+          prose
+            ? 'dark:prose-dark sm:prose-sm md:prose lg:prose sm:max-w-none md:max-w-none lg:max-w-none'
+            : ''
+        } ${extraClassName ? extraClassName : ''}`}
         dangerouslySetInnerHTML={{
           __html: highlight ? getHighlightedText(data, highlight) : data,
         }}

@@ -34,26 +34,19 @@ export const Login = () => {
       <div className="p-10 md:p-12 custom-border bg-light-400 dark:bg-dark-300 flex flex-col items-center justify-center">
         <img
           src={theme === ThemeMode.DARK ? beholderLight : beholderDark}
-          className="h-40 w-40 px-2 py-2 shape-shadow"
+          className="h-40 w-40 px-2 py-2"
           alt="logo"
         />
         <div className="text-center mb-4">
           <h1 className="leading-tight">D&amp;D Above</h1>
           <h3>Play with True advantage</h3>
-          <Notification type={NotificationType.Warning}>
-            <div className="dnd-body text-sm">
-              You must be logged in to use D&D Above.
-            </div>
-          </Notification>
-          {/* <div
-            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-light-100 leading-none flex justify-center items-center"
-            role="alert"
-          >
-            <span className="flex rounded-full text-yellow-100 bg-dark-100 px-2 py-1 text-xs font-bold mr-3">
-              !
-            </span>
-            <div>You must be logged in to use D&D Above.</div>
-          </div> */}
+          <div className="my-2">
+            <Notification type={NotificationType.Warning}>
+              <div className="dnd-body text-sm">
+                You must be logged in to use D&D Above.
+              </div>
+            </Notification>
+          </div>
         </div>
         <div className="flex">
           <StyledButton extraClassName="mr-2" onClick={login}>

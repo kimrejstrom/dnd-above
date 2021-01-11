@@ -5,6 +5,7 @@
 
 - Initial loading screen (non render blocking)  
 - Split data loading from main js (lazy/suspense) for json  
+- Try 5e Tools CSS  
 
 ### Todo
 
@@ -20,11 +21,11 @@
 
 - Style Inputs  
 - harmonize font usage  
-- Redo dark mode image colors  
 - Character builder styling (prose etc)  
 
 ### Done ✓
 
+- Redo dark mode image colors  
 - Check gray color usage  
 - fix light-300  
 - Redo graphics and typography, new colors, custom border only on character sheet?  

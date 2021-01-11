@@ -65,7 +65,7 @@ const Edit = (props: Props) => {
         <label className="block">
           <span className="text-gray-700">Character Data (JSON)</span>
           <textarea
-            className="form-textarea font-mono mt-1 block w-full dark:bg-dark-300"
+            className="form-input"
             rows={20}
             name="characterJSON"
             ref={register({ required: true })}

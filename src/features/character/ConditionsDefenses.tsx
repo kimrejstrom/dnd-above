@@ -102,7 +102,7 @@ const DefensesModal: React.FC<ModalProps> = ({ character }) => {
               <select
                 name={selectData.formId}
                 ref={register}
-                className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                className={`form-input`}
                 onChange={e => addDefenseToList(e, selectData.type)}
               >
                 <option value="initial">-</option>
@@ -150,7 +150,7 @@ const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
           {_.sortBy(Parser.CONDITIONS).map((type: string) => (
             <label className="inline-flex items-center">
               <input
-                className="form-checkbox text-dark-100"
+                className="form-checkbox"
                 type="checkbox"
                 defaultChecked={conditionsList.includes(type)}
                 name={type}

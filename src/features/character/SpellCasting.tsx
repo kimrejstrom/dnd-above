@@ -62,7 +62,7 @@ const SpellSlotCheckBoxes = ({
         <input
           key={`${level}-${i}`}
           disabled={readonly}
-          className="form-checkbox text-dark-100 mr-1"
+          className="form-checkbox mr-1"
           type="checkbox"
           name={`${level}-${slots}`}
           defaultChecked={usedSpellSlots > i}

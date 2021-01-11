@@ -8,7 +8,6 @@ import { BackgroundElement } from 'models/background';
 import _, { isBoolean } from 'lodash';
 import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
-import TextBox from 'components/TextBox/TextBox';
 import { getRace, getBackground } from 'utils/character';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
@@ -70,10 +69,12 @@ const Description = () => {
   const [characteristicsSource, setCharacteristicsSource] = useState<string>(
     formState.data.descriptionData.characteristicsSource,
   );
-  const [charaterImageURL, setCharaterImageURL] = useState<string>(
-    `${
-      process.env.PUBLIC_URL
-    }/img/races/${formState.data.raceData.race.toLowerCase()}.png`,
+  const [characterImageURL, setCharacterImageURL] = useState<string>(
+    formState.data.descriptionData.imageUrl
+      ? formState.data.descriptionData.imageUrl
+      : `${
+          process.env.PUBLIC_URL
+        }/img/races/${formState.data.raceData.race.toLowerCase()}.png`,
   );
 
   const handleBackgroundSelect = (
@@ -94,29 +95,30 @@ const Description = () => {
         <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-3`}>
           Previous
         </Link>
+        <h1>Character Description</h1>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <h2>Character Description</h2>
         <div className="w-full">
-          <label className="block">
+          <label className="block text-lg px-2">
             Character Name
             <input
+              type="text"
               name="name"
               defaultValue={formState.data.descriptionData.name}
-              className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
+              className="bg-light-400 dark:bg-dark-200 mt-0 block w-full px-1 border-0 border-b-2 border-gray-400 focus:ring-0 focus:border-black dark:focus:border-gray-200 text-3xl"
               ref={register({ required: true })}
             />
             {errors.name && 'Name is required'}
           </label>
           {/* BACKGROUND */}
           <details>
-            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
               <span className="text-xl">Background</span>
             </summary>
-            <div>
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
               <label className="block">
-                {`Background`}
+                {`Select Background`}
                 <select
                   name="background"
                   onChange={handleBackgroundSelect}
@@ -125,7 +127,7 @@ const Description = () => {
                     validate: data => data !== 'initial',
                   })}
                   defaultValue={formState.data.descriptionData.background}
-                  className={`form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                  className={`form-input`}
                 >
                   <option value="initial">-</option>
                   {BACKGROUNDS.map(background => (
@@ -143,7 +145,7 @@ const Description = () => {
               </label>
               {selectedBackground && (
                 <div>
-                  <h3>Skill Proficiencies</h3>
+                  <h3 className="my-3 text-lg">Skill Proficiencies</h3>
                   {selectedBackground.skillProficiencies?.map((prof, i) => {
                     if (prof.choose) {
                       let count = prof.choose.count || 1;
@@ -162,9 +164,7 @@ const Description = () => {
                                       ? data.length === count
                                       : true,
                                 })}
-                                className={`${
-                                  count > 1 ? 'form-multiselect' : 'form-select'
-                                } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                                className={`form-input`}
                               >
                                 {prof.choose.from.map(pr => {
                                   if (typeof pr === 'string') {
@@ -196,7 +196,7 @@ const Description = () => {
                     }
                   })}
 
-                  <h3>Tool Proficiencies</h3>
+                  <h3 className="my-3 text-lg">Tool Proficiencies</h3>
                   {selectedBackground.toolProficiencies?.map((prof, i) => {
                     if (prof.choose) {
                       let count = 1;
@@ -204,7 +204,7 @@ const Description = () => {
                         <>
                           {count > 0 && (
                             <label className="block">
-                              {`Choose language proficiency (${count}):`}
+                              {`Choose tool proficiency (${count}):`}
                               <select
                                 multiple={count > 1}
                                 name="chosenBackgroundToolProficiencies"
@@ -215,9 +215,7 @@ const Description = () => {
                                       ? data.length === count
                                       : true,
                                 })}
-                                className={`${
-                                  count > 1 ? 'form-multiselect' : 'form-select'
-                                } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                                className={`form-input`}
                               >
                                 {prof.choose.from.map(pr => {
                                   if (typeof pr === 'string') {
@@ -236,7 +234,7 @@ const Description = () => {
                                 })}
                               </select>
                               {errors.chosenBackgroundToolProficiencies && (
-                                <span>{`You must choose ${count} languages`}</span>
+                                <span>{`You must choose ${count} tools`}</span>
                               )}
                             </label>
                           )}
@@ -253,7 +251,7 @@ const Description = () => {
                     }
                   })}
 
-                  <h3>Languages</h3>
+                  <h3 className="my-3 text-lg">Languages</h3>
                   {selectedBackground.languageProficiencies?.map((lang, i) => {
                     if (lang.anyStandard) {
                       return (
@@ -264,11 +262,7 @@ const Description = () => {
                           <label className="block">
                             {`Choose language (${lang.anyStandard}):`}
                             <select
-                              className={`${
-                                lang.anyStandard > 1
-                                  ? 'form-multiselect'
-                                  : 'form-select'
-                              } block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded`}
+                              className={`form-input`}
                               multiple={lang.anyStandard > 1}
                               name="chosenBackgroundLanguages"
                               ref={register({
@@ -311,7 +305,7 @@ const Description = () => {
               )}
 
               {selectedBackground && (
-                <div className="custom-border custom-border-thin my-2">
+                <div className="my-2">
                   <Background background={selectedBackground.name} />
                 </div>
               )}
@@ -319,26 +313,23 @@ const Description = () => {
           </details>
           {/* ALIGNMENT */}
           <details>
-            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
               <span className="text-xl">Character Details</span>
             </summary>
-            <div>
-              <TextBox>
-                <h3>Alignment</h3>
-                <p>
-                  A typical creature in the worlds of Dungeons &amp; Dragons has
-                  an alignment, which broadly describes its moral and personal
-                  attitudes. Alignment is a combination of two factors: one
-                  identifies morality (good, evil, or neutral), and the other
-                  describes attitudes toward society and order (lawful, chaotic,
-                  or neutral).
-                </p>
-                <p className="mt-4">
-                  Thus, nine distinct alignments define the possible
-                  combinations:{' '}
-                  <strong>{Object.values(Parser.ALIGNMENTS).join(', ')}</strong>
-                </p>
-              </TextBox>
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
+              <h3 className="my-3 text-lg">Alignment</h3>
+              <p>
+                A typical creature in the worlds of Dungeons &amp; Dragons has
+                an alignment, which broadly describes its moral and personal
+                attitudes. Alignment is a combination of two factors: one
+                identifies morality (good, evil, or neutral), and the other
+                describes attitudes toward society and order (lawful, chaotic,
+                or neutral).
+              </p>
+              <p className="mt-4">
+                Thus, nine distinct alignments define the possible combinations:{' '}
+                <strong>{Object.values(Parser.ALIGNMENTS).join(', ')}</strong>
+              </p>
 
               <div>
                 {(race?.entries || []).map(entry =>
@@ -346,10 +337,10 @@ const Description = () => {
                 )}
               </div>
 
-              <label className="block">
+              <label className="block mt-3">
                 {`Choose Alignment`}
                 <select
-                  className="form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
+                  className="form-input"
                   name="alignment"
                   onChange={() => {
                     setSelectedAlignment((getValues() as any).alignment);
@@ -378,20 +369,19 @@ const Description = () => {
           </details>
           {/* PERSONAL CHARACTERISTICS */}
           <details>
-            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
               <span className="text-xl">Personal Characteristics</span>
             </summary>
-            <div>
-              <label className="block">
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
+              <label className="block mb-4">
                 {`From Background ${characteristicsSource}`}
                 <select
-                  className="form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
+                  className="form-input"
                   name="characteristicsSource"
                   onChange={e => {
                     setCharacteristicsSource(e.currentTarget.value);
                   }}
                   ref={register}
-                  // value={characteristicsSource}
                   defaultValue={
                     formState.data.descriptionData.characteristicsSource
                   }
@@ -420,24 +410,34 @@ const Description = () => {
                     ?.tables.map(x => x)
                     .map(item => {
                       if (typeof item === 'string') {
-                        return <div key={item}>{item}</div>;
+                        return (
+                          <div className="rd__b-inset" key={item}>
+                            {item}
+                          </div>
+                        );
                       } else {
                         const heading = item!.colLabels
                           ? item!.colLabels[1]
                           : 'Unknown';
+                        const elementName = `characteristics${heading
+                          .split(' ')
+                          .join('')}`;
 
                         return (
-                          <div>
+                          <div className="mt-3">
                             <label className="block">
                               {heading}
                               <select
-                                className="form-select block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                                name={`characteristics${heading
-                                  .split(' ')
-                                  .join('')}`}
+                                className="form-input"
+                                name={elementName}
                                 ref={register({
                                   validate: data => data !== 'initial',
                                 })}
+                                defaultValue={
+                                  (formState.data.descriptionData as any)[
+                                    elementName
+                                  ]
+                                }
                               >
                                 <option value="initial">-</option>
                                 {item!.rows &&
@@ -465,116 +465,129 @@ const Description = () => {
           </details>
           {/* PHYSICAL CHARACTERISTICS */}
           <details>
-            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
               <span className="text-xl">Physical Characteristics</span>
             </summary>
-            <div className="flex w-full">
-              <div className="w-1/2 px-1">
-                <img
-                  src={charaterImageURL}
-                  onError={(ev: any) => {
-                    ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
-                  }}
-                  alt="character-portait"
-                  className="custom-border custom-border-thin w-80"
-                />
-                <label className="block">
-                  Character Image
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="imageUrl"
-                    ref={register}
-                    defaultValue={charaterImageURL}
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
+              <div className="w-full flex">
+                <div className="w-5/12 border-box px-2">
+                  <img
+                    src={characterImageURL}
+                    onError={(ev: any) => {
+                      ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+                    }}
+                    alt="character-portait"
+                    className="shadow rounded w-full"
                   />
-                  <StyledButton
-                    type="button"
-                    extraClassName="w-full mt-2"
-                    onClick={() =>
-                      setCharaterImageURL((getValues() as any).imageUrl)
-                    }
-                  >
-                    Load image
-                  </StyledButton>
-                </label>
-                <TextBox>
-                  {(race?.entries || []).map(entry =>
-                    entry.name === 'Size' ? entry.entries.join(', ') : '',
-                  )}
-                </TextBox>
-                <TextBox>
-                  {(race?.entries || []).map(entry =>
-                    entry.name === 'Age' ? entry.entries.join(', ') : '',
-                  )}
-                </TextBox>
-              </div>
-              <div className="w-1/2 px-1">
-                <label className="block">
-                  Hair
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="hair"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.hair}
-                  />
-                </label>
-                <label className="block">
-                  Skin
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="skin"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.skin}
-                  />
-                </label>
-                <label className="block">
-                  Eyes
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="eyes"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.eyes}
-                  />
-                </label>
-                <label className="block">
-                  Height
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="height"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.height}
-                  />
-                </label>
-                <label className="block">
-                  Weight
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="weight"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.weight}
-                  />
-                </label>
-                <label className="block">
-                  Age
-                  <input
-                    className="form-input block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
-                    name="age"
-                    ref={register}
-                    defaultValue={formState.data.descriptionData.age}
-                  />
-                </label>
+                  <label className="block">
+                    Character Image
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="imageUrl"
+                      ref={register}
+                      defaultValue={characterImageURL}
+                    />
+                    <StyledButton
+                      type="button"
+                      extraClassName="w-full mt-2"
+                      onClick={() =>
+                        setCharacterImageURL((getValues() as any).imageUrl)
+                      }
+                    >
+                      Load image
+                    </StyledButton>
+                  </label>
+                </div>
+                <div className="w-7/12 border-box px-2">
+                  <div className="rd__b-inset">
+                    {race?.entries
+                      ? (race?.entries || []).map(entry =>
+                          entry.name === 'Size' ? entry.entries.join(', ') : '',
+                        )
+                      : 'No size description available'}
+                  </div>
+                  <div className="rd__b-inset">
+                    {race?.entries
+                      ? (race?.entries || []).map(entry =>
+                          entry.name === 'Age' ? entry.entries.join(', ') : '',
+                        )
+                      : 'No age description available'}
+                  </div>
+                  <label className="block">
+                    Hair
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="hair"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.hair}
+                    />
+                  </label>
+                  <label className="block">
+                    Skin
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="skin"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.skin}
+                    />
+                  </label>
+                  <label className="block">
+                    Eyes
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="eyes"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.eyes}
+                    />
+                  </label>
+                  <label className="block">
+                    Height
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="height"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.height}
+                    />
+                  </label>
+                  <label className="block">
+                    Weight
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="weight"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.weight}
+                    />
+                  </label>
+                  <label className="block">
+                    Age
+                    <input
+                      type="text"
+                      className="form-input"
+                      name="age"
+                      ref={register}
+                      defaultValue={formState.data.descriptionData.age}
+                    />
+                  </label>
+                </div>
               </div>
             </div>
           </details>
           {/* NOTES */}
           <details>
-            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border custom-border-thin p-2 my-2">
+            <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
               <span className="text-xl">Notes</span>
             </summary>
-            <div>
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
               <label className="block">
                 Backstory (Markdown Supported)
                 <textarea
-                  className="form-textarea block w-full mt-1 bg-light-100 border border-gray-400 text-dark-100 rounded"
+                  className="form-input"
                   name="backstory"
                   rows={5}
                   ref={register}
