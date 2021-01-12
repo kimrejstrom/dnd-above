@@ -335,21 +335,23 @@ const RaceBuilder = () => {
                 </TabList>
 
                 <TabPanel className="overflow-y-scroll px-2">
-                  <div>
-                    <img
-                      src={`${
-                        process.env.PUBLIC_URL
-                      }/img/races/${race.name.toLowerCase()}.png`}
-                      onError={(ev: any) =>
-                        addDefaultImageSrc(ev, race.name.toLowerCase())
-                      }
-                      alt={race.name.toLowerCase()}
-                      className="w-80 shadow float-right ml-2 mb-2 rounded"
-                    />
+                  <div className="wrap-image">
+                    <div className="pl-0 md:pl-3 bg-light-100 dark:bg-dark-100 float-right">
+                      <img
+                        src={`${
+                          process.env.PUBLIC_URL
+                        }/img/races/${race.name.toLowerCase()}.png`}
+                        onError={(ev: any) =>
+                          addDefaultImageSrc(ev, race.name.toLowerCase())
+                        }
+                        alt={race.name.toLowerCase()}
+                        className="w-80 shadow rounded"
+                      />
+                    </div>
+
                     <div>
                       <DangerousHtml
                         key={index}
-                        // prose={false}
                         data={mainRenderer.race.getCompactRenderedString(race)}
                       />
                     </div>

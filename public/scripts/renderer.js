@@ -445,7 +445,7 @@ function Renderer() {
     bodyStack[0] += '<tbody>';
     const len = entry.rows.length;
     for (let ixRow = 0; ixRow < len; ++ixRow) {
-      bodyStack[0] += '<tr class="odd:bg-light-300 dark:odd:bg-dark-200">';
+      bodyStack[0] += '<tr class="odd:bg-gray-200 dark:odd:bg-dark-200">';
       const r = entry.rows[ixRow];
       let roRender = r.type === 'row' ? r.row : r;
 
@@ -2644,11 +2644,10 @@ Renderer.utils = {
                 opts.extraThClasses ? opts.extraThClasses.join(' ') : ''
               }" colspan="6">
                   <div class="name-inner">
-                      <div class="flex-v-center">
+                      <div class="flex flex-col">
                           <span class="font-bold stats-name">${opts.prefix ||
                             ''}${it._displayName || it.name}${opts.suffix ||
       ''}</span>
-                          ${opts.pronouncePart || ''}
                       </div>
                       <span class="stats-source flex justify-end">
                           <span class="help--subtle ${
@@ -3518,7 +3517,7 @@ Renderer.prototype.race = {
     const renderStack = [];
 
     const ability = renderer.getAbilityData(race.ability);
-    renderStack.push(`<div><table class="race-table shadow">
+    renderStack.push(`<div class="my-3 p-3 shadow bg-light-300 dark:bg-dark-200 w-full"><table class="race-table">
               ${Renderer.utils.getExcludedTr(race, 'race')}
               ${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
               ${

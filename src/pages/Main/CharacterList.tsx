@@ -13,7 +13,7 @@ const CharacterList = () => {
   const history = useHistory();
   return (
     <div className="w-full flex flex-col" style={{ maxWidth: '62rem' }}>
-      <div className="w-full custom-border custom-border-thin custom-border-b">
+      <div className="w-full custom-border-lg custom-border-thin custom-border-b">
         <div className="flex justify-between items-center">
           <h1>Your Characters</h1>
           <StyledButton onClick={() => history.push('/create')}>

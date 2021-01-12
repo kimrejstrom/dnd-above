@@ -38,7 +38,7 @@ const MobileCharacterPortrait = ({ character }: Props) => {
           Race: {character.raceData.race}
         </div>
         <div className="text-lg leading-none">
-          Level: {character.gameData.level}
+          Level: {character.gameData?.level ? character.gameData.level : 0}
         </div>
       </div>
     </>

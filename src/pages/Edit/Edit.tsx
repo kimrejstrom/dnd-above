@@ -63,9 +63,11 @@ const Edit = (props: Props) => {
       </Notification>
       <form onSubmit={handleSubmit(onEditSubmit)} className="mt-2 text-2xl">
         <label className="block">
-          <span className="text-gray-700">Character Data (JSON)</span>
+          <span className="text-gray-700 dark:text-gray-100">
+            Character Data (JSON)
+          </span>
           <textarea
-            className="form-input"
+            className="form-input font-mono"
             rows={20}
             name="characterJSON"
             ref={register({ required: true })}

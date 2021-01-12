@@ -680,14 +680,12 @@ i > i {
   text-indent: 0.7rem;
 }
 .rd__b-inset {
-  margin: 15px 10px !important;
+  @apply shadow-lg bg-light-200 rounded-sm;
+  margin: 10px 7px !important;
   padding: 5px 10px;
-  box-shadow: 0 0 4px 0 #988e7c;
   border: 1px solid #656565;
   border-top: 2px solid #656565;
   border-bottom: 2px solid #656565;
-  background-color: #f3e7dc;
-  border-radius: 0.25rem;
 }
 .rd__b-inset > *:last-of-type {
   margin-bottom: 0;
@@ -821,23 +819,18 @@ i > i {
   font-style: italic;
   color: black;
 }
-.race-table {
-  @apply bg-light-300;
-  width: auto !important;
-  min-width: 60%;
-}
-.dark .race-table {
-  background: #393232;
-}
 .race-table table {
   font-size: 1rem !important;
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
-
 .race-table table td,
 .race-table table th {
   padding: 0 0.5rem !important;
+}
+.wrap-image .race-table {
+  width: auto !important;
+  min-width: 60%;
 }
 .subclass-feature .rd__h--0,
 .subclass-feature .rd__h--1,
@@ -882,8 +875,7 @@ i > i {
   border-color: #555;
 }
 .dark .rd__b-inset {
-  background-color: #343331;
-  box-shadow: 0 0 4px 0 #151515;
+  @apply bg-dark-200 shadow;
 }
 .dark .rd__b-inset--readaloud {
   background-color: #28303a;
@@ -1193,19 +1185,31 @@ i > i {
 }
 .rnd-name {
   position: relative;
-  font-size: 1.5rem;
-  padding: 0.3rem 0.75rem;
+  font-size: 1.3rem;
+  padding: 0.2rem 0.2rem;
   font-variant: small-caps;
   font-weight: 500;
+  text-align: left;
+}
+.rnd-name .stats-source {
+  font-size: 1.1rem;
 }
 .rnd-name div.name-inner {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
 }
-.monster .rnd-name .source {
-  position: relative;
-  margin-right: 0.2rem;
+.rd__stats-name-page {
+  font-size: 12px;
+  color: #333;
+  font-weight: 100;
+}
+.text-sm .rnd-name {
+  font-size: 1rem;
+}
+.text-sm .rnd-name .stats-source {
+  font-size: 0.8rem;
 }
 .dark .sourcePHB {
   color: #337ab7 !important;

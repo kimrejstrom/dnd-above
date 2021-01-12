@@ -2,11 +2,16 @@ import React from 'react';
 
 interface Props {
   title?: string;
+  extraClassName?: string;
 }
 
-const TextBox: React.FC<Props> = ({ title, children }) => {
+const TextBox: React.FC<Props> = ({ title, extraClassName, children }) => {
   return (
-    <div className="shadow dnd-body mx-1 my-2 p-4 rounded bg-light-100 dark:bg-dark-100">
+    <div
+      className={`shadow dnd-body p-4 rounded bg-light-100 dark:bg-dark-100 ${
+        extraClassName ? extraClassName : ''
+      }`}
+    >
       {title && <h2>{title}</h2>}
       {children}
     </div>

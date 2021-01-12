@@ -8,6 +8,7 @@ import {
   calculateStats,
   getAbilityMod,
   getItem,
+  getSubClass,
 } from 'utils/character';
 import {
   updateCharacter,
@@ -22,6 +23,9 @@ import { mainRenderer, Parser } from 'utils/mainRenderer';
 import ClassBase from 'pages/Create/ClassBase';
 import StyledButton from 'components/StyledButton/StyledButton';
 import { setGeneratedFormData } from 'features/createCharacterForm/createCharacterFormSlice';
+import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
+import ClassTable from 'pages/Create/ClassTable';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 const Summary = () => {
   const formState = useSelector(
@@ -36,12 +40,31 @@ const Summary = () => {
   const dispatch = useDispatch();
   const race = getRace(formState.data.raceData.race);
   const classElement = getClass(formState.data.classData.classElement);
+  const subClass = getSubClass(
+    formState.data.classData.classElement,
+    formState.data.classData.subClass,
+  );
   const characterSummaryAvailable = classElement !== undefined;
 
   return (
     <>
       <h1>Summary</h1>
-      <div className="flex justify-end">
+      <div className="flex justify-between my-4">
+        <StyledButton
+          extraClassName="mr-2"
+          onClick={() => {
+            dispatch(setGeneratedFormData());
+          }}
+        >
+          Randomize
+        </StyledButton>
+        <div className="flex relative">
+          <h1>
+            {characterSummaryAvailable
+              ? `${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement}`
+              : 'Overview'}
+          </h1>
+        </div>
         <StyledButton
           extraClassName="mr-2"
           disabled={!characterSummaryAvailable}
@@ -52,117 +75,178 @@ const Summary = () => {
             history.push(`/`);
           }}
         >
-          Save Character
-        </StyledButton>
-        <StyledButton
-          extraClassName="mr-2"
-          onClick={() => {
-            dispatch(setGeneratedFormData());
-          }}
-        >
-          Randomize Character
+          Save
         </StyledButton>
       </div>
 
       {characterSummaryAvailable ? (
-        <div>
-          <h1>
-            {`${formState.data.descriptionData.name}: ${formState.data.raceData.race} ${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}
-          </h1>
-          <div className="flex flex-wrap lg:flex-nowrap">
-            <div className="flex-grow">
-              <TextBox>
-                <DangerousHtml
-                  data={mainRenderer.race.getCompactRenderedString(race, false)}
-                />
+        <TextBox>
+          <div className="w-full flex flex-wrap lg:flex-nowrap">
+            <div className="w-full md:w-8/12 border-box px-2">
+              <div className="my-3">
                 <div>
-                  <div className="mt-4 font-bold text-md text-center">
-                    {
-                      (Parser.ALIGNMENTS as any)[
-                        formState.data.descriptionData.alignment
-                      ]
-                    }
-                    {', '}
-                    {formState.data.descriptionData.background}
+                  <h1 className="whitespace-nowrap text-2xl font-bold">
+                    {formState.data.descriptionData.name}
+                  </h1>
+                  <div className="flex justify-start items-start">
+                    <img
+                      className="w-8 mt-0.5 mr-2 rounded bg-contain"
+                      src={`${
+                        process.env.PUBLIC_URL
+                      }/img/${formState.data.classData.classElement.toLowerCase()}.jpeg`}
+                      alt={formState.data.classData.classElement}
+                      style={{
+                        filter: 'grayscale(80%)',
+                      }}
+                    />
+                    <div>
+                      <div className="flex flex-col">
+                        <div className="text-base leading-tight">
+                          Class:{' '}
+                          <span className="font-bold">
+                            {formState.data.classData.classElement}
+                          </span>
+                        </div>
+                        <div className="text-base leading-tight">
+                          Subclass:{' '}
+                          <span className="font-bold">
+                            {formState.data.classData.subClass}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between my-3">
-                    <ul className="mr-2">
-                      <li>
-                        <strong>Age: </strong>
-                        {formState.data.descriptionData.age}
-                      </li>
-                      <li>
-                        <strong>Hair: </strong>
-                        {formState.data.descriptionData.hair}
-                      </li>
-                      <li>
-                        <strong>Skin: </strong>
-                        {formState.data.descriptionData.skin}
-                      </li>
-                      <li>
-                        <strong>Eyes: </strong>
-                        {formState.data.descriptionData.eyes}
-                      </li>
-                      <li>
-                        <strong>Height: </strong>
-                        {formState.data.descriptionData.height}
-                      </li>
-                      <li>
-                        <strong>Weight: </strong>
-                        {formState.data.descriptionData.weight}
-                      </li>
-                    </ul>
-                    <ul className="ml-2">
-                      {Object.entries(CHARACTER_STATS).map(([key, value]) => {
-                        const score = calculateStats(
-                          formState.data as CharacterListItem,
-                        )[key as StatsTypes];
-                        const mod = getAbilityMod(score);
-                        return (
-                          <li key={key}>
-                            <strong>{value}: </strong> {`${score} (${mod})`}
-                          </li>
-                        );
-                      })}
-                    </ul>
+                  <div className="text-base leading-tight">
+                    Race:{' '}
+                    <span className="font-bold">
+                      {formState.data.raceData.race}
+                    </span>
+                  </div>
+                  <div className="text-base leading-tight">
+                    Alignment:{' '}
+                    <span className="font-bold">
+                      {
+                        (Parser.ALIGNMENTS as any)[
+                          formState.data.descriptionData.alignment
+                        ]
+                      }
+                      {', '}
+                      {formState.data.descriptionData.background}
+                    </span>
+                  </div>
+                  <div className="text-base leading-tight">
+                    Level:{' '}
+                    <span className="font-bold">
+                      {existingCharacter?.gameData?.level
+                        ? existingCharacter?.gameData?.level
+                        : 0}
+                    </span>
                   </div>
                 </div>
-              </TextBox>
+              </div>
+              <Tabs>
+                <TabList className="flex text-center">
+                  <Tab className="mr-2">Info</Tab>
+                  <Tab>Table</Tab>
+                </TabList>
+                <TabPanel>
+                  <ClassBase cls={classElement!} />
+                </TabPanel>
+                <TabPanel>
+                  <ClassTable cls={classElement!} subcls={subClass!} />
+                </TabPanel>
+              </Tabs>
             </div>
-            <img
-              onError={(ev: any) => {
-                ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
-              }}
-              src={formState.data.descriptionData.imageUrl}
-              alt="character portrait"
-              className="rounded h-full object-cover object-top shadow my-2 ml-2"
-              style={{
-                width: '16.5rem',
-              }}
-            />
+            <div className="w-full md:w-4/12 border-box px-2">
+              <div className="bg-light-300 dark:bg-dark-200 shadow rounded p-3 mb-3">
+                <ul className="mt-1 uppercase flex justify-between">
+                  {Object.entries(CHARACTER_STATS).map(([key, value]) => {
+                    const score = calculateStats(
+                      formState.data as CharacterListItem,
+                    )[key as StatsTypes];
+                    const mod = getAbilityMod(score);
+                    return (
+                      <li key={key} className="flex flex-col text-center">
+                        <strong>{key}</strong>
+                        <span className="text-md">{`${score}(${mod})`}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              <DangerousHtml
+                prose={false}
+                extraClassName="w-full"
+                data={mainRenderer.race.getCompactRenderedString(race, false)}
+              />
+              <img
+                onError={(ev: any) => {
+                  ev.target.src = `${process.env.PUBLIC_URL}/img/races/default.png`;
+                }}
+                src={formState.data.descriptionData.imageUrl}
+                alt="character portrait"
+                className="mt-3 w-full shadow rounded"
+              />
+              <div className="bg-light-300 dark:bg-dark-200 shadow rounded mt-3 p-4">
+                <h3 className="text-center text-lg">Description</h3>
+                <ul>
+                  <li className="flex justify-between">
+                    <strong>Age: </strong>
+                    {formState.data.descriptionData.age}
+                  </li>
+                  <li className="flex justify-between">
+                    <strong>Hair: </strong>
+                    {formState.data.descriptionData.hair}
+                  </li>
+                  <li className="flex justify-between">
+                    <strong>Skin: </strong>
+                    {formState.data.descriptionData.skin}
+                  </li>
+                  <li className="flex justify-between">
+                    <strong>Eyes: </strong>
+                    {formState.data.descriptionData.eyes}
+                  </li>
+                  <li className="flex justify-between">
+                    <strong>Height: </strong>
+                    {formState.data.descriptionData.height}
+                  </li>
+                  <li className="flex justify-between">
+                    <strong>Weight: </strong>
+                    {formState.data.descriptionData.weight}
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <TextBox>
-            <h3>
-              <strong>
-                {formState.data.classData.classElement} –{' '}
-                {formState.data.classData.subClass}
-              </strong>
-            </h3>
-            <ClassBase cls={classElement!} />
-          </TextBox>
-          <div className="flex flex-wrap">
-            {formState.data.equipmentData.items.map((itemName, index) => (
-              <TextBox key={index}>
-                <DangerousHtml
-                  data={mainRenderer.item.getCompactRenderedString(
-                    getItem(itemName),
-                    false,
-                  )}
-                />
-              </TextBox>
-            ))}
+
+          <div className="my-3">
+            <h3>Equipment</h3>
+            <div className="flex flex-wrap">
+              {formState.data.equipmentData.items.map((itemName, index) => {
+                const item = getItem(itemName);
+                return (
+                  <DetailedEntryTrigger
+                    key={itemName}
+                    renderer={mainRenderer.item.getCompactRenderedString(item)}
+                    data={item}
+                  >
+                    <TextBox extraClassName="bg-light-200 dark:bg-dark-200 px-2 py-2 w-full md:w-40 h-40 mr-2 mt-2">
+                      <DangerousHtml
+                        extraClassName="text-sm leading-none"
+                        prose={false}
+                        data={mainRenderer.item.getCompactRenderedString(
+                          item,
+                          false,
+                        )}
+                      />
+                    </TextBox>
+                  </DetailedEntryTrigger>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </TextBox>
       ) : (
         <div>No character data available</div>
       )}

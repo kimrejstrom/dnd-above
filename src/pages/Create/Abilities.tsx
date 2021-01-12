@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { useHistory, Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
 import { diceRoller } from 'utils/dice';
+import { StatsTypes } from 'features/character/characterListSlice';
 
 const Abilities = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,9 @@ const Abilities = () => {
     (state: RootState) => state.createCharacterForm,
   );
   const history = useHistory();
-  const { register, handleSubmit, getValues, errors } = useForm<FormData>();
+  const { register, handleSubmit, setValue, watch, errors } = useForm<
+    FormData
+  >();
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
     const parsedData = {
       rollMethod: data.rollMethod,
@@ -62,6 +65,16 @@ const Abilities = () => {
       .filter(isDefined),
   );
 
+  useEffect(() => {
+    Object.entries(formState.data.classData.abilityScores).forEach(
+      ([key, value]) => {
+        if (value !== 0) {
+          setValue(key as StatsTypes, value);
+        }
+      },
+    );
+  }, [setValue, formState.data.classData.abilityScores]);
+
   const getRacialBonus = (key: string) => {
     const standardRaceBonus = race?.ability
       ? (race?.ability[0] as any)[key]
@@ -76,7 +89,9 @@ const Abilities = () => {
     return Number(standardRaceBonus) + Number(chosenBonus);
   };
 
-  const getBaseScore = (key: string) => Number((getValues() as any)[key] || 0);
+  const getBaseScore = (key: string) => {
+    return Number((watch() as any)[key] || 0);
+  };
 
   const handleScoreSelect = (
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
@@ -203,9 +218,6 @@ const Abilities = () => {
                       validate: data => data !== '0',
                     })}
                     className={`form-input`}
-                    defaultValue={
-                      (formState.data.classData.abilityScores as any)[key]
-                    }
                   >
                     <option value="0">-</option>
                     {abilityScores.map((ab, i) => (
