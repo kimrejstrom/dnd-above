@@ -7,7 +7,7 @@ import { Item } from 'models/item';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import { mainRenderer } from 'utils/mainRenderer';
+import { RenderItems } from 'utils/render';
 
 interface Props {
   items: (Item | BaseItem)[];
@@ -32,8 +32,8 @@ const Items = ({ items, columns }: Props) => {
           dispatch(
             setDetailedEntry(
               <DangerousHtml
-                extraClassName="w-full"
-                data={mainRenderer.item.getCompactRenderedString(item)}
+                extraClassName="w-full tight"
+                data={RenderItems(item)}
               />,
             ),
           ),

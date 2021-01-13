@@ -13,6 +13,7 @@ import {
 } from 'utils/character';
 import { useForm } from 'react-hook-form';
 import { Parser } from 'utils/mainRenderer';
+import TextBox from 'components/TextBox/TextBox';
 
 interface Props {
   character: CharacterListItem;
@@ -35,51 +36,57 @@ const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
   return (
     <div>
       <div className="my-2">
-        <div className="flex w-full items-center">
-          <div className="text-xl mr-2">Base Scores </div>
-          <div className="text-sm">({abilityScores.rollMethod}):</div>
-        </div>
-        <div className="mt-1 mb-2">
-          <div className="w-full flex">
-            {Object.keys(CHARACTER_STATS).map(key => {
-              const score = abilityScores[key as StatsTypes];
-              return (
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-10 h-10 mr-2 custom-border custom-border-thin flex flex-col items-center`}
-                  >
-                    <div className={`text-xl leading-tight`}>{score}</div>
+        <TextBox extraClassName="dnd-header">
+          <div className="flex w-full items-center">
+            <div className="text-xl mr-2">Base Scores </div>
+            <div className="text-sm">({abilityScores.rollMethod}):</div>
+          </div>
+          <div className="mt-1 mb-2">
+            <div className="w-full flex">
+              {Object.keys(CHARACTER_STATS).map(key => {
+                const score = abilityScores[key as StatsTypes];
+                return (
+                  <div key={key} className="flex flex-col items-center">
+                    <div
+                      className={`w-10 h-10 mr-2 custom-border-xs custom-border-thin flex flex-col items-center bg-light-200 dark:bg-dark-100`}
+                    >
+                      <div className={`text-xl leading-tight`}>{score}</div>
+                    </div>
+                    <div className="mt-1 mr-2">{key}</div>
                   </div>
-                  <div className="mt-1 mr-2">{key}</div>
-                </div>
+                );
+              })}
+            </div>
+          </div>
+        </TextBox>
+      </div>
+      <div className="my-2">
+        <TextBox extraClassName="dnd-header">
+          <div className="text-xl">
+            Ability score improvements &amp; Others:
+          </div>
+          <div className="flex justify-between">
+            {Object.entries(CHARACTER_STATS).map(([key, value]) => {
+              const customScore = getAbilityScoreByType(
+                key as StatsTypes,
+                character.customData.customAbilities,
+              );
+              return (
+                <label key={key} className="block w-full mr-2 text-center">
+                  {key}
+                  <input
+                    name={key}
+                    type="number"
+                    defaultValue={customScore}
+                    className="form-input"
+                    ref={register}
+                    onChange={e => onASIChange(e, key as StatsTypes)}
+                  />
+                </label>
               );
             })}
           </div>
-        </div>
-      </div>
-      <div className="my-2">
-        <div className="text-xl">ASIs &amp; Others:</div>
-        <div className="flex">
-          {Object.entries(CHARACTER_STATS).map(([key, value]) => {
-            const customScore = getAbilityScoreByType(
-              key as StatsTypes,
-              character.customData.customAbilities,
-            );
-            return (
-              <label className="block w-20 mr-2 text-center">
-                {key}
-                <input
-                  name={key}
-                  type="number"
-                  defaultValue={customScore}
-                  className="form-input"
-                  ref={register}
-                  onChange={e => onASIChange(e, key as StatsTypes)}
-                />
-              </label>
-            );
-          })}
-        </div>
+        </TextBox>
       </div>
       <div className="flex flex-wrap w-full my-4">
         {Object.entries(Parser.ATB_ABV_TO_FULL).map(([key, value]) => {
@@ -91,7 +98,10 @@ const AbilitiesSkillsModal: React.FC<Props> = ({ character }) => {
           );
           const totalScore = baseScore + raceScore + customScore;
           return (
-            <div className="my-4 flex-shrink-0 w-1/3 border-1 border-dark-300">
+            <div
+              key={key}
+              className="my-4 flex-shrink-0 w-1/3 border-1 border-dark-300"
+            >
               <div className="w-full px-4 py-1 bg-dark-100 text-yellow-100">
                 {value as any}
               </div>

@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import { startCase } from 'lodash/fp';
 import Table from 'components/Table/Table';
 import { Cell } from 'react-table';
-import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { SpellElement } from 'models/spells';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import { isDefined } from 'ts-is-present';
+import { RenderedSpell } from 'utils/render';
 
 interface Props {
   spells: SpellElement[];
@@ -73,9 +73,7 @@ export const Spells = ({
         detailedEntryTrigger: () =>
           dispatch(
             setDetailedEntry(
-              <DangerousHtml
-                data={mainRenderer.spell.getCompactRenderedString(sp)}
-              />,
+              <DangerousHtml extraClassName="tight" data={RenderedSpell(sp)} />,
             ),
           ),
       })),

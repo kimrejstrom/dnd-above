@@ -15,6 +15,13 @@ module.exports = {
   theme: {
     extend: {
       typography: {
+        DEFAULT: {
+          css: {
+            'table table': {
+              margin: 0,
+            },
+          },
+        },
         dark: {
           css: {
             color: '#f9f3eb',

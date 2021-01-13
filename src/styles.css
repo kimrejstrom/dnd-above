@@ -422,6 +422,16 @@ a.active {
   }
 }
 
+/* Tailwind Typography overrides */
+.tight td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.tight tr {
+  border: 0;
+}
+
 /* 5e Tools Styles */
 .no-select {
   -webkit-user-select: none !important;
@@ -850,13 +860,14 @@ i > i {
   color: #827e00;
   border-bottom-color: #827e00;
 }
-.refreshing-brew .rd__h--0,
-.refreshing-brew .rd__h--1,
-.refreshing-brew .rd__h--2 {
-  color: #8c3b96;
-  border-bottom-color: #8c3b96;
+.divider div {
+  background-color: #822000;
+  height: 2px;
+  margin: 6px 0;
 }
-
+.dark .divider div {
+  background-color: #d29a38;
+}
 .dark .rd__h--0,
 .dark .rd__h--1,
 .dark .rd__h--2 {

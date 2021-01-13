@@ -6,7 +6,7 @@ interface Props {
 
 const DetailedEntry = ({ data }: Props) =>
   data ? (
-    <div className="w-full dnd-body dark:prose-dark sm:prose-sm md:prose lg:prose-lg sm:max-w-none md:max-w-none lg:max-w-none">
+    <div className="w-full dnd-body dark:prose-dark sm:prose-sm md:prose lg:prose-md sm:max-w-none md:max-w-none lg:max-w-none">
       {data}
     </div>
   ) : (
