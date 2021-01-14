@@ -26,6 +26,8 @@ interface Props {
   character: CharacterListItem;
 }
 
+const featureBoxCls = 'custom-border-xs my-2 bg-light-200 dark:bg-dark-200';
+
 const renderClassFeatures = (className: string) => {
   const classFeatures = getClassFeatures(className);
   return classFeatures.map(feature => {
@@ -33,7 +35,7 @@ const renderClassFeatures = (className: string) => {
       return (
         <div
           key={`${className}-${feature.name}-${feature.level}`}
-          className="custom-border custom-border-thin my-2"
+          className={featureBoxCls}
         >
           <DetailedEntryTrigger data={feature} extraClassName="font-bold">
             {`Level ${feature.level} – ${feature.name}`}
@@ -53,7 +55,7 @@ const renderSubClassFeatures = (className: string, subClassName: string) => {
       return (
         <div
           key={`${subClassName}-${feature.name}-${feature.level}`}
-          className="custom-border custom-border-thin my-2"
+          className={featureBoxCls}
         >
           <DetailedEntryTrigger data={feature} extraClassName="font-bold">
             {`Level ${feature.level} – ${feature.name}`}
@@ -73,9 +75,7 @@ const renderRaceTraits = (race: Race) => {
   return raceTraits?.length ? (
     raceTraits?.map(trait => (
       <DetailedEntryTrigger key={trait.name} data={trait}>
-        <div className="custom-border custom-border-thin my-2">
-          {trait.name}
-        </div>
+        <div className={featureBoxCls}>{trait.name}</div>
       </DetailedEntryTrigger>
     ))
   ) : (
@@ -89,10 +89,7 @@ const renderFeats = (feats: string[]) => {
       const feat = getFeat(featName);
       return (
         <DetailedEntryTrigger data={feat}>
-          <div
-            key={feat?.name}
-            className="custom-border custom-border-thin my-2"
-          >
+          <div key={feat?.name} className={featureBoxCls}>
             {feat?.name}
           </div>
         </DetailedEntryTrigger>

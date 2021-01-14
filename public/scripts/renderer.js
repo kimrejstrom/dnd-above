@@ -445,7 +445,7 @@ function Renderer() {
     bodyStack[0] += '<tbody>';
     const len = entry.rows.length;
     for (let ixRow = 0; ixRow < len; ++ixRow) {
-      bodyStack[0] += '<tr class="odd:bg-gray-100 dark-odd:bg-secondary-dark">';
+      bodyStack[0] += '<tr class="odd:bg-gray-200 dark:odd:bg-dark-200">';
       const r = entry.rows[ixRow];
       let roRender = r.type === 'row' ? r.row : r;
 
@@ -613,9 +613,7 @@ function Renderer() {
 
     const headerSpan = entry.name
       ? `<span class="rd__h ${headerClass}" data-title-index="${this
-          ._headerIndex++}" ${this._getEnumeratedTitleRel(
-          entry.name,
-        )}> <span class="text-xl"${
+          ._headerIndex++}" ${this._getEnumeratedTitleRel(entry.name)}> <span ${
           !pagePart && entry.source
             ? ` title="Source: ${Parser.sourceJsonToFull(entry.source)}${
                 entry.page ? `, p${entry.page}` : ''
@@ -625,12 +623,6 @@ function Renderer() {
           isInlineTitle ? '.' : ''
         }</span>${pagePart}</span> `
       : '';
-
-    if (meta.depth === -1) {
-      if (!this._firstSection)
-        textStack[0] += `<hr class="rd__hr rd__hr--section">`;
-      this._firstSection = false;
-    }
 
     if (entry.entries || entry.name) {
       textStack[0] += `<${this.wrapperTag} ${dataString} ${styleString}>${headerSpan}`;
@@ -803,6 +795,7 @@ function Renderer() {
   };
 
   this._renderVariant = function(entry, textStack, meta, options) {
+    const renderer = Renderer.get();
     const dataString = this._renderEntriesSubtypes_getDataString(entry);
     this._handleTrackTitles(entry.name);
     this._handleTrackDepth(entry, 1);
@@ -822,7 +815,7 @@ function Renderer() {
       meta.depth = cacheDepth;
     }
     if (entry.variantSource)
-      textStack[0] += Renderer.utils._getPageTrText(entry.variantSource);
+      textStack[0] += renderer.utils._getPageTrText(entry.variantSource);
     textStack[0] += `</${this.wrapperTag}>`;
   };
 
@@ -1646,8 +1639,7 @@ function Renderer() {
         //   name: name.toTitleCase(),
         //   entries: expander(name),
         // });
-        textStack[0] += `<span class="help--hover">${displayText ||
-          name}</span>`;
+        textStack[0] += `${displayText || name}`;
 
         break;
       }
@@ -2624,9 +2616,9 @@ Renderer._AbilityData = function(
   this.areNegative = areNegative;
 };
 
-Renderer.utils = {
+Renderer.prototype.utils = {
   getBorderTr: optText => {
-    return `<tr><th class="border" colspan="6">${optText || ''}</th></tr>`;
+    return `<tr><th colspan="6">${optText || ''}</th></tr>`;
   },
 
   getDividerTr: () => {
@@ -2647,17 +2639,17 @@ Renderer.utils = {
    * @param [opts.page] The hover page for this entity.
    */
   getNameTr: (it, opts) => {
+    const renderer = Renderer.get();
     opts = opts || {};
     return `<tr>
               <th class="rnd-name name ${
                 opts.extraThClasses ? opts.extraThClasses.join(' ') : ''
               }" colspan="6">
                   <div class="name-inner">
-                      <div class="flex-v-center">
-                          <span class="font-bold stats-name copyable">${opts.prefix ||
+                      <div class="flex flex-col">
+                          <span class="font-bold stats-name">${opts.prefix ||
                             ''}${it._displayName || it.name}${opts.suffix ||
       ''}</span>
-                          ${opts.pronouncePart || ''}
                       </div>
                       <span class="stats-source flex justify-end">
                           <span class="help--subtle ${
@@ -2666,7 +2658,7 @@ Renderer.utils = {
                                   it.source,
                                 )}" title="${Parser.sourceJsonToFull(
                                   it.source,
-                                )}${Renderer.utils.getSourceSubText(it)}`
+                                )}${renderer.utils.getSourceSubText(it)}`
                               : ''
                           }">${
       it.source ? Parser.sourceJsonToAbv(it.source) : ''
@@ -2691,10 +2683,12 @@ Renderer.utils = {
   },
 
   getPageTr: it => {
-    return `<td colspan=6>${Renderer.utils._getPageTrText(it)}</td>`;
+    const renderer = Renderer.get();
+    return `<td colspan=6>${renderer.utils._getPageTrText(it)}</td>`;
   },
 
   _getPageTrText: it => {
+    const renderer = Renderer.get();
     function getAltSourceText(prop, introText) {
       if (!it[prop] || !it[prop].length) return '';
 
@@ -2712,7 +2706,7 @@ Renderer.utils = {
         .join('; ')}`;
     }
 
-    const sourceSub = Renderer.utils.getSourceSubText(it);
+    const sourceSub = renderer.utils.getSourceSubText(it);
     const baseText =
       it.page > 0
         ? `<b>Source:</b> <i title="${Parser.sourceJsonToFull(
@@ -2785,6 +2779,7 @@ Renderer.utils = {
     isListMode = false,
     blacklistKeys = new Set(),
   ) => {
+    const renderer = Renderer.get();
     if (!prerequisites) return isListMode ? '\u2014' : '';
 
     const listOfChoices = prerequisites
@@ -2792,8 +2787,8 @@ Renderer.utils = {
         return Object.entries(pr)
           .sort(
             ([kA], [kB]) =>
-              Renderer.utils._prereqWeights[kA] -
-              Renderer.utils._prereqWeights[kB],
+              renderer.utils._prereqWeights[kA] -
+              renderer.utils._prereqWeights[kB],
           )
           .map(([k, v]) => {
             if (blacklistKeys.has(k)) return false;
@@ -3072,11 +3067,11 @@ Renderer.prototype.feat = {
     const renderer = Renderer.get();
     const renderStack = [];
 
-    const prerequisite = Renderer.utils.getPrerequisiteText(feat.prerequisite);
+    const prerequisite = renderer.utils.getPrerequisiteText(feat.prerequisite);
     renderer.feat.mergeAbilityIncrease(feat);
     renderStack.push(`
-              ${Renderer.utils.getExcludedTr(feat, 'feat')}
-              ${Renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}
+              ${renderer.utils.getExcludedTr(feat, 'feat')}
+              ${renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}
               <tr class="text"><td colspan="6" class="text">
               ${prerequisite ? `<p><i>${prerequisite}</i></p>` : ''}
           `);
@@ -3100,8 +3095,8 @@ Renderer.prototype.spell = {
     const renderStack = [];
 
     renderStack.push(`
-              ${Renderer.utils.getExcludedTr(spell, 'spell')}
-              ${Renderer.utils.getNameTr(spell, { page: UrlUtil.PG_SPELLS })}
+              ${renderer.utils.getExcludedTr(spell, 'spell')}
+              ${renderer.utils.getNameTr(spell, { page: UrlUtil.PG_SPELLS })}
               <tr><td colspan="6">
                   <table class="w-full text-left">
                       <tr>
@@ -3167,6 +3162,13 @@ Renderer.prototype.spell = {
     renderStack.push(`</td></tr>`);
 
     return renderStack.join('');
+  },
+
+  getCombinedClasses(sp, prop) {
+    return [
+      ...((sp.classes || {})[prop] || []),
+      ...((sp._tmpClasses || {})[prop] || []),
+    ];
   },
 
   initClasses(spell, brewSpellClasses) {
@@ -3359,8 +3361,8 @@ Renderer.condition = {
     const renderStack = [];
 
     renderStack.push(`
-              ${Renderer.utils.getExcludedTr(cond, cond.__prop || cond._type)}
-              ${Renderer.utils.getNameTr(cond, {
+              ${renderer.utils.getExcludedTr(cond, cond.__prop || cond._type)}
+              ${renderer.utils.getNameTr(cond, {
                 page: UrlUtil.PG_CONDITIONS_DISEASES,
               })}
               <tr class="text"><td colspan="6">
@@ -3375,8 +3377,8 @@ Renderer.condition = {
 Renderer.prototype.background = {
   getCompactRenderedString(bg) {
     return `
-          ${Renderer.utils.getExcludedTr(bg, 'background')}
-          ${Renderer.utils.getNameTr(bg, { page: UrlUtil.PG_BACKGROUNDS })}
+          ${renderer.utils.getExcludedTr(bg, 'background')}
+          ${renderer.utils.getNameTr(bg, { page: UrlUtil.PG_BACKGROUNDS })}
           <tr class="text"><td colspan="6">
           ${Renderer.get().render({ type: 'entries', entries: bg.entries })}
           </td></tr>
@@ -3481,12 +3483,12 @@ Renderer.optionalfeature = {
     const renderStack = [];
 
     renderStack.push(`
-              ${Renderer.utils.getExcludedTr(it, 'optionalfeature')}
-              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_OPT_FEATURES })}
+              ${renderer.utils.getExcludedTr(it, 'optionalfeature')}
+              ${renderer.utils.getNameTr(it, { page: UrlUtil.PG_OPT_FEATURES })}
               <tr class="text"><td colspan="6">
               ${
                 it.prerequisite
-                  ? `<p><i>${Renderer.utils.getPrerequisiteText(
+                  ? `<p><i>${renderer.utils.getPrerequisiteText(
                       it.prerequisite,
                     )}</i></p>`
                   : ''
@@ -3514,8 +3516,8 @@ Renderer.reward = {
 
   getCompactRenderedString(reward) {
     return `
-              ${Renderer.utils.getExcludedTr(reward, 'reward')}
-              ${Renderer.utils.getNameTr(reward, { page: UrlUtil.PG_REWARDS })}
+              ${renderer.utils.getExcludedTr(reward, 'reward')}
+              ${renderer.utils.getNameTr(reward, { page: UrlUtil.PG_REWARDS })}
               ${Renderer.reward.getRenderedString(reward)}
           `;
   },
@@ -3527,9 +3529,9 @@ Renderer.prototype.race = {
     const renderStack = [];
 
     const ability = renderer.getAbilityData(race.ability);
-    renderStack.push(`<div><table>
-              ${Renderer.utils.getExcludedTr(race, 'race')}
-              ${Renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
+    renderStack.push(`<div class="my-3 p-3 shadow bg-light-300 dark:bg-dark-200 w-full"><table class="race-table">
+              ${renderer.utils.getExcludedTr(race, 'race')}
+              ${renderer.utils.getNameTr(race, { page: UrlUtil.PG_RACES })}
               ${
                 !race._isBaseRace
                   ? `
@@ -3842,8 +3844,8 @@ Renderer.deity = {
   getCompactRenderedString(deity) {
     const renderer = Renderer.get();
     return `
-              ${Renderer.utils.getExcludedTr(deity, 'deity')}
-              ${Renderer.utils.getNameTr(deity, {
+              ${renderer.utils.getExcludedTr(deity, 'deity')}
+              ${renderer.utils.getNameTr(deity, {
                 suffix: deity.title ? `, ${deity.title.toTitleCase()}` : '',
                 page: UrlUtil.PG_DEITIES,
               })}
@@ -3856,7 +3858,7 @@ Renderer.deity = {
               </td>
               ${
                 deity.entries
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr><tr><td colspan="6">${renderer.render(
+                  ? `<tr><td colspan="6"><div></div></td></tr><tr><td colspan="6">${renderer.render(
                       { entries: deity.entries },
                       1,
                     )}</td></tr>`
@@ -3871,8 +3873,8 @@ Renderer.prototype.object = {
     const renderer = Renderer.get();
     const row2Width = 12 / (!!obj.resist + !!obj.vulnerable || 1);
     return `
-              ${Renderer.utils.getExcludedTr(obj, 'object')}
-              ${Renderer.utils.getNameTr(obj, { page: UrlUtil.PG_OBJECTS })}
+              ${renderer.utils.getExcludedTr(obj, 'object')}
+              ${renderer.utils.getNameTr(obj, { page: UrlUtil.PG_OBJECTS })}
               <tr><td colspan="6">
                   <table class="summary striped-even">
                       <tr>
@@ -3902,7 +3904,7 @@ Renderer.prototype.object = {
                       ).join('')}</tr>
                       <tr>${Parser.ABIL_ABVS.map(
                         it =>
-                          `<td colspan="2" class="text-center">${Renderer.utils.getAbilityRoller(
+                          `<td colspan="2" class="text-center">${renderer.utils.getAbilityRoller(
                             obj,
                             it,
                           )}</td>`,
@@ -4055,11 +4057,11 @@ Renderer.traphazard = {
     const renderer = Renderer.get();
     const subtitle = Renderer.traphazard.getSubtitle(it);
     return `
-              ${Renderer.utils.getExcludedTr(
+              ${renderer.utils.getExcludedTr(
                 it,
                 it.__prop || (it._type === 't' ? 'trap' : 'hazard'),
               )}
-              ${Renderer.utils.getNameTr(it, {
+              ${renderer.utils.getNameTr(it, {
                 page: UrlUtil.PG_TRAPS_HAZARDS,
               })}
               ${
@@ -4147,8 +4149,8 @@ Renderer.cultboon = {
         depth: 2,
       });
       return `
-              ${Renderer.utils.getExcludedTr(it, 'cult')}
-              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
+              ${renderer.utils.getExcludedTr(it, 'cult')}
+              ${renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
               <tr id="text"><td class="divider" colspan="6"><div></div></td></tr>
               <tr class='text'><td colspan='6' class='text'>${renderStack.join(
                 '',
@@ -4161,8 +4163,8 @@ Renderer.cultboon = {
       it._displayName =
         it._displayName || `${it.type || 'Demonic Boon'}: ${it.name}`;
       return `
-              ${Renderer.utils.getExcludedTr(it, 'boon')}
-              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
+              ${renderer.utils.getExcludedTr(it, 'boon')}
+              ${renderer.utils.getNameTr(it, { page: UrlUtil.PG_CULTS_BOONS })}
               <tr class='text'><td colspan='6'>${renderStack.join(
                 '',
               )}</td></tr>`;
@@ -4507,12 +4509,12 @@ Renderer.monster = {
     const isCrHidden = Parser.crToNumber(mon.cr) === 100;
 
     renderStack.push(`
-              ${Renderer.utils.getExcludedTr(mon, 'monster')}
-              ${Renderer.utils.getNameTr(mon, { page: UrlUtil.PG_BESTIARY })}
+              ${renderer.utils.getExcludedTr(mon, 'monster')}
+              ${renderer.utils.getNameTr(mon, { page: UrlUtil.PG_BESTIARY })}
               <tr><td colspan="6"><i>${Renderer.monster.getTypeAlignmentPart(
                 mon,
               )}</i></td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <table class="summary-noback" style="position: relative;">
                       <tr>
@@ -4558,7 +4560,7 @@ Renderer.monster = {
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <table class="summary striped-even">
                       <tr>
@@ -4570,34 +4572,34 @@ Renderer.monster = {
                           <th class="col-2 text-center">CHA</th>
                       </tr>
                       <tr>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'str',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'dex',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'con',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'int',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'wis',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             mon,
                             'cha',
                           )}</td>
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <div class="rd__compact-stat">
                       ${
@@ -4653,7 +4655,7 @@ Renderer.monster = {
               </td></tr>
               ${
                 mon.trait || mon.spellcasting
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+                  ? `<tr><td colspan="6"><div></div></td></tr>
               <tr class="text compact"><td colspan="6">
               ${Renderer.monster
                 .getOrderedTraits(mon, renderer)
@@ -5230,8 +5232,8 @@ Renderer.prototype.item = {
         (item.entries && item.entries.length));
 
     return `
-          ${Renderer.utils.getExcludedTr(item, 'item')}
-          ${Renderer.utils.getNameTr(item)}
+          ${renderer.utils.getExcludedTr(item, 'item')}
+          ${renderer.utils.getNameTr(item)}
           <tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
             item,
           )}</td></tr>
@@ -5248,7 +5250,7 @@ Renderer.prototype.item = {
       <tr><td colspan="6">${propertiesTxt}</td></tr>
           ${
             hasEntries
-              ? `${Renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
+              ? `${renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
                   item,
                   true,
                 )}</td></tr>`
@@ -5416,9 +5418,10 @@ Renderer.psionic = {
   },
 
   getCompactRenderedString(psi) {
+    const renderer = Renderer.get();
     return `
-              ${Renderer.utils.getExcludedTr(psi, 'psionic')}
-              ${Renderer.utils.getNameTr(psi, { page: UrlUtil.PG_PSIONICS })}
+              ${renderer.utils.getExcludedTr(psi, 'psionic')}
+              ${renderer.utils.getNameTr(psi, { page: UrlUtil.PG_PSIONICS })}
               <tr class="text"><td colspan="6">
               <p><i>${Renderer.psionic.getTypeOrderString(psi)}</i></p>
               ${Renderer.psionic.getBodyText(
@@ -5444,11 +5447,12 @@ Renderer.rule = {
 
 Renderer.variantrule = {
   getCompactRenderedString(rule) {
+    const renderer = Renderer.get();
     const cpy = MiscUtil.copy(rule);
     delete cpy.name;
     return `
-              ${Renderer.utils.getExcludedTr(rule, 'variantrule')}
-              ${Renderer.utils.getNameTr(rule, {
+              ${renderer.utils.getExcludedTr(rule, 'variantrule')}
+              ${renderer.utils.getNameTr(rule, {
                 page: UrlUtil.PG_VARIATNRULES,
               })}
               <tr><td colspan="6">
@@ -5462,12 +5466,13 @@ Renderer.variantrule = {
 
 Renderer.table = {
   getCompactRenderedString(it) {
+    const renderer = Renderer.get();
     it.type = it.type || 'table';
     const cpy = MiscUtil.copy(it);
     delete cpy.name;
     return `
-              ${Renderer.utils.getExcludedTr(it, 'table')}
-              ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_TABLES })}
+              ${renderer.utils.getExcludedTr(it, 'table')}
+              ${renderer.utils.getNameTr(it, { page: UrlUtil.PG_TABLES })}
               <tr><td colspan="6">
               ${Renderer.get()
                 .setFirstSection(true)
@@ -5587,6 +5592,7 @@ Renderer.vehicle = {
     }
 
     function getOtherSection(oth) {
+      const renderer = Renderer.get();
       return `
                   <tr class="mon__stat-header-underline"><td colspan="6"><span>${
                     oth.name
@@ -5599,8 +5605,8 @@ Renderer.vehicle = {
     }
 
     return `
-              ${Renderer.utils.getExcludedTr(veh, 'vehicle')}
-              ${Renderer.utils.getNameTr(veh, {
+              ${renderer.utils.getExcludedTr(veh, 'vehicle')}
+              ${renderer.utils.getNameTr(veh, {
                 extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
                 page: UrlUtil.PG_VEHICLES,
               })}
@@ -5639,27 +5645,27 @@ Renderer.vehicle = {
                           <th class="col-2 text-center">CHA</th>
                       </tr>
                       <tr>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'str',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'dex',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'con',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'int',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'wis',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'cha',
                           )}</td>
@@ -5696,7 +5702,7 @@ Renderer.vehicle = {
               ${(veh.movement || []).map(getMovementSection).join('')}
               ${(veh.weapon || []).map(getWeaponSection).join('')}
               ${(veh.other || []).map(getOtherSection).join('')}
-              ${Renderer.utils.getPageTr(veh)}
+              ${renderer.utils.getPageTr(veh)}
           `;
   },
 
@@ -5705,8 +5711,8 @@ Renderer.vehicle = {
     const dexMod = Parser.getAbilityModNumber(veh.dex);
 
     return `
-              ${Renderer.utils.getExcludedTr(veh, 'vehicle')}
-              ${Renderer.utils.getNameTr(veh, {
+              ${renderer.utils.getExcludedTr(veh, 'vehicle')}
+              ${renderer.utils.getNameTr(veh, {
                 extraThClasses: !opts.isCompact ? ['veh__name--token'] : null,
                 page: UrlUtil.PG_VEHICLES,
               })}
@@ -5739,27 +5745,27 @@ Renderer.vehicle = {
                           <th class="col-2 text-center">CHA</th>
                       </tr>
                       <tr>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'str',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'dex',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'con',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'int',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'wis',
                           )}</td>
-                          <td class="text-center">${Renderer.utils.getAbilityRoller(
+                          <td class="text-center">${renderer.utils.getAbilityRoller(
                             veh,
                             'cha',
                           )}</td>
@@ -5784,7 +5790,7 @@ Renderer.vehicle = {
               </td></tr>
               ${
                 veh.trait
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+                  ? `<tr><td colspan="6"><div></div></td></tr>
               <tr class="text compact"><td colspan="6">
               ${Renderer.monster
                 .getOrderedTraits(veh, renderer)
@@ -5807,7 +5813,7 @@ Renderer.vehicle = {
                 'reaction',
                 2,
               )}
-              ${Renderer.utils.getPageTr(veh)}
+              ${renderer.utils.getPageTr(veh)}
           `;
   },
 };
@@ -5816,10 +5822,10 @@ Renderer.action = {
   getCompactRenderedString(it) {
     const cpy = MiscUtil.copy(it);
     delete cpy.name;
-    return `${Renderer.utils.getExcludedTr(
+    return `${renderer.utils.getExcludedTr(
       it,
       'action',
-    )}${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_ACTIONS })}
+    )}${renderer.utils.getNameTr(it, { page: UrlUtil.PG_ACTIONS })}
           <tr><td colspan="6">${Renderer.get()
             .setFirstSection(true)
             .render(cpy)}</td></tr>`;
@@ -5833,6 +5839,7 @@ Renderer.prototype.language = {
   },
 
   getRenderedString(it) {
+    const renderer = Renderer.get();
     const allEntries = [];
 
     const hasMeta = it.typicalSpeakers || it.script;
@@ -5852,8 +5859,8 @@ Renderer.prototype.language = {
       allEntries.push('{@i No information available.}');
 
     return `
-          ${Renderer.utils.getExcludedTr(it, 'language')}
-          ${Renderer.utils.getNameTr(it, { page: UrlUtil.PG_LANGUAGES })}
+          ${renderer.utils.getExcludedTr(it, 'language')}
+          ${renderer.utils.getNameTr(it, { page: UrlUtil.PG_LANGUAGES })}
           ${
             it.type
               ? `<tr class="text"><td colspan="6" class="pt-0"><i>${it.type.toTitleCase()} language</i></td></tr>`
@@ -5887,7 +5894,7 @@ Renderer.prototype.language = {
           </td></tr>`
               : ''
           }
-          ${Renderer.utils.getPageTr(it)}`;
+          ${renderer.utils.getPageTr(it)}`;
   },
 };
 
@@ -7900,75 +7907,92 @@ Parser.DURATION_AMOUNT_TYPES = [
   'week',
   'year',
 ];
-
-Parser.spClassesToFull = function(classes, textOnly, subclassLookup = {}) {
+Parser.spClassesToFull = function(sp, isTextOnly, subclassLookup = {}) {
+  const fromSubclassList = Renderer.spell.getCombinedClasses(
+    sp,
+    'fromSubclass',
+  );
   const fromSubclasses = Parser.spSubclassesToFull(
-    classes,
-    textOnly,
+    fromSubclassList,
+    isTextOnly,
     subclassLookup,
   );
-  return `${Parser.spMainClassesToFull(classes, textOnly)}${
+  const fromClassList = Renderer.spell.getCombinedClasses(sp, 'fromClassList');
+  return `${Parser.spMainClassesToFull(fromClassList, isTextOnly)}${
     fromSubclasses ? `, ${fromSubclasses}` : ''
   }`;
 };
 
-Parser.spMainClassesToFull = function(
-  classes,
-  textOnly = false,
-  prop = 'fromClassList',
-) {
-  if (!classes) return '';
-  return (classes[prop] || [])
-    .filter(
-      c =>
-        !ExcludeUtil.isInitialised ||
-        !ExcludeUtil.isExcluded(c.name, 'class', c.source),
-    )
-    .sort((a, b) => SortUtil.ascSort(a.name, b.name))
-    .map(c =>
-      textOnly
-        ? c.name
-        : `<a title="Source: ${Parser.sourceJsonToFull(c.source)}" href="${
-            UrlUtil.PG_CLASSES
-          }#${UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](c)}">${
-            c.name
-          }</a>`,
-    )
-    .join(', ');
+Parser.spMainClassesToFull = function(fromClassList, textOnly = false) {
+  return (
+    fromClassList
+      .map(c => ({
+        hash: UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](c),
+        c,
+      }))
+      .filter(
+        it =>
+          !ExcludeUtil.isInitialised ||
+          !ExcludeUtil.isExcluded(it.hash, 'class', it.c.source),
+      )
+      .sort((a, b) => SortUtil.ascSort(a.c.name, b.c.name))
+      .map(it =>
+        textOnly
+          ? it.c.name
+          : `<a title="${
+              it.c.definedInSource ? `Class source` : 'Source'
+            }: ${Parser.sourceJsonToFull(it.c.source)}${
+              it.c.definedInSource
+                ? `. Variant spell list defined in: ${Parser.sourceJsonToFull(
+                    it.c.definedInSource,
+                  )}.`
+                : ''
+            }" href="${UrlUtil.PG_CLASSES}#${it.hash}">${it.c.name}</a>`,
+      )
+      .join(', ') || ''
+  );
 };
 
-Parser.spSubclassesToFull = function(classes, textOnly, subclassLookup = {}) {
-  if (!classes || !classes.fromSubclass) return '';
-  return classes.fromSubclass
-    .filter(c => {
-      if (!ExcludeUtil.isInitialised) return true;
-      const excludeClass = ExcludeUtil.isExcluded(
-        c.class.name,
-        'class',
-        c.class.source,
-      );
-      if (excludeClass) return false;
-      const fromLookup = MiscUtil.get(
-        subclassLookup,
-        c.class.source,
-        c.class.name,
-        c.subclass.source,
-        c.subclass.name,
-      );
-      if (!fromLookup) return true;
-      const excludeSubclass = ExcludeUtil.isExcluded(
-        fromLookup.name || c.subclass.name,
-        'subclass',
-        c.subclass.source,
-      );
-      return !excludeSubclass;
-    })
-    .sort((a, b) => {
-      const byName = SortUtil.ascSort(a.class.name, b.class.name);
-      return byName || SortUtil.ascSort(a.subclass.name, b.subclass.name);
-    })
-    .map(c => Parser._spSubclassItem(c, textOnly, subclassLookup))
-    .join(', ');
+Parser.spSubclassesToFull = function(
+  fromSubclassList,
+  textOnly,
+  subclassLookup = {},
+) {
+  return (
+    fromSubclassList
+      .filter(mt => {
+        if (!ExcludeUtil.isInitialised) return true;
+        const excludeClass = ExcludeUtil.isExcluded(
+          UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES](mt.class),
+          'class',
+          mt.class.source,
+        );
+        if (excludeClass) return false;
+        const fromLookup = MiscUtil.get(
+          subclassLookup,
+          mt.class.source,
+          mt.class.name,
+          mt.subclass.source,
+          mt.subclass.name,
+        );
+        if (!fromLookup) return true;
+        const excludeSubclass = ExcludeUtil.isExcluded(
+          UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES]({
+            name: fromLookup.name || mt.subclass.name,
+            source: mt.subclass.source,
+          }),
+          'subclass',
+          mt.subclass.source,
+        );
+        return !excludeSubclass;
+      })
+      .sort((a, b) => {
+        const byName = SortUtil.ascSort(a.class.name, b.class.name);
+        return byName || SortUtil.ascSort(a.subclass.name, b.subclass.name);
+      })
+      .map(c => Parser._spSubclassItem(c, textOnly, subclassLookup))
+      .join(', ') || ''
+  );
 };
 
 Parser._spSubclassItem = function(fromSubclass, textOnly, subclassLookup) {
@@ -8824,10 +8848,10 @@ Parser.pageCategoryToProp = function(catId) {
 
 Parser.ABIL_ABVS = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
 
-Parser.spClassesToCurrentAndLegacy = function(classes) {
+Parser.spClassesToCurrentAndLegacy = function(fromClassList) {
   const current = [];
   const legacy = [];
-  classes.fromClassList.forEach(cls => {
+  fromClassList.forEach(cls => {
     if (
       (cls.name === 'Artificer' && cls.source === 'UAArtificer') ||
       (cls.name === 'Artificer (Revisited)' &&
@@ -14742,9 +14766,9 @@ ExcludeUtil = {
       (list.length > 0 && list.length === ExcludeUtil._excludeCount)
     ) {
       $pagecontent.html(`
-                  <tr><th class="border" colspan="6"></th></tr>
+                  <tr><th colspan="6"></th></tr>
                   <tr><td colspan="6" class="initial-message">(Content <a href="blacklist.html">blacklisted</a>)</td></tr>
-                  <tr><th class="border" colspan="6"></th></tr>
+                  <tr><th colspan="6"></th></tr>
               `);
     }
   },

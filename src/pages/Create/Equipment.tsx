@@ -12,6 +12,9 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
+import TextBox from 'components/TextBox/TextBox';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
+import { RenderItems } from 'utils/render';
 
 const Equipment = () => {
   const dispatch = useDispatch();
@@ -64,123 +67,141 @@ const Equipment = () => {
         <Link className={DEFAULT_BUTTON_STYLE} to={`/create/step-4`}>
           Previous
         </Link>
+        <h1>Starting Equipment</h1>
         <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
       </div>
 
-      {selectedClass && (
-        <>
-          <h2>{selectedClass?.name} Starting Equipment</h2>
-          <div className="w-full">
-            {selectedClass?.startingEquipment.default.map(equipment => (
-              <Entry entry={equipment} />
-            ))}
-          </div>
-        </>
-      )}
+      <TextBox>
+        {selectedClass && (
+          <>
+            <h2 className="text-lg">
+              {selectedClass?.name} Starting Equipment
+            </h2>
+            <div className="w-full">
+              {selectedClass?.startingEquipment.default.map(equipment => (
+                <Entry entry={equipment} />
+              ))}
+            </div>
+          </>
+        )}
 
-      {selectedBackground && (
-        <>
-          <h2>{selectedBackground?.name} Starting Equipment</h2>
-          <div className="w-full">
-            {selectedBackground?.entries &&
-              selectedBackground?.entries
-                .map(entry => {
-                  if (entry.type === 'list') {
-                    return entry.items
-                      ?.map(item =>
-                        item.name === 'Equipment' ? (
-                          <Entry entry={item.entry!} />
-                        ) : (
-                          undefined
-                        ),
-                      )
-                      .map(x => x);
-                  }
-                  return undefined;
-                })
-                .map(z => z)}
-          </div>
-        </>
-      )}
-      {itemList.length > 0 && (
-        <>
-          <h2>Current Equipment</h2>
-          <div className="w-full flex flex-wrap">
-            {itemList.map((itemName, index) => (
-              <div className="leading-none dnd-body mx-1 bg-tertiary-light dark:bg-primary-dark text-center w-32 h-40 flex justify-center items-center flex-col custom-border custom-border-thin">
-                <DangerousHtml
-                  data={mainRenderer.item.getCompactRenderedString(
-                    getItem(itemName),
-                    false,
-                  )}
-                />
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+        {selectedBackground && (
+          <>
+            <h2 className="text-lg mt-4">
+              {selectedBackground?.name} Starting Equipment
+            </h2>
+            <div className="w-full">
+              {selectedBackground?.entries &&
+                selectedBackground?.entries
+                  .map(entry => {
+                    if (entry.type === 'list') {
+                      return entry.items
+                        ?.map(item =>
+                          item.name === 'Equipment' ? (
+                            <Entry entry={item.entry!} />
+                          ) : (
+                            undefined
+                          ),
+                        )
+                        .map(x => x);
+                    }
+                    return undefined;
+                  })
+                  .map(z => z)}
+            </div>
+          </>
+        )}
+        {itemList.length > 0 && (
+          <>
+            <h2 className="text-lg mt-4">Current Equipment</h2>
+            <div className="w-full flex flex-wrap text-left">
+              {itemList.map((itemName, index) => {
+                const item = getItem(itemName);
+                return (
+                  <DetailedEntryTrigger
+                    extraClassName="tight w-full md:w-40 mr-2 mt-2"
+                    renderer={RenderItems(item)}
+                    data={item}
+                  >
+                    <TextBox extraClassName="bg-light-200 dark:bg-dark-200 px-2 py-2 w-full md:w-40 h-40 mr-2 mt-2">
+                      <DangerousHtml
+                        extraClassName="text-sm leading-none"
+                        prose={false}
+                        data={mainRenderer.item.getCompactRenderedString(
+                          item,
+                          false,
+                        )}
+                      />
+                    </TextBox>
+                  </DetailedEntryTrigger>
+                );
+              })}
+            </div>
+          </>
+        )}
 
-      <div className="flex my-4">
-        <StyledButton
-          onClick={(e: any) => addItemSelect(e, 'Weapon')}
-          extraClassName="mr-2"
+        <div className="flex my-4">
+          <StyledButton
+            onClick={(e: any) => addItemSelect(e, 'Weapon')}
+            extraClassName="mr-2"
+          >
+            + Add weapon
+          </StyledButton>
+          <StyledButton
+            onClick={(e: any) => addItemSelect(e, 'Armor')}
+            extraClassName="mr-2"
+          >
+            + Add armor
+          </StyledButton>
+          <StyledButton
+            onClick={(e: any) => addItemSelect(e, 'Item')}
+            extraClassName="mr-2"
+          >
+            + Add item
+          </StyledButton>
+        </div>
+
+        <form
+          className="flex flex-col dnd-body"
+          onSubmit={handleSubmit(onSubmit)}
         >
-          + Add weapon
-        </StyledButton>
-        <StyledButton
-          onClick={(e: any) => addItemSelect(e, 'Armor')}
-          extraClassName="mr-2"
-        >
-          + Add armor
-        </StyledButton>
-        <StyledButton
-          onClick={(e: any) => addItemSelect(e, 'Item')}
-          extraClassName="mr-2"
-        >
-          + Add item
-        </StyledButton>
-      </div>
+          {itemSelects.map(selectData => {
+            let itemType: any = [];
+            switch (selectData.type) {
+              case 'Item':
+                itemType = ALL_OTHER_ITEMS;
+                break;
+              case 'Weapon':
+                itemType = WEAPONS;
+                break;
+              case 'Armor':
+                itemType = ARMOR;
+                break;
 
-      <form
-        className="flex flex-col dnd-body"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {itemSelects.map(selectData => {
-          let itemType: any = [];
-          switch (selectData.type) {
-            case 'Item':
-              itemType = ALL_OTHER_ITEMS;
-              break;
-            case 'Weapon':
-              itemType = WEAPONS;
-              break;
-            case 'Armor':
-              itemType = ARMOR;
-              break;
-
-            default:
-              break;
-          }
-          return (
-            <label className="block">
-              {`Add ${selectData.type}`}
-              <select
-                name={selectData.formId}
-                ref={register}
-                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                onChange={addItemToList}
-              >
-                <option value="initial">-</option>
-                {itemType.map((item: any) => (
-                  <option value={item.name}>{`${item.name}${
-                    item.weaponCategory ? `, ${item.weaponCategory}` : ''
-                  }${item.type ? ` (${item.type})` : ''}`}</option>
-                ))}
-              </select>
-            </label>
-          );
-        })}
-      </form>
+              default:
+                break;
+            }
+            return (
+              <label className="block">
+                {`Add ${selectData.type}`}
+                <select
+                  name={selectData.formId}
+                  ref={register}
+                  className={`form-input`}
+                  onChange={addItemToList}
+                >
+                  <option value="initial">-</option>
+                  {itemType.map((item: any) => (
+                    <option value={item.name}>{`${item.name}${
+                      item.weaponCategory ? `, ${item.weaponCategory}` : ''
+                    }${item.type ? ` (${item.type})` : ''}`}</option>
+                  ))}
+                </select>
+              </label>
+            );
+          })}
+        </form>
+      </TextBox>
     </div>
   );
 };

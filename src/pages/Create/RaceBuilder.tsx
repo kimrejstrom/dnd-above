@@ -18,6 +18,7 @@ import * as _ from 'lodash';
 import { isBoolean } from 'util';
 import { getRace } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
+import TextBox from 'components/TextBox/TextBox';
 
 const RaceBuilder = () => {
   const dispatch = useDispatch();
@@ -82,19 +83,19 @@ const RaceBuilder = () => {
           >
             Previous
           </StyledButton>
+          <div className="flex relative">
+            <h1>{race?.name}</h1>
+          </div>
           <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
         </div>
-        <div className="flex relative">
-          <h1>{race?.name}</h1>
-        </div>
 
-        <div className="custom-border custom-border-thin bg-yellow-100 dark:bg-primary-dark">
+        <TextBox>
           <form
             name="race-details"
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col dnd-body"
           >
-            <h3>Ability Scores</h3>
+            <h2 className="text-lg mb-2 mt-3">Ability Scores</h2>
             {mainRenderer.getAbilityData(abilities).asText}
             {abilities.map(ab => {
               if (ab.choose) {
@@ -110,9 +111,7 @@ const RaceBuilder = () => {
                         validate: data =>
                           Array.isArray(data) ? data.length === count : true,
                       })}
-                      className={`${
-                        count > 1 ? 'form-multiselect' : 'form-select'
-                      } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                      className={`form-input`}
                     >
                       {ab.choose.from.map(abil => (
                         <option value={abil}>
@@ -129,8 +128,7 @@ const RaceBuilder = () => {
                 return undefined;
               }
             })}
-
-            <h3>Skill Proficiencies</h3>
+            <h2 className="text-lg mb-2 mt-3">Skill Proficiencies</h2>
             {skillProficiencies.length
               ? skillProficiencies.map(prof => {
                   if (prof.choose) {
@@ -155,9 +153,7 @@ const RaceBuilder = () => {
                                     ? data.length === count
                                     : true,
                               })}
-                              className={`${
-                                count > 1 ? 'form-multiselect' : 'form-select'
-                              } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                              className={`form-input`}
                             >
                               {prof.choose.from.map(pr => {
                                 if (typeof pr === 'string') {
@@ -180,9 +176,7 @@ const RaceBuilder = () => {
                           <label className="block">
                             {`Choose tool proficiency (1):`}
                             <select
-                              className={`${
-                                count > 1 ? 'form-multiselect' : 'form-select'
-                              } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                              className={`form-input`}
                               name="chosenRaceTools"
                               ref={register({
                                 required: true,
@@ -217,7 +211,7 @@ const RaceBuilder = () => {
                 })
               : 'None'}
 
-            <h3>Languages</h3>
+            <h2 className="text-lg mb-2 mt-3">Languages</h2>
             {languages.length
               ? languages.map((lang, i) => {
                   if (lang.anyStandard) {
@@ -229,11 +223,7 @@ const RaceBuilder = () => {
                         <label className="block">
                           {`Choose language (${lang.anyStandard}):`}
                           <select
-                            className={`${
-                              lang.anyStandard > 1
-                                ? 'form-multiselect'
-                                : 'form-select'
-                            } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                            className={`form-input`}
                             multiple={lang.anyStandard > 1}
                             name={`chosenRaceLanguages`}
                             ref={register({
@@ -273,30 +263,31 @@ const RaceBuilder = () => {
                 })
               : 'None'}
           </form>
-        </div>
-        <div className="dnd-body p-2">
-          <div>
-            <h3>Racial Traits</h3>
-            {race?.traitTags?.join(', ')}
-          </div>
 
-          <h3>Racial Abilities</h3>
-          <DangerousHtml
-            data={mainRenderer.render(
-              {
-                type: 'entries',
-                entries: race?.entries?.filter(
-                  item =>
-                    !_.includes(
-                      ['Age', 'Size', 'Alignment', 'Languages'],
-                      item.name,
-                    ),
-                ),
-              },
-              1,
-            )}
-          />
-        </div>
+          <div className="dnd-body p-2">
+            <div>
+              <h2 className="text-lg">Racial Traits</h2>
+              {race?.traitTags?.join(', ')}
+            </div>
+
+            <h2 className="text-lg">Racial Abilities</h2>
+            <DangerousHtml
+              data={mainRenderer.render(
+                {
+                  type: 'entries',
+                  entries: race?.entries?.filter(
+                    item =>
+                      !_.includes(
+                        ['Age', 'Size', 'Alignment', 'Languages'],
+                        item.name,
+                      ),
+                  ),
+                },
+                1,
+              )}
+            />
+          </div>
+        </TextBox>
       </div>
     );
   };
@@ -307,46 +298,57 @@ const RaceBuilder = () => {
     };
 
     const addDefaultImageSrc = (ev: any, name: string) => {
-      ev.target.src = `${process.env.PUBLIC_URL}/img/races/${
-        name.split(' ')[0]
-      }.png`;
+      const fallback = name.includes('custom') ? 'default' : name.split(' ')[0];
+      ev.target.src = `${process.env.PUBLIC_URL}/img/races/${fallback}.png`;
     };
 
     return (
       <div>
         {PLAYABLE_RACES.map((race: Race, index) => (
           <details key={race.name}>
-            <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
-              <span className="text-xl">{race.name}</span>
+            <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+              <span className="text-xl flex-grow">
+                <img
+                  src={`${
+                    process.env.PUBLIC_URL
+                  }/img/races/${race.name.toLowerCase()}.png`}
+                  onError={(ev: any) =>
+                    addDefaultImageSrc(ev, race.name.toLowerCase())
+                  }
+                  alt={race.name.toLowerCase()}
+                  className="inline h-8 mr-2 rounded bg-contain"
+                />
+                {`${race.name} (${race.source})`}
+              </span>
               <StyledButton
-                onClick={(e: any) => onSelect({ race: race.name }, e)}
                 extraClassName="absolute right-0 mr-2"
+                onClick={(e: any) => onSelect({ race: race.name }, e)}
               >
                 Select
               </StyledButton>
             </summary>
-            <div className="dnd-body p-2">
+            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
               <Tabs>
-                <TabList className="flex text-center">
+                <TabList className="flex text-center py-1">
                   <Tab className="mr-2">Traits</Tab>
                   <Tab>Info</Tab>
                 </TabList>
 
                 <TabPanel className="overflow-y-scroll px-2">
-                  <div>
-                    <img
-                      src={`${
-                        process.env.PUBLIC_URL
-                      }/img/races/${race.name.toLowerCase()}.png`}
-                      onError={(ev: any) =>
-                        addDefaultImageSrc(ev, race.name.toLowerCase())
-                      }
-                      alt={race.name.toLowerCase()}
-                      className="custom-border custom-border-thin shadow float-right ml-2"
-                      style={{
-                        width: '20rem',
-                      }}
-                    />
+                  <div className="wrap-image">
+                    <div className="pl-0 md:pl-3 bg-light-100 dark:bg-dark-100 float-right">
+                      <img
+                        src={`${
+                          process.env.PUBLIC_URL
+                        }/img/races/${race.name.toLowerCase()}.png`}
+                        onError={(ev: any) =>
+                          addDefaultImageSrc(ev, race.name.toLowerCase())
+                        }
+                        alt={race.name.toLowerCase()}
+                        className="w-80 shadow rounded"
+                      />
+                    </div>
+
                     <div>
                       <DangerousHtml
                         key={index}

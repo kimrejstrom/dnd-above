@@ -21,6 +21,7 @@ import {
   getSubClassFeatures,
 } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
+import TextBox from 'components/TextBox/TextBox';
 
 const ClassBuilder = () => {
   const dispatch = useDispatch();
@@ -73,57 +74,57 @@ const ClassBuilder = () => {
           >
             Previous
           </StyledButton>
+          <div className="flex relative">
+            <h1>{`${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}</h1>
+          </div>
           <StyledButton onClick={handleSubmit(onSubmit)}>Next</StyledButton>
         </div>
-        <div className="flex relative">
-          <h1>{`${formState.data.classData.classElement} – ${formState.data.classData.subClass}`}</h1>
-        </div>
-        <div className="custom-border custom-border-thin bg-secondary-light dark:bg-tertiary-dark my-2">
-          <form
-            name="race-details"
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col dnd-body"
-          >
-            <h3>Skill Proficiencies</h3>
-            {classProficiencies.map(prof => {
-              const count = prof.choose.count || 1;
-              return (
-                <label className="block">
-                  {`Choose skill proficiency (${count}):`}
-                  <select
-                    className={`${
-                      count > 1 ? 'form-multiselect' : 'form-select'
-                    } block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
-                    multiple={count > 1}
-                    name="chosenClassSkillProficiencies"
-                    ref={register({
-                      required: true,
-                      validate: data =>
-                        Array.isArray(data) ? data.length === count : true,
-                    })}
-                  >
-                    {prof.choose.from.map(pr => {
-                      if (typeof pr === 'string') {
-                        return (
-                          <option key={pr} className="capitalize" value={pr}>
-                            {_.capitalize(pr)}
-                          </option>
-                        );
-                      } else {
-                        return <></>;
-                      }
-                    })}
-                  </select>
-                  {errors.chosenClassSkillProficiencies && (
-                    <span>{`You must choose ${count} skills`}</span>
-                  )}
-                </label>
-              );
-            })}
-          </form>
-        </div>
-        <ClassTable cls={classElement!} subcls={subClass!} />
-        <ClassBase cls={classElement!} />
+        <TextBox>
+          <div className="my-2">
+            <form
+              name="race-details"
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col dnd-body"
+            >
+              <h3>Skill Proficiencies</h3>
+              {classProficiencies.map(prof => {
+                const count = prof.choose.count || 1;
+                return (
+                  <label className="block">
+                    {`Choose skill proficiency (${count}):`}
+                    <select
+                      className={`form-input`}
+                      multiple={count > 1}
+                      name="chosenClassSkillProficiencies"
+                      ref={register({
+                        required: true,
+                        validate: data =>
+                          Array.isArray(data) ? data.length === count : true,
+                      })}
+                    >
+                      {prof.choose.from.map(pr => {
+                        if (typeof pr === 'string') {
+                          return (
+                            <option key={pr} className="capitalize" value={pr}>
+                              {_.capitalize(pr)}
+                            </option>
+                          );
+                        } else {
+                          return <></>;
+                        }
+                      })}
+                    </select>
+                    {errors.chosenClassSkillProficiencies && (
+                      <span>{`You must choose ${count} skills`}</span>
+                    )}
+                  </label>
+                );
+              })}
+            </form>
+          </div>
+          <ClassTable cls={classElement!} subcls={subClass!} />
+          <ClassBase cls={classElement!} />
+        </TextBox>
       </div>
     );
   };
@@ -143,23 +144,26 @@ const ClassBuilder = () => {
               .filter(subclass => filterSources(subclass))
               .map(subclass => (
                 <details key={subclass.name}>
-                  <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin p-2 my-2">
-                    <span className="text-xl">{`${subclass.name} (${subclass.source})`}</span>
+                  <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2">
+                    <span className="text-xl flex-grow">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
+                      extraClassName="absolute right-0 mr-2"
                       onClick={() =>
                         onSelect({
                           classElement: selectedClass.name,
                           subClass: subclass.name,
                         })
                       }
-                      extraClassName="absolute right-0 mr-2"
                     >
                       Select
                     </StyledButton>
                   </summary>
                   {getSubClassFeatures(selectedClass.name, subclass.name).map(
                     (entry, index) => (
-                      <div key={index}>
+                      <div
+                        className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100"
+                        key={index}
+                      >
                         {entry.entries.map((innerEntry, i) => (
                           <div key={i} className="dnd-body">
                             <Entry entry={innerEntry} />
@@ -175,8 +179,8 @@ const ClassBuilder = () => {
           <div>
             {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="bg-yellow-100 dark:bg-primary-dark relative custom-border custom-border-thin px-2 my-2 cursor-pointer">
-                  <span className="text-xl">
+                <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+                  <span className="text-xl flex-grow">
                     <img
                       className="inline w-8 mr-2 rounded bg-contain"
                       src={`${
@@ -196,7 +200,7 @@ const ClassBuilder = () => {
                     Select
                   </StyledButton>
                 </summary>
-                <div className="dnd-body p-2">
+                <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
                   <Tabs>
                     <TabList className="flex text-center">
                       <Tab className="mr-2">Features</Tab>
@@ -207,10 +211,7 @@ const ClassBuilder = () => {
                       <ClassBase cls={classElement} />
                       {getClassFeatures(classElement.name).map(
                         (feature, level) => (
-                          <div
-                            key={feature.name}
-                            className="custom-border custom-border-thin p-4 my-2"
-                          >
+                          <div key={feature.name} className="p-1 my-1">
                             <div className="font-bold">{`Level ${level + 1} – ${
                               feature.name
                             }:`}</div>

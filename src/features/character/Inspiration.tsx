@@ -16,7 +16,7 @@ interface Props {
 const Inspiration = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
-    <div className="pb-2 sm:pb-0 flex justify-center flex-wrap">
+    <div className="pb-2 lg:pb-0 flex justify-center w-full md:w-auto flex-wrap">
       <div
         className="relative bg-contain bg-center bg-no-repeat mr-2"
         style={{
@@ -28,8 +28,8 @@ const Inspiration = ({ character }: Props) => {
         }}
       >
         <div
-          className="absolute rounded-full w-4 h-4 bg-primary-dark dark:bg-primary-light"
-          style={{ right: '1rem', top: '0.75rem' }}
+          className="absolute rounded-full w-3.5 h-3.5 bg-gray-900 dark:bg-yellow-300"
+          style={{ right: '1rem', top: '0.8rem' }}
         ></div>
       </div>
       <div

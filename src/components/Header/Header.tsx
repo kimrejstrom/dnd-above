@@ -98,7 +98,7 @@ export const Header: React.FC = () => {
           <div>
             <button
               type="button"
-              className="inline-flex justify-center w-full p-1 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500"
+              className="inline-flex justify-center w-full p-1 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-yellow-500"
               aria-haspopup="true"
               aria-expanded="true"
               onClick={() => setDropDownOpen(!dropDownOpen)}
@@ -165,12 +165,12 @@ export const Header: React.FC = () => {
   );
 
   return (
-    <header className="bg-yellow-100 dark:bg-primary-dark">
+    <header className="bg-light-100 dark:bg-dark-100">
       <>
-        <nav className="border-b-2 border-tertiary-dark dark:border-primary-light bg-yellow-100 dark:bg-secondary-dark relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg text-primary-dark dark:text-primary-light">
+        <nav className="border-b-2 border-dark-300 dark:border-light-100 bg-light-200 dark:bg-dark-200 relative flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg text-dark-100 dark:text-light-100">
           <div className="px-4 w-full mx-auto flex flex-wrap items-center justify-between">
             <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-              <div className="flex items-center flex-shrink-0 text-primary-dark dark:text-primary-light mr-1 md:mr-6">
+              <div className="flex items-center flex-shrink-0 text-dark-100 dark:text-light-100 mr-1 md:mr-6">
                 <Link
                   to="/"
                   className="flex items-center text-2xl tracking-tighter leading-none"
@@ -197,15 +197,15 @@ export const Header: React.FC = () => {
             <div
               className={
                 'lg:flex lg:flex-grow items-center justify-center' +
-                (navbarOpen ? ' flex' : ' hidden')
+                (navbarOpen ? ' flex w-full' : ' hidden')
               }
             >
-              <ul className="flex flex-col lg:flex-row justify-center list-none mt-2 lg:mt-0 lg:ml-auto lg:items-center divide-y divide-gray-200 lg:divide-opacity-0">
+              <ul className="flex flex-col lg:flex-row w-full lg:w-auto justify-center list-none mt-2 lg:mt-0 lg:ml-auto lg:items-center divide-y divide-gray-200 lg:divide-opacity-0">
                 <li className="p-2 lg:p-0">
                   <NavLink
                     exact
                     to="/"
-                    className="inline-block mt-0 hover:text-secondaryfw-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-secondaryfw-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Home
                   </NavLink>
@@ -213,7 +213,7 @@ export const Header: React.FC = () => {
                 <li className="p-2 lg:p-0">
                   <NavLink
                     to="/create"
-                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-dark-200 dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Create
                   </NavLink>
@@ -221,7 +221,7 @@ export const Header: React.FC = () => {
                 <li className="p-2 lg:p-0">
                   <NavLink
                     to="/books"
-                    className="inline-block mt-0 hover:text-secondary-dark dark:text-yellow-100 dark-hover:text-yellow-400 lg:mr-4"
+                    className="inline-block mt-0 hover:text-dark-200 dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
                   >
                     Books
                   </NavLink>
@@ -265,7 +265,7 @@ export const Header: React.FC = () => {
                             className="fill-current text-yellow-200"
                           >
                             <path
-                              className="text-tertiary-dark fill-current"
+                              className="text-dark-300 fill-current"
                               d="M 8 0 A 8 8 0 0 0 8 16 A 8 8 0 0 0 8 0"
                             ></path>
                             <path d="M 8 2 A 6 6 0 0 0 8 14 A 8 14 0 0 0 13.196152422706632,11 A 6 6 0 0 1 8 2 z"></path>

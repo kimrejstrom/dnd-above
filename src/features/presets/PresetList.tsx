@@ -47,7 +47,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
     return (
       <div key={index} className="block text-yellow-100 w-40">
         <div
-          className="custom-bg border dark:border-primary-light overflow-hidden m-1 dark:bg-primary-dark relative rounded-lg shadow-lg"
+          className="custom-bg border dark:border-light-100 overflow-hidden m-1 dark:bg-dark-100 relative rounded-lg shadow-lg"
           style={{ height: '9rem' }}
         >
           <div className="flex justify-between h-10">
@@ -104,7 +104,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
               {preset.title}
             </div>
           </div>
-          <div className="w-full dark:bg-primary-dark absolute bottom-0 px-2 py-2 leading-none">
+          <div className="w-full dark:bg-dark-100 absolute bottom-0 px-2 py-2 leading-none">
             <div className="text-center opacity-75 capitalize text-md overflow-hidden">
               {preset.formula}
             </div>
@@ -119,7 +119,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
       <div className="w-full">
         <div className="flex justify-center mt-4">
           <Button
-            className="w-2/5 m-1 bg-yellow-100 dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark-hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
+            className="w-2/5 m-1 bg-light-100 dark:bg-transparent text-dark-100 dark:text-light-100 py-1 dark:hover:bg-dark-300 px-4 border dark:border-primary rounded"
             title="Add Preset"
             onClick={() =>
               dispatch(
@@ -132,7 +132,7 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
             }
           />
           <Button
-            className="w-2/5 m-1 bg-yellow-100 dark:bg-transparent text-primary-dark dark:text-primary-light py-1 dark-hover:bg-tertiary-dark px-4 border dark:border-primary rounded"
+            className="w-2/5 m-1 bg-light-100 dark:bg-transparent text-dark-100 dark:text-light-100 py-1 dark:hover:bg-dark-300 px-4 border dark:border-primary rounded"
             title="Reset defaults"
             onClick={() => dispatch(resetPresets())}
           />

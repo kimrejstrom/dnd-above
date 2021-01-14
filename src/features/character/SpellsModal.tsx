@@ -65,7 +65,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
   return (
     <div>
       <div style={{ height: '20rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll">
             <Spells
               spells={filteredSpells}
@@ -76,7 +76,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
         </div>
       </div>
       <div className="mt-2 h-full" style={{ height: '12rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>

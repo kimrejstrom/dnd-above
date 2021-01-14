@@ -10,9 +10,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   };
 
   const HitDice = () => (
-    <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-      <td>
-        <h3>Hit Points</h3>
+    <tr className="text-sm">
+      <td className="py-2">
+        <h2 className="text-lg">Hit Points</h2>
         <div>
           <strong>Hit Dice:</strong> {hdEntry.toRoll}
         </div>
@@ -54,9 +54,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   const StartingEquipment = () => {
     const equip = cls.startingEquipment;
     return (
-      <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-        <td>
-          <h3>Starting Equipment</h3>
+      <tr className="text-sm">
+        <td className="py-2">
+          <h2 className="text-lg">Starting Equipment</h2>
           <div>
             {equip.additionalFromBackground && (
               <p>
@@ -102,9 +102,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
     if (cls.multiclassing) {
       const mc = cls.multiclassing;
       return (
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-          <td colSpan={6}>
-            <h3>Multiclassing</h3>
+        <tr className="text-sm">
+          <td colSpan={6} className="py-2">
+            <h2 className="text-lg">Multiclassing</h2>
             {mc.requirements && (
               <div>
                 <div>
@@ -157,54 +157,58 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   };
 
   return (
-    <table className="w-full dnd-body">
-      <tbody>
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-          <th className="border"></th>
-        </tr>
-        <HitDice />
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-          <td>
-            <h3>Proficiencies</h3>
-            <div>
-              <b>Armor: </b>
-              <span>
-                {profs.armor ? renderArmorProfs(profs.armor) : 'none'}
-              </span>
-            </div>
-            <div>
-              <b>Weapons: </b>
-              <span>
-                {profs.weapons ? renderWeaponsProfs(profs.weapons) : 'none'}
-              </span>
-            </div>
-            <div>
-              <b>Tools: </b>
-              <span>{profs.tools ? profs.tools.join(', ') : 'none'}</span>
-            </div>
-            <div>
-              <b>Saving Throws: </b>
-              <span>
-                {cls.proficiency
-                  ? cls.proficiency.map(p => Parser.attAbvToFull(p)).join(', ')
-                  : 'none'}
-              </span>
-            </div>
-            <div>
-              <b>Skills: </b>
-              <span>
-                {profs.skills ? renderSkillsProfs(profs.skills) : 'none'}
-              </span>
-            </div>
-          </td>
-        </tr>
-        <StartingEquipment />
-        <MultiClassing />
-        <tr className="odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm">
-          <th className="border"></th>
-        </tr>
-      </tbody>
-    </table>
+    <div className="rd__b-inset">
+      <table className="w-full dnd-body">
+        <tbody>
+          <tr className="text-sm">
+            <th></th>
+          </tr>
+          <HitDice />
+          <tr className="text-sm">
+            <td className="py-2">
+              <h2 className="text-lg">Proficiencies</h2>
+              <div>
+                <b>Armor: </b>
+                <span>
+                  {profs.armor ? renderArmorProfs(profs.armor) : 'none'}
+                </span>
+              </div>
+              <div>
+                <b>Weapons: </b>
+                <span>
+                  {profs.weapons ? renderWeaponsProfs(profs.weapons) : 'none'}
+                </span>
+              </div>
+              <div>
+                <b>Tools: </b>
+                <span>{profs.tools ? profs.tools.join(', ') : 'none'}</span>
+              </div>
+              <div>
+                <b>Saving Throws: </b>
+                <span>
+                  {cls.proficiency
+                    ? cls.proficiency
+                        .map(p => Parser.attAbvToFull(p))
+                        .join(', ')
+                    : 'none'}
+                </span>
+              </div>
+              <div>
+                <b>Skills: </b>
+                <span>
+                  {profs.skills ? renderSkillsProfs(profs.skills) : 'none'}
+                </span>
+              </div>
+            </td>
+          </tr>
+          <StartingEquipment />
+          <MultiClassing />
+          <tr className="text-sm">
+            <th></th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 };
 

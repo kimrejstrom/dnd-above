@@ -1,82 +1,82 @@
+const colors = require('tailwindcss/colors');
+
 module.exports = {
+  darkMode: 'class',
+  purge: {
+    content: [
+      './src/**/*.html',
+      './src/**/*.tsx',
+      // etc.
+    ],
+    options: {
+      safelist: ['dark'],
+    },
+  },
   theme: {
     extend: {
-      colors: {
-        gray: {
-          '100': '#f5f5f5',
-          '200': '#eeeeee',
-          '300': '#e0e0e0',
-          '400': '#bdbdbd',
-          '500': '#9e9e9e',
-          '600': '#757575',
-          '700': '#616161',
-          '800': '#424242',
-          '900': '#212121',
+      typography: {
+        DEFAULT: {
+          css: {
+            'table table': {
+              margin: 0,
+            },
+          },
+        },
+        dark: {
+          css: {
+            color: '#f9f3eb',
+          },
         },
       },
     },
+
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      black: colors.black,
+      white: colors.white,
+      gray: colors.warmGray,
+      red: colors.rose,
+      yellow: colors.amber,
+      green: colors.lime,
+      blue: colors.blue,
+    },
     backgroundColor: theme => ({
       ...theme('colors'),
-      'primary-dark': '#252020',
-      'secondary-dark': '#393232',
-      'tertiary-dark': '#1b1616',
-      'primary-light': '#f8f8ba',
-      'secondary-light': '#efefe6',
-      'tertiary-light': '#efeee9',
+      'dark-100': '#252020',
+      'dark-200': '#393232',
+      'dark-300': '#1b1616',
+      'light-100': '#f9f3eb',
+      'light-200': '#f3e7dc',
+      'light-300': '#efeee9',
+      'light-400': '#d4ccc4',
     }),
     textColor: theme => ({
       ...theme('colors'),
-      'primary-dark': '#252020',
-      'secondary-dark': '#393232',
-      'tertiary-dark': '#1b1616',
-      'primary-light': '#f8f8ba',
-      'secondary-light': '#efefe6',
-      'tertiary-light': '#efeee9',
+      'dark-100': '#252020',
+      'dark-200': '#393232',
+      'dark-300': '#1b1616',
+      'light-100': '#f9f3eb',
+      'light-200': '#f3e7dc',
+      'light-300': '#efeee9',
     }),
     borderColor: theme => ({
       ...theme('colors'),
-      'primary-dark': '#252020',
-      'secondary-dark': '#393232',
-      'tertiary-dark': '#1b1616',
-      'primary-light': '#f8f8ba',
-      'secondary-light': '#efefe6',
-      'tertiary-light': '#efeee9',
+      'dark-100': '#252020',
+      'dark-200': '#393232',
+      'dark-300': '#1b1616',
+      'light-100': '#ebe2bc',
+      'light-200': '#f3e7dc',
+      'light-300': '#efeee9',
     }),
   },
   variants: {
-    backgroundColor: [
-      'odd',
-      'responsive',
-      'hover',
-      'focus',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-      'dark-odd',
-    ],
-    borderColor: [
-      'responsive',
-      'hover',
-      'focus',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-    ],
-    textColor: [
-      'responsive',
-      'hover',
-      'focus',
-      'group-hover',
-      'focus-within',
-      'dark',
-      'dark-hover',
-      'dark-focus',
-      'dark-group-hover',
-      'dark-focus-within',
-    ],
+    extend: {
+      typography: ['dark'],
+    },
+    backgroundColor: ['odd', 'responsive', 'hover', 'focus', 'dark'],
+    borderColor: ['responsive', 'hover', 'focus', 'dark'],
+    textColor: ['responsive', 'hover', 'focus', 'dark'],
   },
-  plugins: [
-    require('tailwindcss-dark-mode')(),
-    require('@tailwindcss/custom-forms'),
-  ],
+  plugins: [require('@tailwindcss/typography'), require('@tailwindcss/forms')],
 };

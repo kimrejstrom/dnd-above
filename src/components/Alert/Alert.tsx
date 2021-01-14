@@ -7,7 +7,7 @@ interface IAlert {
 
 export const Alert: React.FC<IAlert> = ({ title, body }) => (
   <div
-    className="bg-secondary-dark border-t-4 border-yellow-700 rounded-b text-yellow-200 px-4 py-3 shadow-md"
+    className="bg-dark-200 border-t-4 border-yellow-700 rounded-b text-yellow-200 px-4 py-3 shadow-md"
     role="alert"
   >
     <div className="flex">

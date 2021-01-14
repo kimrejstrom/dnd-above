@@ -7,7 +7,7 @@ import { Item } from 'models/item';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import { mainRenderer } from 'utils/mainRenderer';
+import { RenderItems } from 'utils/render';
 
 interface Props {
   items: (Item | BaseItem)[];
@@ -24,14 +24,6 @@ const handleSpecialCell = (cell: Cell<object>) => {
 
 const Items = ({ items, columns }: Props) => {
   const dispatch = useDispatch();
-  const itemColumns = columns || [
-    'name',
-    'type',
-    'weight',
-    'quantity',
-    'value',
-    'source',
-  ];
   const tableData = useMemo(
     () =>
       items.map(item => ({
@@ -40,29 +32,35 @@ const Items = ({ items, columns }: Props) => {
           dispatch(
             setDetailedEntry(
               <DangerousHtml
-                extraClassName="w-full"
-                data={mainRenderer.item.getCompactRenderedString(item)}
+                extraClassName="w-full tight"
+                data={RenderItems(item)}
               />,
             ),
           ),
       })),
     [items, dispatch],
   );
-  const tableColumns = useMemo(
-    () =>
-      tableData.length
-        ? Object.keys(tableData[0])
-            .map(key => ({
-              accessor: key,
-              Header: startCase(key),
-            }))
-            .filter(column => itemColumns.includes(column.accessor))
-        : [],
-    [itemColumns, tableData],
-  );
+  const tableColumns = useMemo(() => {
+    const itemColumns = columns || [
+      'name',
+      'type',
+      'weight',
+      'quantity',
+      'value',
+      'source',
+    ];
+    return tableData.length
+      ? Object.keys(tableData[0])
+          .map(key => ({
+            accessor: key,
+            Header: startCase(key),
+          }))
+          .filter(column => itemColumns.includes(column.accessor))
+      : [];
+  }, [columns, tableData]);
 
   return (
-    <div className="text-left mx-auto w-full">
+    <div className="text-left mx-auto w-full dnd-body text-sm">
       <Table
         cellRenderer={handleSpecialCell}
         tableData={{ columns: tableColumns, data: tableData }}

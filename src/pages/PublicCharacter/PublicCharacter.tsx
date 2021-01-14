@@ -42,11 +42,8 @@ const PublicCharacter = (props: Props) => {
   ) : character && character.id ? (
     <CharacterSheet character={character} readonly={true} />
   ) : (
-    <div
-      className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center"
-      style={{ maxWidth: '62rem' }}
-    >
-      <div className="p-20 custom-border bg-tertiary-light dark:bg-tertiary-dark flex flex-col items-center justify-center">
+    <div className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center">
+      <div className="p-20 custom-border bg-light-300 dark:bg-dark-300 flex flex-col items-center justify-center">
         <img
           src={theme === ThemeMode.DARK ? beholderLight : beholderDark}
           className="h-40 w-40 px-2 py-2 shape-shadow"
@@ -56,10 +53,10 @@ const PublicCharacter = (props: Props) => {
           <h1 className="leading-tight">D&amp;D Above</h1>
           <h3>Whoops! Something went wrong.</h3>
           <div
-            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-yellow-100 leading-none flex justify-center items-center"
+            className="my-3 p-2 border border-gray-300 dark:border-yellow-900 rounded-md w-full dark:text-yellow-100 dark:bg-yellow-800 bg-light-100 leading-none flex justify-center items-center"
             role="alert"
           >
-            <span className="flex rounded-full text-yellow-100 bg-primary-dark px-2 py-1 text-xs font-bold mr-3">
+            <span className="flex rounded-full text-yellow-100 bg-dark-100 px-2 py-1 text-xs font-bold mr-3">
               !
             </span>
             <div>Looks like the thing you were looking for doesn't exist.</div>

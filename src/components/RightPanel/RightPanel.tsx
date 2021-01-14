@@ -34,9 +34,9 @@ const RightPanel = (props: Props) => {
       style={{ minHeight: 'calc(100% - 5rem)' }}
       className={`${
         panelOpen
-          ? 'right-panel-open bg-secondary-light dark:bg-secondary-dark custom-border custom-border-l dark:border-primary-light'
+          ? 'right-panel-open bg-light-400 dark:bg-dark-200 custom-border-lg custom-border-l dark:border-light-100'
           : 'right-panel-close w-0'
-      } hidden z-20 right-panel xl:relative absolute right-0 lg:flex flex-shrink-0 flex-col overflow-hidden`}
+      } hidden z-20 right-panel 2xl:relative absolute right-0 lg:flex flex-shrink-0 flex-col overflow-hidden`}
     >
       {/* Search bar */}
       <div className="flex pl-1 pr-3 py-4 items-center">
@@ -45,11 +45,11 @@ const RightPanel = (props: Props) => {
             <input
               type="search"
               placeholder="Search"
-              className="appearance-none bg-yellow-100 border border-gray-400 text-primary-dark rounded pl-8 pr-4 py-2 w-full"
+              className="appearance-none bg-light-100 border border-gray-400 text-dark-100 rounded pl-8 pr-4 py-2 w-full"
             />
             <div className="absolute top-0 left-0 p-3 flex items-center justify-center">
               <svg
-                className="fill-current text-primary-dark h-4 w-4"
+                className="fill-current text-dark-100 h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               >
@@ -71,7 +71,7 @@ const RightPanel = (props: Props) => {
             <Tab>Spells</Tab>
             <Tab>Items</Tab>
           </TabList>
-          <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+          <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
             <TabPanel className="overflow-y-scroll px-2">
               <Roller />
             </TabPanel>
@@ -95,7 +95,7 @@ const RightPanel = (props: Props) => {
         </Tabs>
       </div>
       <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '29rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-yellow-100 dark:bg-tertiary-dark rounded-lg">
+        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>

@@ -35,9 +35,12 @@ const IndeterminateCheckbox = React.forwardRef(
     }, [resolvedRef, indeterminate]);
 
     return (
-      <>
-        <input type="checkbox" ref={resolvedRef} {...rest} />
-      </>
+      <input
+        className="form-checkbox -mt-1"
+        type="checkbox"
+        ref={resolvedRef}
+        {...rest}
+      />
     );
   },
 );
@@ -123,7 +126,7 @@ const Table = ({
           prepareRow(row);
           return (
             <tr
-              className="cursor-pointer odd:bg-gray-100 dark-odd:bg-secondary-dark text-sm"
+              className="cursor-pointer odd:bg-gray-100 dark:odd:bg-dark-200 text-sm"
               {...row.getRowProps()}
               onClick={(row.original as any).detailedEntryTrigger}
             >

@@ -37,13 +37,13 @@ const SavingThrows = ({ character }: Props) => {
               className="flex flex-wrap relative p-1"
               style={{ flex: '0 50%' }}
             >
-              <div className="custom-border custom-border-thin uppercase flex justify-between items-center w-full h-8">
+              <div className="custom-border-xs uppercase flex justify-between items-center w-full h-8">
                 <div
                   className={`${
                     proficient
-                      ? 'bg-primary-dark dark:bg-primary-light'
-                      : 'bg-yellow-100 dark:bg-primary-dark'
-                  } border-2 border-primary-dark dark:border-primary-light left-0 absolute rounded-full w-3 h-3`}
+                      ? 'bg-dark-100 dark:bg-yellow-100'
+                      : 'bg-light-100 dark:bg-dark-100'
+                  } border-2 border-dark-100 dark:border-light-100 left-0 absolute rounded-full w-3 h-3`}
                 ></div>
                 <div className="text-lg ml-2">{key}</div>
                 <div className="ml-2 mr-1 text-2xl text-center">

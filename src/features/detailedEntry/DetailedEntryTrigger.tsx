@@ -24,9 +24,9 @@ const DetailedEntryTrigger: React.FC<Props> = ({
         dispatch(
           setDetailedEntry(
             renderer ? (
-              <DangerousHtml data={renderer} />
+              <DangerousHtml extraClassName={extraClassName} data={renderer} />
             ) : (
-              <Entry entry={data} />
+              <Entry extraClassName={extraClassName} entry={data} />
             ),
           ),
         )

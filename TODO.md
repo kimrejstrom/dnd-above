@@ -3,25 +3,33 @@
 
 ### Notes / Ideas
 
-- Redo graphics and typography  
-- Update to Tailwind 2  
+- Initial loading screen (non render blocking)  
 
 ### Todo
 
-- [ ] Omni search (Fuse)  
+- [ ] Omni search (Fuse) create index when mapping json  
 - [ ] Clickable link thing on all detailed entries  
 - [ ] Spell Rating / Comments  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
-- [ ] XP  
 
 ### In Progress
 
+- Split data loading from main js (lazy/suspense) for json  
 
 ### Done ✓
 
+- Try 5e Tools CSS  
+- Character builder styling (prose etc)  
+- harmonize font usage  
+- Style Inputs  
+- Redo dark mode image colors  
+- Check gray color usage  
+- fix light-300  
+- Redo graphics and typography, new colors, custom border only on character sheet?  
+- Update to Tailwind 2  
 - ReadOnly Character Sheet  
 - Share link  
 - Admin edit + paste  

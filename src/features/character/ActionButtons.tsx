@@ -143,10 +143,10 @@ const ActionButtons = ({ character, readonly }: Props) => {
       }),
     );
 
-  const actionBtnCls = `sm:ml-2 ml-1 mb-1 h-10 custom-border-medium w-28 sm:w-auto`;
+  const actionBtnCls = `md:ml-2 ml-1 mb-1 h-10 custom-border-medium w-28 md:w-auto xl:px-3`;
 
   return (
-    <>
+    <div className="flex md:flex-grow flex-wrap justify-center md:justify-between">
       <StyledButton
         extraClassName={actionBtnCls}
         onClick={handleShortRest}
@@ -191,7 +191,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
       >
         Feats
       </StyledButton>
-    </>
+    </div>
   );
 };
 

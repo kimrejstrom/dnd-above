@@ -25,14 +25,14 @@ const LevelUp = ({ character, readonly }: Props) => {
     <button
       disabled={readonly}
       onClick={handleLevelUp}
-      className="bg-secondary-light hover:bg-primary-light dark:bg-tertiary-dark dark:text-primary-light dark-hover:bg-primary-dark cursor-pointer flex justify-center ml-1 custom-border custom-border-medium h-20 w-full md:w-20"
+      className="bg-light-200 hover:bg-yellow-100 dark:bg-dark-300 dark:text-light-100 dark:hover:bg-dark-100 cursor-pointer flex justify-center lg:ml-1 custom-border-sm h-20 w-full lg:w-20"
     >
       <div
         className="flex flex-col justify-center items-center rounded-lg"
         style={{
           height: '4.6rem',
           width: '4.6rem',
-          marginTop: '-0.55rem',
+          marginTop: '-0.75rem',
         }}
       >
         <img

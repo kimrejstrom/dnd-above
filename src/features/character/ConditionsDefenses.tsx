@@ -102,7 +102,7 @@ const DefensesModal: React.FC<ModalProps> = ({ character }) => {
               <select
                 name={selectData.formId}
                 ref={register}
-                className={`form-select block w-full mt-1 bg-yellow-100 border border-gray-400 text-primary-dark rounded`}
+                className={`form-input`}
                 onChange={e => addDefenseToList(e, selectData.type)}
               >
                 <option value="initial">-</option>
@@ -150,7 +150,7 @@ const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
           {_.sortBy(Parser.CONDITIONS).map((type: string) => (
             <label className="inline-flex items-center">
               <input
-                className="form-checkbox text-primary-dark"
+                className="form-checkbox"
                 type="checkbox"
                 defaultChecked={conditionsList.includes(type)}
                 name={type}
@@ -170,7 +170,7 @@ const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
 const ConditionsDefenses = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   return (
-    <div className="conditions-defenses-panel text-left text-sm custom-border h-20 flex">
+    <div className="flex-grow text-left text-sm custom-border-sm h-20 flex">
       <div className="w-1/2 relative">
         <div className="flex -mt-2">
           <div>Defenses</div>
@@ -188,7 +188,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
             />
           )}
         </div>
-        <div className="-mt-1 text-xs">
+        <div className="-mt-1 text-xs dnd-body">
           {character.gameData.defenses.length ? (
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.defenses.map(defense => (
@@ -203,7 +203,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
           )}
         </div>
       </div>
-      <div className="w-1/2 custom-border custom-border-medium custom-border-l relative">
+      <div className="w-1/2 custom-border-xs custom-border-medium custom-border-l relative">
         <div className="flex -mt-2">
           <div>Conditions</div>
           {!readonly && (
@@ -220,7 +220,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
             />
           )}
         </div>
-        <div className="-mt-1 text-xs">
+        <div className="-mt-1 text-xs dnd-body">
           {character.gameData.conditions.length ? (
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.conditions.map(condition => (
