@@ -2618,7 +2618,7 @@ Renderer._AbilityData = function(
 
 Renderer.prototype.utils = {
   getBorderTr: optText => {
-    return `<tr><th class="border" colspan="6">${optText || ''}</th></tr>`;
+    return `<tr><th colspan="6">${optText || ''}</th></tr>`;
   },
 
   getDividerTr: () => {
@@ -3858,7 +3858,7 @@ Renderer.deity = {
               </td>
               ${
                 deity.entries
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr><tr><td colspan="6">${renderer.render(
+                  ? `<tr><td colspan="6"><div></div></td></tr><tr><td colspan="6">${renderer.render(
                       { entries: deity.entries },
                       1,
                     )}</td></tr>`
@@ -4514,7 +4514,7 @@ Renderer.monster = {
               <tr><td colspan="6"><i>${Renderer.monster.getTypeAlignmentPart(
                 mon,
               )}</i></td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <table class="summary-noback" style="position: relative;">
                       <tr>
@@ -4560,7 +4560,7 @@ Renderer.monster = {
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <table class="summary striped-even">
                       <tr>
@@ -4599,7 +4599,7 @@ Renderer.monster = {
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div class="border"></div></td></tr>
+              <tr><td colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <div class="rd__compact-stat">
                       ${
@@ -4655,7 +4655,7 @@ Renderer.monster = {
               </td></tr>
               ${
                 mon.trait || mon.spellcasting
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+                  ? `<tr><td colspan="6"><div></div></td></tr>
               <tr class="text compact"><td colspan="6">
               ${Renderer.monster
                 .getOrderedTraits(mon, renderer)
@@ -5790,7 +5790,7 @@ Renderer.vehicle = {
               </td></tr>
               ${
                 veh.trait
-                  ? `<tr><td colspan="6"><div class="border"></div></td></tr>
+                  ? `<tr><td colspan="6"><div></div></td></tr>
               <tr class="text compact"><td colspan="6">
               ${Renderer.monster
                 .getOrderedTraits(veh, renderer)
@@ -14766,9 +14766,9 @@ ExcludeUtil = {
       (list.length > 0 && list.length === ExcludeUtil._excludeCount)
     ) {
       $pagecontent.html(`
-                  <tr><th class="border" colspan="6"></th></tr>
+                  <tr><th colspan="6"></th></tr>
                   <tr><td colspan="6" class="initial-message">(Content <a href="blacklist.html">blacklisted</a>)</td></tr>
-                  <tr><th class="border" colspan="6"></th></tr>
+                  <tr><th colspan="6"></th></tr>
               `);
     }
   },

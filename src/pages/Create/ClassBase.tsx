@@ -161,7 +161,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
       <table className="w-full dnd-body">
         <tbody>
           <tr className="text-sm">
-            <th className="border"></th>
+            <th></th>
           </tr>
           <HitDice />
           <tr className="text-sm">
@@ -204,7 +204,7 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
           <StartingEquipment />
           <MultiClassing />
           <tr className="text-sm">
-            <th className="border"></th>
+            <th></th>
           </tr>
         </tbody>
       </table>

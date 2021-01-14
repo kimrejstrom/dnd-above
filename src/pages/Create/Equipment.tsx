@@ -119,7 +119,7 @@ const Equipment = () => {
                 const item = getItem(itemName);
                 return (
                   <DetailedEntryTrigger
-                    extraClassName="tight"
+                    extraClassName="tight w-full md:w-40 mr-2 mt-2"
                     renderer={RenderItems(item)}
                     data={item}
                   >

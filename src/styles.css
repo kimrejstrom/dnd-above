@@ -478,9 +478,6 @@ i > i {
 .capitalise {
   text-transform: capitalize;
 }
-.border {
-  border: 0;
-}
 .rd__b p {
   margin-bottom: 5px;
 }
