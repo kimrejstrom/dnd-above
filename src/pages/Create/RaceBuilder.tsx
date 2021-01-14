@@ -108,7 +108,7 @@ const RaceBuilder = () => {
                       name="chosenRaceAbilities"
                       ref={register({
                         required: true,
-                        validate: data =>
+                        validate: (data: any) =>
                           Array.isArray(data) ? data.length === count : true,
                       })}
                       className={`form-input`}
@@ -148,7 +148,7 @@ const RaceBuilder = () => {
                               name="chosenRaceSkillProficiencies"
                               ref={register({
                                 required: true,
-                                validate: data =>
+                                validate: (data: any) =>
                                   Array.isArray(data)
                                     ? data.length === count
                                     : true,
@@ -180,7 +180,7 @@ const RaceBuilder = () => {
                               name="chosenRaceTools"
                               ref={register({
                                 required: true,
-                                validate: data =>
+                                validate: (data: any) =>
                                   Array.isArray(data)
                                     ? data.length === count
                                     : true,
@@ -228,7 +228,7 @@ const RaceBuilder = () => {
                             name={`chosenRaceLanguages`}
                             ref={register({
                               required: true,
-                              validate: data =>
+                              validate: (data: any) =>
                                 Array.isArray(data)
                                   ? data.length === lang.anyStandard
                                   : true,

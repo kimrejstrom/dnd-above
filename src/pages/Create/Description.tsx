@@ -124,7 +124,7 @@ const Description = () => {
                   onChange={handleBackgroundSelect}
                   ref={register({
                     required: true,
-                    validate: data => data !== 'initial',
+                    validate: (data: any) => data !== 'initial',
                   })}
                   defaultValue={formState.data.descriptionData.background}
                   className={`form-input`}
@@ -159,7 +159,7 @@ const Description = () => {
                                 name="chosenBackgroundSkillProficiencies"
                                 ref={register({
                                   required: true,
-                                  validate: data =>
+                                  validate: (data: any) =>
                                     Array.isArray(data)
                                       ? data.length === count
                                       : true,
@@ -210,7 +210,7 @@ const Description = () => {
                                 name="chosenBackgroundToolProficiencies"
                                 ref={register({
                                   required: true,
-                                  validate: data =>
+                                  validate: (data: any) =>
                                     Array.isArray(data)
                                       ? data.length === count
                                       : true,
@@ -267,7 +267,7 @@ const Description = () => {
                               name="chosenBackgroundLanguages"
                               ref={register({
                                 required: true,
-                                validate: data =>
+                                validate: (data: any) =>
                                   Array.isArray(data)
                                     ? data.length === lang.anyStandard
                                     : true,
@@ -347,7 +347,7 @@ const Description = () => {
                   }}
                   ref={register({
                     required: true,
-                    validate: data => data !== 'initial',
+                    validate: (data: any) => data !== 'initial',
                   })}
                   defaultValue={formState.data.descriptionData.alignment}
                 >
@@ -431,7 +431,7 @@ const Description = () => {
                                 className="form-input"
                                 name={elementName}
                                 ref={register({
-                                  validate: data => data !== 'initial',
+                                  validate: (data: any) => data !== 'initial',
                                 })}
                                 defaultValue={
                                   (formState.data.descriptionData as any)[

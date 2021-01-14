@@ -174,7 +174,7 @@ const Abilities = () => {
                 defaultValue={formState.data.classData.abilityScores.rollMethod}
                 ref={register({
                   required: true,
-                  validate: data => data !== 'initial',
+                  validate: (data: any) => data !== 'initial',
                 })}
                 className="form-input"
               >
@@ -215,7 +215,7 @@ const Abilities = () => {
                     onChange={handleScoreSelect}
                     ref={register({
                       required: true,
-                      validate: data => data !== '0',
+                      validate: (data: any) => data !== '0',
                     })}
                     className={`form-input`}
                   >
