@@ -4,8 +4,6 @@
 ### Notes / Ideas
 
 - Initial loading screen (non render blocking)  
-- Split data loading from main js (lazy/suspense) for json  
-- Try 5e Tools CSS  
 
 ### Todo
 
@@ -19,12 +17,14 @@
 
 ### In Progress
 
-- Style Inputs  
-- harmonize font usage  
-- Character builder styling (prose etc)  
+- Split data loading from main js (lazy/suspense) for json  
 
 ### Done ✓
 
+- Try 5e Tools CSS  
+- Character builder styling (prose etc)  
+- harmonize font usage  
+- Style Inputs  
 - Redo dark mode image colors  
 - Check gray color usage  
 - fix light-300  
