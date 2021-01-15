@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import {
   CharacterListItem,
   CHARACTER_STATS,
@@ -23,6 +23,7 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
+import { loadSpells } from 'utils/data';
 
 interface Props {
   character: CharacterListItem;
@@ -118,8 +119,18 @@ const SpellLevel = ({
 
 const SpellCasting = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
+
+  const [allSpells, setAllSpells] = useState<SpellElement[]>([]);
+  useEffect(() => {
+    const getSpells = async () => {
+      const spells = await loadSpells();
+      setAllSpells(spells);
+    };
+    getSpells();
+  }, []);
+
   const spells = character.gameData.spells
-    .map(spell => getSpell(spell.name))
+    .map(spell => getSpell(allSpells, spell.name))
     .filter(isDefined);
   const spellLevels = _.groupBy(spells, 'level');
 

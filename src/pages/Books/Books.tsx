@@ -1,13 +1,4 @@
-import React, { useState } from 'react';
-import TCE from 'data/book/book-tce.json';
-import PHB from 'data/book/book-phb.json';
-import XGE from 'data/book/book-xge.json';
-import DMG from 'data/book/book-dmg.json';
-import MM from 'data/book/book-mm.json';
-import VGM from 'data/book/book-vgm.json';
-import SCAG from 'data/book/book-scag.json';
-import MTF from 'data/book/book-mtf.json';
-
+import React, { useEffect, useState } from 'react';
 import Entry from 'components/Entry/Entry';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { Parser } from 'utils/mainRenderer';
@@ -15,19 +6,26 @@ import StyledButton from 'components/StyledButton/StyledButton';
 
 interface Props {}
 
-const books = {
-  PHB: PHB,
-  DMG: DMG,
-  MM: MM,
-  XGE: XGE,
-  TCE: TCE,
-  VGM: VGM,
-  SCAG: SCAG,
-  MTF: MTF,
-};
-
 const Books = (props: Props) => {
+  const [books, setBooks] = useState({});
   const [chosenBook, setChosenBook] = useState<any>();
+
+  useEffect(() => {
+    const loadBooks = async () => {
+      const books = {
+        PHB: (await import('data/book/book-phb.json')).default,
+        TCE: (await import('data/book/book-tce.json')).default,
+        DMG: (await import('data/book/book-dmg.json')).default,
+        MM: (await import('data/book/book-mm.json')).default,
+        XGE: (await import('data/book/book-xge.json')).default,
+        VGM: (await import('data/book/book-vgm.json')).default,
+        SCAG: (await import('data/book/book-scag.json')).default,
+        MTF: (await import('data/book/book-mtf.json')).default,
+      };
+      setBooks(books);
+    };
+    loadBooks();
+  }, []);
   return (
     <div className="w-full flex flex-col">
       <h1 className="text-center">Source Books</h1>
@@ -39,7 +37,7 @@ const Books = (props: Props) => {
               <div className="w-56 mb-3">
                 <StyledButton
                   extraClassName="h-full"
-                  onClick={() => setChosenBook(data.data)}
+                  onClick={() => setChosenBook((data as any).data)}
                 >
                   <img
                     className="rounded w-full object-cover object-top"

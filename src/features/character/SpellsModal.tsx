@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spells } from 'components/Spells/Spells';
-import { ALL_SPELLS } from 'utils/data';
+import { loadSpells } from 'utils/data';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -9,6 +9,7 @@ import {
   updateSpells,
 } from 'features/character/characterListSlice';
 import _ from 'lodash';
+import { SpellElement } from 'models/spells';
 
 interface Props {
   character: CharacterListItem;
@@ -19,6 +20,16 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );
+
+  const [allSpells, setAllSpells] = useState<SpellElement[]>([]);
+  useEffect(() => {
+    const getSpells = async () => {
+      const spells = await loadSpells();
+      setAllSpells(spells);
+    };
+    getSpells();
+  }, []);
+
   const initialSpells = character.gameData.spells.reduce(
     (acc: Record<string, boolean>, curr: { row: number; name: string }) => ({
       ...acc,
@@ -44,7 +55,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
     }
   };
 
-  const filteredSpells = ALL_SPELLS.filter(spell => {
+  const filteredSpells = allSpells.filter(spell => {
     if (spell && spell.classes) {
       const mainClass =
         spell.classes.fromClassList &&

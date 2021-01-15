@@ -1,10 +1,3 @@
-// Spells
-import AI from 'data/spells/spells-ai.json';
-import GGR from 'data/spells/spells-ggr.json';
-import LLK from 'data/spells/spells-llk.json';
-import PHB from 'data/spells/spells-phb.json';
-import TCE from 'data/spells/spells-tce.json';
-import XGE from 'data/spells/spells-xge.json';
 // Classes
 import artificer from 'data/class/class-artificer.json';
 import barbarian from 'data/class/class-barbarian.json';
@@ -69,11 +62,20 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     : 0;
 };
 
-const SPELLS = { AI, GGR, LLK, PHB, TCE, XGE };
-export const ALL_SPELLS = Object.values(SPELLS)
-  .map(spell => spell.spell)
-  .flat()
-  .filter(entry => filterSources(entry)) as SpellElement[];
+export const loadSpells = async () => {
+  const spells = {
+    AI: (await import('data/spells/spells-ai.json')).default,
+    GGR: (await import('data/spells/spells-ggr.json')).default,
+    LLK: (await import('data/spells/spells-llk.json')).default,
+    PHB: (await import('data/spells/spells-phb.json')).default,
+    TCE: (await import('data/spells/spells-tce.json')).default,
+    XGE: (await import('data/spells/spells-xge.json')).default,
+  };
+  return Object.values(spells)
+    .map(spell => spell.spell)
+    .flat()
+    .filter(entry => filterSources(entry)) as SpellElement[];
+};
 
 export const CLASSES = {
   artificer,

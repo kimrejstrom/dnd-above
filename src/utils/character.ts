@@ -17,7 +17,6 @@ import {
   PLAYABLE_RACES,
   BACKGROUNDS,
   ALL_ITEMS,
-  ALL_SPELLS,
   FEATS,
   LANGUAGES,
   CLASSES,
@@ -27,6 +26,7 @@ import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
 import { AbilityBase, Race } from 'models/race';
+import { SpellElement } from 'models/spells';
 
 export const getAbilityScoreByType = (
   ability: StatsTypes,
@@ -180,8 +180,8 @@ export const getFeat = (featName: string) =>
 export const getItem = (itemName: string): Item | BaseItem | undefined =>
   ALL_ITEMS.find(entry => entry.name === itemName);
 
-export const getSpell = (spellName: string) =>
-  ALL_SPELLS.find(sp => sp.name === spellName);
+export const getSpell = (allSpells: SpellElement[], spellName: string) =>
+  allSpells.find(sp => sp.name === spellName);
 
 export const isSpellCaster = (character: CharacterListItem) => {
   const classElement = getClass(character.classData.classElement);
