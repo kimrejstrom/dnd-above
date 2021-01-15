@@ -100,11 +100,6 @@ export const PLAYABLE_CLASSES = flatten(
   ),
 ) as ClassElement[];
 
-export const RACES = sortBy(
-  races.race.filter(race => filterSources(race)),
-  ['name'],
-) as Race[];
-
 export const PLAYABLE_RACES = uniqBy(
   sortBy(
     mainRenderer.race
@@ -181,3 +176,14 @@ const createPropertyMaps = (data: any) => {
 };
 
 createPropertyMaps(baseItems);
+
+// Dynamic import of larger JSON files
+// const loadAsyncData = async () => {
+//   const psionics = (await import('data/psionics.json')).default;
+//   return psionics;
+// };
+
+// export let testData1: any;
+// loadAsyncData().then(data => {
+//   testData1 = data;
+// });

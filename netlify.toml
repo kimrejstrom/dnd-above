@@ -1,13 +1,13 @@
 [build]
-  functions = "build/functions"
+  functions = "/build/functions"
 
 [[headers]]
-  for = "build/service-worker.js"
+  for = "/build/service-worker.js"
   [headers.values]
     cache-control = "max-age=0,no-cache,no-store,must-revalidate"
 
 [[headers]]
-  for = "/static/css/*"
+  for = "/build/static/css/*"
   [headers.values]
     Cache-Control = '''
     public,
@@ -15,7 +15,7 @@
     immutable'''
 
 [[headers]]
-  for = "/static/js/*"
+  for = "/build/static/js/*"
   [headers.values]
     Cache-Control = '''
     public,
@@ -23,7 +23,7 @@
     immutable'''
 
 [[headers]]
-  for = "/static/media/*"
+  for = "/build/static/media/*"
   [headers.values]
     Cache-Control = '''
     public,
