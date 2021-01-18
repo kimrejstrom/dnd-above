@@ -1,5 +1,5 @@
 [build]
-  functions = "build/functions"
+  functions = "build_functions"
 
 [[headers]]
   for = "build/service-worker.js"
