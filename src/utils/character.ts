@@ -2,7 +2,7 @@ import {
   CharacterListItem,
   StatsTypes,
 } from 'features/character/characterListSlice';
-import _, { mapValues } from 'lodash';
+import _, { flatten, mapValues } from 'lodash';
 import {
   ArmorClass,
   ArmorEnum,
@@ -12,13 +12,7 @@ import {
   SubclassFeature,
   Title,
 } from 'models/class';
-import {
-  PLAYABLE_RACES,
-  BACKGROUNDS,
-  ALL_ITEMS,
-  FEATS,
-  LANGUAGES,
-} from 'utils/data';
+import { ALL_ITEMS, FEATS, LANGUAGES } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
@@ -160,10 +154,35 @@ const parseSubClassFeatureString = (featureString: string) =>
   featureString.split('|')[3];
 
 export const getRace = (raceName: string) =>
-  PLAYABLE_RACES.find(race => race.name === raceName);
+  getSourceData(store.getState())?.races.find(race => race.name === raceName);
 
 export const getBackground = (backgroundName: string) =>
-  BACKGROUNDS.find(bg => bg.name === backgroundName);
+  getSourceData(store.getState())?.backgrounds.find(
+    bg => bg.name === backgroundName,
+  );
+
+export const getBackgroundCharacteristics = () =>
+  getSourceData(store.getState())
+    ?.backgrounds.map(bg => ({
+      name: bg.name,
+      tables: bg.entries
+        ? bg.entries
+            .map(entry => {
+              if (entry.name && entry.name === 'Suggested Characteristics') {
+                return entry.entries?.map(item => {
+                  return item;
+                });
+              } else {
+                return undefined;
+              }
+            })
+            .filter(isDefined)
+        : [],
+    }))
+    .map(characteristic => ({
+      ...characteristic,
+      tables: flatten(characteristic.tables),
+    }));
 
 export const getAbilityMod = (abilityScore: number) =>
   Math.floor((abilityScore - 10) / 2);

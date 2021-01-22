@@ -18,14 +18,7 @@ import _ from 'lodash';
 import { AbilityBase, Race } from 'models/race';
 import { getCookie } from 'utils/cookie';
 import { diceRoller } from 'utils/dice';
-import {
-  PLAYABLE_RACES,
-  BACKGROUNDS,
-  filterSources,
-  WEAPONS,
-  ALL_OTHER_ITEMS,
-  ARMOR,
-} from 'utils/data';
+import { filterSources, WEAPONS, ALL_OTHER_ITEMS, ARMOR } from 'utils/data';
 import { BackgroundElement } from 'models/background';
 import { Parser } from 'utils/mainRenderer';
 import { generate_name } from 'utils/name';
@@ -146,12 +139,11 @@ export type CharacterList = {
 };
 
 export const randomize = () => {
+  const sourceData = getSourceData(store.getState());
   const id = generateID();
-  const race = _.sample(PLAYABLE_RACES) as Race;
-  const classElement = _.sample(
-    getSourceData(store.getState())?.playableClasses,
-  ) as ClassElement;
-  const background = _.sample(BACKGROUNDS) as BackgroundElement;
+  const race = _.sample(sourceData?.races) as Race;
+  const classElement = _.sample(sourceData?.playableClasses) as ClassElement;
+  const background = _.sample(sourceData?.backgrounds) as BackgroundElement;
   const name = generate_name('base');
   const abilityScores = diceRoller
     .roll('{4d6kh3...6}')

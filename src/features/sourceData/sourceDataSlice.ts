@@ -1,14 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from 'app/rootReducer';
 import { AppDispatch } from 'app/store';
+import { BackgroundElement } from 'models/background';
+import { BackgroundFluffElement } from 'models/background-fluff';
 import { ClassElement, ClassTypes } from 'models/class';
+import { Race } from 'models/race';
+import { RaceFluffElement } from 'models/race-fluff';
 import { SpellElement } from 'models/spells';
-import { loadClasses, loadSpells } from 'utils/data';
+import {
+  loadBackgrounds,
+  loadClasses,
+  loadRaces,
+  loadSpells,
+} from 'utils/data';
 
 interface SourceData {
   spells: SpellElement[];
   playableClasses: ClassElement[];
   allClasses: ClassTypes;
+  races: Race[];
+  racesFluff: RaceFluffElement[];
+  backgrounds: BackgroundElement[];
+  backgroundsFluff: BackgroundFluffElement[];
 }
 
 interface SourceDataState {
@@ -23,6 +36,10 @@ const initialState: SourceDataState = {
     spells: [],
     playableClasses: [],
     allClasses: {} as ClassTypes,
+    races: [],
+    racesFluff: [],
+    backgrounds: [],
+    backgroundsFluff: [],
   },
 };
 
@@ -35,9 +52,20 @@ export const loadSourceData = createAsyncThunk<
   }
 >('sourceData/loadSourceData', async (_, thunkAPI) => {
   try {
+    // Load the sourceData
     const spells = await loadSpells();
     const { playableClasses, allClasses } = await loadClasses();
-    return { spells, playableClasses, allClasses } as SourceData;
+    const { races, racesFluff } = await loadRaces();
+    const { backgrounds, backgroundsFluff } = await loadBackgrounds();
+    return {
+      spells,
+      playableClasses,
+      allClasses,
+      races,
+      racesFluff,
+      backgrounds,
+      backgroundsFluff,
+    } as SourceData;
   } catch (error) {
     return thunkAPI.rejectWithValue('Error loading SourceData');
   }

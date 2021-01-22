@@ -1,9 +1,3 @@
-// Races
-import races from 'data/races.json';
-import raceFluff from 'data/fluff-races.json';
-// Backgrounds
-import backgrounds from 'data/backgrounds.json';
-import backgroundsFluff from 'data/fluff-backgrounds.json';
 // Items
 import baseItems from 'data/items-base.json';
 import items from 'data/items.json';
@@ -25,7 +19,6 @@ import { Action } from 'models/actions';
 import { LanguageElement } from 'models/language';
 // Utils
 import { sortBy, uniqBy, flatten } from 'lodash';
-import { isDefined } from 'ts-is-present';
 import { mainRenderer, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
@@ -89,48 +82,43 @@ export const loadSpells = async () => {
     .filter(entry => filterSources(entry)) as SpellElement[];
 };
 
-// export const loadRaces = as
+export const loadRaces = async () => {
+  const data = {
+    races: (await import('data/races.json')).default,
+    fluff: (await import('data/fluff-races.json')).default,
+  };
+  const races = uniqBy(
+    sortBy(
+      mainRenderer.race
+        .mergeSubraces(data.races.race)
+        .filter((race: any) => filterSources(race, false)),
+      ['name'],
+    ),
+    'name',
+  ) as Race[];
 
-export const PLAYABLE_RACES = uniqBy(
-  sortBy(
-    mainRenderer.race
-      .mergeSubraces(races.race)
-      .filter((race: any) => filterSources(race, false)),
-    ['name'],
-  ),
-  'name',
-) as Race[];
+  const racesFluff = data.fluff.raceFluff.filter(fluff =>
+    filterSources(fluff, false),
+  ) as RaceFluffElement[];
 
-export const PLAYABLE_RACES_FLUFF = raceFluff.raceFluff.filter(fluff =>
-  filterSources(fluff, false),
-) as RaceFluffElement[];
+  return { races, racesFluff };
+};
 
-export const BACKGROUNDS = backgrounds.background
-  .filter(bg => filterSources(bg))
-  .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
-export const BACKGROUNDS_FLUFF = backgroundsFluff.backgroundFluff.filter(bg =>
-  filterSources(bg),
-) as BackgroundFluffElement[];
+export const loadBackgrounds = async () => {
+  const data = {
+    backgrounds: (await import('data/backgrounds.json')).default,
+    fluff: (await import('data/fluff-backgrounds.json')).default,
+  };
+  const backgrounds = data.backgrounds.background
+    .filter(bg => filterSources(bg))
+    .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
 
-export const CHARACTERISTICS = BACKGROUNDS.map(bg => ({
-  name: bg.name,
-  tables: bg.entries
-    ? bg.entries
-        .map(entry => {
-          if (entry.name && entry.name === 'Suggested Characteristics') {
-            return entry.entries?.map(item => {
-              return item;
-            });
-          } else {
-            return undefined;
-          }
-        })
-        .filter(isDefined)
-    : [],
-})).map(characteristic => ({
-  ...characteristic,
-  tables: flatten(characteristic.tables),
-}));
+  const backgroundsFluff = data.fluff.backgroundFluff.filter(bg =>
+    filterSources(bg),
+  ) as BackgroundFluffElement[];
+
+  return { backgrounds, backgroundsFluff };
+};
 
 export const OTHER_ITEMS = items.item.filter(i => filterSources(i)) as Item[];
 export const BASE_ITEMS = baseItems.baseitem.filter(i =>
