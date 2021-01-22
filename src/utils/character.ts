@@ -13,13 +13,11 @@ import {
   Title,
 } from 'models/class';
 import {
-  PLAYABLE_CLASSES,
   PLAYABLE_RACES,
   BACKGROUNDS,
   ALL_ITEMS,
   FEATS,
   LANGUAGES,
-  CLASSES,
 } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
@@ -27,6 +25,8 @@ import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
 import { AbilityBase, Race } from 'models/race';
 import { SpellElement } from 'models/spells';
+import { getSourceData } from 'app/selectors';
+import { store } from 'app/store';
 
 export const getAbilityScoreByType = (
   ability: StatsTypes,
@@ -90,7 +90,9 @@ export const getMaxHP = (character: CharacterListItem) => {
 };
 
 export const getClass = (className: string) =>
-  PLAYABLE_CLASSES.find(mainClass => mainClass.name === className);
+  getSourceData(store.getState())?.playableClasses.find(
+    mainClass => mainClass.name === className,
+  );
 
 export const getSubClass = (className: string, subClassName: string) => {
   const baseClass = getClass(className);
@@ -113,8 +115,9 @@ export const getAllClassFeatures = (
 
 export const getClassFeatures = (className: string) => {
   const baseClass = getClass(className);
-  const classFeatures = (CLASSES as any)[className.toLowerCase()]
-    .classFeature as ClassClassFeature[];
+  const classFeatures = (getSourceData(store.getState())?.allClasses as any)[
+    className.toLowerCase()
+  ].classFeature as ClassClassFeature[];
   const relevantClassFeatures = classFeatures
     .filter(feature => !feature.source.includes('UA'))
     .filter(feature =>
@@ -135,8 +138,9 @@ export const getSubClassFeatures = (
   const subclass = baseClass?.subclasses.find(
     subclass => subclass.name === subClassName,
   );
-  const subclassFeatures = (CLASSES as any)[className.toLowerCase()]
-    .subclassFeature as SubclassFeature[];
+  const subclassFeatures = (getSourceData(store.getState())?.allClasses as any)[
+    className.toLowerCase()
+  ].subclassFeature as SubclassFeature[];
   const relevantSubClassFeatures = subclassFeatures
     .filter(feature => !feature.source.includes('UA'))
     .filter(feature =>

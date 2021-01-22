@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import {
   CharacterListItem,
   CHARACTER_STATS,
@@ -23,7 +23,6 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
-import { loadSpells } from 'utils/data';
 
 interface Props {
   character: CharacterListItem;
@@ -119,20 +118,14 @@ const SpellLevel = ({
 
 const SpellCasting = ({ character, readonly }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
+  const { spells } = useSelector(
+    (state: RootState) => state.sourceData,
+  ).sourceData;
 
-  const [allSpells, setAllSpells] = useState<SpellElement[]>([]);
-  useEffect(() => {
-    const getSpells = async () => {
-      const spells = await loadSpells();
-      setAllSpells(spells);
-    };
-    getSpells();
-  }, []);
-
-  const spells = character.gameData.spells
-    .map(spell => getSpell(allSpells, spell.name))
+  const activeSpells = character.gameData.spells
+    .map(spell => getSpell(spells, spell.name))
     .filter(isDefined);
-  const spellLevels = _.groupBy(spells, 'level');
+  const spellLevels = _.groupBy(activeSpells, 'level');
 
   return (
     <>
@@ -151,7 +144,7 @@ const SpellCasting = ({ character, readonly }: Props) => {
           <div>Spell Attack: +{getSpellAttack(character)}</div>
           <div>Spell Save DC: {getSpellSaveDC(character)}</div>
         </div>
-        {spells.length ? (
+        {activeSpells.length ? (
           <PillFilter
             pills={Object.keys(spellLevels).map(key => `level ${key}`)}
           >

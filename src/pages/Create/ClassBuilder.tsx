@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useState } from 'react';
 import { ClassElement, Skill } from 'models/class';
-import { filterSources, PLAYABLE_CLASSES } from 'utils/data';
+import { filterSources } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import ClassBase from 'pages/Create/ClassBase';
 import { useForm } from 'react-hook-form';
@@ -22,6 +22,7 @@ import {
 } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
+import { getSourceData } from 'app/selectors';
 
 const ClassBuilder = () => {
   const dispatch = useDispatch();
@@ -133,6 +134,7 @@ const ClassBuilder = () => {
     const onSelect = (data: { classElement: string; subClass: string }) => {
       dispatch(updateFormData({ classData: data }));
     };
+    const sourceData = useSelector(getSourceData);
     const [selectedClass, setselectedClass] = useState(classElement);
 
     return (
@@ -177,66 +179,67 @@ const ClassBuilder = () => {
           </div>
         ) : (
           <div>
-            {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
-              <details key={index}>
-                <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
-                  <span className="text-xl flex-grow">
-                    <img
-                      className="inline w-8 mr-2 rounded bg-contain"
-                      src={`${
-                        process.env.PUBLIC_URL
-                      }/img/${classElement.name.toLowerCase()}.jpeg`}
-                      alt={classElement.name}
-                      style={{
-                        filter: 'grayscale(80%)',
-                      }}
-                    />
-                    {`${classElement.name} (${classElement.source})`}
-                  </span>
-                  <StyledButton
-                    onClick={() => setselectedClass(classElement)}
-                    extraClassName="absolute right-0 mr-2"
-                  >
-                    Select
-                  </StyledButton>
-                </summary>
-                <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
-                  <Tabs>
-                    <TabList className="flex text-center">
-                      <Tab className="mr-2">Features</Tab>
-                      <Tab>Info</Tab>
-                    </TabList>
-                    <TabPanel className="overflow-y-scroll px-2">
-                      <Entry entry={classElement} />
-                      <ClassBase cls={classElement} />
-                      {getClassFeatures(classElement.name).map(
-                        (feature, level) => (
-                          <div key={feature.name} className="p-1 my-1">
-                            <div className="font-bold">{`Level ${level + 1} – ${
-                              feature.name
-                            }:`}</div>
-                            {feature.entries.map((entry, index) => {
-                              return <Entry key={index} entry={entry} />;
-                            })}
-                          </div>
-                        ),
-                      )}
-                    </TabPanel>
-                    <TabPanel className="overflow-y-scroll px-2">
-                      <DangerousHtml
-                        data={mainRenderer.render(
-                          {
-                            type: 'entries',
-                            entries: classElement.fluff,
-                          },
-                          1,
-                        )}
+            {sourceData?.playableClasses.map(
+              (classElement: ClassElement, index) => (
+                <details key={index}>
+                  <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+                    <span className="text-xl flex-grow">
+                      <img
+                        className="inline w-8 mr-2 rounded bg-contain"
+                        src={`${
+                          process.env.PUBLIC_URL
+                        }/img/${classElement.name.toLowerCase()}.jpeg`}
+                        alt={classElement.name}
+                        style={{
+                          filter: 'grayscale(80%)',
+                        }}
                       />
-                    </TabPanel>
-                  </Tabs>
-                </div>
-              </details>
-            ))}
+                      {`${classElement.name} (${classElement.source})`}
+                    </span>
+                    <StyledButton
+                      onClick={() => setselectedClass(classElement)}
+                      extraClassName="absolute right-0 mr-2"
+                    >
+                      Select
+                    </StyledButton>
+                  </summary>
+                  <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
+                    <Tabs>
+                      <TabList className="flex text-center">
+                        <Tab className="mr-2">Features</Tab>
+                        <Tab>Info</Tab>
+                      </TabList>
+                      <TabPanel className="overflow-y-scroll px-2">
+                        <Entry entry={classElement} />
+                        <ClassBase cls={classElement} />
+                        {getClassFeatures(classElement.name).map(
+                          (feature, level) => (
+                            <div key={feature.name} className="p-1 my-1">
+                              <div className="font-bold">{`Level ${level +
+                                1} – ${feature.name}:`}</div>
+                              {feature.entries.map((entry, index) => {
+                                return <Entry key={index} entry={entry} />;
+                              })}
+                            </div>
+                          ),
+                        )}
+                      </TabPanel>
+                      <TabPanel className="overflow-y-scroll px-2">
+                        <DangerousHtml
+                          data={mainRenderer.render(
+                            {
+                              type: 'entries',
+                              entries: classElement.fluff,
+                            },
+                            1,
+                          )}
+                        />
+                      </TabPanel>
+                    </Tabs>
+                  </div>
+                </details>
+              ),
+            )}
           </div>
         )}
       </div>

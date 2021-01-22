@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Roller } from 'pages/Roller/Roller';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,11 +6,10 @@ import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import Items from 'components/Items/Items';
-import { ALL_ITEMS, ACTIONS, loadSpells } from 'utils/data';
+import { ALL_ITEMS, ACTIONS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
-import { SpellElement } from 'models/spells';
 
 interface Props {}
 
@@ -21,15 +20,9 @@ const RightPanel = (props: Props) => {
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );
-  const [spells, setSpells] = useState<SpellElement[]>([]);
-
-  useEffect(() => {
-    const getSpells = async () => {
-      const spells = await loadSpells();
-      setSpells(spells);
-    };
-    getSpells();
-  }, []);
+  const { spells } = useSelector(
+    (state: RootState) => state.sourceData,
+  ).sourceData;
 
   const rightPanelTabPanel = tabPanels[TAB_PANELS.RIGHTPANEL];
   const handleTabChange = (tabIndex: number) => {

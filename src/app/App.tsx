@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { Header } from 'components/Header/Header';
 import { Modal } from 'components/Modal/Modal';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { withTracker, initializeGA } from 'utils/analyticsTracker';
 import Books from 'pages/Books/Books';
@@ -24,6 +24,8 @@ import { Login } from 'pages/Login/Login';
 import { useBeforeWindowUnload } from 'utils/customHooks';
 import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
 import Edit from 'pages/Edit/Edit';
+import { Loading } from 'components/Loading/Loading';
+import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 
 // Google Analytics
 initializeGA();
@@ -57,12 +59,18 @@ const App: React.FC = () => {
     (state: RootState) => state.modalVisibility,
   );
   const theme = useSelector((state: RootState) => state.theme);
+  const sourceData = useSelector((state: RootState) => state.sourceData);
+  const dispatch = useDispatch();
 
   const auth = useAuth();
   // Hook to cleanup on window unload
   useBeforeWindowUnload(auth?.user);
 
-  return (
+  useEffect(() => {
+    dispatch(loadSourceData());
+  }, [dispatch]);
+
+  return sourceData.hydrated ? (
     <div
       className={`flex flex-col min-h-screen theme ${
         theme === ThemeMode.LIGHT ? 'light' : 'dark'
@@ -114,6 +122,8 @@ const App: React.FC = () => {
         </AuthContextProvider>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

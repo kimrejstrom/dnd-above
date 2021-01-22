@@ -16,6 +16,7 @@ import {
   CHARACTER_STATS,
   CharacterListItem,
   StatsTypes,
+  randomize,
 } from 'features/character/characterListSlice';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
@@ -54,7 +55,7 @@ const Summary = () => {
         <StyledButton
           extraClassName="mr-2"
           onClick={() => {
-            dispatch(setGeneratedFormData());
+            dispatch(setGeneratedFormData(randomize()));
           }}
         >
           Randomize

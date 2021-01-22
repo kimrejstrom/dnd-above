@@ -1,18 +1,3 @@
-// Classes
-import artificer from 'data/class/class-artificer.json';
-import barbarian from 'data/class/class-barbarian.json';
-import bard from 'data/class/class-bard.json';
-import cleric from 'data/class/class-cleric.json';
-import druid from 'data/class/class-druid.json';
-import fighter from 'data/class/class-fighter.json';
-import monk from 'data/class/class-monk.json';
-import mystic from 'data/class/class-mystic.json';
-import paladin from 'data/class/class-paladin.json';
-import ranger from 'data/class/class-ranger.json';
-import rogue from 'data/class/class-rogue.json';
-import sorcerer from 'data/class/class-sorcerer.json';
-import warlock from 'data/class/class-warlock.json';
-import wizard from 'data/class/class-wizard.json';
 // Races
 import races from 'data/races.json';
 import raceFluff from 'data/fluff-races.json';
@@ -62,6 +47,33 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     : 0;
 };
 
+export const loadClasses = async () => {
+  const allClasses = {
+    artificer: (await import('data/class/class-artificer.json')).default,
+    barbarian: (await import('data/class/class-barbarian.json')).default,
+    bard: (await import('data/class/class-bard.json')).default,
+    cleric: (await import('data/class/class-cleric.json')).default,
+    druid: (await import('data/class/class-druid.json')).default,
+    fighter: (await import('data/class/class-fighter.json')).default,
+    monk: (await import('data/class/class-monk.json')).default,
+    mystic: (await import('data/class/class-mystic.json')).default,
+    paladin: (await import('data/class/class-paladin.json')).default,
+    ranger: (await import('data/class/class-ranger.json')).default,
+    rogue: (await import('data/class/class-rogue.json')).default,
+    sorcerer: (await import('data/class/class-sorcerer.json')).default,
+    warlock: (await import('data/class/class-warlock.json')).default,
+    wizard: (await import('data/class/class-wizard.json')).default,
+  } as ClassTypes;
+
+  const playableClasses = flatten(
+    Object.values(allClasses).map((classEntry: Class) =>
+      classEntry.class.filter(entry => filterSources(entry)),
+    ),
+  ) as ClassElement[];
+
+  return { allClasses, playableClasses };
+};
+
 export const loadSpells = async () => {
   const spells = {
     AI: (await import('data/spells/spells-ai.json')).default,
@@ -77,28 +89,7 @@ export const loadSpells = async () => {
     .filter(entry => filterSources(entry)) as SpellElement[];
 };
 
-export const CLASSES = {
-  artificer,
-  barbarian,
-  bard,
-  cleric,
-  druid,
-  fighter,
-  monk,
-  mystic,
-  paladin,
-  ranger,
-  rogue,
-  sorcerer,
-  warlock,
-  wizard,
-} as ClassTypes;
-
-export const PLAYABLE_CLASSES = flatten(
-  Object.values(CLASSES).map((classEntry: Class) =>
-    classEntry.class.filter(entry => filterSources(entry)),
-  ),
-) as ClassElement[];
+// export const loadRaces = as
 
 export const PLAYABLE_RACES = uniqBy(
   sortBy(
@@ -177,13 +168,15 @@ const createPropertyMaps = (data: any) => {
 
 createPropertyMaps(baseItems);
 
-// Dynamic import of larger JSON files
-// const loadAsyncData = async () => {
-//   const psionics = (await import('data/psionics.json')).default;
-//   return psionics;
-// };
+/*
+Async Data loading:
+- Create loadX() async functions to dynamically import the JSON files (data.ts)
 
-// export let testData1: any;
-// loadAsyncData().then(data => {
-//   testData1 = data;
-// });
+- Create sourceDataSlice of state
+  - Initialize with a `loading / rehydrate` flag
+  - Create createAsyncThunk action (Promise.all) to load the data
+    - Updates the store with the loaded data
+    - Updates the `loading` state to indicate it is ready
+- Dispatch the loadingData on App useEffect
+- Use the `loading` state to render a <Loading> component instead of the <App>
+*/

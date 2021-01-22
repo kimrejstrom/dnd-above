@@ -20,7 +20,6 @@ import { getCookie } from 'utils/cookie';
 import { diceRoller } from 'utils/dice';
 import {
   PLAYABLE_RACES,
-  PLAYABLE_CLASSES,
   BACKGROUNDS,
   filterSources,
   WEAPONS,
@@ -31,8 +30,9 @@ import { BackgroundElement } from 'models/background';
 import { Parser } from 'utils/mainRenderer';
 import { generate_name } from 'utils/name';
 import { RootState } from 'app/rootReducer';
-import { AppDispatch } from 'app/store';
+import { AppDispatch, store } from 'app/store';
 import DnDAboveAPI from 'utils/api';
+import { getSourceData } from 'app/selectors';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -148,7 +148,9 @@ export type CharacterList = {
 export const randomize = () => {
   const id = generateID();
   const race = _.sample(PLAYABLE_RACES) as Race;
-  const classElement = _.sample(PLAYABLE_CLASSES) as ClassElement;
+  const classElement = _.sample(
+    getSourceData(store.getState())?.playableClasses,
+  ) as ClassElement;
   const background = _.sample(BACKGROUNDS) as BackgroundElement;
   const name = generate_name('base');
   const abilityScores = diceRoller

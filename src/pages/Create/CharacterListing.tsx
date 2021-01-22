@@ -6,6 +6,7 @@ import {
   setGeneratedFormData,
 } from 'features/createCharacterForm/createCharacterFormSlice';
 import CharacterCards from 'components/CharacterCards/CharacterCards';
+import { randomize } from 'features/character/characterListSlice';
 
 const CharacterListing = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const CharacterListing = () => {
         </button>
         <button
           onClick={() => {
-            dispatch(setGeneratedFormData());
+            dispatch(setGeneratedFormData(randomize()));
             history.push(`/create/summary`);
           }}
           className="w-44 md:w-48 mt-1 mr-1 px-2 bg-light-300 dark:bg-dark-100 text-center h-72 flex justify-center items-center flex-col custom-border-lg custom-border-thin"

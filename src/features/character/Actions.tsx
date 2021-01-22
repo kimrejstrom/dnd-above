@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
@@ -11,7 +11,7 @@ import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 import { mainRenderer } from 'utils/mainRenderer';
 import { Property } from 'models/item';
-import { ACTIONS, loadSpells } from 'utils/data';
+import { ACTIONS } from 'utils/data';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 import { SpellElement } from 'models/spells';
@@ -109,18 +109,10 @@ const getAttackSpells = (
 
 const Actions = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
+  const { spells } = useSelector(
+    (state: RootState) => state.sourceData,
+  ).sourceData;
   const isSpellCasterClass = isSpellCaster(character);
-
-  const [allSpells, setAllSpells] = useState<SpellElement[]>([]);
-  useEffect(() => {
-    const getSpells = async () => {
-      const spells = await loadSpells();
-      setAllSpells(spells);
-    };
-    if (isSpellCasterClass) {
-      getSpells();
-    }
-  }, [isSpellCasterClass]);
 
   return (
     <>
@@ -142,16 +134,15 @@ const Actions = ({ character }: Props) => {
               columns={['name', 'range', 'damage', 'type', 'notes']}
             />
           )}
-          {isSpellCasterClass &&
-            getAttackSpells(character, allSpells).length > 0 && (
-              <>
-                <div>Spells</div>
-                <Spells
-                  spells={getAttackSpells(character, allSpells) as any}
-                  columns={['name', 'type', 'range', 'damage', 'notes']}
-                />
-              </>
-            )}
+          {isSpellCasterClass && getAttackSpells(character, spells).length > 0 && (
+            <>
+              <div>Spells</div>
+              <Spells
+                spells={getAttackSpells(character, spells) as any}
+                columns={['name', 'type', 'range', 'damage', 'notes']}
+              />
+            </>
+          )}
         </ContentBlock>
         <ContentBlock name="action">
           <div>Actions in Combat</div>
@@ -181,7 +172,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, allSpells, 'bonus')}
+                {getSpellsByCastingTime(character, spells, 'bonus')}
               </div>
             </>
           )}
@@ -193,7 +184,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, allSpells, 'reaction')}
+                {getSpellsByCastingTime(character, spells, 'reaction')}
               </div>
             </>
           )}

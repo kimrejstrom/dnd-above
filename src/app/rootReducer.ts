@@ -10,6 +10,7 @@ import tabsReducer from 'features/tabs/tabsSlice';
 import createCharacterFormReducer from 'features/createCharacterForm/createCharacterFormSlice';
 import detailedEntryReducer from 'features/detailedEntry/detailedEntrySlice';
 import publicCharacterReducer from 'features/publicCharacter/publicCharacterSlice';
+import sourceDataReducer from 'features/sourceData/sourceDataSlice';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   createCharacterForm: createCharacterFormReducer,
   detailedEntry: detailedEntryReducer,
   publicCharacter: publicCharacterReducer,
+  sourceData: sourceDataReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
