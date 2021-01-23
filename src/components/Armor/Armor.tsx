@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
-import { ARMOR } from 'utils/data';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
+import { getArmor } from 'utils/character';
 
 const handleSpecialCell = (cell: Cell<object>) => {
   if (cell.value instanceof Array) {
@@ -13,8 +13,8 @@ const handleSpecialCell = (cell: Cell<object>) => {
 };
 
 export const Armor: React.FC = () => {
-  const allArmor = ARMOR;
-  const tableData = useMemo(() => Object.values(allArmor), [allArmor]);
+  const allArmor = getArmor();
+  const tableData = useMemo(() => Object.values(allArmor!), [allArmor]);
   const tableColumns = useMemo(
     () =>
       tableData.length

@@ -6,9 +6,13 @@ import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { BackgroundElement } from 'models/background';
 import _, { isBoolean } from 'lodash';
-import { BACKGROUNDS, CHARACTERISTICS } from 'utils/data';
 import Background from 'pages/Create/Background';
-import { getRace, getBackground } from 'utils/character';
+import {
+  getRace,
+  getBackground,
+  getBackgroundCharacteristics,
+  getBackgrounds,
+} from 'utils/character';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
@@ -16,6 +20,7 @@ import { Parser } from 'utils/mainRenderer';
 
 const Description = () => {
   const dispatch = useDispatch();
+
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
@@ -81,7 +86,7 @@ const Description = () => {
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
   ) => {
     const background = _.find(
-      BACKGROUNDS,
+      getBackgrounds()!,
       bg => bg.name === e.currentTarget.value,
     );
     setSelectedBackground(background);
@@ -130,7 +135,7 @@ const Description = () => {
                   className={`form-input`}
                 >
                   <option value="initial">-</option>
-                  {BACKGROUNDS.map(background => (
+                  {getBackgrounds()!.map(background => (
                     <option
                       key={`${background.name}-${background.source}`}
                       value={background.name}
@@ -387,7 +392,7 @@ const Description = () => {
                   }
                 >
                   <option value="initial">-</option>
-                  {CHARACTERISTICS.map(entry => (
+                  {getBackgroundCharacteristics()?.map(entry => (
                     <option
                       key={entry.name}
                       className="capitalize"
@@ -404,7 +409,7 @@ const Description = () => {
               {characteristicsSource && (
                 <div>
                   {_.find(
-                    CHARACTERISTICS,
+                    getBackgroundCharacteristics(),
                     item => item.name === characteristicsSource,
                   )
                     ?.tables.map(x => x)

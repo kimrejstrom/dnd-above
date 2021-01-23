@@ -1,46 +1,15 @@
-// Classes
-import artificer from 'data/class/class-artificer.json';
-import barbarian from 'data/class/class-barbarian.json';
-import bard from 'data/class/class-bard.json';
-import cleric from 'data/class/class-cleric.json';
-import druid from 'data/class/class-druid.json';
-import fighter from 'data/class/class-fighter.json';
-import monk from 'data/class/class-monk.json';
-import mystic from 'data/class/class-mystic.json';
-import paladin from 'data/class/class-paladin.json';
-import ranger from 'data/class/class-ranger.json';
-import rogue from 'data/class/class-rogue.json';
-import sorcerer from 'data/class/class-sorcerer.json';
-import warlock from 'data/class/class-warlock.json';
-import wizard from 'data/class/class-wizard.json';
-// Races
-import races from 'data/races.json';
-import raceFluff from 'data/fluff-races.json';
-// Backgrounds
-import backgrounds from 'data/backgrounds.json';
-import backgroundsFluff from 'data/fluff-backgrounds.json';
-// Items
-import baseItems from 'data/items-base.json';
-import items from 'data/items.json';
-// Actions
-import actions from 'data/actions.json';
-// Feats
-import feats from 'data/feats.json';
-// Languages
-import languages from 'data/languages.json';
 // Models
-import { ClassTypes, Class, ClassElement } from 'models/class';
+import { ClassTypes } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/base-item';
 import { RaceFluffElement } from 'models/race-fluff';
 import { Item } from 'models/item';
 import { BackgroundFluffElement } from 'models/background-fluff';
-import { Action } from 'models/actions';
+import { ActionElement } from 'models/actions';
 import { LanguageElement } from 'models/language';
 // Utils
-import { sortBy, uniqBy, flatten } from 'lodash';
-import { isDefined } from 'ts-is-present';
+import { sortBy, uniqBy } from 'lodash';
 import { mainRenderer, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
@@ -62,6 +31,37 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     : 0;
 };
 
+const createPropertyMaps = (data: any) => {
+  data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
+  data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
+  data.itemTypeAdditionalEntries.forEach((e: any) =>
+    mainRenderer.item._addAdditionalEntries(e),
+  );
+};
+
+// CLASSES
+export const loadClasses = async () => {
+  const allClasses = {
+    artificer: (await import('data/class/class-artificer.json')).default,
+    barbarian: (await import('data/class/class-barbarian.json')).default,
+    bard: (await import('data/class/class-bard.json')).default,
+    cleric: (await import('data/class/class-cleric.json')).default,
+    druid: (await import('data/class/class-druid.json')).default,
+    fighter: (await import('data/class/class-fighter.json')).default,
+    monk: (await import('data/class/class-monk.json')).default,
+    mystic: (await import('data/class/class-mystic.json')).default,
+    paladin: (await import('data/class/class-paladin.json')).default,
+    ranger: (await import('data/class/class-ranger.json')).default,
+    rogue: (await import('data/class/class-rogue.json')).default,
+    sorcerer: (await import('data/class/class-sorcerer.json')).default,
+    warlock: (await import('data/class/class-warlock.json')).default,
+    wizard: (await import('data/class/class-wizard.json')).default,
+  } as ClassTypes;
+
+  return { allClasses };
+};
+
+// SPELLS
 export const loadSpells = async () => {
   const spells = {
     AI: (await import('data/spells/spells-ai.json')).default,
@@ -77,113 +77,77 @@ export const loadSpells = async () => {
     .filter(entry => filterSources(entry)) as SpellElement[];
 };
 
-export const CLASSES = {
-  artificer,
-  barbarian,
-  bard,
-  cleric,
-  druid,
-  fighter,
-  monk,
-  mystic,
-  paladin,
-  ranger,
-  rogue,
-  sorcerer,
-  warlock,
-  wizard,
-} as ClassTypes;
+// RACES
+export const loadRaces = async () => {
+  const data = {
+    races: (await import('data/races.json')).default,
+    fluff: (await import('data/fluff-races.json')).default,
+  };
+  const races = uniqBy(
+    sortBy(
+      mainRenderer.race
+        .mergeSubraces(data.races.race)
+        .filter((race: any) => filterSources(race, false)),
+      ['name'],
+    ),
+    'name',
+  ) as Race[];
 
-export const PLAYABLE_CLASSES = flatten(
-  Object.values(CLASSES).map((classEntry: Class) =>
-    classEntry.class.filter(entry => filterSources(entry)),
-  ),
-) as ClassElement[];
+  const racesFluff = data.fluff.raceFluff.filter(fluff =>
+    filterSources(fluff, false),
+  ) as RaceFluffElement[];
 
-export const PLAYABLE_RACES = uniqBy(
-  sortBy(
-    mainRenderer.race
-      .mergeSubraces(races.race)
-      .filter((race: any) => filterSources(race, false)),
-    ['name'],
-  ),
-  'name',
-) as Race[];
-
-export const PLAYABLE_RACES_FLUFF = raceFluff.raceFluff.filter(fluff =>
-  filterSources(fluff, false),
-) as RaceFluffElement[];
-
-export const BACKGROUNDS = backgrounds.background
-  .filter(bg => filterSources(bg))
-  .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
-export const BACKGROUNDS_FLUFF = backgroundsFluff.backgroundFluff.filter(bg =>
-  filterSources(bg),
-) as BackgroundFluffElement[];
-
-export const CHARACTERISTICS = BACKGROUNDS.map(bg => ({
-  name: bg.name,
-  tables: bg.entries
-    ? bg.entries
-        .map(entry => {
-          if (entry.name && entry.name === 'Suggested Characteristics') {
-            return entry.entries?.map(item => {
-              return item;
-            });
-          } else {
-            return undefined;
-          }
-        })
-        .filter(isDefined)
-    : [],
-})).map(characteristic => ({
-  ...characteristic,
-  tables: flatten(characteristic.tables),
-}));
-
-export const OTHER_ITEMS = items.item.filter(i => filterSources(i)) as Item[];
-export const BASE_ITEMS = baseItems.baseitem.filter(i =>
-  filterSources(i),
-) as BaseItem[];
-export const ARMOR = BASE_ITEMS.filter((item: BaseItem) => item.armor);
-export const WEAPONS = BASE_ITEMS.filter(
-  (item: BaseItem) => item.weaponCategory,
-);
-export const BASE_ITEMS_OTHER = BASE_ITEMS.filter(
-  item => !(item.armor || item.weaponCategory),
-);
-export const ALL_OTHER_ITEMS = sortBy(
-  (OTHER_ITEMS as any).concat(BASE_ITEMS_OTHER) as (Item | BaseItem)[],
-  'name',
-);
-export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
-  | Item
-  | BaseItem
-)[];
-
-export const ACTIONS = actions as Action;
-export const FEATS = feats.feat.filter(i => filterSources(i)) as FeatElement[];
-export const LANGUAGES = languages.language.filter(i =>
-  filterSources(i),
-) as LanguageElement[];
-
-const createPropertyMaps = (data: any) => {
-  data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
-  data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
-  data.itemTypeAdditionalEntries.forEach((e: any) =>
-    mainRenderer.item._addAdditionalEntries(e),
-  );
+  return { races, racesFluff };
 };
 
-createPropertyMaps(baseItems);
+// BACKGROUNDS
+export const loadBackgrounds = async () => {
+  const data = {
+    backgrounds: (await import('data/backgrounds.json')).default,
+    fluff: (await import('data/fluff-backgrounds.json')).default,
+  };
+  const backgrounds = data.backgrounds.background
+    .filter(bg => filterSources(bg))
+    .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
 
-// Dynamic import of larger JSON files
-// const loadAsyncData = async () => {
-//   const psionics = (await import('data/psionics.json')).default;
-//   return psionics;
-// };
+  const backgroundsFluff = data.fluff.backgroundFluff.filter(bg =>
+    filterSources(bg),
+  ) as BackgroundFluffElement[];
 
-// export let testData1: any;
-// loadAsyncData().then(data => {
-//   testData1 = data;
-// });
+  return { backgrounds, backgroundsFluff };
+};
+
+// ITEMS
+export type CommonItem = Item | BaseItem;
+export const loadItems = async () => {
+  const data = {
+    baseItems: (await import('data/items-base.json')).default,
+    items: (await import('data/items.json')).default,
+  };
+  createPropertyMaps(data.baseItems);
+  const items = data.items.item.filter(i => filterSources(i)) as Item[];
+  const baseItems = data.baseItems.baseitem.filter(i =>
+    filterSources(i),
+  ) as BaseItem[];
+
+  // Every item
+  const allItems: CommonItem[] = (items as any).concat(baseItems);
+
+  return { allItems };
+};
+
+// MISC
+export const loadMisc = async () => {
+  const data = {
+    actions: (await import('data/actions.json')).default,
+    feats: (await import('data/feats.json')).default,
+    languages: (await import('data/languages.json')).default,
+  };
+  const actions = data.actions.action as ActionElement[];
+  const feats = data.feats.feat.filter(i => filterSources(i)) as FeatElement[];
+  const languages = data.languages.language.filter(i =>
+    filterSources(i),
+  ) as LanguageElement[];
+
+  return { actions, feats, languages };
+};

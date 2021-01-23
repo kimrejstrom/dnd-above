@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { useState } from 'react';
 import { ClassElement, Skill } from 'models/class';
-import { filterSources, PLAYABLE_CLASSES } from 'utils/data';
+import { filterSources } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import ClassBase from 'pages/Create/ClassBase';
 import { useForm } from 'react-hook-form';
@@ -17,6 +17,7 @@ import _ from 'lodash';
 import {
   getClass,
   getClassFeatures,
+  getPlayableClasses,
   getSubClass,
   getSubClassFeatures,
 } from 'utils/character';
@@ -177,7 +178,7 @@ const ClassBuilder = () => {
           </div>
         ) : (
           <div>
-            {PLAYABLE_CLASSES.map((classElement: ClassElement, index) => (
+            {getPlayableClasses().map((classElement: ClassElement, index) => (
               <details key={index}>
                 <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
                   <span className="text-xl flex-grow">

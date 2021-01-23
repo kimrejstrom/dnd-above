@@ -4,9 +4,15 @@ import { RootState } from 'app/rootReducer';
 import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { updateFormData } from 'features/createCharacterForm/createCharacterFormSlice';
-import { WEAPONS, ARMOR, ALL_OTHER_ITEMS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
-import { getClass, getBackground, getItem } from 'utils/character';
+import {
+  getClass,
+  getBackground,
+  getItem,
+  getOtherItems,
+  getArmor,
+  getWeapons,
+} from 'utils/character';
 import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import StyledButton, {
@@ -169,13 +175,13 @@ const Equipment = () => {
             let itemType: any = [];
             switch (selectData.type) {
               case 'Item':
-                itemType = ALL_OTHER_ITEMS;
+                itemType = getOtherItems();
                 break;
               case 'Weapon':
-                itemType = WEAPONS;
+                itemType = getWeapons();
                 break;
               case 'Armor':
-                itemType = ARMOR;
+                itemType = getArmor();
                 break;
 
               default:

@@ -1,5 +1,4 @@
 import React, { ChangeEvent } from 'react';
-import { FEATS } from 'utils/data';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
@@ -11,6 +10,7 @@ import {
 } from 'features/character/characterListSlice';
 import { useForm } from 'react-hook-form';
 import { mainRenderer } from 'utils/mainRenderer';
+import { getFeats } from 'utils/character';
 
 interface Props {
   character: CharacterListItem;
@@ -43,7 +43,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
         <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll">
             <form className="ml-3 flex flex-col">
-              {FEATS.map(feat => (
+              {getFeats()!.map(feat => (
                 <DetailedEntryTrigger
                   data={feat}
                   renderer={mainRenderer.feat.getCompactRenderedString(feat)}

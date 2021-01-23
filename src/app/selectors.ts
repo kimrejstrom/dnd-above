@@ -4,6 +4,7 @@ import { getCookie } from 'utils/cookie';
 
 const getCharacterList = (state: RootState) => state.characterList;
 const getSelectedCharacterId = (state: RootState) => state.selectedCharacter;
+const getSourceDataSlice = (state: RootState) => state.sourceData;
 
 export const getSelectedCharacter = createSelector(
   [getCharacterList, getSelectedCharacterId],
@@ -23,5 +24,14 @@ export const getFilteredCharacterList = createSelector(
       return true;
     });
     return filteredCharacterList;
+  },
+);
+
+export const getSourceData = createSelector(
+  [getSourceDataSlice],
+  sourceData => {
+    if (sourceData.hydrated) {
+      return sourceData.sourceData;
+    }
   },
 );

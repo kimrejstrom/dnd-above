@@ -4,15 +4,24 @@ import {
   CharacterListItem,
   longRest,
   expendHitDie,
+  setHp,
 } from 'features/character/characterListSlice';
 import { useDispatch } from 'react-redux';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { search } from 'utils/mainRenderer';
-import { getAllClassFeatures, isSpellCaster } from 'utils/character';
+import {
+  calculateStats,
+  getAbilityMod,
+  getAllClassFeatures,
+  getHitDice,
+  getMaxHP,
+  isSpellCaster,
+} from 'utils/character';
 import Entry from 'components/Entry/Entry';
 import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 import SpellsModal from 'features/character/SpellsModal';
 import FeatsModal from 'features/character/FeatsModal';
+import { diceRoller } from 'utils/dice';
 
 interface Props {
   character: CharacterListItem;
@@ -31,6 +40,13 @@ const LongRestForm: React.FC<ModalProps> = ({ character }) => {
         <StyledButton
           onClick={() => {
             dispatch(longRest({ id: character.id! }));
+            dispatch(
+              setHp({
+                id: character.id!,
+                hp: getMaxHP(character),
+                type: 'set',
+              }),
+            );
             // Close modal
             setTimeout(() => {
               dispatch(toggleModal({ visible: false }));
@@ -61,16 +77,30 @@ const LongRestForm: React.FC<ModalProps> = ({ character }) => {
 const ShortRestForm: React.FC<ModalProps> = ({ character }) => {
   const dispatch = useDispatch();
   const isDisabled = character.gameData.currentHd <= 0;
+  const handleExpendHitDie = () => {
+    const mod = getAbilityMod(calculateStats(character)['con']);
+    const rolledHp = diceRoller.roll(`1${getHitDice(character)}`).total;
+    const fullHp = getMaxHP(character);
+    const newHp = character.gameData.currentHp + rolledHp + mod;
+
+    dispatch(
+      expendHitDie({
+        id: character.id!,
+        newHp: newHp < fullHp ? newHp : fullHp,
+      }),
+    );
+    // Close modal
+    setTimeout(() => {
+      dispatch(toggleModal({ visible: false }));
+    }, 1000);
+  };
 
   return (
     <div>
       <div className="text-xl">
         Expendable Hit Dice:{' '}
         <span className="text-2xl mr-4">{character.gameData.currentHd}</span>
-        <StyledButton
-          disabled={isDisabled}
-          onClick={() => dispatch(expendHitDie({ id: character.id! }))}
-        >
+        <StyledButton disabled={isDisabled} onClick={handleExpendHitDie}>
           Use
         </StyledButton>
       </div>

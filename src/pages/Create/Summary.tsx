@@ -9,6 +9,8 @@ import {
   getAbilityMod,
   getItem,
   getSubClass,
+  getBackground,
+  randomize,
 } from 'utils/character';
 import {
   updateCharacter,
@@ -47,6 +49,28 @@ const Summary = () => {
   );
   const characterSummaryAvailable = classElement !== undefined;
 
+  const handleAddCharacter = () => {
+    const raceElement = getRace(formState.data.raceData.race);
+    const classElement = getClass(formState.data.classData.classElement);
+    const backgroundElement = getBackground(
+      formState.data.descriptionData.background,
+    );
+    dispatch(
+      addCharacter({
+        formState,
+        sourceData: {
+          raceElement: raceElement!,
+          classElement: classElement!,
+          backgroundElement: backgroundElement!,
+        },
+      }),
+    );
+  };
+
+  const handleUpdateCharacter = () => {
+    dispatch(updateCharacter(formState));
+  };
+
   return (
     <>
       <h1>Summary</h1>
@@ -54,7 +78,7 @@ const Summary = () => {
         <StyledButton
           extraClassName="mr-2"
           onClick={() => {
-            dispatch(setGeneratedFormData());
+            dispatch(setGeneratedFormData(randomize()));
           }}
         >
           Randomize
@@ -70,9 +94,7 @@ const Summary = () => {
           extraClassName="mr-2"
           disabled={!characterSummaryAvailable}
           onClick={() => {
-            existingCharacter
-              ? dispatch(updateCharacter(formState))
-              : dispatch(addCharacter(formState));
+            existingCharacter ? handleUpdateCharacter() : handleAddCharacter();
             history.push(`/`);
           }}
         >

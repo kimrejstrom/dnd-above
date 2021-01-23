@@ -1,8 +1,7 @@
 import React from 'react';
 import Entry from 'components/Entry/Entry';
-import { BACKGROUNDS_FLUFF } from 'utils/data';
 import _ from 'lodash';
-import { getBackground } from 'utils/character';
+import { getBackground, getBackgroundsFluff } from 'utils/character';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {
@@ -11,7 +10,11 @@ interface Props {
 
 const Background = ({ background }: Props) => {
   const backgroundElement = getBackground(background);
-  const fluff = _.find(BACKGROUNDS_FLUFF, item => item.name === background);
+
+  const fluff = _.find(
+    getBackgroundsFluff()!,
+    item => item.name === background,
+  );
 
   return (
     <div>

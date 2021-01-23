@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
@@ -6,12 +6,17 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import actionsDark from 'images/actions-dark.png';
 import actionsLight from 'images/actions-light.png';
 import { CharacterListItem } from 'features/character/characterListSlice';
-import { getItem, isSpellCaster, getSpell } from 'utils/character';
+import {
+  getItem,
+  isSpellCaster,
+  getSpell,
+  getSpells,
+  getActions as getActionsData,
+} from 'utils/character';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 import { mainRenderer } from 'utils/mainRenderer';
 import { Property } from 'models/item';
-import { ACTIONS, loadSpells } from 'utils/data';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 import { SpellElement } from 'models/spells';
@@ -21,7 +26,7 @@ interface Props {
 }
 
 const getActions = (filterCondition: string) => {
-  return ACTIONS.action
+  return getActionsData()!
     .filter(
       actionElem =>
         actionElem.time?.filter(
@@ -111,17 +116,6 @@ const Actions = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   const isSpellCasterClass = isSpellCaster(character);
 
-  const [allSpells, setAllSpells] = useState<SpellElement[]>([]);
-  useEffect(() => {
-    const getSpells = async () => {
-      const spells = await loadSpells();
-      setAllSpells(spells);
-    };
-    if (isSpellCasterClass) {
-      getSpells();
-    }
-  }, [isSpellCasterClass]);
-
   return (
     <>
       <div
@@ -143,11 +137,11 @@ const Actions = ({ character }: Props) => {
             />
           )}
           {isSpellCasterClass &&
-            getAttackSpells(character, allSpells).length > 0 && (
+            getAttackSpells(character, getSpells()!).length > 0 && (
               <>
                 <div>Spells</div>
                 <Spells
-                  spells={getAttackSpells(character, allSpells) as any}
+                  spells={getAttackSpells(character, getSpells()!) as any}
                   columns={['name', 'type', 'range', 'damage', 'notes']}
                 />
               </>
@@ -155,7 +149,7 @@ const Actions = ({ character }: Props) => {
         </ContentBlock>
         <ContentBlock name="action">
           <div>Actions in Combat</div>
-          {ACTIONS.action
+          {getActionsData()!
             .filter(
               actionElem =>
                 actionElem.time?.filter(
@@ -181,7 +175,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, allSpells, 'bonus')}
+                {getSpellsByCastingTime(character, getSpells()!, 'bonus')}
               </div>
             </>
           )}
@@ -193,7 +187,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, allSpells, 'reaction')}
+                {getSpellsByCastingTime(character, getSpells()!, 'reaction')}
               </div>
             </>
           )}
