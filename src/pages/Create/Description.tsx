@@ -11,16 +11,16 @@ import {
   getRace,
   getBackground,
   getBackgroundCharacteristics,
+  getBackgrounds,
 } from 'utils/character';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
 import { Parser } from 'utils/mainRenderer';
-import { getSourceData } from 'app/selectors';
 
 const Description = () => {
   const dispatch = useDispatch();
-  const sourceData = useSelector(getSourceData);
+
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
@@ -86,7 +86,7 @@ const Description = () => {
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
   ) => {
     const background = _.find(
-      sourceData?.backgrounds,
+      getBackgrounds()!,
       bg => bg.name === e.currentTarget.value,
     );
     setSelectedBackground(background);
@@ -135,7 +135,7 @@ const Description = () => {
                   className={`form-input`}
                 >
                   <option value="initial">-</option>
-                  {sourceData?.backgrounds.map(background => (
+                  {getBackgrounds()!.map(background => (
                     <option
                       key={`${background.name}-${background.source}`}
                       value={background.name}

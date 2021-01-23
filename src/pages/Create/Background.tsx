@@ -1,10 +1,8 @@
 import React from 'react';
 import Entry from 'components/Entry/Entry';
 import _ from 'lodash';
-import { getBackground } from 'utils/character';
+import { getBackground, getBackgroundsFluff } from 'utils/character';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { getSourceData } from 'app/selectors';
-import { useSelector } from 'react-redux';
 
 interface Props {
   background: string;
@@ -12,9 +10,9 @@ interface Props {
 
 const Background = ({ background }: Props) => {
   const backgroundElement = getBackground(background);
-  const sourceData = useSelector(getSourceData);
+
   const fluff = _.find(
-    sourceData?.backgroundsFluff,
+    getBackgroundsFluff()!,
     item => item.name === background,
   );
 

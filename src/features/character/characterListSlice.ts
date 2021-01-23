@@ -16,6 +16,9 @@ import {
   getWeapons,
   getArmor,
   getOtherItems,
+  getPlayableClasses,
+  getRaces,
+  getBackgrounds,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase, Race } from 'models/race';
@@ -26,9 +29,8 @@ import { BackgroundElement } from 'models/background';
 import { Parser } from 'utils/mainRenderer';
 import { generate_name } from 'utils/name';
 import { RootState } from 'app/rootReducer';
-import { AppDispatch, store } from 'app/store';
+import { AppDispatch } from 'app/store';
 import DnDAboveAPI from 'utils/api';
-import { getSourceData } from 'app/selectors';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -142,11 +144,10 @@ export type CharacterList = {
 };
 
 export const randomize = () => {
-  const sourceData = getSourceData(store.getState());
   const id = generateID();
-  const race = _.sample(sourceData?.races) as Race;
-  const classElement = _.sample(sourceData?.playableClasses) as ClassElement;
-  const background = _.sample(sourceData?.backgrounds) as BackgroundElement;
+  const race = _.sample(getRaces()!) as Race;
+  const classElement = _.sample(getPlayableClasses()) as ClassElement;
+  const background = _.sample(getBackgrounds()!) as BackgroundElement;
   const name = generate_name('base');
   const abilityScores = diceRoller
     .roll('{4d6kh3...6}')

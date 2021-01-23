@@ -1,21 +1,15 @@
-// Actions
-import actions from 'data/actions.json';
-// Feats
-import feats from 'data/feats.json';
-// Languages
-import languages from 'data/languages.json';
 // Models
-import { ClassTypes, Class, ClassElement } from 'models/class';
+import { ClassTypes } from 'models/class';
 import { Race } from 'models/race';
 import { BackgroundElement } from 'models/background';
 import { BaseItem } from 'models/base-item';
 import { RaceFluffElement } from 'models/race-fluff';
 import { Item } from 'models/item';
 import { BackgroundFluffElement } from 'models/background-fluff';
-import { Action } from 'models/actions';
+import { ActionElement } from 'models/actions';
 import { LanguageElement } from 'models/language';
 // Utils
-import { sortBy, uniqBy, flatten } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 import { mainRenderer, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
@@ -64,13 +58,7 @@ export const loadClasses = async () => {
     wizard: (await import('data/class/class-wizard.json')).default,
   } as ClassTypes;
 
-  const playableClasses = flatten(
-    Object.values(allClasses).map((classEntry: Class) =>
-      classEntry.class.filter(entry => filterSources(entry)),
-    ),
-  ) as ClassElement[];
-
-  return { allClasses, playableClasses };
+  return { allClasses };
 };
 
 // SPELLS
@@ -148,21 +136,18 @@ export const loadItems = async () => {
   return { allItems };
 };
 
-export const ACTIONS = actions as Action;
-export const FEATS = feats.feat.filter(i => filterSources(i)) as FeatElement[];
-export const LANGUAGES = languages.language.filter(i =>
-  filterSources(i),
-) as LanguageElement[];
+// MISC
+export const loadMisc = async () => {
+  const data = {
+    actions: (await import('data/actions.json')).default,
+    feats: (await import('data/feats.json')).default,
+    languages: (await import('data/languages.json')).default,
+  };
+  const actions = data.actions.action as ActionElement[];
+  const feats = data.feats.feat.filter(i => filterSources(i)) as FeatElement[];
+  const languages = data.languages.language.filter(i =>
+    filterSources(i),
+  ) as LanguageElement[];
 
-/*
-Async Data loading:
-- Create loadX() async functions to dynamically import the JSON files (data.ts)
-
-- Create sourceDataSlice of state
-  - Initialize with a `loading / rehydrate` flag
-  - Create createAsyncThunk action (Promise.all) to load the data
-    - Updates the store with the loaded data
-    - Updates the `loading` state to indicate it is ready
-- Dispatch the loadingData on App useEffect
-- Use the `loading` state to render a <Loading> component instead of the <App>
-*/
+  return { actions, feats, languages };
+};

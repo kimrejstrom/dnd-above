@@ -6,12 +6,17 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import actionsDark from 'images/actions-dark.png';
 import actionsLight from 'images/actions-light.png';
 import { CharacterListItem } from 'features/character/characterListSlice';
-import { getItem, isSpellCaster, getSpell } from 'utils/character';
+import {
+  getItem,
+  isSpellCaster,
+  getSpell,
+  getSpells,
+  getActions as getActionsData,
+} from 'utils/character';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 import { mainRenderer } from 'utils/mainRenderer';
 import { Property } from 'models/item';
-import { ACTIONS } from 'utils/data';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 import { SpellElement } from 'models/spells';
@@ -21,7 +26,7 @@ interface Props {
 }
 
 const getActions = (filterCondition: string) => {
-  return ACTIONS.action
+  return getActionsData()!
     .filter(
       actionElem =>
         actionElem.time?.filter(
@@ -109,9 +114,6 @@ const getAttackSpells = (
 
 const Actions = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
-  const { spells } = useSelector(
-    (state: RootState) => state.sourceData,
-  ).sourceData;
   const isSpellCasterClass = isSpellCaster(character);
 
   return (
@@ -134,19 +136,20 @@ const Actions = ({ character }: Props) => {
               columns={['name', 'range', 'damage', 'type', 'notes']}
             />
           )}
-          {isSpellCasterClass && getAttackSpells(character, spells).length > 0 && (
-            <>
-              <div>Spells</div>
-              <Spells
-                spells={getAttackSpells(character, spells) as any}
-                columns={['name', 'type', 'range', 'damage', 'notes']}
-              />
-            </>
-          )}
+          {isSpellCasterClass &&
+            getAttackSpells(character, getSpells()!).length > 0 && (
+              <>
+                <div>Spells</div>
+                <Spells
+                  spells={getAttackSpells(character, getSpells()!) as any}
+                  columns={['name', 'type', 'range', 'damage', 'notes']}
+                />
+              </>
+            )}
         </ContentBlock>
         <ContentBlock name="action">
           <div>Actions in Combat</div>
-          {ACTIONS.action
+          {getActionsData()!
             .filter(
               actionElem =>
                 actionElem.time?.filter(
@@ -172,7 +175,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, spells, 'bonus')}
+                {getSpellsByCastingTime(character, getSpells()!, 'bonus')}
               </div>
             </>
           )}
@@ -184,7 +187,7 @@ const Actions = ({ character }: Props) => {
             <>
               <div>Spells</div>
               <div className="dnd-body">
-                {getSpellsByCastingTime(character, spells, 'reaction')}
+                {getSpellsByCastingTime(character, getSpells()!, 'reaction')}
               </div>
             </>
           )}

@@ -15,14 +15,12 @@ import {
 } from 'features/character/characterListSlice';
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
-import { getRace } from 'utils/character';
+import { getRace, getRaces, getRacesFluff } from 'utils/character';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
-import { getSourceData } from 'app/selectors';
 
 const RaceBuilder = () => {
   const dispatch = useDispatch();
-  const sourceData = useSelector(getSourceData);
   const formState = useSelector(
     (state: RootState) => state.createCharacterForm,
   );
@@ -305,7 +303,7 @@ const RaceBuilder = () => {
 
     return (
       <div>
-        {sourceData?.races.map((race: Race, index) => (
+        {getRaces()!.map((race: Race, index) => (
           <details key={race.name}>
             <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl flex-grow">
@@ -362,7 +360,7 @@ const RaceBuilder = () => {
                   {
                     <Entry
                       entry={
-                        sourceData.racesFluff.find(
+                        getRacesFluff()!.find(
                           fluff => fluff.name === race.name,
                         ) || 'No info available'
                       }

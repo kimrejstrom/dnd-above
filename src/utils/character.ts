@@ -6,13 +6,14 @@ import _, { flatten, mapValues } from 'lodash';
 import {
   ArmorClass,
   ArmorEnum,
+  Class,
   ClassClassFeature,
   ClassElement,
   ClassTableGroup,
   SubclassFeature,
   Title,
 } from 'models/class';
-import { FEATS, LANGUAGES } from 'utils/data';
+import { filterSources } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
@@ -83,10 +84,17 @@ export const getMaxHP = (character: CharacterListItem) => {
   return maxHp;
 };
 
+export const getPlayableClasses = () => {
+  const allClasses = getSourceData(store.getState())?.allClasses;
+  return flatten(
+    Object.values(allClasses!).map((classEntry: Class) =>
+      classEntry.class.filter(entry => filterSources(entry)),
+    ),
+  ) as ClassElement[];
+};
+
 export const getClass = (className: string) =>
-  getSourceData(store.getState())?.playableClasses.find(
-    mainClass => mainClass.name === className,
-  );
+  getPlayableClasses().find(mainClass => mainClass.name === className);
 
 export const getSubClass = (className: string, subClassName: string) => {
   const baseClass = getClass(className);
@@ -193,18 +201,18 @@ export const getProficiencyBonus = (level: number) => {
 };
 
 export const getLanguage = (languageName: string) =>
-  LANGUAGES.find(
+  getLanguages()!.find(
     lang => lang.name.toLowerCase() === languageName.toLowerCase(),
   );
 
 export const getFeat = (featName: string) =>
-  FEATS.find(feat => feat.name === featName);
+  getFeats()!.find(feat => feat.name === featName);
 
 export const getItem = (itemName: string): Item | BaseItem | undefined =>
-  getSourceData(store.getState())?.allItems.find(
-    entry => entry.name === itemName,
-  );
+  getAllItems()!.find(entry => entry.name === itemName);
 
+// All Items
+export const getAllItems = () => getSourceData(store.getState())?.allItems;
 // Armor
 export const getArmor = () =>
   getSourceData(store.getState())?.allItems.filter(item =>
@@ -218,6 +226,16 @@ export const getOtherItems = () =>
   getSourceData(store.getState())?.allItems.filter(
     item => !item.weaponCategory || !['HA', 'MA', 'LA'].includes(item.type!),
   );
+export const getActions = () => getSourceData(store.getState())?.actions;
+export const getLanguages = () => getSourceData(store.getState())?.languages;
+export const getFeats = () => getSourceData(store.getState())?.feats;
+export const getBackgrounds = () =>
+  getSourceData(store.getState())?.backgrounds;
+export const getBackgroundsFluff = () =>
+  getSourceData(store.getState())?.backgroundsFluff;
+export const getRaces = () => getSourceData(store.getState())?.races;
+export const getRacesFluff = () => getSourceData(store.getState())?.racesFluff;
+export const getSpells = () => getSourceData(store.getState())?.spells;
 
 export const getSpell = (allSpells: SpellElement[], spellName: string) =>
   allSpells.find(sp => sp.name === spellName);

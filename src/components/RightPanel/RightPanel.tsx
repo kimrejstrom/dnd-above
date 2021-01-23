@@ -6,11 +6,10 @@ import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import Items from 'components/Items/Items';
-import { ACTIONS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
-import { getSourceData } from 'app/selectors';
+import { getActions, getAllItems, getSpells } from 'utils/character';
 
 interface Props {}
 
@@ -21,7 +20,6 @@ const RightPanel = (props: Props) => {
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );
-  const sourceData = useSelector(getSourceData);
 
   const rightPanelTabPanel = tabPanels[TAB_PANELS.RIGHTPANEL];
   const handleTabChange = (tabIndex: number) => {
@@ -78,7 +76,7 @@ const RightPanel = (props: Props) => {
               <Roller />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              {ACTIONS.action.map(actionElement => (
+              {getActions()!.map(actionElement => (
                 <TextBox key={actionElement.name}>
                   <Entry entry={actionElement} />
                 </TextBox>
@@ -86,12 +84,12 @@ const RightPanel = (props: Props) => {
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Spells
-                spells={sourceData?.spells!}
+                spells={getSpells()!}
                 columns={['name', 'source', 'level', 'school', 'time', 'range']}
               />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <Items items={sourceData?.allItems!} />
+              <Items items={getAllItems()!} />
             </TabPanel>
           </div>
         </Tabs>
