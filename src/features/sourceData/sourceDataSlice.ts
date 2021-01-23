@@ -20,7 +20,7 @@ import {
   loadSpells,
 } from 'utils/data';
 
-interface SourceData {
+export interface SourceData {
   spells: SpellElement[];
   allClasses: ClassTypes;
   races: Race[];

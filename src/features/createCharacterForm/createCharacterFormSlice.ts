@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {
-  CharacterBase,
-  generateID,
-} from 'features/character/characterListSlice';
+import { CharacterBase } from 'features/character/characterListSlice';
 import { CharacterListItem } from 'features/character/characterListSlice';
 
 export interface CreateCharacterFormState {
   data: CharacterBase;
 }
+
+export const generateID = () =>
+  `${Math.random()
+    .toString(16)
+    .slice(2)}`;
 
 const initialState: CreateCharacterFormState = {
   data: {

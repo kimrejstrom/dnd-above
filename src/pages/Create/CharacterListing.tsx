@@ -6,7 +6,7 @@ import {
   setGeneratedFormData,
 } from 'features/createCharacterForm/createCharacterFormSlice';
 import CharacterCards from 'components/CharacterCards/CharacterCards';
-import { randomize } from 'features/character/characterListSlice';
+import { randomize } from 'utils/character';
 
 const CharacterListing = () => {
   const dispatch = useDispatch();

@@ -9,6 +9,8 @@ import {
   getAbilityMod,
   getItem,
   getSubClass,
+  getBackground,
+  randomize,
 } from 'utils/character';
 import {
   updateCharacter,
@@ -16,7 +18,6 @@ import {
   CHARACTER_STATS,
   CharacterListItem,
   StatsTypes,
-  randomize,
 } from 'features/character/characterListSlice';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
@@ -48,6 +49,28 @@ const Summary = () => {
   );
   const characterSummaryAvailable = classElement !== undefined;
 
+  const handleAddCharacter = () => {
+    const raceElement = getRace(formState.data.raceData.race);
+    const classElement = getClass(formState.data.classData.classElement);
+    const backgroundElement = getBackground(
+      formState.data.descriptionData.background,
+    );
+    dispatch(
+      addCharacter({
+        formState,
+        sourceData: {
+          raceElement: raceElement!,
+          classElement: classElement!,
+          backgroundElement: backgroundElement!,
+        },
+      }),
+    );
+  };
+
+  const handleUpdateCharacter = () => {
+    dispatch(updateCharacter(formState));
+  };
+
   return (
     <>
       <h1>Summary</h1>
@@ -71,9 +94,7 @@ const Summary = () => {
           extraClassName="mr-2"
           disabled={!characterSummaryAvailable}
           onClick={() => {
-            existingCharacter
-              ? dispatch(updateCharacter(formState))
-              : dispatch(addCharacter(formState));
+            existingCharacter ? handleUpdateCharacter() : handleAddCharacter();
             history.push(`/`);
           }}
         >
