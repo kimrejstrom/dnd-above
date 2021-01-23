@@ -1,6 +1,3 @@
-// Items
-import baseItems from 'data/items-base.json';
-import items from 'data/items.json';
 // Actions
 import actions from 'data/actions.json';
 // Feats
@@ -40,6 +37,15 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     : 0;
 };
 
+const createPropertyMaps = (data: any) => {
+  data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
+  data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
+  data.itemTypeAdditionalEntries.forEach((e: any) =>
+    mainRenderer.item._addAdditionalEntries(e),
+  );
+};
+
+// CLASSES
 export const loadClasses = async () => {
   const allClasses = {
     artificer: (await import('data/class/class-artificer.json')).default,
@@ -67,6 +73,7 @@ export const loadClasses = async () => {
   return { allClasses, playableClasses };
 };
 
+// SPELLS
 export const loadSpells = async () => {
   const spells = {
     AI: (await import('data/spells/spells-ai.json')).default,
@@ -82,6 +89,7 @@ export const loadSpells = async () => {
     .filter(entry => filterSources(entry)) as SpellElement[];
 };
 
+// RACES
 export const loadRaces = async () => {
   const data = {
     races: (await import('data/races.json')).default,
@@ -104,6 +112,7 @@ export const loadRaces = async () => {
   return { races, racesFluff };
 };
 
+// BACKGROUNDS
 export const loadBackgrounds = async () => {
   const data = {
     backgrounds: (await import('data/backgrounds.json')).default,
@@ -120,41 +129,30 @@ export const loadBackgrounds = async () => {
   return { backgrounds, backgroundsFluff };
 };
 
-export const OTHER_ITEMS = items.item.filter(i => filterSources(i)) as Item[];
-export const BASE_ITEMS = baseItems.baseitem.filter(i =>
-  filterSources(i),
-) as BaseItem[];
-export const ARMOR = BASE_ITEMS.filter((item: BaseItem) => item.armor);
-export const WEAPONS = BASE_ITEMS.filter(
-  (item: BaseItem) => item.weaponCategory,
-);
-export const BASE_ITEMS_OTHER = BASE_ITEMS.filter(
-  item => !(item.armor || item.weaponCategory),
-);
-export const ALL_OTHER_ITEMS = sortBy(
-  (OTHER_ITEMS as any).concat(BASE_ITEMS_OTHER) as (Item | BaseItem)[],
-  'name',
-);
-export const ALL_ITEMS = (OTHER_ITEMS as any).concat(BASE_ITEMS) as (
-  | Item
-  | BaseItem
-)[];
+// ITEMS
+export type CommonItem = Item | BaseItem;
+export const loadItems = async () => {
+  const data = {
+    baseItems: (await import('data/items-base.json')).default,
+    items: (await import('data/items.json')).default,
+  };
+  createPropertyMaps(data.baseItems);
+  const items = data.items.item.filter(i => filterSources(i)) as Item[];
+  const baseItems = data.baseItems.baseitem.filter(i =>
+    filterSources(i),
+  ) as BaseItem[];
+
+  // Every item
+  const allItems: CommonItem[] = (items as any).concat(baseItems);
+
+  return { allItems };
+};
 
 export const ACTIONS = actions as Action;
 export const FEATS = feats.feat.filter(i => filterSources(i)) as FeatElement[];
 export const LANGUAGES = languages.language.filter(i =>
   filterSources(i),
 ) as LanguageElement[];
-
-const createPropertyMaps = (data: any) => {
-  data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
-  data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
-  data.itemTypeAdditionalEntries.forEach((e: any) =>
-    mainRenderer.item._addAdditionalEntries(e),
-  );
-};
-
-createPropertyMaps(baseItems);
 
 /*
 Async Data loading:

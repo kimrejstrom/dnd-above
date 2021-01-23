@@ -6,10 +6,11 @@ import { RootState } from 'app/rootReducer';
 import { TAB_PANELS, setSelectedIndex } from 'features/tabs/tabsSlice';
 import { Spells } from 'components/Spells/Spells';
 import Items from 'components/Items/Items';
-import { ALL_ITEMS, ACTIONS } from 'utils/data';
+import { ACTIONS } from 'utils/data';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
+import { getSourceData } from 'app/selectors';
 
 interface Props {}
 
@@ -20,9 +21,7 @@ const RightPanel = (props: Props) => {
   const { selectedEntry } = useSelector(
     (state: RootState) => state.detailedEntry,
   );
-  const { spells } = useSelector(
-    (state: RootState) => state.sourceData,
-  ).sourceData;
+  const sourceData = useSelector(getSourceData);
 
   const rightPanelTabPanel = tabPanels[TAB_PANELS.RIGHTPANEL];
   const handleTabChange = (tabIndex: number) => {
@@ -87,12 +86,12 @@ const RightPanel = (props: Props) => {
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Spells
-                spells={spells}
+                spells={sourceData?.spells!}
                 columns={['name', 'source', 'level', 'school', 'time', 'range']}
               />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <Items items={ALL_ITEMS} />
+              <Items items={sourceData?.allItems!} />
             </TabPanel>
           </div>
         </Tabs>

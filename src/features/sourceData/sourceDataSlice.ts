@@ -8,8 +8,10 @@ import { Race } from 'models/race';
 import { RaceFluffElement } from 'models/race-fluff';
 import { SpellElement } from 'models/spells';
 import {
+  CommonItem,
   loadBackgrounds,
   loadClasses,
+  loadItems,
   loadRaces,
   loadSpells,
 } from 'utils/data';
@@ -22,6 +24,7 @@ interface SourceData {
   racesFluff: RaceFluffElement[];
   backgrounds: BackgroundElement[];
   backgroundsFluff: BackgroundFluffElement[];
+  allItems: CommonItem[];
 }
 
 interface SourceDataState {
@@ -40,6 +43,7 @@ const initialState: SourceDataState = {
     racesFluff: [],
     backgrounds: [],
     backgroundsFluff: [],
+    allItems: [],
   },
 };
 
@@ -57,6 +61,7 @@ export const loadSourceData = createAsyncThunk<
     const { playableClasses, allClasses } = await loadClasses();
     const { races, racesFluff } = await loadRaces();
     const { backgrounds, backgroundsFluff } = await loadBackgrounds();
+    const { allItems } = await loadItems();
     return {
       spells,
       playableClasses,
@@ -65,6 +70,7 @@ export const loadSourceData = createAsyncThunk<
       racesFluff,
       backgrounds,
       backgroundsFluff,
+      allItems,
     } as SourceData;
   } catch (error) {
     return thunkAPI.rejectWithValue('Error loading SourceData');

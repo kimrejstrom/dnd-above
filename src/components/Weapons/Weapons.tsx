@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
-import { WEAPONS } from 'utils/data';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
+import { getWeapons } from 'utils/character';
 
 const handleSpecialCell = (cell: Cell<object>) => {
   if (cell.value instanceof Array) {
@@ -13,9 +13,9 @@ const handleSpecialCell = (cell: Cell<object>) => {
 };
 
 export const Weapons: React.FC = () => {
-  const allWeapons = WEAPONS;
+  const allWeapons = getWeapons();
   const tableData = useMemo(
-    () => Object.values(allWeapons).filter(weapon => !weapon.age),
+    () => Object.values(allWeapons!).filter(weapon => !weapon.age),
     [allWeapons],
   );
   const tableColumns = useMemo(

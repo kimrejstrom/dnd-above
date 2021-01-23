@@ -13,12 +13,15 @@ import {
   getHitDice,
   isSpellCaster,
   mapArmorProficiencies,
+  getWeapons,
+  getArmor,
+  getOtherItems,
 } from 'utils/character';
 import _ from 'lodash';
 import { AbilityBase, Race } from 'models/race';
 import { getCookie } from 'utils/cookie';
 import { diceRoller } from 'utils/dice';
-import { filterSources, WEAPONS, ALL_OTHER_ITEMS, ARMOR } from 'utils/data';
+import { filterSources } from 'utils/data';
 import { BackgroundElement } from 'models/background';
 import { Parser } from 'utils/mainRenderer';
 import { generate_name } from 'utils/name';
@@ -283,10 +286,10 @@ export const randomize = () => {
       characteristicsFlaw: '',
     },
     equipmentData: {
-      items: _.sampleSize(WEAPONS as any, 2)
+      items: _.sampleSize(getWeapons() as any, 2)
         .map(item => item.name)
-        .concat(_.sampleSize(ALL_OTHER_ITEMS as any, 2).map(item => item.name))
-        .concat(_.sampleSize(ARMOR, 1).map(item => item.name)),
+        .concat(_.sampleSize(getOtherItems() as any, 2).map(item => item.name))
+        .concat(_.sampleSize(getArmor(), 1).map(item => item.name)),
     },
   };
   return randomCharacter;

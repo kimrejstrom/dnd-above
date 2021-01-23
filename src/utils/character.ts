@@ -12,7 +12,7 @@ import {
   SubclassFeature,
   Title,
 } from 'models/class';
-import { ALL_ITEMS, FEATS, LANGUAGES } from 'utils/data';
+import { FEATS, LANGUAGES } from 'utils/data';
 import { SkillTypes } from 'features/character/Skills';
 import { isDefined } from 'ts-is-present';
 import { BaseItem } from 'models/base-item';
@@ -201,7 +201,23 @@ export const getFeat = (featName: string) =>
   FEATS.find(feat => feat.name === featName);
 
 export const getItem = (itemName: string): Item | BaseItem | undefined =>
-  ALL_ITEMS.find(entry => entry.name === itemName);
+  getSourceData(store.getState())?.allItems.find(
+    entry => entry.name === itemName,
+  );
+
+// Armor
+export const getArmor = () =>
+  getSourceData(store.getState())?.allItems.filter(item =>
+    ['HA', 'MA', 'LA'].includes(item.type!),
+  );
+// Weapons
+export const getWeapons = () =>
+  getSourceData(store.getState())?.allItems.filter(item => item.weaponCategory);
+// Rest
+export const getOtherItems = () =>
+  getSourceData(store.getState())?.allItems.filter(
+    item => !item.weaponCategory || !['HA', 'MA', 'LA'].includes(item.type!),
+  );
 
 export const getSpell = (allSpells: SpellElement[], spellName: string) =>
   allSpells.find(sp => sp.name === spellName);
