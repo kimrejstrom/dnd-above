@@ -3,24 +3,27 @@
 
 ### Notes / Ideas
 
-- Initial loading screen (non render blocking)  
-
-### Todo
-
-- [ ] Omni search (Fuse) create index when mapping json  
-- [ ] Clickable link thing on all detailed entries  
 - [ ] Spell Rating / Comments  
-- [ ] Custom items (w/ use as base)  
-- [ ] Attuned items  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 
+### Todo
+
+- [ ] MultiClassing  
+- [ ] Clickable link thing on all detailed entries  
+- [ ] Custom items (w/ use as base)  
+- [ ] Attuned items  
+- [ ] Equipment Table  
+- [ ] Mobile bottom bar + views  
+
 ### In Progress
 
-- Split data loading from main js (lazy/suspense) for json  
+- [ ] Omni search (Fuse) create index when mapping json  
 
 ### Done ✓
 
+- Split data loading from main js (lazy/suspense) for json  
+- Initial loading screen (non render blocking)  
 - Try 5e Tools CSS  
 - Character builder styling (prose etc)  
 - harmonize font usage  

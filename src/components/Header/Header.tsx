@@ -3,8 +3,8 @@ import { NavLink, Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { setThemeMode, ThemeMode } from 'features/theme/themeSlice';
-import dudeDark from 'images/dude-dark.png';
-import dudeLight from 'images/dude-light.png';
+import logoLight from 'images/header-logo-light.png';
+import logoDark from 'images/header-logo-dark.png';
 import { getCookie } from 'utils/cookie';
 import { togglePanel } from 'features/settings/settingsSlice';
 import { useAuth } from 'utils/auth';
@@ -176,13 +176,12 @@ export const Header: React.FC = () => {
                   className="flex items-center text-2xl tracking-tighter leading-none"
                 >
                   <img
-                    className="mr-2 h-10"
-                    src={theme === ThemeMode.DARK ? dudeLight : dudeDark}
+                    className="mr-1 h-10"
+                    src={theme === ThemeMode.DARK ? logoLight : logoDark}
                     alt="logo"
                   />
-                  <div>D&amp;D Above</div>
                   {allSources && (
-                    <sup className="text-yellow-500 text-sm ml-1">Adv</sup>
+                    <sup className="text-yellow-500 text-sm">Adv</sup>
                   )}
                 </Link>
               </div>
@@ -196,8 +195,8 @@ export const Header: React.FC = () => {
             </div>
             <div
               className={
-                'lg:flex lg:flex-grow items-center justify-center' +
-                (navbarOpen ? ' flex w-full' : ' hidden')
+                'lg:flex lg:flex-grow items-center justify-center ' +
+                (navbarOpen ? 'flex w-full sm:w-48' : 'hidden')
               }
             >
               <ul className="flex flex-col lg:flex-row w-full lg:w-auto justify-center list-none mt-2 lg:mt-0 lg:ml-auto lg:items-center divide-y divide-gray-200 lg:divide-opacity-0">
@@ -232,6 +231,9 @@ export const Header: React.FC = () => {
                   <div className="flex">
                     {theme === ThemeMode.DARK ? (
                       <>
+                        <div className="block lg:hidden mr-2">
+                          Toggle Light Mode
+                        </div>
                         <button
                           className="inline-block"
                           title="Disable Dark Mode"
@@ -252,6 +254,9 @@ export const Header: React.FC = () => {
                       </>
                     ) : (
                       <>
+                        <div className="block lg:hidden mr-2">
+                          Toggle Dark Mode
+                        </div>
                         <button
                           className="inline-block"
                           onClick={() => dispatch(setThemeMode(ThemeMode.DARK))}

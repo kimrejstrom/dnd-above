@@ -8,28 +8,63 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo72.png",
+      "src": "Icon72.png",
       "type": "image/png",
       "sizes": "72x72"
     },
     {
-      "src": "logo144.png",
+      "src": "Icon96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "Icon128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "Icon144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
     {
-      "src": "logo192.png",
+      "src": "Icon152.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "152x152"
     },
     {
-      "src": "logo512.png",
+      "src": "Icon256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "Icon512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "Icon1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
     }
   ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#fefcbf",
-  "background_color": "#252020"
+  "background_color": "#252020",
+  "lang": "English",
+  "description": "D&D Above is the ultimate D&D Character Builder and Character Sheet.",
+  "orientation": "portrait",
+  "screenshots": [
+    {
+        "src": "Screen1280.png",
+        "sizes": "1280x800",
+        "type": "image/png"
+    },
+    {
+        "src": "Screen750.png",
+        "sizes": "750x1334",
+        "type": "image/png"
+    }
+]
 }
