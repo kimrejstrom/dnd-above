@@ -6,6 +6,7 @@
 - [ ] Spell Rating / Comments  
 - [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
+- [ ] minimize render.js?  
 
 ### Todo
 
