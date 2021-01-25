@@ -6,7 +6,6 @@ export interface ClassTypes {
   druid: Class;
   fighter: Class;
   monk: Class;
-  mystic: Class;
   paladin: Class;
   ranger: Class;
   rogue: Class;

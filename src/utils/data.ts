@@ -41,21 +41,54 @@ const createPropertyMaps = (data: any) => {
 
 // CLASSES
 export const loadClasses = async () => {
+  const [
+    artificer,
+    barbarian,
+    bard,
+    cleric,
+    druid,
+    fighter,
+    monk,
+  ] = await Promise.all([
+    import('data/class/class-artificer.json').then(data => data.default),
+    import('data/class/class-barbarian.json').then(data => data.default),
+    import('data/class/class-bard.json').then(data => data.default),
+    import('data/class/class-cleric.json').then(data => data.default),
+    import('data/class/class-druid.json').then(data => data.default),
+    import('data/class/class-fighter.json').then(data => data.default),
+    import('data/class/class-monk.json').then(data => data.default),
+  ]);
+
+  const [
+    paladin,
+    ranger,
+    rogue,
+    sorcerer,
+    warlock,
+    wizard,
+  ] = await Promise.all([
+    import('data/class/class-paladin.json').then(data => data.default),
+    import('data/class/class-ranger.json').then(data => data.default),
+    import('data/class/class-rogue.json').then(data => data.default),
+    import('data/class/class-sorcerer.json').then(data => data.default),
+    import('data/class/class-warlock.json').then(data => data.default),
+    import('data/class/class-wizard.json').then(data => data.default),
+  ]);
+
   const allClasses = {
-    artificer: (await import('data/class/class-artificer.json')).default,
-    barbarian: (await import('data/class/class-barbarian.json')).default,
-    bard: (await import('data/class/class-bard.json')).default,
-    cleric: (await import('data/class/class-cleric.json')).default,
-    druid: (await import('data/class/class-druid.json')).default,
-    fighter: (await import('data/class/class-fighter.json')).default,
-    monk: (await import('data/class/class-monk.json')).default,
-    mystic: (await import('data/class/class-mystic.json')).default,
-    paladin: (await import('data/class/class-paladin.json')).default,
-    ranger: (await import('data/class/class-ranger.json')).default,
-    rogue: (await import('data/class/class-rogue.json')).default,
-    sorcerer: (await import('data/class/class-sorcerer.json')).default,
-    warlock: (await import('data/class/class-warlock.json')).default,
-    wizard: (await import('data/class/class-wizard.json')).default,
+    artificer,
+    barbarian,
+    bard,
+    cleric,
+    druid,
+    fighter,
+    monk,
+    paladin,
+    ranger,
+    rogue,
+    sorcerer,
+    warlock,
+    wizard,
   } as ClassTypes;
 
   return { allClasses };
@@ -63,13 +96,21 @@ export const loadClasses = async () => {
 
 // SPELLS
 export const loadSpells = async () => {
+  const [AI, GGR, LLK, PHB, TCE, XGE] = await Promise.all([
+    import('data/spells/spells-ai.json').then(data => data.default),
+    import('data/spells/spells-ggr.json').then(data => data.default),
+    import('data/spells/spells-llk.json').then(data => data.default),
+    import('data/spells/spells-phb.json').then(data => data.default),
+    import('data/spells/spells-tce.json').then(data => data.default),
+    import('data/spells/spells-xge.json').then(data => data.default),
+  ]);
   const spells = {
-    AI: (await import('data/spells/spells-ai.json')).default,
-    GGR: (await import('data/spells/spells-ggr.json')).default,
-    LLK: (await import('data/spells/spells-llk.json')).default,
-    PHB: (await import('data/spells/spells-phb.json')).default,
-    TCE: (await import('data/spells/spells-tce.json')).default,
-    XGE: (await import('data/spells/spells-xge.json')).default,
+    AI,
+    GGR,
+    LLK,
+    PHB,
+    TCE,
+    XGE,
   };
   return Object.values(spells)
     .map(spell => spell.spell)
@@ -79,21 +120,21 @@ export const loadSpells = async () => {
 
 // RACES
 export const loadRaces = async () => {
-  const data = {
-    races: (await import('data/races.json')).default,
-    fluff: (await import('data/fluff-races.json')).default,
-  };
+  const [racesData, fluffData] = await Promise.all([
+    import('data/races.json').then(data => data.default),
+    import('data/fluff-races.json').then(data => data.default),
+  ]);
   const races = uniqBy(
     sortBy(
       mainRenderer.race
-        .mergeSubraces(data.races.race)
+        .mergeSubraces(racesData.race)
         .filter((race: any) => filterSources(race, false)),
       ['name'],
     ),
     'name',
   ) as Race[];
 
-  const racesFluff = data.fluff.raceFluff.filter(fluff =>
+  const racesFluff = fluffData.raceFluff.filter(fluff =>
     filterSources(fluff, false),
   ) as RaceFluffElement[];
 
@@ -102,15 +143,15 @@ export const loadRaces = async () => {
 
 // BACKGROUNDS
 export const loadBackgrounds = async () => {
-  const data = {
-    backgrounds: (await import('data/backgrounds.json')).default,
-    fluff: (await import('data/fluff-backgrounds.json')).default,
-  };
-  const backgrounds = data.backgrounds.background
+  const [backgroundsData, fluffData] = await Promise.all([
+    import('data/backgrounds.json').then(data => data.default),
+    import('data/fluff-backgrounds.json').then(data => data.default),
+  ]);
+  const backgrounds = backgroundsData.background
     .filter(bg => filterSources(bg))
     .filter(bg => !bg.name.includes('Variant ')) as BackgroundElement[];
 
-  const backgroundsFluff = data.fluff.backgroundFluff.filter(bg =>
+  const backgroundsFluff = fluffData.backgroundFluff.filter(bg =>
     filterSources(bg),
   ) as BackgroundFluffElement[];
 
@@ -120,13 +161,13 @@ export const loadBackgrounds = async () => {
 // ITEMS
 export type CommonItem = Item | BaseItem;
 export const loadItems = async () => {
-  const data = {
-    baseItems: (await import('data/items-base.json')).default,
-    items: (await import('data/items.json')).default,
-  };
-  createPropertyMaps(data.baseItems);
-  const items = data.items.item.filter(i => filterSources(i)) as Item[];
-  const baseItems = data.baseItems.baseitem.filter(i =>
+  const [baseItemsData, itemsData] = await Promise.all([
+    import('data/items-base.json').then(data => data.default),
+    import('data/items.json').then(data => data.default),
+  ]);
+  createPropertyMaps(baseItemsData);
+  const items = itemsData.item.filter(i => filterSources(i)) as Item[];
+  const baseItems = baseItemsData.baseitem.filter(i =>
     filterSources(i),
   ) as BaseItem[];
 
@@ -138,14 +179,15 @@ export const loadItems = async () => {
 
 // MISC
 export const loadMisc = async () => {
-  const data = {
-    actions: (await import('data/actions.json')).default,
-    feats: (await import('data/feats.json')).default,
-    languages: (await import('data/languages.json')).default,
-  };
-  const actions = data.actions.action as ActionElement[];
-  const feats = data.feats.feat.filter(i => filterSources(i)) as FeatElement[];
-  const languages = data.languages.language.filter(i =>
+  const [actionsData, featsData, languagesData] = await Promise.all([
+    import('data/actions.json').then(data => data.default),
+    import('data/feats.json').then(data => data.default),
+    import('data/languages.json').then(data => data.default),
+  ]);
+
+  const actions = actionsData.action as ActionElement[];
+  const feats = featsData.feat.filter(i => filterSources(i)) as FeatElement[];
+  const languages = languagesData.language.filter(i =>
     filterSources(i),
   ) as LanguageElement[];
 

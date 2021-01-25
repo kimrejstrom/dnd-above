@@ -65,12 +65,21 @@ export const loadSourceData = createAsyncThunk<
 >('sourceData/loadSourceData', async (_, thunkAPI) => {
   try {
     // Load the sourceData
-    const spells = await loadSpells();
-    const { allClasses } = await loadClasses();
-    const { races, racesFluff } = await loadRaces();
-    const { backgrounds, backgroundsFluff } = await loadBackgrounds();
-    const { allItems } = await loadItems();
-    const { actions, feats, languages } = await loadMisc();
+    const [
+      spells,
+      { allClasses },
+      { races, racesFluff },
+      { backgrounds, backgroundsFluff },
+      { allItems },
+      { actions, feats, languages },
+    ] = await Promise.all([
+      loadSpells(),
+      loadClasses(),
+      loadRaces(),
+      loadBackgrounds(),
+      loadItems(),
+      loadMisc(),
+    ]);
     return {
       spells,
       allClasses,
