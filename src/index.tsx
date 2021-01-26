@@ -6,7 +6,7 @@ import 'styles.css';
 import App from 'app/App';
 import { store, persistor } from 'app/store';
 import { apocalypseHandler } from 'apocalypseHandler';
-import { ServiceWorkerProvider } from 'useServiceWorker';
+import { ServiceWorkerProvider } from 'utils/useServiceWorker';
 import { Loading } from 'components/Loading/Loading';
 import netlifyIdentity from 'netlify-identity-widget';
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -26,6 +26,7 @@ import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
 import Edit from 'pages/Edit/Edit';
 import { Loading } from 'components/Loading/Loading';
 import { loadSourceData } from 'features/sourceData/sourceDataSlice';
+import { FuseIndex, initializeSearch } from 'utils/search';
 
 // Google Analytics
 initializeGA();
@@ -61,14 +62,20 @@ const App: React.FC = () => {
   const theme = useSelector((state: RootState) => state.theme);
   const sourceData = useSelector((state: RootState) => state.sourceData);
   const dispatch = useDispatch();
-
   const auth = useAuth();
-  // Hook to cleanup on window unload
-  useBeforeWindowUnload(auth?.user);
+
+  const [searchIndex, setSearchIndex] = useState<Array<FuseIndex>>([]);
 
   useEffect(() => {
-    dispatch(loadSourceData());
-  }, [dispatch]);
+    if (!sourceData.hydrated) {
+      dispatch(loadSourceData());
+    } else {
+      setSearchIndex(initializeSearch());
+    }
+  }, [dispatch, sourceData.hydrated]);
+
+  // Hook to cleanup on window unload
+  useBeforeWindowUnload(auth?.user);
 
   return sourceData.hydrated ? (
     <div
@@ -114,7 +121,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   <Modal title={title} content={content} />
-                  <RightPanel />
+                  <RightPanel searchIndex={searchIndex} />
                 </div>
               </main>
             </ErrorBoundary>

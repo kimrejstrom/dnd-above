@@ -10,10 +10,13 @@ import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { getActions, getAllItems, getSpells } from 'utils/character';
+import { FuseIndex } from 'utils/search';
 
-interface Props {}
+interface Props {
+  searchIndex: Array<FuseIndex>;
+}
 
-const RightPanel = (props: Props) => {
+const RightPanel = ({ searchIndex }: Props) => {
   const dispatch = useDispatch();
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { tabPanels } = useSelector((state: RootState) => state.tabs);

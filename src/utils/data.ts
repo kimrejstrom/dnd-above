@@ -50,13 +50,27 @@ export const loadClasses = async () => {
     fighter,
     monk,
   ] = await Promise.all([
-    import('data/class/class-artificer.json').then(data => data.default),
-    import('data/class/class-barbarian.json').then(data => data.default),
-    import('data/class/class-bard.json').then(data => data.default),
-    import('data/class/class-cleric.json').then(data => data.default),
-    import('data/class/class-druid.json').then(data => data.default),
-    import('data/class/class-fighter.json').then(data => data.default),
-    import('data/class/class-monk.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/class/class-artificer.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-barbarian.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-bard.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-cleric.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-druid.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-fighter.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-monk.json').then(
+      data => data.default,
+    ),
   ]);
 
   const [
@@ -67,12 +81,24 @@ export const loadClasses = async () => {
     warlock,
     wizard,
   ] = await Promise.all([
-    import('data/class/class-paladin.json').then(data => data.default),
-    import('data/class/class-ranger.json').then(data => data.default),
-    import('data/class/class-rogue.json').then(data => data.default),
-    import('data/class/class-sorcerer.json').then(data => data.default),
-    import('data/class/class-warlock.json').then(data => data.default),
-    import('data/class/class-wizard.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/class/class-paladin.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-ranger.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-rogue.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-sorcerer.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-warlock.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/class/class-wizard.json').then(
+      data => data.default,
+    ),
   ]);
 
   const allClasses = {
@@ -97,12 +123,24 @@ export const loadClasses = async () => {
 // SPELLS
 export const loadSpells = async () => {
   const [AI, GGR, LLK, PHB, TCE, XGE] = await Promise.all([
-    import('data/spells/spells-ai.json').then(data => data.default),
-    import('data/spells/spells-ggr.json').then(data => data.default),
-    import('data/spells/spells-llk.json').then(data => data.default),
-    import('data/spells/spells-phb.json').then(data => data.default),
-    import('data/spells/spells-tce.json').then(data => data.default),
-    import('data/spells/spells-xge.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-ai.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-ggr.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-llk.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-phb.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-tce.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/spells/spells-xge.json').then(
+      data => data.default,
+    ),
   ]);
   const spells = {
     AI,
@@ -121,8 +159,12 @@ export const loadSpells = async () => {
 // RACES
 export const loadRaces = async () => {
   const [racesData, fluffData] = await Promise.all([
-    import('data/races.json').then(data => data.default),
-    import('data/fluff-races.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/races.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/fluff-races.json').then(
+      data => data.default,
+    ),
   ]);
   const races = uniqBy(
     sortBy(
@@ -144,8 +186,12 @@ export const loadRaces = async () => {
 // BACKGROUNDS
 export const loadBackgrounds = async () => {
   const [backgroundsData, fluffData] = await Promise.all([
-    import('data/backgrounds.json').then(data => data.default),
-    import('data/fluff-backgrounds.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/backgrounds.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/fluff-backgrounds.json').then(
+      data => data.default,
+    ),
   ]);
   const backgrounds = backgroundsData.background
     .filter(bg => filterSources(bg))
@@ -162,8 +208,12 @@ export const loadBackgrounds = async () => {
 export type CommonItem = Item | BaseItem;
 export const loadItems = async () => {
   const [baseItemsData, itemsData] = await Promise.all([
-    import('data/items-base.json').then(data => data.default),
-    import('data/items.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/items-base.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/items.json').then(
+      data => data.default,
+    ),
   ]);
   createPropertyMaps(baseItemsData);
   const items = itemsData.item.filter(i => filterSources(i)) as Item[];
@@ -180,9 +230,15 @@ export const loadItems = async () => {
 // MISC
 export const loadMisc = async () => {
   const [actionsData, featsData, languagesData] = await Promise.all([
-    import('data/actions.json').then(data => data.default),
-    import('data/feats.json').then(data => data.default),
-    import('data/languages.json').then(data => data.default),
+    import(/* webpackPrefetch: true */ 'data/actions.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/feats.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/languages.json').then(
+      data => data.default,
+    ),
   ]);
 
   const actions = actionsData.action as ActionElement[];

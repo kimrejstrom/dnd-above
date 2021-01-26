@@ -9,7 +9,10 @@ import { getCookie } from 'utils/cookie';
 import { togglePanel } from 'features/settings/settingsSlice';
 import { useAuth } from 'utils/auth';
 import Button from 'components/Button/Button';
-import { useServiceWorker, IServiceWorkerContext } from 'useServiceWorker';
+import {
+  useServiceWorker,
+  IServiceWorkerContext,
+} from 'utils/useServiceWorker';
 
 const navBtnCls =
   'w-full text-left block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900';

@@ -80,6 +80,7 @@ export const loadSourceData = createAsyncThunk<
       loadItems(),
       loadMisc(),
     ]);
+
     return {
       spells,
       allClasses,

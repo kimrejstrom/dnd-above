@@ -1,5 +1,8 @@
 import React from 'react';
-import { useServiceWorker, IServiceWorkerContext } from 'useServiceWorker';
+import {
+  useServiceWorker,
+  IServiceWorkerContext,
+} from 'utils/useServiceWorker';
 import Button from 'components/Button/Button';
 
 export const UpdateNotification: React.FC = () => {

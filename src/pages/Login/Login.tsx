@@ -8,7 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCharacterList } from 'features/character/characterListSlice';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
-import { useServiceWorker, IServiceWorkerContext } from 'useServiceWorker';
+import {
+  useServiceWorker,
+  IServiceWorkerContext,
+} from 'utils/useServiceWorker';
 import Notification, {
   NotificationType,
 } from 'components/Notification/Notification';

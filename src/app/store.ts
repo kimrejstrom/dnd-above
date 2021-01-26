@@ -24,7 +24,7 @@ const persistConfig = {
 // Middleware: Redux Persist Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Custom middleware to auto save characterList in the background with 10 sec debounce
+// Custom middleware to auto save characterList in the background with 1.5 sec debounce
 let saveTimer: any;
 let debounceTime = 1500;
 
