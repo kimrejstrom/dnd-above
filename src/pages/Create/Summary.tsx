@@ -2,16 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { useHistory } from 'react-router-dom';
+import { calculateStats, getAbilityMod, randomize } from 'utils/character';
 import {
   getRace,
   getClass,
-  calculateStats,
-  getAbilityMod,
   getItem,
   getSubClass,
   getBackground,
-  randomize,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import {
   updateCharacter,
   addCharacter,

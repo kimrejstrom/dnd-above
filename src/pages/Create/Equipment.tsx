@@ -12,7 +12,7 @@ import {
   getOtherItems,
   getArmor,
   getWeapons,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import { mainRenderer } from 'utils/mainRenderer';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import StyledButton, {

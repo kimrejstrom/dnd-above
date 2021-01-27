@@ -9,7 +9,7 @@ import {
 } from 'models/class';
 import Entry from 'components/Entry/Entry';
 import { Parser } from 'utils/mainRenderer';
-import { getAllClassFeatures } from 'utils/character';
+import { getAllClassFeatures } from 'utils/sourceDataUtils';
 import { isDefined } from 'ts-is-present';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 

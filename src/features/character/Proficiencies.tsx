@@ -5,10 +5,10 @@ import {
   getWeaponProficiencies,
   getToolProficiencies,
   getLanguageProficiencies,
-  getLanguage,
 } from 'utils/character';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { mainRenderer } from 'utils/mainRenderer';
+import { getLanguage } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

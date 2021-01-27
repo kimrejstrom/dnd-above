@@ -12,7 +12,7 @@ import {
   getBackground,
   getBackgroundCharacteristics,
   getBackgrounds,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';

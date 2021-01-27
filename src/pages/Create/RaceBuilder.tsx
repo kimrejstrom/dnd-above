@@ -15,7 +15,7 @@ import {
 } from 'features/character/characterListSlice';
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
-import { getRace, getRaces, getRacesFluff } from 'utils/character';
+import { getRace, getRaces, getRacesFluff } from 'utils/sourceDataUtils';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
 

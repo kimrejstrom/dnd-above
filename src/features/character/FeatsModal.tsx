@@ -10,7 +10,7 @@ import {
 } from 'features/character/characterListSlice';
 import { useForm } from 'react-hook-form';
 import { mainRenderer } from 'utils/mainRenderer';
-import { getFeats } from 'utils/character';
+import { getFeats } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

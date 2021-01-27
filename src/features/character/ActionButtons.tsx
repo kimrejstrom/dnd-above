@@ -12,7 +12,6 @@ import { search } from 'utils/mainRenderer';
 import {
   calculateStats,
   getAbilityMod,
-  getAllClassFeatures,
   getHitDice,
   getMaxHP,
   isSpellCaster,
@@ -22,6 +21,7 @@ import AbilitiesSkillsModal from 'features/character/AbilitiesSkillsModal';
 import SpellsModal from 'features/character/SpellsModal';
 import FeatsModal from 'features/character/FeatsModal';
 import { diceRoller } from 'utils/dice';
+import { getAllClassFeatures } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

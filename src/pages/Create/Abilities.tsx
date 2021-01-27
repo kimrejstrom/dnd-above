@@ -8,7 +8,8 @@ import * as _ from 'lodash';
 import TextBox from 'components/TextBox/TextBox';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { Parser, mainRenderer } from 'utils/mainRenderer';
-import { getClassQuickBuild, getRace, getClass } from 'utils/character';
+import { getClassQuickBuild } from 'utils/character';
+import { getRace, getClass } from 'utils/sourceDataUtils';
 import { isDefined } from 'ts-is-present';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,

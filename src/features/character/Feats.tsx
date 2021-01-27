@@ -1,6 +1,6 @@
 import React from 'react';
 import { CharacterListItem } from 'features/character/characterListSlice';
-import { getFeat } from 'utils/character';
+import { getFeat } from 'utils/sourceDataUtils';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {

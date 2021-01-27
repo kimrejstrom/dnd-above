@@ -11,7 +11,6 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import spellcastingDark from 'images/spellcasting-dark.png';
 import spellcastingLight from 'images/spellcasting-light.png';
 import {
-  getSpell,
   getSpellSaveDC,
   getSpellAttack,
   getSpellSlotsPerLevel,
@@ -23,6 +22,7 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
+import { getSpell } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

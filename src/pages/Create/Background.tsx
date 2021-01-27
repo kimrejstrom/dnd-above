@@ -1,7 +1,7 @@
 import React from 'react';
 import Entry from 'components/Entry/Entry';
 import _ from 'lodash';
-import { getBackground, getBackgroundsFluff } from 'utils/character';
+import { getBackground, getBackgroundsFluff } from 'utils/sourceDataUtils';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {

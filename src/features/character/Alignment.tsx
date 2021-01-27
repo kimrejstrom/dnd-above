@@ -8,9 +8,10 @@ import {
   CharacterListItem,
   setCurrentHd,
 } from 'features/character/characterListSlice';
-import { getRace, getHdTotal, getHitDice, parseSpeed } from 'utils/character';
+import { getHdTotal, getHitDice, parseSpeed } from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
+import { getRace } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

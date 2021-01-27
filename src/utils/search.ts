@@ -12,7 +12,7 @@ import {
   getRacesFluff,
   getSpells,
   getSubClassFeatures,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import { filterSources } from 'utils/data';
 
 export enum ResultType {

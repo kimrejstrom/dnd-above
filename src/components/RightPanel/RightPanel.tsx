@@ -9,7 +9,7 @@ import Items from 'components/Items/Items';
 import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
-import { getActions, getAllItems, getSpells } from 'utils/character';
+import { getActions, getAllItems, getSpells } from 'utils/sourceDataUtils';
 import { ResultType, SourceDataFuseList } from 'utils/search';
 import { useFuse } from 'utils/useFuse';
 

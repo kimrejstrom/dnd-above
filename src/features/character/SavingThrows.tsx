@@ -8,9 +8,9 @@ import {
   calculateStats,
   getAbilityMod,
   getProficiencyBonus,
-  getClass,
 } from 'utils/character';
 import { SpellcastingAbility } from 'models/class';
+import { getClass } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;

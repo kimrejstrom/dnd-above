@@ -20,7 +20,7 @@ import {
   getPlayableClasses,
   getSubClass,
   getSubClassFeatures,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
 

@@ -8,7 +8,7 @@ import {
   getFeat,
   getClassFeatures,
   getSubClassFeatures,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import { ThemeMode } from 'features/theme/themeSlice';
 import characterDark from 'images/character-dark.png';
 import characterLight from 'images/character-light.png';

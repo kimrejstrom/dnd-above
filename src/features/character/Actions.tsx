@@ -6,13 +6,13 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import actionsDark from 'images/actions-dark.png';
 import actionsLight from 'images/actions-light.png';
 import { CharacterListItem } from 'features/character/characterListSlice';
+import { isSpellCaster } from 'utils/character';
 import {
   getItem,
-  isSpellCaster,
   getSpell,
   getSpells,
   getActions as getActionsData,
-} from 'utils/character';
+} from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 import { mainRenderer } from 'utils/mainRenderer';

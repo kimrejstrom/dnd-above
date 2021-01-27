@@ -6,7 +6,7 @@ import itemsDark from 'images/items-dark.png';
 import itemsLight from 'images/items-light.png';
 import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
-import { getItem } from 'utils/character';
+import { getItem } from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
 

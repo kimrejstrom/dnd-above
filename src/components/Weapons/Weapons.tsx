@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
 import { startCase } from 'lodash';
 import Table from 'components/Table/Table';
-import { getWeapons } from 'utils/character';
+import { getWeapons } from 'utils/sourceDataUtils';
 
 const handleSpecialCell = (cell: Cell<object>) => {
   if (cell.value instanceof Array) {
