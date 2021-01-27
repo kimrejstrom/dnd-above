@@ -73,6 +73,9 @@ module.exports = {
   variants: {
     extend: {
       typography: ['dark'],
+      ringColor: ['hover'],
+      ringWidth: ['hover'],
+      ringOpacity: ['hover'],
     },
     backgroundColor: ['odd', 'responsive', 'hover', 'focus', 'dark'],
     borderColor: ['responsive', 'hover', 'focus', 'dark'],

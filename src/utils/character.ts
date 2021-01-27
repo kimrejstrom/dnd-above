@@ -105,7 +105,9 @@ export const getClass = (className: string) =>
 export const getSubClass = (className: string, subClassName: string) => {
   const baseClass = getClass(className);
   return baseClass
-    ? baseClass.subclasses.find(subclass => subclass.name === subClassName)
+    ? baseClass.subclasses
+        .filter(subclass => filterSources(subclass))
+        .find(subclass => subclass.name === subClassName)
     : undefined;
 };
 
@@ -127,7 +129,7 @@ export const getClassFeatures = (className: string) => {
     className.toLowerCase()
   ].classFeature as ClassClassFeature[];
   const relevantClassFeatures = classFeatures
-    .filter(feature => !feature.source.includes('UA'))
+    .filter(feature => filterSources(feature))
     .filter(feature =>
       baseClass?.classFeatures.some(feat =>
         typeof feat === 'string'
@@ -150,7 +152,7 @@ export const getSubClassFeatures = (
     className.toLowerCase()
   ].subclassFeature as SubclassFeature[];
   const relevantSubClassFeatures = subclassFeatures
-    .filter(feature => !feature.source.includes('UA'))
+    .filter(feature => filterSources(feature))
     .filter(feature =>
       subclass?.subclassFeatures!.some(
         feat =>

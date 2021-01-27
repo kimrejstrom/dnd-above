@@ -26,7 +26,7 @@ import PublicCharacter from 'pages/PublicCharacter/PublicCharacter';
 import Edit from 'pages/Edit/Edit';
 import { Loading } from 'components/Loading/Loading';
 import { loadSourceData } from 'features/sourceData/sourceDataSlice';
-import { FuseIndex, initializeSearch } from 'utils/search';
+import { SourceDataFuseList, initializeSearch } from 'utils/search';
 
 // Google Analytics
 initializeGA();
@@ -64,7 +64,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const auth = useAuth();
 
-  const [searchIndex, setSearchIndex] = useState<Array<FuseIndex>>([]);
+  const [searchIndex, setSearchIndex] = useState<Array<SourceDataFuseList>>([]);
 
   useEffect(() => {
     if (!sourceData.hydrated) {

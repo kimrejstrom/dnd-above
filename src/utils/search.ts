@@ -13,24 +13,44 @@ import {
   getSpells,
   getSubClassFeatures,
 } from 'utils/character';
+import { filterSources } from 'utils/data';
 
-export interface FuseIndex {
+export enum ResultType {
+  Spell,
+  Class,
+  ClassFeature,
+  Subclass,
+  SubclassFeature,
+  Race,
+  RaceFluff,
+  Subrace,
+  Background,
+  BackgroundFluff,
+  Item,
+  Action,
+  Feat,
+  Language,
+}
+
+export interface SourceDataFuseList {
   name: string;
   src: string;
-  type: string;
+  page: number;
   baseName?: string;
+  type: ResultType;
 }
 
 export function initializeSearch() {
   // Setup search
-  let fuseIndex: Array<FuseIndex> = [];
+  let fuseIndex: Array<SourceDataFuseList> = [];
 
   // Index Spells
   getSpells()?.forEach(spell => {
     fuseIndex.push({
       name: spell.name,
       src: spell.source,
-      type: 'spellElement',
+      page: spell.page ?? 0,
+      type: ResultType.Spell,
     });
   });
 
@@ -39,33 +59,39 @@ export function initializeSearch() {
     fuseIndex.push({
       name: classElem.name,
       src: classElem.source,
-      type: 'classElement',
+      page: classElem.page ?? 0,
+      type: ResultType.Class,
     });
-    classElem.subclasses.forEach(subclass => {
-      fuseIndex.push({
-        name: subclass.name,
-        baseName: classElem.name,
-        src: subclass.source,
-        type: 'subclassElement',
-      });
-      uniqBy(
-        getSubClassFeatures(classElem.name, subclass.name),
-        'name',
-      ).forEach(feature => {
+    classElem.subclasses
+      .filter(subclass => filterSources(subclass))
+      .forEach(subclass => {
         fuseIndex.push({
-          name: feature.name,
-          baseName: feature.className,
-          src: feature.source,
-          type: 'subclassFeature',
+          name: subclass.name,
+          baseName: classElem.name,
+          src: subclass.source,
+          page: subclass.page ?? 0,
+          type: ResultType.Subclass,
+        });
+        uniqBy(
+          getSubClassFeatures(classElem.name, subclass.name),
+          'name',
+        ).forEach(feature => {
+          fuseIndex.push({
+            name: feature.name,
+            baseName: feature.className,
+            src: feature.source,
+            page: feature.page ?? 0,
+            type: ResultType.SubclassFeature,
+          });
         });
       });
-    });
     uniqBy(getClassFeatures(classElem.name), 'name').forEach(feature => {
       fuseIndex.push({
         name: feature.name,
         baseName: feature.className,
         src: feature.source,
-        type: 'classFeature',
+        page: feature.page ?? 0,
+        type: ResultType.ClassFeature,
       });
     });
   });
@@ -75,7 +101,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: race.name,
       src: race.source,
-      type: 'raceElement',
+      page: race.page ?? 0,
+      type: ResultType.Race,
     });
     if (race.subraces) {
       race.subraces.forEach(subrace => {
@@ -84,7 +111,8 @@ export function initializeSearch() {
             name: subrace.name,
             baseName: race.name,
             src: race.source,
-            type: 'subraceElement',
+            page: race.page ?? 0,
+            type: ResultType.Subrace,
           });
         }
       });
@@ -95,7 +123,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: raceFluff.name,
       src: raceFluff.source,
-      type: 'raceFluffElement',
+      page: 0,
+      type: ResultType.RaceFluff,
     });
   });
 
@@ -104,7 +133,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: background.name,
       src: background.source,
-      type: 'backgroundElement',
+      page: background.page ?? 0,
+      type: ResultType.Background,
     });
   });
 
@@ -112,7 +142,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: backgroundFluff.name,
       src: backgroundFluff.source,
-      type: 'backgroundFluffElement',
+      page: 0,
+      type: ResultType.BackgroundFluff,
     });
   });
 
@@ -121,7 +152,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: item.name,
       src: item.source,
-      type: 'itemElement',
+      page: item.page ?? 0,
+      type: ResultType.Item,
     });
   });
 
@@ -130,7 +162,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: action.name,
       src: action.source,
-      type: 'actionElement',
+      page: action.page ?? 0,
+      type: ResultType.Action,
     });
   });
 
@@ -139,7 +172,8 @@ export function initializeSearch() {
     fuseIndex.push({
       name: feat.name,
       src: feat.source,
-      type: 'featElement',
+      page: feat.page ?? 0,
+      type: ResultType.Feat,
     });
   });
 
@@ -148,10 +182,10 @@ export function initializeSearch() {
     fuseIndex.push({
       name: lang.name,
       src: lang.source,
-      type: 'languageElement',
+      page: lang.page ?? 0,
+      type: ResultType.Language,
     });
   });
 
-  console.log('initSearch: ', fuseIndex.length);
   return fuseIndex;
 }

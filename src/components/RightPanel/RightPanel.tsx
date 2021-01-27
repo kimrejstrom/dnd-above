@@ -10,10 +10,11 @@ import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { getActions, getAllItems, getSpells } from 'utils/character';
-import { FuseIndex } from 'utils/search';
+import { ResultType, SourceDataFuseList } from 'utils/search';
+import { useFuse } from 'utils/useFuse';
 
 interface Props {
-  searchIndex: Array<FuseIndex>;
+  searchIndex: Array<SourceDataFuseList>;
 }
 
 const RightPanel = ({ searchIndex }: Props) => {
@@ -32,6 +33,11 @@ const RightPanel = ({ searchIndex }: Props) => {
     dispatch(setSelectedIndex(updatedPanel));
   };
 
+  const { hits, query, onSearch } = useFuse(searchIndex, {
+    keys: ['name'],
+    limit: 20,
+  });
+
   return (
     <div
       style={{ minHeight: 'calc(100% - 5rem)' }}
@@ -46,9 +52,13 @@ const RightPanel = ({ searchIndex }: Props) => {
         <div className="w-full">
           <div className="relative">
             <input
-              type="search"
-              placeholder="Search"
-              className="appearance-none bg-light-100 border border-gray-400 text-dark-100 rounded pl-8 pr-4 py-2 w-full"
+              name="search"
+              type="text"
+              placeholder="Search..."
+              className="form-input rounded pl-8 pr-4 py-2 w-full"
+              autoComplete="off"
+              onKeyUp={onSearch}
+              onChange={onSearch} // handles "clear search" click
             />
             <div className="absolute top-0 left-0 p-3 flex items-center justify-center">
               <svg
@@ -69,12 +79,52 @@ const RightPanel = ({ searchIndex }: Props) => {
           className="pl-1 pr-3 h-full"
         >
           <TabList className="flex justify-between text-center">
+            <Tab>Search</Tab>
             <Tab>Roller</Tab>
             <Tab>Actions</Tab>
             <Tab>Spells</Tab>
             <Tab>Items</Tab>
           </TabList>
           <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
+            <TabPanel className="overflow-y-scroll px-2 dnd-body">
+              <div>
+                {query ? (
+                  <div className="mb-2 font-bold">
+                    Showing results for{' '}
+                    <div className="inline font-mono">{query}:</div>
+                  </div>
+                ) : (
+                  `No search results`
+                )}
+              </div>
+              <ol>
+                {hits.map(hit => {
+                  console.log(hit);
+                  return (
+                    <li
+                      className="my-1 bg-light-300 dark:bg-dark-200 rounded hover:bg-light-200 dark:hover:bg-dark-100 hover:ring-2 hover:ring-yellow-500 hover:ring-opacity-50"
+                      key={hit.refIndex}
+                    >
+                      <div className="py-1 px-2 flex justify-between">
+                        <div>
+                          {`${ResultType[hit.item.type]}: ${hit.item.name} ${
+                            hit.item.baseName ? `(${hit.item.baseName})` : ''
+                          }`}
+                        </div>
+                        <div>
+                          <span
+                            className={`inline mr-0.5 source${hit.item.src.toUpperCase()}`}
+                          >{`${hit.item.src}`}</span>
+                          <span className="inline">{`${
+                            hit.item.page ? `p${hit.item.page}` : 'N/A'
+                          }`}</span>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <Roller />
             </TabPanel>
