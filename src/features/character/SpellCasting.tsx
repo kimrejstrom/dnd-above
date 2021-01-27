@@ -22,7 +22,7 @@ import _ from 'lodash';
 import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
-import { getSpell } from 'utils/sourceDataUtils';
+import { getSpellFromList } from 'utils/sourceDataUtils';
 
 interface Props {
   character: CharacterListItem;
@@ -123,7 +123,7 @@ const SpellCasting = ({ character, readonly }: Props) => {
   ).sourceData;
 
   const activeSpells = character.gameData.spells
-    .map(spell => getSpell(spells, spell.name))
+    .map(spell => getSpellFromList(spells, spell.name))
     .filter(isDefined);
   const spellLevels = _.groupBy(activeSpells, 'level');
 

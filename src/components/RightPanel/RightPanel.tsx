@@ -10,11 +10,16 @@ import Entry from 'components/Entry/Entry';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { getActions, getAllItems, getSpells } from 'utils/sourceDataUtils';
-import { ResultType, SourceDataFuseList } from 'utils/search';
+import {
+  findSearchResultSourceData,
+  ResultType,
+  SourceDataFuseItem,
+} from 'utils/search';
 import { useFuse } from 'utils/useFuse';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 
 interface Props {
-  searchIndex: Array<SourceDataFuseList>;
+  searchIndex: Array<SourceDataFuseItem>;
 }
 
 const RightPanel = ({ searchIndex }: Props) => {
@@ -99,27 +104,37 @@ const RightPanel = ({ searchIndex }: Props) => {
               </div>
               <ol>
                 {hits.map(hit => {
-                  console.log(hit);
+                  const { data, renderer } = findSearchResultSourceData(
+                    hit.item,
+                  );
                   return (
                     <li
                       className="my-1 bg-light-300 dark:bg-dark-200 rounded hover:bg-light-200 dark:hover:bg-dark-100 hover:ring-2 hover:ring-yellow-500 hover:ring-opacity-50"
                       key={hit.refIndex}
                     >
-                      <div className="py-1 px-2 flex justify-between">
-                        <div>
-                          {`${ResultType[hit.item.type]}: ${hit.item.name} ${
-                            hit.item.baseName ? `(${hit.item.baseName})` : ''
-                          }`}
+                      <DetailedEntryTrigger
+                        extraClassName={
+                          hit.item.type === ResultType.Spell ? 'tight' : ''
+                        }
+                        data={data}
+                        renderer={renderer}
+                      >
+                        <div className="py-1 px-2 flex justify-between">
+                          <div>
+                            {`${ResultType[hit.item.type]}: ${hit.item.name} ${
+                              hit.item.baseName ? `(${hit.item.baseName})` : ''
+                            }`}
+                          </div>
+                          <div>
+                            <span
+                              className={`inline mr-0.5 source${hit.item.src.toUpperCase()}`}
+                            >{`${hit.item.src}`}</span>
+                            <span className="inline">{`${
+                              hit.item.page ? `p${hit.item.page}` : 'N/A'
+                            }`}</span>
+                          </div>
                         </div>
-                        <div>
-                          <span
-                            className={`inline mr-0.5 source${hit.item.src.toUpperCase()}`}
-                          >{`${hit.item.src}`}</span>
-                          <span className="inline">{`${
-                            hit.item.page ? `p${hit.item.page}` : 'N/A'
-                          }`}</span>
-                        </div>
-                      </div>
+                      </DetailedEntryTrigger>
                     </li>
                   );
                 })}

@@ -159,8 +159,13 @@ export const getOtherItems = () =>
 // SPELL UTILS
 export const getSpells = () => getSourceData(store.getState())?.spells;
 
-export const getSpell = (allSpells: SpellElement[], spellName: string) =>
-  allSpells.find(sp => sp.name === spellName);
+export const getSpell = (spellName: string) =>
+  getSpells()!.find(sp => sp.name === spellName);
+
+export const getSpellFromList = (
+  allSpells: SpellElement[],
+  spellName: string,
+) => allSpells.find(sp => sp.name === spellName);
 
 // MISC UTILS
 export const getActions = () => getSourceData(store.getState())?.actions;

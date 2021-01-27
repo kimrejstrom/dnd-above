@@ -1,9 +1,9 @@
 import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import { SourceDataFuseList } from 'utils/search';
+import { SourceDataFuseItem } from 'utils/search';
 
-export const useFuse = (list: SourceDataFuseList[], options: any) => {
+export const useFuse = (list: SourceDataFuseItem[], options: any) => {
   // defining our query state in there directly
   const [query, updateQuery] = useState('');
 

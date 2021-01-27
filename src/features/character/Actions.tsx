@@ -9,7 +9,7 @@ import { CharacterListItem } from 'features/character/characterListSlice';
 import { isSpellCaster } from 'utils/character';
 import {
   getItem,
-  getSpell,
+  getSpellFromList,
   getSpells,
   getActions as getActionsData,
 } from 'utils/sourceDataUtils';
@@ -50,7 +50,7 @@ const getSpellsByCastingTime = (
   filterCondition: string,
 ) =>
   character.gameData.spells
-    .map(sp => getSpell(spells, sp.name))
+    .map(sp => getSpellFromList(spells, sp.name))
     .filter(isDefined)
     .filter(
       sp => sp.time.filter(entry => entry.unit === filterCondition).length,
@@ -98,7 +98,7 @@ const getAttackSpells = (
   spells: SpellElement[],
 ) =>
   character.gameData.spells
-    .map(sp => getSpell(spells, sp.name))
+    .map(sp => getSpellFromList(spells, sp.name))
     .filter(isDefined)
     .filter(sp => sp?.spellAttack !== undefined)
     .map(sp => {

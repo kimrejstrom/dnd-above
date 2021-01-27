@@ -4,16 +4,19 @@ import {
   getAllItems,
   getBackgrounds,
   getBackgroundsFluff,
+  getClass,
   getClassFeatures,
   getFeats,
   getLanguages,
   getPlayableClasses,
   getRaces,
   getRacesFluff,
+  getSpell,
   getSpells,
   getSubClassFeatures,
 } from 'utils/sourceDataUtils';
 import { filterSources } from 'utils/data';
+import { RenderedSpell } from 'utils/render';
 
 export enum ResultType {
   Spell,
@@ -32,7 +35,7 @@ export enum ResultType {
   Language,
 }
 
-export interface SourceDataFuseList {
+export interface SourceDataFuseItem {
   name: string;
   src: string;
   page: number;
@@ -42,7 +45,7 @@ export interface SourceDataFuseList {
 
 export function initializeSearch() {
   // Setup search
-  let fuseIndex: Array<SourceDataFuseList> = [];
+  let fuseIndex: Array<SourceDataFuseItem> = [];
 
   // Index Spells
   getSpells()?.forEach(spell => {
@@ -187,5 +190,52 @@ export function initializeSearch() {
     });
   });
 
+  console.log('init search', fuseIndex.length);
   return fuseIndex;
+}
+
+export function findSearchResultSourceData(
+  searchResult: SourceDataFuseItem,
+): { data: any; renderer?: any } {
+  switch (searchResult.type) {
+    case ResultType.Spell: {
+      const spell = getSpell(searchResult.name);
+      return { data: spell, renderer: RenderedSpell(spell) };
+    }
+
+    case ResultType.Class: {
+      const classElem = getClass(searchResult.name);
+      return { data: classElem };
+    }
+
+    case ResultType.ClassFeature:
+      break;
+    case ResultType.Subclass:
+      break;
+    case ResultType.SubclassFeature:
+      break;
+    case ResultType.Race:
+      break;
+    case ResultType.RaceFluff:
+      break;
+    case ResultType.Subrace:
+      break;
+    case ResultType.Background:
+      break;
+    case ResultType.BackgroundFluff:
+      break;
+    case ResultType.Item:
+      break;
+    case ResultType.Action:
+      break;
+    case ResultType.Feat:
+      break;
+    case ResultType.Language:
+      break;
+    default:
+      return {
+        data: `Unknown item type`,
+      };
+  }
+  return { data: `No source data found for ${searchResult.name}` };
 }
