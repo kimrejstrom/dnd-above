@@ -4872,58 +4872,75 @@ Renderer.prototype.item = {
   // default is general -> specific
   LINK_SPECIFIC_TO_GENERIC_DIRECTION: 1,
 
+  _sortProperties(a, b) {
+    return SortUtil.ascSort(
+      Renderer.item.propertyMap[a].name,
+      Renderer.item.propertyMap[b].name,
+    );
+  },
+
   _getPropertiesText(item) {
     const renderer = Renderer.get();
     if (item.property) {
       let renderedDmg2 = false;
 
-      const renderedProperties = item.property.map(prop => {
-        const fullProp = renderer.item.propertyMap[prop];
+      const renderedProperties = item.property
+        .sort(renderer.item._sortProperties)
+        .map(prop => {
+          const fullProp = renderer.item.propertyMap[prop];
 
-        if (fullProp.template) {
-          const toRender = fullProp.template.replace(/{{([^}]+)}}/g, (...m) => {
-            // Special case for damage dice -- need to add @damage tags
-            if (m[1] === 'item.dmg1') {
-              return renderer.item._renderDamage(item.dmg1);
-            } else if (m[1] === 'item.dmg2') {
-              renderedDmg2 = true;
-              return renderer.item._renderDamage(item.dmg2);
-            }
+          if (fullProp.template) {
+            const toRender = fullProp.template.replace(
+              /{{([^}]+)}}/g,
+              (...m) => {
+                // Special case for damage dice -- need to add @damage tags
+                if (m[1] === 'item.dmg1') {
+                  return renderer.item._renderDamage(item.dmg1);
+                } else if (m[1] === 'item.dmg2') {
+                  renderedDmg2 = true;
+                  return renderer.item._renderDamage(item.dmg2);
+                }
 
-            const spl = m[1].split('.');
-            switch (spl[0]) {
-              case 'prop_name':
-                return fullProp.name;
-              case 'item': {
-                const path = spl.slice(1);
-                if (!path.length) return `{@i missing key path}`;
-                return MiscUtil.get(item, ...path) || '';
-              }
-              default:
-                return `{@i unknown template root: "${spl[0]}"}`;
-            }
-          });
-          return Renderer.get().render(toRender);
-        } else return fullProp.name;
-      });
+                const spl = m[1].split('.');
+                switch (spl[0]) {
+                  case 'prop_name':
+                    return fullProp.name;
+                  case 'item': {
+                    const path = spl.slice(1);
+                    if (!path.length) return `{@i missing key path}`;
+                    return MiscUtil.get(item, ...path) || '';
+                  }
+                  default:
+                    return `{@i unknown template root: "${spl[0]}"}`;
+                }
+              },
+            );
+            return Renderer.get().render(toRender);
+          } else return fullProp.name;
+        });
 
       if (!renderedDmg2 && item.dmg2)
         renderedProperties.unshift(
           `alt. ${renderer.item._renderDamage(item.dmg2)}`,
         );
 
-      return `${renderedProperties.join(', ')}`;
+      return `${
+        item.dmg1 && renderedProperties.length ? ' - ' : ''
+      }${renderedProperties.join(', ')}`;
     } else {
       const parts = [];
       if (item.dmg2)
         parts.push(`alt. ${renderer.item._renderDamage(item.dmg2)}`);
       if (item.range) parts.push(`range ${item.range} ft.`);
-      return `${parts.join(', ')}`;
+      return `${item.dmg1 && parts.length ? ' - ' : ''}${parts.join(', ')}`;
     }
   },
 
   _renderDamage(dmg) {
     if (!dmg) return '';
+    dmg = dmg.trim();
+    const mDice = /^{@dice ([^}]+)}$/i.exec(dmg);
+    if (mDice) return Renderer.get().render(`{@damage ${mDice[1]}}`);
     const tagged = dmg.replace(
       RollerUtil.DICE_REGEX,
       (...m) => `{@damage ${m[1]}}`,
@@ -4964,9 +4981,13 @@ Renderer.prototype.item = {
       item.capCargo ||
       item.capPassenger ||
       item.crew ||
+      item.crewMin ||
+      item.crewMax ||
       item.vehAc ||
       item.vehHp ||
-      item.vehDmgThresh
+      item.vehDmgThresh ||
+      item.travelCost ||
+      item.shippingCost
     ) {
       const vehPartUpper = item.vehSpeed
         ? `Speed: ${Parser.numberToVulgar(item.vehSpeed)} mph`
@@ -4990,9 +5011,17 @@ Renderer.prototype.item = {
               .join(', ')}`
           : null;
 
+      const {
+        travelCostFull,
+        shippingCostFull,
+      } = Parser.itemVehicleCostsToFull(item);
+
       // These may not be present in homebrew
       const vehPartLower = [
         item.crew ? `Crew ${item.crew}` : null,
+        item.crewMin && item.crewMax
+          ? `Crew ${item.crewMin}-${item.crewMax}`
+          : null,
         item.vehAc ? `AC ${item.vehAc}` : null,
         item.vehHp
           ? `HP ${item.vehHp}${
@@ -5004,14 +5033,30 @@ Renderer.prototype.item = {
         .join(', ');
 
       damageParts.push(
-        [vehPartUpper, vehPartMiddle, vehPartLower]
+        [
+          vehPartUpper,
+          vehPartMiddle,
+
+          // region ~~Dammit Mercer~~ Additional fields present in EGW
+          travelCostFull
+            ? `Personal Travel Cost: ${travelCostFull} per mile per passenger`
+            : null,
+          shippingCostFull
+            ? `Shipping Cost: ${shippingCostFull} per 100 pounds per mile`
+            : null,
+          // endregion
+
+          vehPartLower,
+        ]
           .filter(Boolean)
           .join('<br>'),
       );
     }
+
     const damage = damageParts.join(', ');
     const damageType = item.dmgType ? Parser.dmgTypeToFull(item.dmgType) : '';
     const propertiesTxt = renderer.item._getPropertiesText(item);
+
     return [damage, damageType, propertiesTxt];
   },
 
@@ -5020,7 +5065,7 @@ Renderer.prototype.item = {
     const typeRarity = [
       item._typeHtml === 'Other' ? '' : item._typeHtml,
       [
-        item.tier,
+        item.tier ? `${item.tier} tier` : '',
         item.rarity && renderer.item.doRenderRarity(item.rarity)
           ? item.rarity
           : '',
@@ -5056,20 +5101,28 @@ Renderer.prototype.item = {
   },
 
   getHtmlAndTextTypes(item) {
+    const renderer = Renderer.get();
     const typeListHtml = [];
     const typeListText = [];
     let showingBase = false;
     if (item.wondrous) {
-      typeListHtml.push('Wondrous Item');
-      typeListText.push('Wondrous Item');
+      typeListHtml.push(`wondrous item${item.tattoo ? ` (tattoo)` : ''}`);
+      typeListText.push('wondrous item');
+    }
+    if (item.tattoo) {
+      typeListText.push('tattoo');
     }
     if (item.staff) {
-      typeListHtml.push('Staff');
-      typeListText.push('Staff');
+      typeListHtml.push('staff');
+      typeListText.push('staff');
+    }
+    if (item.ammo) {
+      typeListHtml.push('ammunition');
+      typeListText.push('ammunition');
     }
     if (item.firearm) {
-      typeListHtml.push('Firearm');
-      typeListText.push('Firearm');
+      typeListHtml.push('firearm');
+      typeListText.push('firearm');
     }
     if (item.age) {
       typeListHtml.push(item.age);
@@ -5077,32 +5130,42 @@ Renderer.prototype.item = {
     }
     if (item.weaponCategory) {
       typeListHtml.push(
-        `${item.weaponCategory} Weapon${
+        `${item.weaponCategory} weapon${
           item.baseItem
-            ? ` (${Renderer.get().render(`{@item ${item.baseItem}`)})`
+            ? ` (${Renderer.get().render(`{@item ${item.baseItem}}`)})`
             : ''
         }`,
       );
-      typeListText.push(`${item.weaponCategory} Weapon`);
+      typeListText.push(`${item.weaponCategory} weapon`);
       showingBase = true;
     }
     if (item.staff && item.type !== 'M') {
       // DMG p140: "Unless a staff's description says otherwise, a staff can be used as a quarterstaff."
-      typeListHtml.push('Melee Weapon');
-      typeListText.push('Melee Weapon');
+      typeListHtml.push('melee weapon');
+      typeListText.push('melee weapon');
     }
     if (item.type) {
-      const abv = Parser.itemTypeToFull(item.type);
+      const fullType = renderer.item.getItemTypeName(item.type);
+
       if (!showingBase && !!item.baseItem)
         typeListHtml.push(
-          `${abv} (${Renderer.get().render(`{@item ${item.baseItem}`)})`,
+          `${fullType} (${Renderer.get().render(`{@item ${item.baseItem}}`)})`,
         );
-      else typeListHtml.push(abv);
-      typeListText.push(abv);
+      else if (item.type === 'S')
+        typeListHtml.push(Renderer.get().render(`armor ({@item shield|phb})`));
+      else typeListHtml.push(fullType);
+
+      typeListText.push(fullType);
     }
     if (item.poison) {
-      typeListHtml.push('Poison');
-      typeListText.push('Poison');
+      typeListHtml.push(
+        `poison${
+          item.poisonTypes
+            ? ` (${item.poisonTypes.joinConjunct(', ', ' or ')})`
+            : ''
+        }`,
+      );
+      typeListText.push('poison');
     }
     return [typeListText, typeListHtml.join(', ')];
   },
@@ -5111,7 +5174,7 @@ Renderer.prototype.item = {
     const renderer = Renderer.get();
 
     const handlers = {
-      string: (ident, str) => {
+      string: str => {
         const stack = [];
         let depth = 0;
 
@@ -5177,6 +5240,9 @@ Renderer.prototype.item = {
       'colLabels',
       'dataCreature',
       'dataSpell',
+      'dataItem',
+      'dataObject',
+      'dataTrapHazard',
       'name',
     ]);
 
@@ -5186,11 +5252,9 @@ Renderer.prototype.item = {
         type: 'entries',
         entries: item._fullEntries || item.entries,
       });
-      const procEntryList = MiscUtil.getWalker(walkerKeyBlacklist).walk(
-        'italiciseName',
-        entryList,
-        handlers,
-      );
+      const procEntryList = MiscUtil.getWalker({
+        keyBlacklist: walkerKeyBlacklist,
+      }).walk(entryList, handlers);
       renderer.recursiveRender(procEntryList, renderStack, { depth: 1 });
     }
 
@@ -5199,9 +5263,9 @@ Renderer.prototype.item = {
         type: 'entries',
         entries: item._fullAdditionalEntries || item.additionalEntries,
       });
-      const procAdditionEntriesList = MiscUtil.getWalker(
-        walkerKeyBlacklist,
-      ).walk('italiciseName', additionEntriesList, handlers);
+      const procAdditionEntriesList = MiscUtil.getWalker({
+        keyBlacklist: walkerKeyBlacklist,
+      }).walk(additionEntriesList, handlers);
       renderer.recursiveRender(procAdditionEntriesList, renderStack, {
         depth: 1,
       });
@@ -5219,38 +5283,39 @@ Renderer.prototype.item = {
     return renderStack.join('').trim();
   },
 
-  getCompactRenderedString(item, withEntries = true) {
+  getCompactRenderedString(item, opts) {
     const renderer = Renderer.get();
+    opts = opts || {};
+
     const [
       damage,
       damageType,
       propertiesTxt,
     ] = renderer.item.getDamageAndPropertiesText(item);
     const hasEntries =
-      withEntries &&
-      ((item._fullEntries && item._fullEntries.length) ||
-        (item.entries && item.entries.length));
+      (item._fullAdditionalEntries && item._fullAdditionalEntries.length) ||
+      (item._fullEntries && item._fullEntries.length) ||
+      (item.entries && item.entries.length);
 
     return `
-          ${renderer.utils.getExcludedTr(item, 'item')}
-          ${renderer.utils.getNameTr(item)}
-          <tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item.getTypeRarityAndAttunementText(
-            item,
-          )}</td></tr>
+		${renderer.utils.getExcludedTr(item, 'item')}
+		${renderer.utils.getNameTr(item)}
+		<tr><td class="rd-item__type-rarity-attunement" colspan="6">${renderer.item
+      .getTypeRarityAndAttunementText(item)
+      .uppercaseFirst()}</td></tr>
           <tr>
               <td colspan="2">${[
-                Parser.itemValueToFull(item),
+                Parser.itemValueToFullMultiCurrency(item),
                 Parser.itemWeightToFull(item),
               ]
                 .filter(Boolean)
-                .join(', ')}</td>
+                .join(', ')
+                .uppercaseFirst()}</td>
+			<td class="text-right" colspan="4">${damage} ${damageType} ${propertiesTxt}</td>
           </tr>
-      <tr><td colspan="6">${damage}</td></tr>
-      <tr><td colspan="6">${damageType}</td></tr>
-      <tr><td colspan="6">${propertiesTxt}</td></tr>
           ${
             hasEntries
-              ? `${renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
+              ? `${renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${Renderer.item.getRenderedEntries(
                   item,
                   true,
                 )}</td></tr>`
@@ -5258,16 +5323,16 @@ Renderer.prototype.item = {
           }`;
   },
 
-  _hiddenRarity: new Set(['None', 'Unknown', 'Unknown (Magic)', 'Varies']),
+  _hiddenRarity: new Set(['none', 'unknown', 'unknown (magic)', 'varies']),
   doRenderRarity(rarity) {
     const renderer = Renderer.get();
     return !renderer.item._hiddenRarity.has(rarity);
   },
 
+  _builtLists: {},
   propertyMap: {},
   typeMap: {},
   _additionalEntriesMap: {},
-
   _addProperty(p) {
     const renderer = Renderer.get();
     if (renderer.item.propertyMap[p.abbreviation]) return;
@@ -5293,6 +5358,321 @@ Renderer.prototype.item = {
     const renderer = Renderer.get();
     if (renderer.item._additionalEntriesMap[e.appliesTo]) return;
     renderer.item._additionalEntriesMap[e.appliesTo] = MiscUtil.copy(e.entries);
+  },
+
+  _enhanceItems(allItems) {
+    const renderer = Renderer.get();
+    allItems.forEach(item => renderer.item.enhanceItem(item));
+    return allItems;
+  },
+
+  getItemTypeName(t) {
+    const renderer = Renderer.get();
+    const fullType = renderer.item.typeMap[t];
+    if (!fullType)
+      throw new Error(
+        `Item type ${t} not found. You probably meant to load the property/type reference first; see \`Renderer.item.populatePropertyAndTypeReference()\`.`,
+      );
+    return fullType.name || t;
+  },
+
+  enhanceItem(inputItem) {
+    let item = { ...inputItem };
+    const renderer = Renderer.get();
+    if (item._isEnhanced) return;
+    item._isEnhanced = true;
+    if (item.noDisplay) return;
+    if (item.type === 'GV') item._category = 'Generic Variant';
+    if (item._category == null) item._category = 'Other';
+    if (item.entries == null) item.entries = [];
+    if (
+      item.type &&
+      renderer.item.typeMap[item.type] &&
+      renderer.item.typeMap[item.type].entries
+    ) {
+      renderer.item._initFullEntries(item);
+      renderer.item.typeMap[item.type].entries.forEach(e =>
+        item._fullEntries.push(e),
+      );
+    }
+    if (item.property) {
+      item.property.forEach(p => {
+        if (!renderer.item.propertyMap[p])
+          throw new Error(
+            `Item property ${p} not found. You probably meant to load the property/type reference first; see \`renderer.item.populatePropertyAndTypeReference()\`.`,
+          );
+        if (renderer.item.propertyMap[p].entries) {
+          renderer.item._initFullEntries(item);
+          renderer.item.propertyMap[p].entries.forEach(e =>
+            item._fullEntries.push(e),
+          );
+        }
+      });
+    }
+    // The following could be encoded in JSON, but they depend on more than one JSON property; maybe fix if really bored later
+    if (item.type === 'LA' || item.type === 'MA' || item.type === 'HA') {
+      if (item.resist) {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          `You have resistance to ${item.resist} damage while you wear this armor.`,
+        );
+      }
+      if (item.stealth) {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          'The wearer has disadvantage on Dexterity ({@skill Stealth}) checks.',
+        );
+      }
+      if (item.type === 'HA' && item.strength) {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          `If the wearer has a Strength score lower than ${item.strength}, their speed is reduced by 10 feet.`,
+        );
+      }
+    } else if (item.resist) {
+      if (item.type === 'P') {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          `When you drink this potion, you gain resistance to ${item.resist} damage for 1 hour.`,
+        );
+      }
+      if (item.type === 'RG') {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          `You have resistance to ${item.resist} damage while wearing this ring.`,
+        );
+      }
+      if (!item.type && item.wondrous && item.tattoo) {
+        renderer.item._initFullEntries(item);
+        item._fullEntries.push(
+          `Produced by a special needle, this magic tattoo features designs that emphasize one color (${item.color}).`,
+          {
+            type: 'entries',
+            name: 'Tattoo Attunement',
+            entries: [
+              'To attune to this item, you hold the needle to your skin where you want the tattoo to appear, pressing the needle there throughout the attunement process. When the attunement is complete, the needle turns into the ink that becomes the tattoo, which appears on the skin.',
+              'If your attunement to the tattoo ends, the tattoo vanishes, and the needle reappears in your space.',
+            ],
+          },
+          {
+            type: 'entries',
+            name: 'Damage Resistance',
+            entries: [
+              `While the tattoo is on your skin, you have resistance to ${item.resist} damage`,
+            ],
+          },
+          {
+            type: 'entries',
+            name: 'Damage Absorption',
+            entries: [
+              `When you take ${item.resist} damage, you can use your reaction to gain immunity against that instance of the damage, and you regain a number of hit points equal to half the damage you would have taken. Once this reaction is used, it can't be used again until the next dawn.`,
+            ],
+          },
+        );
+      }
+    }
+    if (item.type === 'SCF') {
+      if (item._isItemGroup) {
+        if (item.scfType === 'arcane' && item.source !== SRC_ERLW) {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'An arcane focus is a special item\u2014an orb, a crystal, a rod, a specially constructed staff, a wand-like length of wood, or some similar item\u2014designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.',
+          );
+        }
+        if (item.scfType === 'druid') {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'A druidic focus might be a sprig of mistletoe or holly, a wand or scepter made of yew or another special wood, a staff drawn whole out of a living tree, or a totem object incorporating feathers, fur, bones, and teeth from sacred animals. A druid can use such an object as a spellcasting focus.',
+          );
+        }
+        if (item.scfType === 'holy') {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'A holy symbol is a representation of a god or pantheon. It might be an amulet depicting a symbol representing a deity, the same symbol carefully engraved or inlaid as an emblem on a shield, or a tiny box holding a fragment of a sacred relic. A cleric or paladin can use a holy symbol as a spellcasting focus. To use the symbol in this way, the caster must hold it in hand, wear it visibly, or bear it on a shield.',
+          );
+        }
+      } else {
+        if (item.scfType === 'arcane') {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'An arcane focus is a special item designed to channel the power of arcane spells. A sorcerer, warlock, or wizard can use such an item as a spellcasting focus.',
+          );
+        }
+        if (item.scfType === 'druid') {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'A druid can use this object as a spellcasting focus.',
+          );
+        }
+        if (item.scfType === 'holy') {
+          renderer.item._initFullEntries(item);
+          item._fullEntries.push(
+            'A holy symbol is a representation of a god or pantheon.',
+          );
+          item._fullEntries.push(
+            'A cleric or paladin can use a holy symbol as a spellcasting focus. To use the symbol in this way, the caster must hold it in hand, wear it visibly, or bear it on a shield.',
+          );
+        }
+      }
+    }
+    // add additional entries based on type (e.g. XGE variants)
+    if (
+      item.type === 'T' ||
+      item.type === 'AT' ||
+      item.type === 'INS' ||
+      item.type === 'GS'
+    ) {
+      // tools, artisan's tools, instruments, gaming sets
+      renderer.item._initFullAdditionalEntries(item);
+      item._fullAdditionalEntries.push(
+        { type: 'hr' },
+        `{@note See the {@variantrule Tool Proficiencies|XGE} entry for more information.}`,
+      );
+    }
+
+    // Add additional sources for all instruments and gaming sets
+    if (item.type === 'INS' || item.type === 'GS')
+      item.additionalSources = item.additionalSources || [];
+    if (item.type === 'INS') {
+      if (
+        !item.additionalSources.find(
+          it => it.source === 'XGE' && it.page === 83,
+        )
+      )
+        item.additionalSources.push({ source: 'XGE', page: 83 });
+    } else if (item.type === 'GS') {
+      if (
+        !item.additionalSources.find(
+          it => it.source === 'XGE' && it.page === 81,
+        )
+      )
+        item.additionalSources.push({ source: 'XGE', page: 81 });
+    }
+
+    if (item.type && renderer.item._additionalEntriesMap[item.type]) {
+      renderer.item._initFullAdditionalEntries(item);
+      const additional = renderer.item._additionalEntriesMap[item.type];
+      item._fullAdditionalEntries.push({
+        type: 'entries',
+        entries: additional,
+      });
+    }
+
+    // bake in types
+    const [typeListText, typeHtml] = renderer.item.getHtmlAndTextTypes(item);
+    item._typeListText = typeListText;
+    item._typeHtml = typeHtml;
+
+    // bake in attunement
+    const [attune, attuneCat] = renderer.item.getAttunementAndAttunementCatText(
+      item,
+    );
+    item._attunement = attune;
+    item._attunementCategory = attuneCat;
+
+    if (item.reqAttuneAlt) {
+      const [
+        attuneAlt,
+        attuneCatAlt,
+      ] = renderer.item.getAttunementAndAttunementCatText(item, 'reqAttuneAlt');
+      item._attunementCategory = [attuneCat, attuneCatAlt];
+    }
+
+    // handle item groups
+    if (item._isItemGroup) {
+      renderer.item._initFullEntries(item);
+      item._fullEntries.push(
+        'Multiple variations of this item exist, as listed below:',
+        {
+          type: 'list',
+          items: item.items.map(it =>
+            typeof it === 'string'
+              ? `{@item ${it}}`
+              : `{@item ${it.name}|${it.source}}`,
+          ),
+        },
+      );
+    }
+
+    // region Add base items list
+    // item.variants was added during generic variant creation
+    // TAG ITEM_VARIANTS
+    if (item.variants && item.variants.length) {
+      renderer.item._initFullEntries(item);
+      item._fullEntries.push({
+        type: 'entries',
+        name: 'Base items',
+        entries: [
+          'This item variant can be applied to the following base items:',
+          {
+            type: 'list',
+            items: item.variants.map(({ base, specificVariant }) => {
+              return `{@item ${base.name}|${base.source}} ({@item ${specificVariant.name}|${specificVariant.source}})`;
+            }),
+          },
+        ],
+      });
+    }
+    // endregion
+    return item;
+  },
+
+  unenhanceItem(item) {
+    if (!item._isEnhanced) return;
+    delete item._isEnhanced;
+    delete item._fullEntries;
+  },
+
+  // flip e.g. "longsword +1" to "+1 longsword"
+  modifierPostToPre(item) {
+    const m = /^(.*)(?:,)? (\+\d+)$/.exec(item.name);
+    if (m)
+      return Object.assign(MiscUtil.copy(item), { name: `${m[2]} ${m[1]}` });
+    else return null;
+  },
+
+  _initFullEntries(item) {
+    item._fullEntries =
+      item._fullEntries || (item.entries ? MiscUtil.copy(item.entries) : []);
+  },
+
+  _initFullAdditionalEntries(item) {
+    item._fullAdditionalEntries =
+      item._fullAdditionalEntries ||
+      (item.additionalEntries ? MiscUtil.copy(item.additionalEntries) : []);
+  },
+
+  _isRefPopulated: false,
+  populatePropertyAndTypeReference: () => {
+    if (Renderer.item._isRefPopulated) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      DataUtil.loadJSON(`${Renderer.get().baseUrl}data/items-base.json`).then(
+        data => {
+          if (Renderer.item._isRefPopulated) {
+            resolve();
+          } else {
+            try {
+              Object.entries(
+                Parser.ITEM_TYPE_JSON_TO_ABV,
+              ).forEach(([abv, name]) =>
+                Renderer.item._addType({ abbreviation: abv, name }),
+              );
+              data.itemProperty.forEach(p => Renderer.item._addProperty(p));
+              data.itemType.forEach(t => Renderer.item._addType(t));
+              data.itemTypeAdditionalEntries.forEach(e =>
+                Renderer.item._addAdditionalEntries(e),
+              );
+              Renderer.item._pAddBrewPropertiesAndTypes().then(() => {
+                Renderer.item._isRefPopulated = true;
+                resolve();
+              });
+            } catch (e) {
+              reject(e);
+            }
+          }
+        },
+      );
+    });
   },
 };
 
@@ -9660,36 +10040,38 @@ Parser.SOURCES_NON_STANDARD_WOTC = new Set([
 ]);
 
 Parser.ITEM_TYPE_JSON_TO_ABV = {
-  A: 'Ammunition',
-  AF: 'Ammunition',
-  AT: "Artisan's Tools",
-  EM: 'Eldritch Machine',
-  EXP: 'Explosive',
-  G: 'Adventuring Gear',
-  GS: 'Gaming Set',
-  HA: 'Heavy Armor',
-  INS: 'Instrument',
-  LA: 'Light Armor',
-  M: 'Melee Weapon',
-  MA: 'Medium Armor',
-  MNT: 'Mount',
-  GV: 'Generic Variant',
-  P: 'Potion',
-  R: 'Ranged Weapon',
-  RD: 'Rod',
-  RG: 'Ring',
-  S: 'Shield',
-  SC: 'Scroll',
-  SCF: 'Spellcasting Focus',
-  OTH: 'Other',
-  T: 'Tools',
-  TAH: 'Tack and Harness',
-  TG: 'Trade Good',
-  $: 'Treasure',
-  VEH: 'Vehicle (land)',
-  SHP: 'Vehicle (water)',
-  AIR: 'Vehicle (air)',
-  WD: 'Wand',
+  A: 'ammunition',
+  AF: 'ammunition',
+  AT: "artisan's tools",
+  EM: 'eldritch machine',
+  EXP: 'explosive',
+  FD: 'food and drink',
+  G: 'adventuring gear',
+  GS: 'gaming set',
+  HA: 'heavy armor',
+  INS: 'instrument',
+  LA: 'light armor',
+  M: 'melee weapon',
+  MA: 'medium armor',
+  MNT: 'mount',
+  MR: 'master rune',
+  GV: 'generic variant',
+  P: 'potion',
+  R: 'ranged weapon',
+  RD: 'rod',
+  RG: 'ring',
+  S: 'shield',
+  SC: 'scroll',
+  SCF: 'spellcasting focus',
+  OTH: 'other',
+  T: 'tools',
+  TAH: 'tack and harness',
+  TG: 'trade good',
+  $: 'treasure',
+  VEH: 'vehicle (land)',
+  SHP: 'vehicle (water)',
+  AIR: 'vehicle (air)',
+  WD: 'wand',
 };
 
 Parser.DMGTYPE_JSON_TO_FULL = {
@@ -10415,67 +10797,204 @@ MiscUtil = {
   pDelay(msecs, resolveAs) {
     return new Promise(resolve => setTimeout(() => resolve(resolveAs), msecs));
   },
+  GENERIC_WALKER_ENTRIES_KEY_BLACKLIST: new Set([
+    'caption',
+    'type',
+    'colLabels',
+    'name',
+    'colStyles',
+    'style',
+    'shortName',
+    'subclassShortName',
+  ]),
 
-  getWalker(keyBlacklist = new Set()) {
-    function applyHandlers(handlers, ident, obj, lastKey) {
+  /**
+   * @param [opts]
+   * @param [opts.keyBlacklist]
+   * @param [opts.isAllowDeleteObjects] If returning `undefined` from an object handler should be treated as a delete.
+   * @param [opts.isAllowDeleteArrays] (Unimplemented) // TODO
+   * @param [opts.isAllowDeleteBooleans] (Unimplemented) // TODO
+   * @param [opts.isAllowDeleteNumbers] (Unimplemented) // TODO
+   * @param [opts.isAllowDeleteStrings] (Unimplemented) // TODO
+   * @param [opts.isDepthFirst] If array/object recursion should occur before array/object primitive handling.
+   * @param [opts.isNoModification] If the walker should not attempt to modify the data.
+   */
+  getWalker(opts) {
+    opts = opts || {};
+    const keyBlacklist = opts.keyBlacklist || new Set();
+
+    function applyHandlers(handlers, obj, lastKey, stack) {
       if (!(handlers instanceof Array)) handlers = [handlers];
-      handlers.forEach(h => (obj = h(ident, obj, lastKey)));
+      handlers.forEach(h => {
+        const out = h(obj, lastKey, stack);
+        if (!opts.isNoModification) obj = out;
+      });
       return obj;
     }
 
-    const fn = (ident, obj, primitiveHandlers, lastKey) => {
+    function runHandlers(handlers, obj, lastKey, stack) {
+      if (!(handlers instanceof Array)) handlers = [handlers];
+      handlers.forEach(h => h(obj, lastKey, stack));
+    }
+
+    const fn = (obj, primitiveHandlers, lastKey, stack) => {
       if (obj == null) {
         if (primitiveHandlers.null)
-          return applyHandlers(primitiveHandlers.null, ident, obj, lastKey);
+          return applyHandlers(primitiveHandlers.null, obj, lastKey, stack);
         return obj;
       }
+
+      const doObjectRecurse = () => {
+        Object.keys(obj).forEach(k => {
+          const v = obj[k];
+          if (!keyBlacklist.has(k)) {
+            const out = fn(v, primitiveHandlers, k, stack);
+            if (!opts.isNoModification) obj[k] = out;
+          }
+        });
+      };
 
       const to = typeof obj;
       switch (to) {
         case undefined:
-          if (primitiveHandlers.undefined)
-            return applyHandlers(
+          if (primitiveHandlers.preUndefined)
+            runHandlers(primitiveHandlers.preUndefined, obj, lastKey, stack);
+          if (primitiveHandlers.undefined) {
+            const out = applyHandlers(
               primitiveHandlers.undefined,
-              ident,
               obj,
               lastKey,
+              stack,
             );
+            if (!opts.isNoModification) obj = out;
+          }
+          if (primitiveHandlers.postUndefined)
+            runHandlers(primitiveHandlers.postUndefined, obj, lastKey, stack);
           return obj;
         case 'boolean':
-          if (primitiveHandlers.boolean)
-            return applyHandlers(
+          if (primitiveHandlers.preBoolean)
+            runHandlers(primitiveHandlers.preBoolean, obj, lastKey, stack);
+          if (primitiveHandlers.boolean) {
+            const out = applyHandlers(
               primitiveHandlers.boolean,
-              ident,
               obj,
               lastKey,
+              stack,
             );
+            if (!opts.isNoModification) obj = out;
+          }
+          if (primitiveHandlers.postBoolean)
+            runHandlers(primitiveHandlers.postBoolean, obj, lastKey, stack);
           return obj;
         case 'number':
-          if (primitiveHandlers.number)
-            return applyHandlers(primitiveHandlers.number, ident, obj, lastKey);
+          if (primitiveHandlers.preNumber)
+            runHandlers(primitiveHandlers.preNumber, obj, lastKey, stack);
+          if (primitiveHandlers.number) {
+            const out = applyHandlers(
+              primitiveHandlers.number,
+              obj,
+              lastKey,
+              stack,
+            );
+            if (!opts.isNoModification) obj = out;
+          }
+          if (primitiveHandlers.postNumber)
+            runHandlers(primitiveHandlers.postNumber, obj, lastKey, stack);
           return obj;
         case 'string':
-          if (primitiveHandlers.string)
-            return applyHandlers(primitiveHandlers.string, ident, obj, lastKey);
+          if (primitiveHandlers.preString)
+            runHandlers(primitiveHandlers.preString, obj, lastKey, stack);
+          if (primitiveHandlers.string) {
+            const out = applyHandlers(
+              primitiveHandlers.string,
+              obj,
+              lastKey,
+              stack,
+            );
+            if (!opts.isNoModification) obj = out;
+          }
+          if (primitiveHandlers.postString)
+            runHandlers(primitiveHandlers.postString, obj, lastKey, stack);
           return obj;
         case 'object': {
           if (obj instanceof Array) {
-            if (primitiveHandlers.array)
-              obj = applyHandlers(primitiveHandlers.array, ident, obj, lastKey);
-            return obj.map(it => fn(ident, it, primitiveHandlers, lastKey));
-          } else {
-            if (primitiveHandlers.object)
-              obj = applyHandlers(
-                primitiveHandlers.object,
-                ident,
-                obj,
-                lastKey,
+            if (primitiveHandlers.preArray)
+              runHandlers(primitiveHandlers.preArray, obj, lastKey, stack);
+            if (opts.isDepthFirst) {
+              if (stack) stack.push(obj);
+              const out = obj.map(it =>
+                fn(it, primitiveHandlers, lastKey, stack),
               );
-            Object.keys(obj).forEach(k => {
-              const v = obj[k];
-              if (!keyBlacklist.has(k))
-                obj[k] = fn(ident, v, primitiveHandlers, k);
-            });
+              if (!opts.isNoModification) obj = out;
+              if (stack) stack.pop();
+
+              if (primitiveHandlers.array) {
+                const out = applyHandlers(
+                  primitiveHandlers.array,
+                  obj,
+                  lastKey,
+                  stack,
+                );
+                if (!opts.isNoModification) obj = out;
+              }
+            } else {
+              if (primitiveHandlers.array) {
+                const out = applyHandlers(
+                  primitiveHandlers.array,
+                  obj,
+                  lastKey,
+                  stack,
+                );
+                if (!opts.isNoModification) obj = out;
+              }
+              const out = obj.map(it =>
+                fn(it, primitiveHandlers, lastKey, stack),
+              );
+              if (!opts.isNoModification) obj = out;
+            }
+            if (primitiveHandlers.postArray)
+              runHandlers(primitiveHandlers.postArray, obj, lastKey, stack);
+            return obj;
+          } else {
+            if (primitiveHandlers.preObject)
+              runHandlers(primitiveHandlers.preObject, obj, lastKey, stack);
+            if (opts.isDepthFirst) {
+              if (stack) stack.push(obj);
+              doObjectRecurse();
+              if (stack) stack.pop();
+
+              if (primitiveHandlers.object) {
+                const out = applyHandlers(
+                  primitiveHandlers.object,
+                  obj,
+                  lastKey,
+                  stack,
+                );
+                if (!opts.isNoModification) obj = out;
+              }
+              if (obj == null) {
+                if (!opts.isAllowDeleteObjects)
+                  throw new Error(`Object handler(s) returned null!`);
+              }
+            } else {
+              if (primitiveHandlers.object) {
+                const out = applyHandlers(
+                  primitiveHandlers.object,
+                  obj,
+                  lastKey,
+                  stack,
+                );
+                if (!opts.isNoModification) obj = out;
+              }
+              if (obj == null) {
+                if (!opts.isAllowDeleteObjects)
+                  throw new Error(`Object handler(s) returned null!`);
+              } else {
+                doObjectRecurse();
+              }
+            }
+            if (primitiveHandlers.postObject)
+              runHandlers(primitiveHandlers.postObject, obj, lastKey, stack);
             return obj;
           }
         }
@@ -10486,7 +11005,6 @@ MiscUtil = {
 
     return { walk: fn };
   },
-
   pDefer(fn) {
     return (async () => fn())();
   },

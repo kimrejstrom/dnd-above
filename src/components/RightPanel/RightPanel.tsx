@@ -152,7 +152,7 @@ const RightPanel = ({ searchIndex }: Props) => {
             <TabPanel className="overflow-y-scroll px-2">
               <Spells
                 spells={getSpells()!}
-                columns={['name', 'source', 'level', 'time', 'range']}
+                columns={['name', 'level', 'time', 'range', 'source']}
               />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">

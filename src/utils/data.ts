@@ -10,7 +10,7 @@ import { ActionElement } from 'models/actions';
 import { LanguageElement } from 'models/language';
 // Utils
 import { sortBy, uniqBy } from 'lodash';
-import { mainRenderer, SourceUtil } from 'utils/mainRenderer';
+import { mainRenderer, Parser, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
@@ -42,6 +42,9 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
 };
 
 const createPropertyMaps = (data: any) => {
+  Object.entries(Parser.ITEM_TYPE_JSON_TO_ABV).forEach(([abv, name]) =>
+    mainRenderer.item._addType({ abbreviation: abv, name }),
+  );
   data.itemProperty.forEach((p: any) => mainRenderer.item._addProperty(p));
   data.itemType.forEach((t: any) => mainRenderer.item._addType(t));
   data.itemTypeAdditionalEntries.forEach((e: any) =>
@@ -215,7 +218,15 @@ export const loadBackgrounds = async () => {
 };
 
 // ITEMS
-export type CommonItem = Item | BaseItem;
+export interface AdditionalItemProps {
+  _attunement: string;
+  _attunementCategory: string;
+  _category: string;
+  _isEnhanced: boolean;
+  _typeHtml: string;
+  _typeListText: string[];
+}
+export type CommonItem = AdditionalItemProps & (Item | BaseItem);
 export const loadItems = async () => {
   const [baseItemsData, itemsData] = await Promise.all([
     import(/* webpackPrefetch: true */ 'data/items-base.json').then(
@@ -232,7 +243,9 @@ export const loadItems = async () => {
   ) as BaseItem[];
 
   // Every item
-  const allItems: CommonItem[] = (items as any).concat(baseItems);
+  const allItems: CommonItem[] = (items as any)
+    .concat(baseItems)
+    .map((item: any) => mainRenderer.item.enhanceItem(item));
 
   return { allItems };
 };

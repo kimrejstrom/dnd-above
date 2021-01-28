@@ -7,11 +7,7 @@ import { Race } from 'models/race';
 import ClassBase from 'pages/Create/ClassBase';
 import ClassTable from 'pages/Create/ClassTable';
 import React from 'react';
-import {
-  mainRenderer,
-  mainRenderer as Renderer,
-  Parser,
-} from 'utils/mainRenderer';
+import { mainRenderer, Parser } from 'utils/mainRenderer';
 import {
   getClassFeatures,
   getSubClassFeatures,
@@ -121,7 +117,7 @@ export const RenderSubClass = (
 );
 
 export const RenderRace = (race: Race) =>
-  Renderer.race.getCompactRenderedString(race);
+  mainRenderer.race.getCompactRenderedString(race);
 
 // Items
 export const RenderItem = (item: any) => {
@@ -129,9 +125,9 @@ export const RenderItem = (item: any) => {
     damage,
     damageType,
     propertiesTxt,
-  ] = Renderer.item.getDamageAndPropertiesText(item);
+  ] = mainRenderer.item.getDamageAndPropertiesText(item);
 
-  const renderedText = Renderer.item.getRenderedEntries(item);
+  const renderedText = mainRenderer.item.getRenderedEntries(item);
 
   const textLeft = [Parser.itemValueToFull(item), Parser.itemWeightToFull(item)]
     .filter(Boolean)
@@ -142,10 +138,10 @@ export const RenderItem = (item: any) => {
     .join(' ');
 
   return `
-			${Renderer.utils.getBorderTr()}
-			${Renderer.utils.getExcludedTr(item, 'item')}
-			${Renderer.utils.getNameTr(item)}
-			<tr><td class="rd-item__type-rarity-attunement" colspan="6">${Renderer.item
+			${mainRenderer.utils.getBorderTr()}
+			${mainRenderer.utils.getExcludedTr(item, 'item')}
+			${mainRenderer.utils.getNameTr(item)}
+			<tr><td class="rd-item__type-rarity-attunement" colspan="6">${mainRenderer.item
         .getTypeRarityAndAttunementText(item)
         .uppercaseFirst()}</td></tr>
 			${
@@ -163,23 +159,23 @@ export const RenderItem = (item: any) => {
 			<tr class="text"><td colspan="6">${renderedText}</td></tr>`
           : ''
       }
-			${Renderer.utils.getPageTr(item)}
-			${Renderer.utils.getBorderTr()}
+			${mainRenderer.utils.getPageTr(item)}
+			${mainRenderer.utils.getBorderTr()}
 		`;
 };
 
 // Language
 export const RenderLanguage = (lang: LanguageElement) =>
-  Renderer.language.getCompactRenderedString(lang);
+  mainRenderer.language.getCompactRenderedString(lang);
 // Spells
 export const RenderSpell = (sp: any, subclassLookup?: any) => {
   const renderStack = [];
-  Renderer.setFirstSection(true);
+  mainRenderer.setFirstSection(true);
 
   renderStack.push(`
-			${Renderer.utils.getBorderTr()}
-			${Renderer.utils.getExcludedTr(sp, 'spell')}
-			${Renderer.utils.getNameTr(sp)}
+			${mainRenderer.utils.getBorderTr()}
+			${mainRenderer.utils.getExcludedTr(sp, 'spell')}
+			${mainRenderer.utils.getNameTr(sp)}
 			<tr><td class="rd-spell__level-school-ritual" colspan="6"><span>${Parser.spLevelSchoolMetaToFull(
         sp.level,
         sp.school,
@@ -199,18 +195,18 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
 			<tr><td colspan="6"><span class="bold">Duration: </span>${Parser.spDurationToFull(
         sp.duration,
       )}</td></tr>
-			${Renderer.utils.getDividerTr()}
+			${mainRenderer.utils.getDividerTr()}
 		`);
 
   const entryList = { type: 'entries', entries: sp.entries };
   renderStack.push(`<tr class="text"><td colspan="6" class="text">`);
-  Renderer.recursiveRender(entryList, renderStack, { depth: 1 });
+  mainRenderer.recursiveRender(entryList, renderStack, { depth: 1 });
   if (sp.entriesHigherLevel) {
     const higherLevelsEntryList = {
       type: 'entries',
       entries: sp.entriesHigherLevel,
     };
-    Renderer.recursiveRender(higherLevelsEntryList, renderStack, {
+    mainRenderer.recursiveRender(higherLevelsEntryList, renderStack, {
       depth: 2,
     });
   }
@@ -218,7 +214,10 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
 
   const stackFroms = [];
 
-  const fromClassList = Renderer.spell.getCombinedClasses(sp, 'fromClassList');
+  const fromClassList = mainRenderer.spell.getCombinedClasses(
+    sp,
+    'fromClassList',
+  );
   if (fromClassList.length) {
     console.log(fromClassList);
     const [current, legacy] = Parser.spClassesToCurrentAndLegacy(fromClassList);
@@ -235,7 +234,7 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
       );
   }
 
-  //   const fromSubclass = Renderer.spell.getCombinedClasses(sp, 'fromSubclass');
+  //   const fromSubclass = mainRenderer.spell.getCombinedClasses(sp, 'fromSubclass');
   //   if (fromSubclass.length) {
   //     const [current, legacy] = Parser.spSubclassesToCurrentAndLegacyFull(
   //       sp,
@@ -251,7 +250,7 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
   //     }
   //   }
 
-  //   const fromClassListVariant = Renderer.spell.getCombinedClasses(
+  //   const fromClassListVariant = mainRenderer.spell.getCombinedClasses(
   //     sp,
   //     'fromClassListVariant',
   //   );
@@ -289,7 +288,7 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
   //               SourceUtil.isNonstandardSource(r.source)
   //                 ? `<span class="text-muted">`
   //                 : ``
-  //             }${Renderer.render(`{@race ${r.name}|${r.source}}`)}${
+  //             }${mainRenderer.render(`{@race ${r.name}|${r.source}}`)}${
   //               SourceUtil.isNonstandardSource(r.source) ? `</span>` : ``
   //             }`,
   //         )
@@ -311,7 +310,7 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
   //               SourceUtil.isNonstandardSource(r.source)
   //                 ? `<span class="text-muted">`
   //                 : ``
-  //             }${Renderer.render(`{@background ${r.name}|${r.source}}`)}${
+  //             }${mainRenderer.render(`{@background ${r.name}|${r.source}}`)}${
   //               SourceUtil.isNonstandardSource(r.source) ? `</span>` : ``
   //             }`,
   //         )
@@ -333,7 +332,7 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
   //               SourceUtil.isNonstandardSource(r.source)
   //                 ? `<span class="text-muted">`
   //                 : ``
-  //             }${Renderer.render(`{@optfeature ${r.name}|${r.source}}`)}${
+  //             }${mainRenderer.render(`{@optfeature ${r.name}|${r.source}}`)}${
   //               SourceUtil.isNonstandardSource(r.source) ? `</span>` : ``
   //             }`,
   //         )
@@ -351,8 +350,8 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
     renderStack.push(
       `<tr class="text"><td colspan="6"><section class="text-muted">`,
     );
-    Renderer.recursiveRender(
-      `{@italic Note: Both the {@class fighter||${Renderer.spell.STR_FIGHTER} (${Renderer.spell.STR_ELD_KNIGHT})|eldritch knight} and the {@class rogue||${Renderer.spell.STR_ROGUE} (${Renderer.spell.STR_ARC_TCKER})|arcane trickster} spell lists include all {@class ${Renderer.spell.STR_WIZARD}} spells. Spells of 5th level or higher may be cast with the aid of a spell scroll or similar.}`,
+    mainRenderer.recursiveRender(
+      `{@italic Note: Both the {@class fighter||${mainRenderer.spell.STR_FIGHTER} (${mainRenderer.spell.STR_ELD_KNIGHT})|eldritch knight} and the {@class rogue||${mainRenderer.spell.STR_ROGUE} (${mainRenderer.spell.STR_ARC_TCKER})|arcane trickster} spell lists include all {@class ${mainRenderer.spell.STR_WIZARD}} spells. Spells of 5th level or higher may be cast with the aid of a spell scroll or similar.}`,
       renderStack,
       { depth: 2 },
     );
@@ -360,8 +359,8 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
   }
 
   renderStack.push(`
-			${Renderer.utils.getPageTr(sp)}
-			${Renderer.utils.getBorderTr()}
+			${mainRenderer.utils.getPageTr(sp)}
+			${mainRenderer.utils.getBorderTr()}
 		`);
 
   return renderStack.join('');

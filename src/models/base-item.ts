@@ -12,7 +12,7 @@ export interface BaseItem {
   type: string;
   weapon?: boolean;
   weaponCategory?: WeaponCategory;
-  age?: Age;
+  age?: string;
   rarity: Rarity;
   weight?: number;
   dmg1?: string;
@@ -39,14 +39,9 @@ export interface BaseItem {
   staff?: boolean;
 }
 
-export enum Age {
-  Futuristic = 'Futuristic',
-  Modern = 'Modern',
-  Renaissance = 'Renaissance',
-}
-
 export enum DmgType {
   B = 'B',
+  O = 'O',
   N = 'N',
   P = 'P',
   R = 'R',

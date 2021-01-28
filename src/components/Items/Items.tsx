@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { RenderItem } from 'utils/render';
+import { Parser } from 'utils/mainRenderer';
+import { CommonItem } from 'utils/data';
 
 interface Props {
   items: (Item | BaseItem)[];
@@ -22,12 +24,22 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
+const parseItem = (item: CommonItem) => {
+  const itemValue = Parser.itemValueToFull(item, true);
+  const itemType = item._typeListText.join(', ');
+  return {
+    ...item,
+    value: itemValue !== '' ? itemValue : '–',
+    type: itemType,
+  };
+};
+
 const Items = ({ items, columns }: Props) => {
   const dispatch = useDispatch();
   const tableData = useMemo(
     () =>
       items.map(item => ({
-        ...item,
+        ...parseItem(item as CommonItem),
         detailedEntryTrigger: () =>
           dispatch(
             setDetailedEntry(
@@ -41,21 +53,12 @@ const Items = ({ items, columns }: Props) => {
     [items, dispatch],
   );
   const tableColumns = useMemo(() => {
-    const itemColumns = columns || [
-      'name',
-      'type',
-      'weight',
-      'quantity',
-      'value',
-      'source',
-    ];
+    const itemColumns = columns || ['name', 'type', 'value', 'source'];
     return tableData.length
-      ? Object.keys(tableData[0])
-          .map(key => ({
-            accessor: key,
-            Header: startCase(key),
-          }))
-          .filter(column => itemColumns.includes(column.accessor))
+      ? itemColumns.map(key => ({
+          accessor: key,
+          Header: startCase(key),
+        }))
       : [];
   }, [columns, tableData]);
 

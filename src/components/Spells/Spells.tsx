@@ -89,12 +89,10 @@ export const Spells = ({
       'classes',
     ];
     return tableData.length
-      ? Object.keys(tableData[0])
-          .map(key => ({
-            accessor: key,
-            Header: startCase(key),
-          }))
-          .filter(column => itemColumns.includes(column.accessor))
+      ? itemColumns.map(key => ({
+          accessor: key,
+          Header: startCase(key),
+        }))
       : [];
   }, [columns, tableData]);
 

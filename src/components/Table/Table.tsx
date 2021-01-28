@@ -133,7 +133,7 @@ const Table = ({
               {row.cells.map(cell => (
                 <td
                   className="truncate"
-                  style={{ maxWidth: '13.5rem' }}
+                  style={{ maxWidth: '13rem' }}
                   {...cell.getCellProps()}
                 >
                   {isValidCellValue(cell.value) || isSelectionCell(cell)
