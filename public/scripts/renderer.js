@@ -1447,92 +1447,6 @@ function Renderer() {
             path: `${page}.html`,
             hash: HASH_BLANK,
             hashPreEncoded: true,
-            subhashes: filters
-              .map(f => {
-                const [fName, fVals, fMeta, fOpts] = f
-                  .split('=')
-                  .map(s => s.trim());
-                const isBoxData = fName.startsWith('fb');
-                const key = isBoxData
-                  ? fName
-                  : `flst${UrlUtil.encodeForHash(fName)}`;
-
-                let value;
-                // special cases for "search" and "hash" keywords
-                if (isBoxData) {
-                  return {
-                    key,
-                    value: fVals,
-                    preEncoded: true,
-                  };
-                } else if (fName === 'search') {
-                  // "search" as a filter name is hackily converted to a box meta option
-                  return {
-                    key: VeCt.FILTER_BOX_SUB_HASH_SEARCH_PREFIX,
-                    value: UrlUtil.encodeForHash(fVals),
-                    preEncoded: true,
-                  };
-                } else if (fName === 'hash') {
-                  customHash = fVals;
-                  return null;
-                } else if (fVals.startsWith('[') && fVals.endsWith(']')) {
-                  // range
-                  const [min, max] = fVals
-                    .substring(1, fVals.length - 1)
-                    .split(';')
-                    .map(it => it.trim());
-                  if (max == null) {
-                    // shorthand version, with only one value, becomes min _and_ max
-                    value = [`min=${min}`, `max=${min}`].join(
-                      HASH_SUB_LIST_SEP,
-                    );
-                  } else {
-                    value = [min ? `min=${min}` : '', max ? `max=${max}` : '']
-                      .filter(Boolean)
-                      .join(HASH_SUB_LIST_SEP);
-                  }
-                } else {
-                  value = fVals
-                    .split(';')
-                    .map(s => s.trim())
-                    .filter(s => s)
-                    .map(s => {
-                      const spl = s.split('!');
-                      if (spl.length === 2)
-                        return `${UrlUtil.encodeForHash(spl[1])}=2`;
-                      return `${UrlUtil.encodeForHash(s)}=1`;
-                    })
-                    .join(HASH_SUB_LIST_SEP);
-                }
-
-                const out = [
-                  {
-                    key,
-                    value,
-                    preEncoded: true,
-                  },
-                ];
-
-                if (fMeta) {
-                  out.push({
-                    key: `flmt${UrlUtil.encodeForHash(fName)}`,
-                    value: fMeta,
-                    preEncoded: true,
-                  });
-                }
-
-                if (fOpts) {
-                  out.push({
-                    key: `flop${UrlUtil.encodeForHash(fName)}`,
-                    value: fOpts,
-                    preEncoded: true,
-                  });
-                }
-
-                return out;
-              })
-              .flat()
-              .filter(Boolean),
           },
         };
 
@@ -4996,11 +4910,6 @@ Renderer.prototype.item = {
               .join(', ')}`
           : null;
 
-      const {
-        travelCostFull,
-        shippingCostFull,
-      } = Parser.itemVehicleCostsToFull(item);
-
       // These may not be present in homebrew
       const vehPartLower = [
         item.crew ? `Crew ${item.crew}` : null,
@@ -5018,21 +4927,7 @@ Renderer.prototype.item = {
         .join(', ');
 
       damageParts.push(
-        [
-          vehPartUpper,
-          vehPartMiddle,
-
-          // region ~~Dammit Mercer~~ Additional fields present in EGW
-          travelCostFull
-            ? `Personal Travel Cost: ${travelCostFull} per mile per passenger`
-            : null,
-          shippingCostFull
-            ? `Shipping Cost: ${shippingCostFull} per 100 pounds per mile`
-            : null,
-          // endregion
-
-          vehPartLower,
-        ]
+        [vehPartUpper, vehPartMiddle, vehPartLower]
           .filter(Boolean)
           .join('<br>'),
       );
@@ -5275,10 +5170,11 @@ Renderer.prototype.item = {
       damageType,
       propertiesTxt,
     ] = renderer.item.getDamageAndPropertiesText(item);
-    const hasEntries =
-      (item._fullAdditionalEntries && item._fullAdditionalEntries.length) ||
-      (item._fullEntries && item._fullEntries.length) ||
-      (item.entries && item.entries.length);
+    const hasEntries = opts.compact
+      ? undefined
+      : (item._fullAdditionalEntries && item._fullAdditionalEntries.length) ||
+        (item._fullEntries && item._fullEntries.length) ||
+        (item.entries && item.entries.length);
 
     return `
 		${renderer.utils.getExcludedTr(item, 'item')}
@@ -5288,7 +5184,7 @@ Renderer.prototype.item = {
       .uppercaseFirst()}</td></tr>
           <tr>
               <td colspan="2">${[
-                Parser.itemValueToFullMultiCurrency(item),
+                Parser.itemValueToFull(item),
                 Parser.itemWeightToFull(item),
               ]
                 .filter(Boolean)
@@ -5298,7 +5194,7 @@ Renderer.prototype.item = {
           </tr>
           ${
             hasEntries
-              ? `${renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${Renderer.item.getRenderedEntries(
+              ? `${renderer.utils.getDividerTr()}<tr class="text"><td colspan="6" class="text">${renderer.item.getRenderedEntries(
                   item,
                   true,
                 )}</td></tr>`

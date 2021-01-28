@@ -253,14 +253,13 @@ const Summary = () => {
                     renderer={RenderItem(item)}
                     data={item}
                   >
-                    <TextBox extraClassName="bg-light-200 h-40 w-full dark:bg-dark-200 px-2 py-2">
+                    <TextBox extraClassName="bg-light-200 h-52 w-full dark:bg-dark-200 px-2 py-2">
                       <DangerousHtml
                         extraClassName="text-sm leading-none"
                         prose={false}
-                        data={mainRenderer.item.getCompactRenderedString(
-                          item,
-                          false,
-                        )}
+                        data={mainRenderer.item.getCompactRenderedString(item, {
+                          compact: true,
+                        })}
                       />
                     </TextBox>
                   </DetailedEntryTrigger>
