@@ -7,7 +7,7 @@ import { SpellElement } from 'models/spells';
 import { useDispatch } from 'react-redux';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import { isDefined } from 'ts-is-present';
-import { RenderedSpell } from 'utils/render';
+import { RenderSpell } from 'utils/render';
 
 interface Props {
   spells: SpellElement[];
@@ -73,7 +73,7 @@ export const Spells = ({
         detailedEntryTrigger: () =>
           dispatch(
             setDetailedEntry(
-              <DangerousHtml extraClassName="tight" data={RenderedSpell(sp)} />,
+              <DangerousHtml extraClassName="tight" data={RenderSpell(sp)} />,
             ),
           ),
       })),
@@ -84,7 +84,6 @@ export const Spells = ({
       'name',
       'level',
       'time',
-      'school',
       'range',
       'source',
       'classes',

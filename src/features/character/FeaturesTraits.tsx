@@ -1,104 +1,26 @@
 import React from 'react';
 import { CharacterListItem } from 'features/character/characterListSlice';
-import { Race } from 'models/race';
-import {
-  getClass,
-  getRace,
-  getSubClass,
-  getFeat,
-  getClassFeatures,
-  getSubClassFeatures,
-} from 'utils/sourceDataUtils';
+import { getClass, getRace, getSubClass } from 'utils/sourceDataUtils';
 import { ThemeMode } from 'features/theme/themeSlice';
 import characterDark from 'images/character-dark.png';
 import characterLight from 'images/character-light.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
-import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer } from 'utils/mainRenderer';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
-import _ from 'lodash';
 import ClassTable from 'pages/Create/ClassTable';
+import {
+  renderClassFeatures,
+  renderSubClassFeatures,
+  renderRaceTraits,
+  renderFeats,
+} from 'utils/render';
 
 interface Props {
   character: CharacterListItem;
 }
-
-const featureBoxCls = 'custom-border-xs my-2 bg-light-200 dark:bg-dark-200';
-
-const renderClassFeatures = (className: string) => {
-  const classFeatures = getClassFeatures(className);
-  return classFeatures.map(feature => {
-    if (!feature.source.includes('UA')) {
-      return (
-        <div
-          key={`${className}-${feature.name}-${feature.level}`}
-          className={featureBoxCls}
-        >
-          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
-            {`Level ${feature.level} – ${feature.name}`}
-          </DetailedEntryTrigger>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  });
-};
-
-const renderSubClassFeatures = (className: string, subClassName: string) => {
-  const subclassFeatures = getSubClassFeatures(className, subClassName);
-  return subclassFeatures.map(feature => {
-    if (!feature.source.includes('UA')) {
-      return (
-        <div
-          key={`${subClassName}-${feature.name}-${feature.level}`}
-          className={featureBoxCls}
-        >
-          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
-            {`Level ${feature.level} – ${feature.name}`}
-          </DetailedEntryTrigger>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  });
-};
-
-const renderRaceTraits = (race: Race) => {
-  const raceTraits = race.entries?.filter(
-    item => !_.includes(['Age', 'Size', 'Alignment', 'Languages'], item.name),
-  );
-  return raceTraits?.length ? (
-    raceTraits?.map(trait => (
-      <DetailedEntryTrigger key={trait.name} data={trait}>
-        <div className={featureBoxCls}>{trait.name}</div>
-      </DetailedEntryTrigger>
-    ))
-  ) : (
-    <p>No racial traits</p>
-  );
-};
-
-const renderFeats = (feats: string[]) => {
-  return feats?.length ? (
-    feats?.map(featName => {
-      const feat = getFeat(featName);
-      return (
-        <DetailedEntryTrigger data={feat}>
-          <div key={feat?.name} className={featureBoxCls}>
-            {feat?.name}
-          </div>
-        </DetailedEntryTrigger>
-      );
-    })
-  ) : (
-    <p>No feats</p>
-  );
-};
 
 const FeaturesTraits = ({ character }: Props) => {
   const dispatch = useDispatch();

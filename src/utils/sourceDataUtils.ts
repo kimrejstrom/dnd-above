@@ -47,6 +47,18 @@ export const getAllClassFeatures = (
   ];
 };
 
+export const getAllClassAndSubClassFeatures = (className: string) => {
+  console.log(className);
+  const relevantClassFeatures = (getSourceData(store.getState())
+    ?.allClasses as any)[className.toLowerCase()].classFeature;
+  const relevantSubClassFeatures = (getSourceData(store.getState())
+    ?.allClasses as any)[className.toLowerCase()].subclassFeature;
+  return [
+    ..._.flatten(relevantClassFeatures),
+    ..._.flatten(relevantSubClassFeatures),
+  ] as (ClassClassFeature | SubclassFeature)[];
+};
+
 export const getClassFeatures = (className: string) => {
   const baseClass = getClass(className);
   const classFeatures = (getSourceData(store.getState())?.allClasses as any)[
@@ -63,6 +75,9 @@ export const getClassFeatures = (className: string) => {
     );
   return relevantClassFeatures;
 };
+
+export const getClassFeature = (className: string, featureName: string) =>
+  getClassFeatures(className)?.find(feature => feature.name === featureName);
 
 export const getSubClassFeatures = (
   className: string,
@@ -87,6 +102,11 @@ export const getSubClassFeatures = (
   return relevantSubClassFeatures;
 };
 
+export const getSubClassFeature = (className: string, featureName: string) =>
+  getAllClassAndSubClassFeatures(className)?.find(
+    feature => feature.name === featureName,
+  );
+
 const parseClassFeatureString = (featureString: string) =>
   featureString.split('|')[0];
 
@@ -101,6 +121,9 @@ export const getRacesFluff = () => getSourceData(store.getState())?.racesFluff;
 export const getRace = (raceName: string) =>
   getRaces()!.find(race => race.name === raceName);
 
+export const getSubRace = (raceName: string, subRaceName: string) =>
+  getRace(raceName)?.subraces?.find(subrace => subrace.name === subRaceName);
+
 // BACKGROUND UTILS
 export const getBackgrounds = () =>
   getSourceData(store.getState())?.backgrounds;
@@ -111,9 +134,12 @@ export const getBackgroundsFluff = () =>
 export const getBackground = (backgroundName: string) =>
   getBackgrounds()!.find(bg => bg.name === backgroundName);
 
+export const getBackgroundFluff = (backgroundName: string) =>
+  getBackgroundsFluff()!.find(bg => bg.name === backgroundName);
+
 export const getBackgroundCharacteristics = () =>
-  getSourceData(store.getState())
-    ?.backgrounds.map(bg => ({
+  getBackgrounds()!
+    .map(bg => ({
       name: bg.name,
       tables: bg.entries
         ? bg.entries
@@ -173,6 +199,9 @@ export const getActions = () => getSourceData(store.getState())?.actions;
 export const getLanguages = () => getSourceData(store.getState())?.languages;
 
 export const getFeats = () => getSourceData(store.getState())?.feats;
+
+export const getAction = (actionName: string) =>
+  getActions()!.find(action => action.name === actionName);
 
 export const getLanguage = (languageName: string) =>
   getLanguages()!.find(

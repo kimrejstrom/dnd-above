@@ -1,22 +1,40 @@
 import { uniqBy } from 'lodash';
 import {
+  getAction,
   getActions,
   getAllItems,
+  getBackground,
+  getBackgroundFluff,
   getBackgrounds,
   getBackgroundsFluff,
   getClass,
+  getClassFeature,
   getClassFeatures,
+  getFeat,
   getFeats,
+  getItem,
+  getLanguage,
   getLanguages,
   getPlayableClasses,
+  getRace,
   getRaces,
   getRacesFluff,
   getSpell,
   getSpells,
+  getSubClass,
+  getSubClassFeature,
   getSubClassFeatures,
+  getSubRace,
 } from 'utils/sourceDataUtils';
 import { filterSources } from 'utils/data';
-import { RenderedSpell } from 'utils/render';
+import {
+  RenderClass,
+  RenderItem,
+  RenderLanguage,
+  RenderRace,
+  RenderSpell,
+  RenderSubClass,
+} from 'utils/render';
 
 export enum ResultType {
   Spell,
@@ -181,7 +199,7 @@ export function initializeSearch() {
   });
 
   // Index Languages
-  getLanguages()?.forEach(lang => {
+  uniqBy(getLanguages(), 'name')?.forEach(lang => {
     fuseIndex.push({
       name: lang.name,
       src: lang.source,
@@ -196,46 +214,91 @@ export function initializeSearch() {
 
 export function findSearchResultSourceData(
   searchResult: SourceDataFuseItem,
-): { data: any; renderer?: any } {
+): { data: any; renderer?: any; jsx?: JSX.Element } {
   switch (searchResult.type) {
     case ResultType.Spell: {
       const spell = getSpell(searchResult.name);
-      return { data: spell, renderer: RenderedSpell(spell) };
+      return { data: spell, renderer: RenderSpell(spell) };
     }
 
     case ResultType.Class: {
       const classElem = getClass(searchResult.name);
-      return { data: classElem };
+      return { data: classElem, jsx: RenderClass(classElem!) };
     }
 
-    case ResultType.ClassFeature:
-      break;
-    case ResultType.Subclass:
-      break;
-    case ResultType.SubclassFeature:
-      break;
-    case ResultType.Race:
-      break;
-    case ResultType.RaceFluff:
-      break;
-    case ResultType.Subrace:
-      break;
-    case ResultType.Background:
-      break;
-    case ResultType.BackgroundFluff:
-      break;
-    case ResultType.Item:
-      break;
-    case ResultType.Action:
-      break;
-    case ResultType.Feat:
-      break;
-    case ResultType.Language:
-      break;
-    default:
+    case ResultType.ClassFeature: {
+      const feature = getClassFeature(
+        searchResult.baseName!,
+        searchResult.name,
+      );
+      return { data: feature };
+    }
+
+    case ResultType.Subclass: {
+      const classElem = getClass(searchResult.baseName!);
+      const subclass = getSubClass(searchResult.baseName!, searchResult.name);
+      return { data: subclass, jsx: RenderSubClass(classElem!, subclass!) };
+    }
+
+    case ResultType.SubclassFeature: {
+      const feature = getSubClassFeature(
+        searchResult.baseName!,
+        searchResult.name,
+      );
+      return { data: feature };
+    }
+
+    case ResultType.Race: {
+      const race = getRace(searchResult.name);
       return {
-        data: `Unknown item type`,
+        data: race,
+        renderer: RenderRace(race!),
       };
+    }
+
+    case ResultType.RaceFluff: {
+      const fluffs = getRacesFluff();
+      return {
+        data: fluffs!.find(fluff => fluff.name === searchResult.name),
+      };
+    }
+
+    case ResultType.Subrace: {
+      const subrace = getSubRace(searchResult.baseName!, searchResult.name);
+      return { data: subrace };
+    }
+
+    case ResultType.Background: {
+      const bg = getBackground(searchResult.name);
+      return { data: bg };
+    }
+
+    case ResultType.BackgroundFluff: {
+      const bg = getBackgroundFluff(searchResult.name);
+      return { data: bg };
+    }
+
+    case ResultType.Item: {
+      const item = getItem(searchResult.name);
+      return { data: item, renderer: RenderItem(item) };
+    }
+
+    case ResultType.Action: {
+      const action = getAction(searchResult.name);
+      return { data: action };
+    }
+
+    case ResultType.Feat: {
+      const feat = getFeat(searchResult.name);
+      return { data: feat };
+    }
+
+    case ResultType.Language: {
+      const lang = getLanguage(searchResult.name);
+      return { data: lang, renderer: RenderLanguage(lang!) };
+    }
+
+    default:
+      return { data: `No source data found for ${searchResult.name}` };
   }
-  return { data: `No source data found for ${searchResult.name}` };
 }

@@ -104,7 +104,7 @@ const RightPanel = ({ searchIndex }: Props) => {
               </div>
               <ol>
                 {hits.map(hit => {
-                  const { data, renderer } = findSearchResultSourceData(
+                  const { data, renderer, jsx } = findSearchResultSourceData(
                     hit.item,
                   );
                   return (
@@ -113,11 +113,10 @@ const RightPanel = ({ searchIndex }: Props) => {
                       key={hit.refIndex}
                     >
                       <DetailedEntryTrigger
-                        extraClassName={
-                          hit.item.type === ResultType.Spell ? 'tight' : ''
-                        }
+                        extraClassName="tight"
                         data={data}
                         renderer={renderer}
+                        jsx={jsx}
                       >
                         <div className="py-1 px-2 flex justify-between">
                           <div>
@@ -145,7 +144,7 @@ const RightPanel = ({ searchIndex }: Props) => {
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               {getActions()!.map(actionElement => (
-                <TextBox key={actionElement.name}>
+                <TextBox extraClassName="my-2" key={actionElement.name}>
                   <Entry entry={actionElement} />
                 </TextBox>
               ))}
@@ -153,7 +152,7 @@ const RightPanel = ({ searchIndex }: Props) => {
             <TabPanel className="overflow-y-scroll px-2">
               <Spells
                 spells={getSpells()!}
-                columns={['name', 'source', 'level', 'school', 'time', 'range']}
+                columns={['name', 'source', 'level', 'time', 'range']}
               />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">

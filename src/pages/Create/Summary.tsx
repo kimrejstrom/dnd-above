@@ -26,7 +26,7 @@ import { setGeneratedFormData } from 'features/createCharacterForm/createCharact
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import ClassTable from 'pages/Create/ClassTable';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { RenderItems } from 'utils/render';
+import { RenderItem } from 'utils/render';
 
 const Summary = () => {
   const formState = useSelector(
@@ -250,7 +250,7 @@ const Summary = () => {
                   <DetailedEntryTrigger
                     extraClassName="w-full md:w-40 mr-2 mt-2 tight"
                     key={itemName}
-                    renderer={RenderItems(item)}
+                    renderer={RenderItem(item)}
                     data={item}
                   >
                     <TextBox extraClassName="bg-light-200 h-40 w-full dark:bg-dark-200 px-2 py-2">

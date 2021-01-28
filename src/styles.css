@@ -635,7 +635,7 @@ i > i {
 .rd__h--1 {
   color: #822000;
   font-variant: small-caps;
-  font-weight: 500;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -687,12 +687,9 @@ i > i {
   text-indent: 0.7rem;
 }
 .rd__b-inset {
-  @apply shadow-lg bg-light-200 rounded-sm;
+  @apply bg-light-200 rounded shadow-inner;
   margin: 10px 7px !important;
   padding: 5px 10px;
-  border: 1px solid #656565;
-  border-top: 2px solid #656565;
-  border-bottom: 2px solid #656565;
 }
 .rd__b-inset > *:last-of-type {
   margin-bottom: 0;
@@ -807,7 +804,6 @@ i > i {
   margin-bottom: 0;
 }
 .rd__stats-name-page {
-  font-family: Arial, sans-serif;
   font-size: 12px;
   color: #333;
   font-weight: 100;
@@ -883,7 +879,7 @@ i > i {
   border-color: #555;
 }
 .dark .rd__b-inset {
-  @apply bg-dark-200 shadow;
+  @apply bg-dark-200;
 }
 .dark .rd__b-inset--readaloud {
   background-color: #28303a;
@@ -1192,6 +1188,7 @@ i > i {
   color: #bd0044;
 }
 .rnd-name {
+  color: #822000;
   position: relative;
   font-size: 1.3rem;
   padding: 0.2rem 0.2rem;
@@ -1199,6 +1196,11 @@ i > i {
   font-weight: 500;
   text-align: left;
 }
+
+.dark .rnd-name {
+  color: #d29a38;
+}
+
 .rnd-name .stats-source {
   font-size: 1.1rem;
 }

@@ -7,8 +7,8 @@ import {
   getLanguageProficiencies,
 } from 'utils/character';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { mainRenderer } from 'utils/mainRenderer';
 import { getLanguage } from 'utils/sourceDataUtils';
+import { RenderLanguage } from 'utils/render';
 
 interface Props {
   character: CharacterListItem;
@@ -47,11 +47,9 @@ const Proficiencies = ({ character }: Props) => {
               return (
                 <DetailedEntryTrigger
                   key={`${lang}-${i}`}
-                  extraClassName={'inline'}
+                  extraClassName={'tight inline'}
                   data={getLanguage(lang)}
-                  renderer={mainRenderer.language.getCompactRenderedString(
-                    getLanguage(lang),
-                  )}
+                  renderer={RenderLanguage(getLanguage(lang)!)}
                 >
                   {i === lastIndex ? `${lang}` : `${lang}, `}
                 </DetailedEntryTrigger>

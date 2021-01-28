@@ -20,7 +20,7 @@ import StyledButton, {
 } from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { RenderItems } from 'utils/render';
+import { RenderItem } from 'utils/render';
 
 const Equipment = () => {
   const dispatch = useDispatch();
@@ -126,7 +126,7 @@ const Equipment = () => {
                 return (
                   <DetailedEntryTrigger
                     extraClassName="tight w-full md:w-40 mr-2 mt-2"
-                    renderer={RenderItems(item)}
+                    renderer={RenderItem(item)}
                     data={item}
                   >
                     <TextBox extraClassName="bg-light-200 dark:bg-dark-200 px-2 py-2 w-full md:w-40 h-40 mr-2 mt-2">

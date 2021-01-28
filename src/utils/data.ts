@@ -16,6 +16,10 @@ import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
+  const sourceIncludesUA = (source: string) => {
+    return source.includes('UA');
+  };
+
   const allSources = getCookie('allSources') === 'true';
   if (!includeDMG && item.source === 'DMG') {
     return 0;
@@ -25,6 +29,12 @@ export const filterSources = (item: any, includeDMG: boolean = true) => {
     return 0;
   }
 
+  if (
+    sourceIncludesUA(item.source) ||
+    (item.classSource && sourceIncludesUA(item.classSource))
+  ) {
+    return 0;
+  }
   return SourceUtil.isCoreOrSupplement(item.source) &&
     !SourceUtil.isNonstandardSource(item.source)
     ? 1

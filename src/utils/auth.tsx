@@ -31,7 +31,12 @@ export const isPowerUser = (user: User) =>
 // Refresh JWT Token
 netlifyIdentity.on('init', async (user: User | null) => {
   if (user) {
-    await netlifyIdentity.refresh();
+    try {
+      await netlifyIdentity.refresh();
+    } catch (error) {
+      console.error(error);
+      window.location.reload();
+    }
 
     // Check if user is Power user
     if (isPowerUser(user) && !(getCookie('allSources') === 'true')) {

@@ -1,12 +1,130 @@
-import { mainRenderer as Renderer, Parser } from 'utils/mainRenderer';
+import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
+import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
+import _ from 'lodash';
+import { ClassElement, ClassSubclass } from 'models/class';
+import { LanguageElement } from 'models/language';
+import { Race } from 'models/race';
+import ClassBase from 'pages/Create/ClassBase';
+import ClassTable from 'pages/Create/ClassTable';
+import React from 'react';
+import {
+  mainRenderer,
+  mainRenderer as Renderer,
+  Parser,
+} from 'utils/mainRenderer';
+import {
+  getClassFeatures,
+  getSubClassFeatures,
+  getFeat,
+} from 'utils/sourceDataUtils';
+
+const featureBoxCls = 'custom-border-xs my-2 bg-light-200 dark:bg-dark-200';
+
+export const renderClassFeatures = (className: string) => {
+  const classFeatures = getClassFeatures(className);
+  return classFeatures.map(feature => {
+    if (!feature.source.includes('UA')) {
+      return (
+        <div
+          key={`${className}-${feature.name}-${feature.level}`}
+          className={featureBoxCls}
+        >
+          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+            {`Level ${feature.level} – ${feature.name}`}
+          </DetailedEntryTrigger>
+        </div>
+      );
+    } else {
+      return undefined;
+    }
+  });
+};
+
+export const renderSubClassFeatures = (
+  className: string,
+  subClassName: string,
+) => {
+  const subclassFeatures = getSubClassFeatures(className, subClassName);
+  return subclassFeatures.map(feature => {
+    if (!feature.source.includes('UA')) {
+      return (
+        <div
+          key={`${subClassName}-${feature.name}-${feature.level}`}
+          className={featureBoxCls}
+        >
+          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+            {`Level ${feature.level} – ${feature.name}`}
+          </DetailedEntryTrigger>
+        </div>
+      );
+    } else {
+      return undefined;
+    }
+  });
+};
+
+export const renderRaceTraits = (race: Race) => {
+  const raceTraits = race.entries?.filter(
+    item => !_.includes(['Age', 'Size', 'Alignment', 'Languages'], item.name),
+  );
+  return raceTraits?.length ? (
+    raceTraits?.map(trait => (
+      <DetailedEntryTrigger key={trait.name} data={trait}>
+        <div className={featureBoxCls}>{trait.name}</div>
+      </DetailedEntryTrigger>
+    ))
+  ) : (
+    <p>No racial traits</p>
+  );
+};
+
+export const renderFeats = (feats: string[]) => {
+  return feats?.length ? (
+    feats?.map(featName => {
+      const feat = getFeat(featName);
+      return (
+        <DetailedEntryTrigger data={feat}>
+          <div key={feat?.name} className={featureBoxCls}>
+            {feat?.name}
+          </div>
+        </DetailedEntryTrigger>
+      );
+    })
+  ) : (
+    <p>No feats</p>
+  );
+};
 
 export const isTableElement = (data: string) => {
   const tableElements = ['<td', '<tr', '<th'];
   return tableElements.includes(data.trim().slice(0, 3)) ? true : false;
 };
 
+export const RenderClass = (classElem: ClassElement) => (
+  <div className="tight">
+    <DangerousHtml data={mainRenderer.render(classElem)} />
+    <ClassTable cls={classElem} subcls={{} as ClassSubclass} />
+    <ClassBase cls={classElem} />
+    {renderClassFeatures(classElem!.name)}
+  </div>
+);
+
+export const RenderSubClass = (
+  classElem: ClassElement,
+  subclass: ClassSubclass,
+) => (
+  <div className="tight">
+    <DangerousHtml data={mainRenderer.render(subclass)} />
+    <ClassTable cls={classElem} subcls={subclass} />
+    {renderSubClassFeatures(classElem!.name, subclass!.name)}
+  </div>
+);
+
+export const RenderRace = (race: Race) =>
+  Renderer.race.getCompactRenderedString(race);
+
 // Items
-export const RenderItems = (item: any) => {
+export const RenderItem = (item: any) => {
   const [
     damage,
     damageType,
@@ -50,8 +168,11 @@ export const RenderItems = (item: any) => {
 		`;
 };
 
+// Language
+export const RenderLanguage = (lang: LanguageElement) =>
+  Renderer.language.getCompactRenderedString(lang);
 // Spells
-export const RenderedSpell = (sp: any, subclassLookup?: any) => {
+export const RenderSpell = (sp: any, subclassLookup?: any) => {
   const renderStack = [];
   Renderer.setFirstSection(true);
 

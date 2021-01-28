@@ -7,12 +7,14 @@ import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 interface Props {
   data: any;
   renderer?: any;
+  jsx?: JSX.Element;
   extraClassName?: string;
 }
 
 const DetailedEntryTrigger: React.FC<Props> = ({
   data,
   renderer,
+  jsx,
   extraClassName,
   children,
 }) => {
@@ -23,7 +25,9 @@ const DetailedEntryTrigger: React.FC<Props> = ({
       onClick={() =>
         dispatch(
           setDetailedEntry(
-            renderer ? (
+            jsx ? (
+              jsx
+            ) : renderer ? (
               <DangerousHtml extraClassName={extraClassName} data={renderer} />
             ) : (
               <Entry extraClassName={extraClassName} entry={data} />

@@ -112,17 +112,17 @@ const ClassTable = ({ cls, subcls }: Props) => {
         <tbody>
           <tr className="leading-tight">
             <th className="text-sm" colSpan={3} />
-            {cls.classTableGroups &&
+            {cls?.classTableGroups &&
               renderTableGroupsHeaderTitle(cls.classTableGroups)}
-            {subcls.subclassTableGroups &&
+            {subcls?.subclassTableGroups &&
               renderTableGroupsHeaderTitle(subcls.subclassTableGroups)}
           </tr>
           <tr className="leading-none">
             <th className="text-sm">Level</th>
             <th className="text-sm text-left">Features</th>
-            {cls.classTableGroups &&
+            {cls?.classTableGroups &&
               renderTableGroupsHeader(cls.classTableGroups)}
-            {subcls.subclassTableGroups &&
+            {subcls?.subclassTableGroups &&
               renderTableGroupsHeader(subcls.subclassTableGroups)}
           </tr>
           {renderTableRows(cls, subcls)}
