@@ -4,12 +4,14 @@
 ### Notes / Ideas
 
 - [ ] Spell Rating / Comments  
-- [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [ ] minimize render.js?  
+- [ ] Lvl up Modal (with multiclass)  
+- [ ] Online/offline (persist list to localStorage)  
 
 ### Todo
 
+- [ ] Extras: Bestiary + any other "saved entries"  
 - [ ] MultiClassing  
 - [ ] Clickable link thing on all detailed entries  
 - [ ] Custom items (w/ use as base)  
@@ -19,10 +21,10 @@
 
 ### In Progress
 
-- [ ] Omni search (Fuse) create index when mapping json  
 
 ### Done ✓
 
+- [x] Omni search (Fuse) create index when mapping json  
 - Split data loading from main js (lazy/suspense) for json  
 - Initial loading screen (non render blocking)  
 - Try 5e Tools CSS  

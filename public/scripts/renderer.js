@@ -4872,52 +4872,37 @@ Renderer.prototype.item = {
   // default is general -> specific
   LINK_SPECIFIC_TO_GENERIC_DIRECTION: 1,
 
-  _sortProperties(a, b) {
-    return SortUtil.ascSort(
-      Renderer.item.propertyMap[a].name,
-      Renderer.item.propertyMap[b].name,
-    );
-  },
-
   _getPropertiesText(item) {
     const renderer = Renderer.get();
     if (item.property) {
       let renderedDmg2 = false;
-
-      const renderedProperties = item.property
-        .sort(renderer.item._sortProperties)
-        .map(prop => {
-          const fullProp = renderer.item.propertyMap[prop];
-
-          if (fullProp.template) {
-            const toRender = fullProp.template.replace(
-              /{{([^}]+)}}/g,
-              (...m) => {
-                // Special case for damage dice -- need to add @damage tags
-                if (m[1] === 'item.dmg1') {
-                  return renderer.item._renderDamage(item.dmg1);
-                } else if (m[1] === 'item.dmg2') {
-                  renderedDmg2 = true;
-                  return renderer.item._renderDamage(item.dmg2);
-                }
-
-                const spl = m[1].split('.');
-                switch (spl[0]) {
-                  case 'prop_name':
-                    return fullProp.name;
-                  case 'item': {
-                    const path = spl.slice(1);
-                    if (!path.length) return `{@i missing key path}`;
-                    return MiscUtil.get(item, ...path) || '';
-                  }
-                  default:
-                    return `{@i unknown template root: "${spl[0]}"}`;
-                }
-              },
-            );
-            return Renderer.get().render(toRender);
-          } else return fullProp.name;
-        });
+      const renderedProperties = item.property.map(prop => {
+        const fullProp = renderer.item.propertyMap[prop];
+        if (fullProp.template) {
+          const toRender = fullProp.template.replace(/{{([^}]+)}}/g, (...m) => {
+            // Special case for damage dice -- need to add @damage tags
+            if (m[1] === 'item.dmg1') {
+              return renderer.item._renderDamage(item.dmg1);
+            } else if (m[1] === 'item.dmg2') {
+              renderedDmg2 = true;
+              return renderer.item._renderDamage(item.dmg2);
+            }
+            const spl = m[1].split('.');
+            switch (spl[0]) {
+              case 'prop_name':
+                return fullProp.name;
+              case 'item': {
+                const path = spl.slice(1);
+                if (!path.length) return `{@i missing key path}`;
+                return MiscUtil.get(item, ...path) || '';
+              }
+              default:
+                return `{@i unknown template root: "${spl[0]}"}`;
+            }
+          });
+          return Renderer.get().render(toRender);
+        } else return fullProp.name;
+      });
 
       if (!renderedDmg2 && item.dmg2)
         renderedProperties.unshift(
@@ -5056,7 +5041,6 @@ Renderer.prototype.item = {
     const damage = damageParts.join(', ');
     const damageType = item.dmgType ? Parser.dmgTypeToFull(item.dmgType) : '';
     const propertiesTxt = renderer.item._getPropertiesText(item);
-
     return [damage, damageType, propertiesTxt];
   },
 
@@ -5274,7 +5258,6 @@ Renderer.prototype.item = {
     if (!isCompact && item.lootTables) {
       renderStack.push(
         `<div><span class="font-bold">Found On: </span>${item.lootTables
-          .sort(SortUtil.ascSortLower)
           .map(tbl => renderer.render(`{@table ${tbl}}`))
           .join(', ')}</div>`,
       );
@@ -8319,7 +8302,7 @@ Parser.spMainClassesToFull = function(fromClassList, textOnly = false) {
       .map(it =>
         textOnly
           ? it.c.name
-          : `<a title="${
+          : `<div class="inline font-bold underline" title="${
               it.c.definedInSource ? `Class source` : 'Source'
             }: ${Parser.sourceJsonToFull(it.c.source)}${
               it.c.definedInSource
@@ -8327,7 +8310,7 @@ Parser.spMainClassesToFull = function(fromClassList, textOnly = false) {
                     it.c.definedInSource,
                   )}.`
                 : ''
-            }" href="${UrlUtil.PG_CLASSES}#${it.hash}">${it.c.name}</a>`,
+            }">${it.c.name}</div>`,
       )
       .join(', ') || ''
   );

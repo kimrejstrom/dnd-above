@@ -121,6 +121,7 @@ export const RenderRace = (race: Race) =>
 
 // Items
 export const RenderItem = (item: any) => {
+  console.log(item);
   const [
     damage,
     damageType,
@@ -219,19 +220,12 @@ export const RenderSpell = (sp: any, subclassLookup?: any) => {
     'fromClassList',
   );
   if (fromClassList.length) {
-    console.log(fromClassList);
-    const [current, legacy] = Parser.spClassesToCurrentAndLegacy(fromClassList);
+    const [current] = Parser.spClassesToCurrentAndLegacy(fromClassList);
     stackFroms.push(
       `<div><span class="bold">Classes: </span>${Parser.spMainClassesToFull(
         current,
       )}</div>`,
     );
-    if (legacy.length)
-      stackFroms.push(
-        `<div class="text-muted"><span class="bold">Classes (legacy): </span>${Parser.spMainClassesToFull(
-          legacy,
-        )}</div>`,
-      );
   }
 
   //   const fromSubclass = mainRenderer.spell.getCombinedClasses(sp, 'fromSubclass');
