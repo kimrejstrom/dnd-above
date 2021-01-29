@@ -17,6 +17,8 @@ import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
 import { Parser } from 'utils/mainRenderer';
+import { generate_name } from 'utils/name';
+import { Error } from 'components/Notification/Notification';
 
 const Description = () => {
   const dispatch = useDispatch();
@@ -25,7 +27,9 @@ const Description = () => {
     (state: RootState) => state.createCharacterForm,
   );
   const history = useHistory();
-  const { register, handleSubmit, getValues, errors } = useForm<FormData>();
+  const { register, handleSubmit, getValues, errors, setValue } = useForm<
+    FormData
+  >();
   const onSubmit = (data: FormData, e?: React.BaseSyntheticEvent) => {
     dispatch(
       updateFormData({
@@ -105,21 +109,41 @@ const Description = () => {
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full">
-          <label className="block text-lg px-2">
-            Character Name
-            <input
-              type="text"
-              name="name"
-              defaultValue={formState.data.descriptionData.name}
-              className="bg-light-400 dark:bg-dark-200 mt-0 block w-full px-1 border-0 border-b-2 border-gray-400 focus:ring-0 focus:border-black dark:focus:border-gray-200 text-3xl"
-              ref={register({ required: true })}
-            />
-            {errors.name && 'Name is required'}
-          </label>
+          <div className="w-full flex items-end">
+            <label className="flex-grow text-lg px-2">
+              Character Name
+              <input
+                type="text"
+                name="name"
+                defaultValue={formState.data.descriptionData.name}
+                className="bg-light-400 dark:bg-dark-200 mt-0 block w-full px-1 border-0 border-b-2 border-gray-400 focus:ring-0 focus:border-black dark:focus:border-gray-200 text-3xl"
+                ref={register({ required: true })}
+              />
+              {errors.name && (
+                <span className="text-red-700 dark:text-red-400">{`Name is required`}</span>
+              )}
+            </label>
+            <StyledButton
+              onClick={() => {
+                setValue('name', generate_name('base'));
+              }}
+            >
+              Generate Name
+            </StyledButton>
+          </div>
+
           {/* BACKGROUND */}
           <details>
             <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
-              <span className="text-xl">Background</span>
+              <span className="text-xl">
+                Background{' '}
+                {(errors.background ||
+                  errors.chosenBackgroundSkillProficiencies ||
+                  errors.chosenBackgroundToolProficiencies ||
+                  errors.chosenBackgroundLanguages) && (
+                  <Error extraClassName="inline text-red-700" />
+                )}
+              </span>
             </summary>
             <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
               <label className="block">
@@ -145,7 +169,7 @@ const Description = () => {
                   ))}
                 </select>
                 {errors.background && (
-                  <span>{`You must choose a background`}</span>
+                  <span className="form-error">{`You must choose a background`}</span>
                 )}
               </label>
               {selectedBackground && (
@@ -184,7 +208,7 @@ const Description = () => {
                                 })}
                               </select>
                               {errors.chosenBackgroundSkillProficiencies && (
-                                <span>{`You must choose ${count} skills`}</span>
+                                <span className="form-error">{`You must choose ${count} skills`}</span>
                               )}
                             </label>
                           )}
@@ -239,7 +263,7 @@ const Description = () => {
                                 })}
                               </select>
                               {errors.chosenBackgroundToolProficiencies && (
-                                <span>{`You must choose ${count} tools`}</span>
+                                <span className="form-error">{`You must choose ${count} tools`}</span>
                               )}
                             </label>
                           )}
@@ -291,7 +315,7 @@ const Description = () => {
                               ))}
                             </select>
                             {errors.chosenBackgroundLanguages && (
-                              <span>{`You must choose ${lang.anyStandard} skills`}</span>
+                              <span className="form-error">{`You must choose ${lang.anyStandard} skills`}</span>
                             )}
                           </label>
                         </>
@@ -319,7 +343,12 @@ const Description = () => {
           {/* ALIGNMENT */}
           <details>
             <summary className="bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin p-2 my-2">
-              <span className="text-xl">Character Details</span>
+              <span className="text-xl">
+                Character Details{' '}
+                {errors.alignment && (
+                  <Error extraClassName="inline text-red-700" />
+                )}
+              </span>
             </summary>
             <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
               <h3 className="my-3 text-lg">Alignment</h3>
@@ -364,7 +393,7 @@ const Description = () => {
                   ))}
                 </select>
                 {errors.alignment && (
-                  <span>{`You must choose an alignment`}</span>
+                  <span className="form-error">{`You must choose an alignment`}</span>
                 )}
               </label>
               {selectedAlignment && (
@@ -402,9 +431,6 @@ const Description = () => {
                     </option>
                   ))}
                 </select>
-                {errors.characteristicsSource && (
-                  <span>{`You must choose a background`}</span>
-                )}
               </label>
               {characteristicsSource && (
                 <div>
@@ -435,9 +461,7 @@ const Description = () => {
                               <select
                                 className="form-input"
                                 name={elementName}
-                                ref={register({
-                                  validate: (data: any) => data !== 'initial',
-                                })}
+                                ref={register}
                                 defaultValue={
                                   (formState.data.descriptionData as any)[
                                     elementName
@@ -456,9 +480,6 @@ const Description = () => {
                                     </option>
                                   ))}
                               </select>
-                              {errors.alignment && (
-                                <span>{`You must choose one`}</span>
-                              )}
                             </label>
                           </div>
                         );

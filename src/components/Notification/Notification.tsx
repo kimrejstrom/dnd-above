@@ -11,14 +11,18 @@ interface Props {
   type: NotificationType;
 }
 
-export const Warning = () => (
+interface IconProps {
+  extraClassName?: string;
+}
+
+export const Warning = ({ extraClassName }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     width="16"
     height="16"
     fill="currentColor"
-    className="fill-current"
+    className={`${extraClassName ?? ''} fill-current`}
   >
     <path
       fillRule="evenodd"
@@ -28,14 +32,14 @@ export const Warning = () => (
   </svg>
 );
 
-export const Info = () => (
+export const Info = ({ extraClassName }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     width="16"
     height="16"
     fill="currentColor"
-    className="fill-current"
+    className={`${extraClassName ?? ''} fill-current`}
   >
     <path
       fillRule="evenodd"
@@ -45,14 +49,14 @@ export const Info = () => (
   </svg>
 );
 
-export const Error = () => (
+export const Error = ({ extraClassName }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     width="16"
     height="16"
     fill="currentColor"
-    className="fill-current"
+    className={`${extraClassName ?? ''} fill-current`}
   >
     <path
       fillRule="evenodd"
@@ -62,14 +66,14 @@ export const Error = () => (
   </svg>
 );
 
-export const Success = () => (
+export const Success = ({ extraClassName }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     width="16"
     height="16"
     fill="currentColor"
-    className="fill-current"
+    className={`${extraClassName ?? ''} fill-current`}
   >
     <path
       fillRule="evenodd"

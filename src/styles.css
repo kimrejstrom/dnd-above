@@ -52,6 +52,10 @@ body {
   @apply rounded bg-gray-200 border-transparent focus:border-transparent focus:bg-gray-200 text-gray-700 focus:ring-1 focus:ring-offset-2 focus:ring-gray-500 dark:text-dark-300;
 }
 
+.form-error {
+  @apply text-red-700 dark:text-red-400 dnd-body
+}
+
 .modal {
   transition: opacity 0.25s ease;
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import beholder from 'images/beholder-light.png';
 
 interface Props {}
@@ -12,6 +11,7 @@ export default class ErrorBoundary extends Component<Props, State> {
 
   static getDerivedStateFromError(error: any) {
     // Update state so the next render will show the fallback UI.
+    console.error(error);
     return { hasError: true };
   }
 
@@ -30,12 +30,12 @@ export default class ErrorBoundary extends Component<Props, State> {
             <br />
             Something went wrong
           </h1>
-          <Link
-            to="/"
+          <button
+            onClick={_ => window.location.reload()}
             className="text-lg bg-dark-100 bg-transparent text-light-100 px-2 border border-light-100 rounded"
           >
             Go Back
-          </Link>
+          </button>
         </div>
       );
     }

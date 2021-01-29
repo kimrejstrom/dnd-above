@@ -7492,8 +7492,8 @@ Parser.sourceJsonToFull = function(source) {
       /'/g,
       '\u2019',
     );
-  if (BrewUtil.hasSourceJson(source))
-    return BrewUtil.sourceJsonToFull(source).replace(/'/g, '\u2019');
+  // if (BrewUtil.hasSourceJson(source))
+  //   return BrewUtil.sourceJsonToFull(source).replace(/'/g, '\u2019');
   return Parser._parse_aToB(Parser.SOURCE_JSON_TO_FULL, source).replace(
     /'/g,
     '\u2019',
@@ -7509,14 +7509,14 @@ Parser.sourceJsonToAbv = function(source) {
   source = Parser._getSourceStringFromSource(source);
   if (Parser.hasSourceAbv(source))
     return Parser._sourceAbvCache[source.toLowerCase()];
-  if (BrewUtil.hasSourceJson(source)) return BrewUtil.sourceJsonToAbv(source);
+  // if (BrewUtil.hasSourceJson(source)) return BrewUtil.sourceJsonToAbv(source);
   return Parser._parse_aToB(Parser.SOURCE_JSON_TO_ABV, source);
 };
 Parser.sourceJsonToDate = function(source) {
   source = Parser._getSourceStringFromSource(source);
   if (Parser.hasSourceDate(source))
     return Parser._sourceDateCache[source.toLowerCase()];
-  if (BrewUtil.hasSourceJson(source)) return BrewUtil.sourceJsonToDate(source);
+  // if (BrewUtil.hasSourceJson(source)) return BrewUtil.sourceJsonToDate(source);
   return Parser._parse_aToB(Parser.SOURCE_JSON_TO_DATE, source, null);
 };
 
@@ -10174,7 +10174,7 @@ SourceUtil = {
 
   getFilterGroup(source) {
     // if (source instanceof FilterItem) source = source.item;
-    if (BrewUtil.hasSourceJson(source)) return 2;
+    // if (BrewUtil.hasSourceJson(source)) return 2;
     return Number(SourceUtil.isNonstandardSource(source));
   },
 };

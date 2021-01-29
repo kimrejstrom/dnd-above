@@ -6,7 +6,6 @@ import { calculateStats, getAbilityMod, randomize } from 'utils/character';
 import {
   getRace,
   getClass,
-  getItem,
   getSubClass,
   getBackground,
 } from 'utils/sourceDataUtils';
@@ -25,8 +24,7 @@ import StyledButton from 'components/StyledButton/StyledButton';
 import { setGeneratedFormData } from 'features/createCharacterForm/createCharacterFormSlice';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import ClassTable from 'pages/Create/ClassTable';
-import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { RenderItem } from 'utils/render';
+import ItemCard from 'components/ItemCard/ItemCard';
 
 const Summary = () => {
   const formState = useSelector(
@@ -244,27 +242,9 @@ const Summary = () => {
           <div className="my-3">
             <h3>Equipment</h3>
             <div className="flex flex-wrap">
-              {formState.data.equipmentData.items.map((itemName, index) => {
-                const item = getItem(itemName);
-                return (
-                  <DetailedEntryTrigger
-                    extraClassName="w-full md:w-40 mr-2 mt-2 tight"
-                    key={itemName}
-                    renderer={RenderItem(item)}
-                    data={item}
-                  >
-                    <TextBox extraClassName="bg-light-200 h-52 w-full dark:bg-dark-200 px-2 py-2">
-                      <DangerousHtml
-                        extraClassName="text-sm leading-none"
-                        prose={false}
-                        data={mainRenderer.item.getCompactRenderedString(item, {
-                          compact: true,
-                        })}
-                      />
-                    </TextBox>
-                  </DetailedEntryTrigger>
-                );
-              })}
+              {formState.data.equipmentData.items.map((itemName, index) => (
+                <ItemCard key={index} itemName={itemName} />
+              ))}
             </div>
           </div>
         </TextBox>

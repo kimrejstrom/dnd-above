@@ -8,19 +8,15 @@ import Entry from 'components/Entry/Entry';
 import {
   getClass,
   getBackground,
-  getItem,
   getOtherItems,
   getArmor,
   getWeapons,
 } from 'utils/sourceDataUtils';
-import { mainRenderer } from 'utils/mainRenderer';
-import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import StyledButton, {
   DEFAULT_BUTTON_STYLE,
 } from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
-import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
-import { RenderItem } from 'utils/render';
+import ItemCard from 'components/ItemCard/ItemCard';
 
 const Equipment = () => {
   const dispatch = useDispatch();
@@ -121,26 +117,9 @@ const Equipment = () => {
           <>
             <h2 className="text-lg mt-4">Current Equipment</h2>
             <div className="w-full flex flex-wrap text-left">
-              {itemList.map((itemName, index) => {
-                const item = getItem(itemName);
-                return (
-                  <DetailedEntryTrigger
-                    extraClassName="tight w-full md:w-40 mr-2 mt-2"
-                    renderer={RenderItem(item)}
-                    data={item}
-                  >
-                    <TextBox extraClassName="bg-light-200 dark:bg-dark-200 px-2 py-2 w-full md:w-40 h-52 mr-2 mt-2">
-                      <DangerousHtml
-                        extraClassName="text-sm leading-none"
-                        prose={false}
-                        data={mainRenderer.item.getCompactRenderedString(item, {
-                          compact: true,
-                        })}
-                      />
-                    </TextBox>
-                  </DetailedEntryTrigger>
-                );
-              })}
+              {itemList.map((itemName, index) => (
+                <ItemCard key={index} itemName={itemName} />
+              ))}
             </div>
           </>
         )}

@@ -108,6 +108,24 @@ const Abilities = () => {
     );
   };
 
+  const rollAbilityScores = () => {
+    const rollResult = diceRoller
+      .roll('{4d6kh3...6}')
+      .renderedExpression.split('}')
+      .filter(e => e)[0]
+      .replace(/[{}]/g, '')
+      .split(';')
+      .map(roll => roll.split('=')[1].trim());
+    setAbilityScores(
+      rollResult
+        .sort((a, b) => Number(a) - Number(b))
+        .map(score => ({
+          score: Number(score),
+          used: false,
+        })),
+    );
+  };
+
   const handleMethodSelect = (
     e: React.SyntheticEvent<HTMLSelectElement, Event>,
   ) => {
@@ -121,21 +139,7 @@ const Abilities = () => {
         { score: 15, used: false },
       ]);
     } else if (e.currentTarget.value === 'rolled') {
-      const rollResult = diceRoller
-        .roll('{4d6kh3...6}')
-        .renderedExpression.split('}')
-        .filter(e => e)[0]
-        .replace(/[{}]/g, '')
-        .split(';')
-        .map(roll => roll.split('=')[1].trim());
-      setAbilityScores(
-        rollResult
-          .sort((a, b) => Number(a) - Number(b))
-          .map(score => ({
-            score: Number(score),
-            used: false,
-          })),
-      );
+      rollAbilityScores();
     } else {
       setAbilityScores([]);
     }
@@ -184,7 +188,7 @@ const Abilities = () => {
                 <option value="standard">Standard Array</option>
               </select>
               {errors.rollMethod && (
-                <span className="text-red-500">{`You must choose a method`}</span>
+                <span className="form-error">{`You must choose a method`}</span>
               )}
             </label>
           </div>
@@ -202,6 +206,29 @@ const Abilities = () => {
                     <div className={`text-xl leading-tight`}>{ab.score}</div>
                   </div>
                 ))}
+              </div>
+              <div className="flex justify-center mt-4">
+                <StyledButton
+                  extraClassName="w-36 mr-2"
+                  onClick={e => {
+                    e?.preventDefault();
+                    const shuffledScores = _.shuffle(abilityScores);
+                    Object.keys(Parser.ATB_ABV_TO_FULL).forEach((key, i) => {
+                      setValue(key as StatsTypes, shuffledScores[i].score);
+                    });
+                  }}
+                >
+                  Auto-assign
+                </StyledButton>
+                <StyledButton
+                  extraClassName="w-36 ml-2"
+                  onClick={e => {
+                    e?.preventDefault();
+                    rollAbilityScores();
+                  }}
+                >
+                  Re-roll
+                </StyledButton>
               </div>
             </div>
           )}
@@ -228,7 +255,7 @@ const Abilities = () => {
                     ))}
                   </select>
                   {(errors as any)[key] && (
-                    <span>{`You must choose a score`}</span>
+                    <span className="form-error">{`Required`}</span>
                   )}
                 </label>
               </div>
