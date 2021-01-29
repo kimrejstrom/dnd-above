@@ -100,7 +100,7 @@ const Equipment = () => {
                       return entry.items
                         ?.map(item =>
                           item.name === 'Equipment' ? (
-                            <Entry entry={item.entry!} />
+                            <Entry key={item.name} entry={item.entry!} />
                           ) : (
                             undefined
                           ),
