@@ -9,6 +9,9 @@ import { RootState } from 'app/rootReducer';
 import { useQuery } from 'utils/customHooks';
 import Loader from 'components/Loader/Loader';
 import { diceRoller } from 'utils/dice';
+import StyledButton from 'components/StyledButton/StyledButton';
+import { toggleModal } from 'components/Modal/modalSlice';
+import { Info } from 'components/Info/Info';
 
 export const RollInput = () => {
   const dispatch = useDispatch();
@@ -56,20 +59,44 @@ export const RollInput = () => {
           <label htmlFor="formula-input" className="text-3xl">
             <span>Enter formula</span>
           </label>
+          <button
+            className="ml-2"
+            type="button"
+            onClick={() =>
+              dispatch(
+                toggleModal({
+                  visible: true,
+                  title: 'How to roll',
+                  content: <Info />,
+                }),
+              )
+            }
+          >
+            <svg
+              className="fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+            >
+              <path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM10.59 8.59a1 1 0 1 1-1.42-1.42 4 4 0 1 1 5.66 5.66l-2.12 2.12a1 1 0 1 1-1.42-1.42l2.12-2.12A2 2 0 0 0 10.6 8.6zM12 18a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+            </svg>
+          </button>
           <input
             id="formula-input"
-            className="text-lg w-full appearance-none font-mono flex bg-light-100 dark:bg-dark-100 text-center font-bold py-2 px-4 rounded mt-2 border border-dark-100 dark:border-light-100 focus:outline-none focus:border-yellow-400"
             type="text"
+            className="form-input text-lg w-full rounded font-mono text-center font-bold mt-2"
             value={currentRoll}
             onChange={e => dispatch(setCurrentRoll(e.target.value))}
           />
 
-          <input
-            className="dark:hover:bg-dark-100 bg-light-100 dark:bg-transparent w-full text-2xl py-1 mt-2 px-4 border border-dark-100 dark:border-light-100 rounded"
+          <StyledButton
+            extraClassName="w-full mt-2 h-12 md:text-xl"
             type="submit"
-            value="Roll"
             disabled={loading}
-          />
+          >
+            Roll
+          </StyledButton>
         </form>
         <div className="w-full text-wrap">
           {error ? (

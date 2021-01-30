@@ -14,7 +14,7 @@ import d6 from 'images/d6.svg';
 import d4 from 'images/d4.svg';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { PresetForm } from 'features/presets/PresetForm';
-import Button from 'components/Button/Button';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
   const dispatch = useDispatch();
@@ -45,9 +45,9 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
         break;
     }
     return (
-      <div key={index} className="block text-yellow-100 w-40">
+      <div key={index} className="block w-40">
         <div
-          className="custom-bg border dark:border-light-100 overflow-hidden m-1 dark:bg-dark-100 relative rounded-lg shadow-lg"
+          className="custom-bg border border-dark-200 dark:border-light-100 overflow-hidden m-1 relative rounded-lg shadow-lg"
           style={{ height: '9rem' }}
         >
           <div className="flex justify-between h-10">
@@ -61,10 +61,10 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
                   }),
                 )
               }
-              className="z-40 opacity-75 shape-shadow p-2"
+              className="z-40 opacity-75 p-2"
             >
               <svg
-                className="fill-current h-6 w-6 text-gray-200 opacity-50"
+                className="fill-current h-6 w-6 text-gray-900 dark:text-gray-200 opacity-75"
                 style={{ transform: 'scale(0.8)' }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -81,10 +81,10 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
             />
             <button
               onClick={() => dispatch(removePreset(index))}
-              className="z-40 opacity-75 shape-shadow p-2"
+              className="z-40 opacity-75 p-2"
             >
               <svg
-                className="fill-current h-6 w-6 text-gray-200 opacity-50"
+                className="fill-current h-6 w-6 text-gray-900 dark:text-gray-200 opacity-75"
                 style={{ transform: 'scale(1)' }}
                 role="button"
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,8 +104,8 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
               {preset.title}
             </div>
           </div>
-          <div className="w-full dark:bg-dark-100 absolute bottom-0 px-2 py-2 leading-none">
-            <div className="text-center opacity-75 capitalize text-md overflow-hidden">
+          <div className="w-full bg-light-400 dark:bg-dark-100 absolute bottom-0 px-2 py-2 leading-none">
+            <div className="text-center capitalize text-md overflow-hidden">
               {preset.formula}
             </div>
           </div>
@@ -118,9 +118,8 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
     <>
       <div className="w-full">
         <div className="flex justify-center mt-4">
-          <Button
-            className="w-2/5 m-1 bg-light-100 dark:bg-transparent text-dark-100 dark:text-light-100 py-1 dark:hover:bg-dark-300 px-4 border dark:border-primary rounded"
-            title="Add Preset"
+          <StyledButton
+            extraClassName="w-3/5 m-1"
             onClick={() =>
               dispatch(
                 toggleModal({
@@ -130,12 +129,15 @@ export const PresetList: React.FC<{ presets: Preset[] }> = ({ presets }) => {
                 }),
               )
             }
-          />
-          <Button
-            className="w-2/5 m-1 bg-light-100 dark:bg-transparent text-dark-100 dark:text-light-100 py-1 dark:hover:bg-dark-300 px-4 border dark:border-primary rounded"
-            title="Reset defaults"
+          >
+            Add Preset
+          </StyledButton>
+          <StyledButton
+            extraClassName="w-3/5 m-1"
             onClick={() => dispatch(resetPresets())}
-          />
+          >
+            Reset defaults
+          </StyledButton>
         </div>
       </div>
       <div className="h-40 mt-4 flex flex-wrap justify-between hidden-scroll">

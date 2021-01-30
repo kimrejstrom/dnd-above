@@ -53,7 +53,7 @@ body {
 }
 
 .form-error {
-  @apply text-red-700 dark:text-red-400 dnd-body
+  @apply text-red-700 dark:text-red-400 dnd-body;
 }
 
 .modal {
@@ -66,7 +66,7 @@ body.modal-active {
 }
 
 .custom-bg {
-  background-color: #393232;
+  @apply bg-light-400 dark:bg-dark-200;
   background-image: url(./images/background.svg);
 }
 
@@ -216,10 +216,6 @@ pre {
   @apply bg-dark-100 p-4 rounded mt-4 mb-4;
 }
 
-.mdx {
-  @apply font-sans;
-}
-
 .mdx h1,
 .mdx h2,
 .mdx h3 {
@@ -235,11 +231,11 @@ pre {
 }
 
 .mdx code {
-  @apply bg-dark-100 text-yellow-300;
+  @apply bg-light-400 text-yellow-900 dark:bg-dark-100 dark:text-yellow-300;
 }
 
 .mdx pre code {
-  @apply text-sm bg-dark-100 text-yellow-300;
+  @apply text-sm bg-light-400 text-yellow-900 dark:bg-dark-100 dark:text-yellow-300;
 }
 
 /* Spinner */

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { toggleModal } from 'components/Modal/modalSlice';
+import TextBox from 'components/TextBox/TextBox';
 // import Button from 'components/Button/Button';
 
 export interface IModal {
@@ -46,7 +47,7 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
               </svg>
             </div>
           </div>
-          {content}
+          <TextBox extraClassName="bg-light-400">{content}</TextBox>
         </div>
       </div>
     </div>

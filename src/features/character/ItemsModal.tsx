@@ -46,9 +46,11 @@ const ItemsModal: React.FC = () => {
           <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
             <div className="h-full overflow-y-scroll">
               <Items
+                columns={['name', 'type', 'rarity', 'value', 'source']}
                 items={allItems}
                 rowButtons={{ buttonTitle: '+', header: 'Add' }}
                 onRowButtonClick={handleAddItem}
+                filteringEnabled={true}
               />
             </div>
           </div>

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from 'react';
 import {
   useTable,
@@ -6,6 +7,7 @@ import {
   useSortBy,
   useRowSelect,
   useMountedLayoutEffect,
+  useFilters,
 } from 'react-table';
 import { isDefined } from 'ts-is-present';
 import { CommonItem } from 'utils/data';
@@ -48,6 +50,46 @@ const IndeterminateCheckbox = React.forwardRef(
   },
 );
 
+// This is a custom filter UI for selecting
+// a unique option from a list
+export function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}: {
+  column: {
+    filterValue: any;
+    setFilter: any;
+    preFilteredRows: any;
+    id: string;
+  };
+}) {
+  // Calculate the options for filtering
+  // using the preFilteredRows
+  const options = React.useMemo(() => {
+    const optionValues: string = preFilteredRows.map(
+      (row: any) => row.values[id],
+    );
+    return _.uniq(optionValues);
+  }, [id, preFilteredRows]);
+
+  // Render a select box
+  return (
+    <select
+      className={`form-input text-xs px-1 py-0.5`}
+      value={filterValue}
+      onChange={e => {
+        setFilter(e.target.value || undefined);
+      }}
+    >
+      <option value="">All</option>
+      {options.map((option, i) => (
+        <option key={i} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+}
+
 const Table = ({
   cellRenderer,
   tableData,
@@ -76,6 +118,7 @@ const Table = ({
           },
         }
       : { ...tableData },
+    useFilters,
     useSortBy,
     useRowSelect,
     hooks => {
@@ -149,8 +192,20 @@ const Table = ({
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+              <th
+                {...column.getHeaderProps(
+                  column.canFilter && column.filter
+                    ? {}
+                    : column.getSortByToggleProps(),
+                )}
+              >
                 {column.render('Header')}
+                {/* Render the columns filter UI */}
+                <div>
+                  {column.canFilter && column.filter
+                    ? column.render('Filter')
+                    : null}
+                </div>
               </th>
             ))}
           </tr>

@@ -66,7 +66,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
   });
 
   return (
-    <div className="h-5/6 flex flex-col">
+    <div className="h-5/6 flex flex-col mt-2">
       <div style={{ height: '20rem' }}>
         <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll">
@@ -78,7 +78,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
           </div>
         </div>
       </div>
-      <div className="mt-2 flex-grow">
+      <div className="mt-2" style={{ maxHeight: '25rem' }}>
         <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />

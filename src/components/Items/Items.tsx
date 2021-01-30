@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Cell } from 'react-table';
 import { startCase } from 'lodash';
-import Table from 'components/Table/Table';
+import Table, { SelectColumnFilter } from 'components/Table/Table';
 import { BaseItem } from 'models/base-item';
 import { Item } from 'models/item';
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ import { CommonItem } from 'utils/data';
 interface Props {
   items: (Item | BaseItem)[];
   columns?: string[];
+  filteringEnabled?: boolean;
   rowButtons?: { header: string; buttonTitle: string };
   onRowButtonClick?: any;
 }
@@ -36,7 +37,13 @@ const parseItem = (item: CommonItem) => {
   };
 };
 
-const Items = ({ items, columns, rowButtons, onRowButtonClick }: Props) => {
+const Items = ({
+  items,
+  columns,
+  rowButtons,
+  onRowButtonClick,
+  filteringEnabled = false,
+}: Props) => {
   const dispatch = useDispatch();
   const tableData = useMemo(
     () =>
@@ -56,13 +63,17 @@ const Items = ({ items, columns, rowButtons, onRowButtonClick }: Props) => {
   );
   const tableColumns = useMemo(() => {
     const itemColumns = columns || ['name', 'type', 'value', 'source'];
+    const isFilterable = (key: string) =>
+      filteringEnabled && ['type', 'source', 'rarity'].includes(key);
     return tableData.length
       ? itemColumns.map(key => ({
           accessor: key,
           Header: startCase(key),
+          Filter: isFilterable(key) ? SelectColumnFilter : undefined,
+          filter: isFilterable(key) ? 'includes' : undefined,
         }))
       : [];
-  }, [columns, tableData]);
+  }, [columns, tableData, filteringEnabled]);
 
   const MemoTable = useMemo(
     () => (

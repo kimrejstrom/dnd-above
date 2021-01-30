@@ -7,9 +7,13 @@ import {
 } from 'features/presets/presetsSlice';
 import { Preset } from 'features/presets/presetsSlice';
 import { useForm } from 'react-hook-form';
-import { Alert } from 'components/Alert/Alert';
 import { toggleModal } from 'components/Modal/modalSlice';
 import { diceRoller } from 'utils/dice';
+import StyledButton from 'components/StyledButton/StyledButton';
+import Notification, {
+  NotificationType,
+} from 'components/Notification/Notification';
+import { Info } from 'components/Info/Info';
 
 export const PresetForm: React.FC<{
   existingPreset?: Preset;
@@ -57,17 +61,17 @@ export const PresetForm: React.FC<{
 
   return (
     <div className="flex flex-col items-center">
-      <div className="text-lg text-green-300">{success}</div>
-      <form
-        className="text-center w-full"
-        onSubmit={handleSubmit(submitPreset)}
-      >
+      {success && (
+        <Notification type={NotificationType.Success}>{success}</Notification>
+      )}
+      <form className="w-full" onSubmit={handleSubmit(submitPreset)}>
         <label>
           Title
           <input
-            className="w-full text-lg appearance-none font-mono flex dark:bg-dark-100 text-center font-bold py-2 px-4 rounded mb-2 border dark:border-light-100 focus:outline-none focus:border-yellow-400"
+            className="form-input"
             type="text"
             name="title"
+            placeholder="Preset name"
             required={true}
             defaultValue={existingPreset?.title}
             ref={register({
@@ -79,8 +83,9 @@ export const PresetForm: React.FC<{
         <label>
           Formula
           <input
-            className="w-full text-lg appearance-none font-mono flex dark:bg-dark-100 text-center font-bold py-2 px-4 rounded mb-2 border dark:border-light-100 focus:outline-none focus:border-yellow-400"
+            className="form-input"
             type="text"
+            placeholder="Dice formula"
             name="formula"
             required={true}
             defaultValue={existingPreset?.formula}
@@ -94,7 +99,7 @@ export const PresetForm: React.FC<{
           Dice type
           <div className="inline-block relative w-full">
             <select
-              className="relative w-full appearance-none text-lg font-mono flex dark:bg-dark-100 text-center font-bold py-2 px-4 rounded border dark:border-light-100 focus:outline-none focus:border-yellow-400"
+              className="form-input"
               name="diceType"
               defaultValue={existingPreset?.diceType}
               ref={register}
@@ -118,18 +123,17 @@ export const PresetForm: React.FC<{
           </div>
         </label>
         <div className="flex justify-end mt-4 pt-2">
-          <input
-            className="bg-transparent text-yellow-200 py-1 hover:dark:bg-dark-100 px-4 border dark:border-light-100 rounded"
-            type="submit"
-            value="Save"
-          />
+          <StyledButton type="submit">Save</StyledButton>
         </div>
       </form>
       {error && (
-        <div className="font-mono mt-4 mb-6 m-auto">
-          <Alert title={'Something went wrong'} body={error.message} />
+        <div className="w-full mt-4">
+          <Notification type={NotificationType.Error}>
+            {error.message}
+          </Notification>
         </div>
       )}
+      <Info />
     </div>
   );
 };
