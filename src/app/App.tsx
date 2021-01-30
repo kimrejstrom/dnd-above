@@ -27,6 +27,7 @@ import Edit from 'pages/Edit/Edit';
 import { Loading } from 'components/Loading/Loading';
 import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 import { SourceDataFuseItem, initializeSearch } from 'utils/search';
+import Settings from 'features/settings/Settings';
 
 // Google Analytics
 initializeGA();
@@ -112,6 +113,9 @@ const App: React.FC = () => {
                         </PrivateRoute>
                         <PrivateRoute path="/books">
                           <Books />
+                        </PrivateRoute>
+                        <PrivateRoute path="/settings">
+                          <Settings />
                         </PrivateRoute>
                         <Route path="/login" component={withTracker(Login)} />
                         <Route

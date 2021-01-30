@@ -74,7 +74,7 @@ export const Header: React.FC = () => {
       {auth?.user && (
         <div className="p-1">
           <NavLink
-            to="/user-settings"
+            to="/settings"
             className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
           >
             User Settings
@@ -143,7 +143,7 @@ export const Header: React.FC = () => {
               {auth?.user && (
                 <div className="p-2">
                   <NavLink
-                    to="/user-settings"
+                    to="/settings"
                     className="block px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                   >
                     User Settings

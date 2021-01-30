@@ -8,6 +8,7 @@
 - [ ] minimize render.js?  
 - [ ] Lvl up Modal (with multiclass)  
 - [ ] Online/offline (persist list to localStorage)  
+- [ ] Settings page  
 
 ### Todo
 
@@ -16,7 +17,6 @@
 - [ ] Clickable link thing on all detailed entries  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
-- [ ] Equipment Table  
 - [ ] Mobile bottom bar + views  
 
 ### In Progress
@@ -24,6 +24,7 @@
 
 ### Done ✓
 
+- [x] Equipment Table  
 - [x] Omni search (Fuse) create index when mapping json  
 - Split data loading from main js (lazy/suspense) for json  
 - Initial loading screen (non render blocking)  

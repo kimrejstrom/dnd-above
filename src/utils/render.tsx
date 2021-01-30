@@ -25,7 +25,7 @@ export const renderClassFeatures = (className: string) => {
           key={`${className}-${feature.name}-${feature.level}`}
           className={featureBoxCls}
         >
-          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+          <DetailedEntryTrigger data={feature}>
             {`Level ${feature.level} – ${feature.name}`}
           </DetailedEntryTrigger>
         </div>
@@ -48,7 +48,7 @@ export const renderSubClassFeatures = (
           key={`${subClassName}-${feature.name}-${feature.level}`}
           className={featureBoxCls}
         >
-          <DetailedEntryTrigger data={feature} extraClassName="font-bold">
+          <DetailedEntryTrigger data={feature}>
             {`Level ${feature.level} – ${feature.name}`}
           </DetailedEntryTrigger>
         </div>

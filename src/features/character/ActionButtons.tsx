@@ -23,6 +23,7 @@ import FeatsModal from 'features/character/FeatsModal';
 import { diceRoller } from 'utils/dice';
 import { getAllClassFeatures } from 'utils/sourceDataUtils';
 import ItemsModal from 'features/character/ItemsModal';
+import TextBox from 'components/TextBox/TextBox';
 
 interface Props {
   character: CharacterListItem;
@@ -58,18 +59,20 @@ const LongRestForm: React.FC<ModalProps> = ({ character }) => {
         </StyledButton>
       </div>
       <div className="dnd-body mt-3 custom-border custom-border-medium custom-border-t">
-        <div className="text-xl">Long Rest features:</div>
-        <ul className="list-disc p-4">
-          {search(
-            getAllClassFeatures(
-              character.classData.classElement,
-              character.classData.subClass,
-            ),
-            ['finish a long', 'finish a short or long rest'],
-          ).map((entry: any) => (
-            <li>{<Entry entry={entry} highlight=" long " />}</li>
-          ))}
-        </ul>
+        <TextBox>
+          <div className="text-xl">Long Rest features:</div>
+          <ul className="list-disc p-4">
+            {search(
+              getAllClassFeatures(
+                character.classData.classElement,
+                character.classData.subClass,
+              ),
+              ['finish a long', 'finish a short or long rest'],
+            ).map((entry: any) => (
+              <li>{<Entry entry={entry} highlight=" long " />}</li>
+            ))}
+          </ul>
+        </TextBox>
       </div>
     </div>
   );
@@ -106,20 +109,22 @@ const ShortRestForm: React.FC<ModalProps> = ({ character }) => {
         </StyledButton>
       </div>
       <div className="dnd-body mt-3 custom-border custom-border-medium custom-border-t">
-        <div className="text-xl">Short Rest features:</div>
-        <ul className="list-disc p-4">
-          {search(
-            getAllClassFeatures(
-              character.classData.classElement,
-              character.classData.subClass,
-            ),
-            ['finish a short'],
-          ).map((entry: any, i) => (
-            <li key={`entry-${i}`}>
-              {<Entry entry={entry} highlight=" short " />}
-            </li>
-          ))}
-        </ul>
+        <TextBox>
+          <div className="text-xl">Short Rest features:</div>
+          <ul className="list-disc p-4">
+            {search(
+              getAllClassFeatures(
+                character.classData.classElement,
+                character.classData.subClass,
+              ),
+              ['finish a short'],
+            ).map((entry: any, i) => (
+              <li key={`entry-${i}`}>
+                {<Entry entry={entry} highlight=" short " />}
+              </li>
+            ))}
+          </ul>
+        </TextBox>
       </div>
     </div>
   );

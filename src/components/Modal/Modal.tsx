@@ -29,8 +29,8 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
       ></div>
 
       <div className="modal-container h-5/6 bg-light-300 dark:bg-dark-200 w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto">
-        <div className="h-full modal-content py-4 text-left px-6">
-          <div className="flex justify-between items-center overflow-y-scroll">
+        <div className="h-full modal-content py-4 text-left px-6 overflow-y-scroll">
+          <div className="flex justify-between items-center">
             <p className="text-2xl font-bold">{title}</p>
             <div
               onClick={() => dispatch(toggleModal({ visible: false }))}

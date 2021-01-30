@@ -30,7 +30,7 @@ const ItemsModal: React.FC = () => {
   return (
     <>
       <div className="w-full flex flex-col">
-        <div>Current Items</div>
+        <div>Current Items in Inventory</div>
         <div className="flex w-full overflow-x-scroll">
           {myItems?.map(itemName => (
             <ItemCard
@@ -41,26 +41,26 @@ const ItemsModal: React.FC = () => {
           ))}
         </div>
       </div>
-      <div className="h-4/6 flex flex-col mt-2">
-        <div style={{ height: '20rem' }}>
-          <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-            <div className="h-full overflow-y-scroll">
-              <Items
-                columns={['name', 'type', 'rarity', 'value', 'source']}
-                items={allItems}
-                rowButtons={{ buttonTitle: '+', header: 'Add' }}
-                onRowButtonClick={handleAddItem}
-                filteringEnabled={true}
-              />
-            </div>
-          </div>
+      <div className="flex flex-col mt-2">
+        <div
+          style={{ height: '20rem' }}
+          className=" overflow-y-scroll mt-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
+        >
+          <Items
+            columns={['name', 'type', 'rarity', 'value', 'source']}
+            items={allItems}
+            rowButtons={{ buttonTitle: '+', header: 'Add' }}
+            onRowButtonClick={handleAddItem}
+            filteringEnabled={true}
+          />
         </div>
-        <div className="mt-2" style={{ maxHeight: '25rem' }}>
-          <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-            <div className="h-full overflow-y-scroll px-2">
-              <DetailedEntry data={selectedEntry} />
-            </div>
-          </div>
+      </div>
+      <div
+        style={{ maxHeight: '25rem' }}
+        className="mt-3  overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
+      >
+        <div className="px-2">
+          <DetailedEntry data={selectedEntry} />
         </div>
       </div>
     </>

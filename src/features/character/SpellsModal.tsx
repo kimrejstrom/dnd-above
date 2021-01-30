@@ -66,23 +66,24 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
   });
 
   return (
-    <div className="h-5/6 flex flex-col mt-2">
-      <div style={{ height: '20rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-          <div className="h-full overflow-y-scroll">
-            <Spells
-              spells={filteredSpells}
-              selectedRows={selectedRows}
-              onSelectedRowsChange={toggleSpells}
-            />
-          </div>
-        </div>
+    <div className="flex flex-col">
+      <div>Currently Known Spells</div>
+      <div
+        style={{ height: '20rem' }}
+        className="mt-2 overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
+      >
+        <Spells
+          spells={filteredSpells}
+          selectedRows={selectedRows}
+          onSelectedRowsChange={toggleSpells}
+        />
       </div>
-      <div className="mt-2" style={{ maxHeight: '25rem' }}>
-        <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-          <div className="h-full overflow-y-scroll px-2">
-            <DetailedEntry data={selectedEntry} />
-          </div>
+      <div
+        style={{ maxHeight: '25rem' }}
+        className="mt-3 overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
+      >
+        <div className="px-2">
+          <DetailedEntry data={selectedEntry} />
         </div>
       </div>
     </div>
