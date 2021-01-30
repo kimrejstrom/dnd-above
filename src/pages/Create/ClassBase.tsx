@@ -49,6 +49,9 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
   const renderSkillsProfs = (skills: any) =>
     `${Parser.skillProficienciesToFull(skills).uppercaseFirst()}.`;
 
+  const renderToolProfs = (toolProfs: any) =>
+    toolProfs.map((it: any) => mainRenderer.render(it)).join(', ');
+
   const profs = cls.startingProficiencies;
 
   const StartingEquipment = () => {
@@ -68,7 +71,10 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
               <ul className="pl-4">
                 {equip.default.map((it, index) => (
                   <li key={index}>
-                    <DangerousHtml data={mainRenderer.render(it)} />
+                    <DangerousHtml
+                      extraClassName="lg:text-sm"
+                      data={mainRenderer.render(it)}
+                    />
                   </li>
                 ))}
               </ul>
@@ -135,7 +141,13 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
                 )}
                 {mc.proficienciesGained.tools && (
                   <div>
-                    <b>Tools:</b> {mc.proficienciesGained.tools.join(', ')}
+                    <b>Tools:</b>{' '}
+                    {
+                      <DangerousHtml
+                        extraClassName="inline lg:text-sm"
+                        data={renderToolProfs(mc.proficienciesGained.tools)}
+                      />
+                    }
                   </div>
                 )}
                 {mc.proficienciesGained.skills && (
@@ -181,7 +193,16 @@ const ClassBase = ({ cls }: { cls: ClassElement }) => {
               </div>
               <div>
                 <b>Tools: </b>
-                <span>{profs.tools ? profs.tools.join(', ') : 'none'}</span>
+                <span>
+                  {profs.tools ? (
+                    <DangerousHtml
+                      extraClassName="inline lg:text-sm"
+                      data={renderToolProfs(profs.tools)}
+                    />
+                  ) : (
+                    'none'
+                  )}
+                </span>
               </div>
               <div>
                 <b>Saving Throws: </b>
