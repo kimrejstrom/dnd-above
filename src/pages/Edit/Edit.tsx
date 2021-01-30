@@ -45,7 +45,6 @@ const Edit = (props: Props) => {
       );
     } catch (error) {
       setSubmitSuccessful(false);
-      console.log(error);
       setError('characterJSON', {
         type: 'validation',
         message: _.capitalize(error.message),

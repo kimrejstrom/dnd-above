@@ -1995,7 +1995,7 @@ function Renderer() {
   };
 
   this._renderLink = function(entry, textStack, meta, options) {
-    console.log('LINK', entry, textStack);
+    // console.log('LINK', entry, textStack);
     let href = this._renderLink_getHref(entry);
 
     //TODO Render DetailedEntry Trigger for all links
@@ -2915,74 +2915,11 @@ Renderer.prototype.utils = {
 };
 
 Renderer.prototype.feat = {
-  mergeAbilityIncrease: function(feat) {
-    if (!feat.ability || feat._hasMergedAbility) return;
-    feat._hasMergedAbility = true;
-    const targetList = feat.entries.find(e => e.type === 'list');
-    if (targetList) {
-      feat.ability.forEach(abilObj =>
-        targetList.items.unshift(abilityObjToListItem(abilObj)),
-      );
-    } else {
-      // this should never happen, but display sane output anyway, and throw an out-of-order exception
-      feat.ability.forEach(abilObj =>
-        feat.entries.unshift(abilityObjToListItem(abilObj)),
-      );
-
-      setTimeout(() => {
-        throw new Error(
-          `Could not find object of type "list" in "entries" for feat "${feat.name}" from source "${feat.source}" when merging ability scores! Reformat the feat to include a "list"-type entry.`,
-        );
-      }, 1);
-    }
-
-    function abilityObjToListItem(abilityObj) {
-      const TO_MAX_OF_TWENTY = ', to a maximum of 20.';
-      const abbArr = [];
-      if (!abilityObj.choose) {
-        Object.keys(abilityObj).forEach(ab =>
-          abbArr.push(
-            `Increase your ${Parser.attAbvToFull(ab)} score by ${
-              abilityObj[ab]
-            }${TO_MAX_OF_TWENTY}`,
-          ),
-        );
-      } else {
-        const choose = abilityObj.choose;
-        if (choose.from.length === 6) {
-          if (choose.textreference) {
-            // only used in "Resilient"
-            abbArr.push(
-              `Increase the chosen ability score by ${choose.amount}${TO_MAX_OF_TWENTY}`,
-            );
-          } else {
-            abbArr.push(
-              `Increase one ability score of your choice by ${choose.amount}${TO_MAX_OF_TWENTY}`,
-            );
-          }
-        } else {
-          const from = choose.from;
-          const amount = choose.amount;
-          const abbChoices = [];
-          for (let j = 0; j < from.length; ++j) {
-            abbChoices.push(Parser.attAbvToFull(from[j]));
-          }
-          const abbChoicesText = abbChoices.joinConjunct(', ', ' or ');
-          abbArr.push(
-            `Increase your ${abbChoicesText} by ${amount}${TO_MAX_OF_TWENTY}`,
-          );
-        }
-      }
-      return abbArr.join(' ');
-    }
-  },
-
   getCompactRenderedString(feat) {
     const renderer = Renderer.get();
     const renderStack = [];
 
     const prerequisite = renderer.utils.getPrerequisiteText(feat.prerequisite);
-    renderer.feat.mergeAbilityIncrease(feat);
     renderStack.push(`
               ${renderer.utils.getExcludedTr(feat, 'feat')}
               ${renderer.utils.getNameTr(feat, { page: UrlUtil.PG_FEATS })}

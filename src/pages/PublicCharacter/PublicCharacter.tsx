@@ -21,7 +21,6 @@ const PublicCharacter = (props: Props) => {
 
   useEffect(() => {
     if (listId && characterId) {
-      console.log(listId, characterId);
       dispatch(getPublicById({ listId, characterId }));
     }
   }, [dispatch, listId, characterId]);

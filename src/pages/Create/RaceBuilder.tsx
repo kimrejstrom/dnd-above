@@ -46,7 +46,6 @@ const RaceBuilder = () => {
     const history = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const onSubmit = (data: any, e?: React.BaseSyntheticEvent) => {
-      console.log(data);
       const chosenAbs = parseChosenRaceAbilities(
         abilityAmount,
         data.chosenRaceAbilities,

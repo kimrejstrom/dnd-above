@@ -121,7 +121,6 @@ export const RenderRace = (race: Race) =>
 
 // Items
 export const RenderItem = (item: any) => {
-  console.log(item);
   const [
     damage,
     damageType,

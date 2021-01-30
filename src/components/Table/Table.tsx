@@ -1,13 +1,14 @@
 import React from 'react';
 import {
   useTable,
-  useExpanded,
   TableOptions,
   Cell,
   useSortBy,
   useRowSelect,
   useMountedLayoutEffect,
 } from 'react-table';
+import { isDefined } from 'ts-is-present';
+import { CommonItem } from 'utils/data';
 
 interface Props {
   tableData: TableOptions<object>;
@@ -17,6 +18,8 @@ interface Props {
     selectedRows: Record<string, boolean>,
     selectedData: any[],
   ) => void;
+  rowButtons?: { header: string; buttonTitle: string };
+  onRowButtonClick?: (itemName: string) => void;
 }
 
 const isValidCellValue = (value: Cell<object>) =>
@@ -50,8 +53,11 @@ const Table = ({
   tableData,
   selectedRows,
   onSelectedRowsChange,
+  rowButtons,
+  onRowButtonClick,
 }: Props) => {
   // Use the state and functions returned from useTable to build your UI
+  console.log('init', tableData);
   const {
     getTableProps,
     getTableBodyProps,
@@ -71,7 +77,6 @@ const Table = ({
         }
       : { ...tableData },
     useSortBy,
-    useExpanded, // Use the useExpanded plugin hook
     useRowSelect,
     hooks => {
       selectedRows
@@ -93,6 +98,36 @@ const Table = ({
                   <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
                 </div>
               ),
+            },
+            ...columns,
+          ])
+        : rowButtons
+        ? hooks.visibleColumns.push(columns => [
+            // Let's make a column for buttons
+            {
+              id: 'selection',
+              // The header can use the table's getToggleAllRowsSelectedProps method
+              // to render a checkbox
+              Header: () => (
+                <div>
+                  <span>{rowButtons?.header}</span>
+                </div>
+              ),
+              // The cell can use the individual row's getToggleRowSelectedProps method
+              // to the render a checkbox
+              Cell: ({ row }) => {
+                return (
+                  <button
+                    className="uppercase text-sm font-bold px-2 py-1 dark:hover:bg-dark-100 bg-light-200 hover:bg-yellow-100 dark:bg-dark-200 dark:text-light-100 rounded-sm"
+                    onClick={() => {
+                      isDefined(onRowButtonClick) &&
+                        onRowButtonClick((row.original as CommonItem)['name']!);
+                    }}
+                  >
+                    {rowButtons?.buttonTitle}
+                  </button>
+                );
+              },
             },
             ...columns,
           ])

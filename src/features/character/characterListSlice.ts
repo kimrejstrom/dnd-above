@@ -193,7 +193,6 @@ export const getCharacterList = createAsyncThunk<
   GET_LIST_ACTION,
   async (_, thunkAPI) => {
     const response = await DnDAboveAPI.readAll();
-    console.log(response);
 
     if (response.status === 404) {
       thunkAPI.dispatch(backgroundCreate());
@@ -623,6 +622,36 @@ const characterListSlice = createSlice({
         character.gameData.spells = action.payload.data;
       }
     },
+    addItem(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character) {
+        character.equipmentData.items.push(action.payload.data);
+      }
+    },
+    removeItem(
+      state,
+      action: PayloadAction<{
+        id: string;
+        data: string;
+      }>,
+    ) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character) {
+        character.equipmentData.items = character.equipmentData.items.filter(
+          item => item !== action.payload.data,
+        );
+      }
+    },
     levelUp(state, action: PayloadAction<{ id: string }>) {
       const character = state.list.find(
         chara => chara.id === action.payload.id,
@@ -719,6 +748,8 @@ export const {
   addCustomProficiency,
   removeCustomProficiency,
   updateSpells,
+  addItem,
+  removeItem,
   levelUp,
   addFeat,
   removeFeat,

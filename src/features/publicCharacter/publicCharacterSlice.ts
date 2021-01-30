@@ -25,7 +25,6 @@ export const getPublicById = createAsyncThunk<
   'publicCharacter/getPublicById',
   async ({ listId, characterId }, thunkAPI) => {
     const response = await DnDAboveAPI.publicReadById(listId, characterId);
-    console.log(response);
 
     if (response.status >= 400) {
       return thunkAPI.rejectWithValue(await response.json());

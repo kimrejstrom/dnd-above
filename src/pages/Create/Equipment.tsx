@@ -55,6 +55,10 @@ const Equipment = () => {
     setItemList(itemList.concat(e.currentTarget.value));
   };
 
+  const removeItemFromList = (itemName: string) => {
+    setItemList(itemList.filter(item => item !== itemName));
+  };
+
   const addItemSelect = (e: any, type: string) => {
     e.preventDefault();
     setItemSelects(
@@ -81,7 +85,7 @@ const Equipment = () => {
             </h2>
             <div className="w-full">
               {selectedClass?.startingEquipment.default.map(equipment => (
-                <Entry entry={equipment} />
+                <Entry key={equipment} entry={equipment} />
               ))}
             </div>
           </>
@@ -118,7 +122,11 @@ const Equipment = () => {
             <h2 className="text-lg mt-4">Current Equipment</h2>
             <div className="w-full flex flex-wrap text-left">
               {itemList.map((itemName, index) => (
-                <ItemCard key={index} itemName={itemName} />
+                <ItemCard
+                  key={index}
+                  itemName={itemName}
+                  removeAction={removeItemFromList}
+                />
               ))}
             </div>
           </>
@@ -129,19 +137,19 @@ const Equipment = () => {
             onClick={(e: any) => addItemSelect(e, 'Weapon')}
             extraClassName="mr-2"
           >
-            + Add weapon
+            Add weapon
           </StyledButton>
           <StyledButton
             onClick={(e: any) => addItemSelect(e, 'Armor')}
             extraClassName="mr-2"
           >
-            + Add armor
+            Add armor
           </StyledButton>
           <StyledButton
             onClick={(e: any) => addItemSelect(e, 'Item')}
             extraClassName="mr-2"
           >
-            + Add item
+            Add item
           </StyledButton>
         </div>
 
@@ -149,7 +157,7 @@ const Equipment = () => {
           className="flex flex-col dnd-body"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {itemSelects.map(selectData => {
+          {itemSelects.map((selectData, i) => {
             let itemType: any = [];
             switch (selectData.type) {
               case 'Item':
@@ -166,17 +174,20 @@ const Equipment = () => {
                 break;
             }
             return (
-              <label className="block">
+              <label key={i} className="block">
                 {`Add ${selectData.type}`}
                 <select
                   name={selectData.formId}
                   ref={register}
                   className={`form-input`}
                   onChange={addItemToList}
+                  defaultValue="initial"
                 >
-                  <option value="initial">-</option>
+                  <option value="initial" disabled>
+                    -
+                  </option>
                   {itemType.map((item: any) => (
-                    <option value={item.name}>{`${item.name}${
+                    <option key={item.name} value={item.name}>{`${item.name}${
                       item.weaponCategory ? `, ${item.weaponCategory}` : ''
                     }${item.type ? ` (${item.type})` : ''}`}</option>
                   ))}

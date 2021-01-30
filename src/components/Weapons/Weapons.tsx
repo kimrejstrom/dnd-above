@@ -43,12 +43,15 @@ export const Weapons: React.FC = () => {
     [tableData],
   );
 
-  return (
-    <div className="text-left mx-auto w-full">
+  const MemoTable = useMemo(
+    () => (
       <Table
         cellRenderer={handleSpecialCell}
         tableData={{ columns: tableColumns, data: tableData }}
       />
-    </div>
+    ),
+    [tableColumns, tableData],
   );
+
+  return <div className="text-left mx-auto w-full">{MemoTable}</div>;
 };

@@ -208,7 +208,6 @@ export function initializeSearch() {
     });
   });
 
-  console.log('init search', fuseIndex.length);
   return fuseIndex;
 }
 

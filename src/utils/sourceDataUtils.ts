@@ -48,7 +48,6 @@ export const getAllClassFeatures = (
 };
 
 export const getAllClassAndSubClassFeatures = (className: string) => {
-  console.log(className);
   const relevantClassFeatures = (getSourceData(store.getState())
     ?.allClasses as any)[className.toLowerCase()].classFeature;
   const relevantSubClassFeatures = (getSourceData(store.getState())

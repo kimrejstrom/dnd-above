@@ -61,6 +61,7 @@ const App: React.FC = () => {
   );
   const theme = useSelector((state: RootState) => state.theme);
   const sourceData = useSelector((state: RootState) => state.sourceData);
+  const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const dispatch = useDispatch();
   const auth = useAuth();
 
@@ -121,7 +122,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
                   <Modal title={title} content={content} />
-                  <RightPanel searchIndex={searchIndex} />
+                  {panelOpen && <RightPanel searchIndex={searchIndex} />}
                 </div>
               </main>
             </ErrorBoundary>

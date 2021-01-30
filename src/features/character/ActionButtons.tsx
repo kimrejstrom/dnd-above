@@ -22,6 +22,7 @@ import SpellsModal from 'features/character/SpellsModal';
 import FeatsModal from 'features/character/FeatsModal';
 import { diceRoller } from 'utils/dice';
 import { getAllClassFeatures } from 'utils/sourceDataUtils';
+import ItemsModal from 'features/character/ItemsModal';
 
 interface Props {
   character: CharacterListItem;
@@ -164,6 +165,15 @@ const ActionButtons = ({ character, readonly }: Props) => {
       }),
     );
 
+  const handleEquipment = () =>
+    dispatch(
+      toggleModal({
+        visible: true,
+        title: 'Your Equipment and Items',
+        content: <ItemsModal />,
+      }),
+    );
+
   const handleFeats = () =>
     dispatch(
       toggleModal({
@@ -209,7 +219,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
       )}
       <StyledButton
         extraClassName={actionBtnCls}
-        onClick={() => console.log('TODO')}
+        onClick={handleEquipment}
         disabled={readonly}
       >
         Equipment

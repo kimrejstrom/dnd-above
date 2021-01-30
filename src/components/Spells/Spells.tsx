@@ -96,8 +96,8 @@ export const Spells = ({
       : [];
   }, [columns, tableData]);
 
-  return (
-    <div className="dnd-body text-sm text-left mx-auto w-full">
+  const MemoTable = useMemo(
+    () => (
       <Table
         cellRenderer={handleSpecialCell}
         selectedRows={selectedRows}
@@ -116,6 +116,11 @@ export const Spells = ({
           },
         }}
       />
-    </div>
+    ),
+    [tableColumns, tableData, selectedRows, onSelectedRowsChange],
+  );
+
+  return (
+    <div className="dnd-body text-sm text-left mx-auto w-full">{MemoTable}</div>
   );
 };

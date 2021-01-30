@@ -14,6 +14,8 @@ import { CommonItem } from 'utils/data';
 interface Props {
   items: (Item | BaseItem)[];
   columns?: string[];
+  rowButtons?: { header: string; buttonTitle: string };
+  onRowButtonClick?: any;
 }
 
 const handleSpecialCell = (cell: Cell<object>) => {
@@ -34,7 +36,7 @@ const parseItem = (item: CommonItem) => {
   };
 };
 
-const Items = ({ items, columns }: Props) => {
+const Items = ({ items, columns, rowButtons, onRowButtonClick }: Props) => {
   const dispatch = useDispatch();
   const tableData = useMemo(
     () =>
@@ -62,13 +64,23 @@ const Items = ({ items, columns }: Props) => {
       : [];
   }, [columns, tableData]);
 
-  return (
-    <div className="text-left mx-auto w-full dnd-body text-sm">
+  const MemoTable = useMemo(
+    () => (
       <Table
         cellRenderer={handleSpecialCell}
-        tableData={{ columns: tableColumns, data: tableData }}
+        tableData={{
+          columns: tableColumns,
+          data: tableData,
+        }}
+        rowButtons={rowButtons}
+        onRowButtonClick={onRowButtonClick}
       />
-    </div>
+    ),
+    [tableColumns, tableData, rowButtons, onRowButtonClick],
+  );
+
+  return (
+    <div className="text-left mx-auto w-full dnd-body text-sm">{MemoTable}</div>
   );
 };
 

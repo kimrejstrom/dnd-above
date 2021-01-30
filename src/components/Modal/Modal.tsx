@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { toggleModal } from 'components/Modal/modalSlice';
@@ -14,6 +14,12 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
   const { visible } = useSelector((state: RootState) => state.modalVisibility);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    visible
+      ? document.body.classList.add('overflow-hidden')
+      : document.body.classList.remove('overflow-hidden');
+  }, [visible]);
+
   return visible ? (
     <div className="modal z-40 fixed w-full h-full top-0 left-0 flex items-center justify-center">
       <div
@@ -21,12 +27,9 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
         className="modal-overlay absolute w-full h-full bg-dark-100 opacity-75"
       ></div>
 
-      <div
-        style={{ maxHeight: '40rem' }}
-        className="modal-container bg-light-300 dark:bg-dark-200 w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto"
-      >
-        <div className="modal-content py-4 text-left px-6">
-          <div className="flex justify-between items-center pb-3 overflow-y-scroll">
+      <div className="modal-container h-5/6 bg-light-300 dark:bg-dark-200 w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto">
+        <div className="h-full modal-content py-4 text-left px-6">
+          <div className="flex justify-between items-center overflow-y-scroll">
             <p className="text-2xl font-bold">{title}</p>
             <div
               onClick={() => dispatch(toggleModal({ visible: false }))}
@@ -43,7 +46,6 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
               </svg>
             </div>
           </div>
-
           {content}
         </div>
       </div>
