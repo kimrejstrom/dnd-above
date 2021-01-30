@@ -26,7 +26,7 @@ const AbilityScores = ({ character }: Props) => {
               {value}
             </div>
             <div className="text-3xl leading-none mt-3">{mod}</div>
-            <div className="leading-4 text-lg rounded bg-light-100 dark:bg-dark-100 custom-border-xs h-8 w-8">
+            <div className="leading-4 text-lg rounded bg-light-200 dark:bg-dark-200 custom-border-xs h-8 w-8">
               {score}
             </div>
           </div>

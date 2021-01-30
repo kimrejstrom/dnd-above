@@ -67,7 +67,11 @@ body.modal-active {
 
 .custom-bg {
   @apply bg-light-400 dark:bg-dark-200;
-  background-image: url(./images/background.svg);
+  background-image: url(./images/background-light.svg);
+}
+
+.dark .custom-bg {
+  background-image: url(./images/background-dark.svg);
 }
 
 .desktop-bg {
@@ -639,7 +643,7 @@ i > i {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border-bottom: 1px solid #822000;
   margin: 0 0 0.2rem;
 }
@@ -650,7 +654,7 @@ i > i {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 .rd__h--2-inset {
   font-variant: small-caps;

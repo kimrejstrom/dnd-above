@@ -45,7 +45,7 @@ interface Props {
 const Skills = ({ character, readonly }: Props) => {
   const dispatch = useDispatch();
   return (
-    <div className="custom-border relative">
+    <div className="custom-border custom-bg relative">
       <div className="text-xl text-center leading-none my-1">Skills</div>
       {!readonly && (
         <SettingsCog
@@ -70,7 +70,7 @@ const Skills = ({ character, readonly }: Props) => {
           : abilityMod;
         return (
           <div key={key} className="flex flex-wrap relative p-1">
-            <div className="custom-border-xs uppercase flex justify-between items-center w-full h-8">
+            <div className="custom-border-xs uppercase flex justify-between items-center w-full h-8 bg-light-200 dark:bg-dark-300">
               <div
                 className={`${
                   proficient

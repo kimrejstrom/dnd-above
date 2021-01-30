@@ -55,7 +55,7 @@ const DefensesModal: React.FC<ModalProps> = ({ character }) => {
     <div>
       {defensesList.length > 0 && (
         <div className="pb-4">
-          <h2>Active Defenses</h2>
+          <h3>Active Defenses</h3>
           <div>
             {defensesList.map((defense, index) => (
               <div className="w-full flex items-center" key={index}>
@@ -194,7 +194,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
               {character.gameData.defenses.map(defense => (
                 <li
                   key={defense.name}
-                  className="leading-tight"
+                  className="leading-tight capitalize"
                 >{`${defense.name} (${defense.type})`}</li>
               ))}
             </ul>
@@ -224,7 +224,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
           {character.gameData.conditions.length ? (
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.conditions.map(condition => (
-                <li key={condition} className="leading-tight">
+                <li key={condition} className="leading-tight capitalize">
                   {condition}
                 </li>
               ))}
