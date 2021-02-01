@@ -99,7 +99,6 @@ const Table = ({
   onRowButtonClick,
 }: Props) => {
   // Use the state and functions returned from useTable to build your UI
-  console.log('init', tableData);
   const {
     getTableProps,
     getTableBodyProps,
@@ -182,7 +181,8 @@ const Table = ({
   // No need to update on mount since we are passing initial state
   useMountedLayoutEffect(() => {
     const selectedData = selectedFlatRows.map(d => d.original);
-    onSelectedRowsChange && onSelectedRowsChange(selectedRowIds, selectedData);
+    isDefined(onSelectedRowsChange) &&
+      onSelectedRowsChange(selectedRowIds, selectedData);
   }, [onSelectedRowsChange, selectedRowIds]);
 
   // Render the UI for your table

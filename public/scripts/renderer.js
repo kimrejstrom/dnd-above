@@ -2001,9 +2001,21 @@ function Renderer() {
     //TODO Render DetailedEntry Trigger for all links
 
     if (this._isIternalLinksDisabled && entry.href.type === 'internal') {
-      textStack[0] += `<span class="font-bold underline">${this.render(
-        entry.text,
-      )}</span>`;
+      if (entry.href.hash && entry.href.path) {
+        const additionalInfo = {
+          name: entry.href.hash.split('_')[0],
+          type: entry.href.path.split('.')[0],
+        };
+        textStack[0] += `<span class="font-bold underline link-entry cursor-pointer" data-name="${
+          additionalInfo.name
+        }" data-type="${additionalInfo.type}">${this.render(
+          entry.text,
+        )}</span>`;
+      } else {
+        textStack[0] += `<span class="font-bold underline link-entry cursor-pointer">${this.render(
+          entry.text,
+        )}</span>`;
+      }
     } else {
       textStack[0] += `<a href="${href}" ${
         entry.href.type === 'internal'
@@ -3683,7 +3695,7 @@ Renderer.deity = {
       Object.entries(deity.customProperties).forEach(
         ([k, v]) => (parts[k] = v),
       );
-    const allKeys = Object.keys(parts).sort(SortUtil.ascSortLower);
+    const allKeys = Object.keys(parts);
     return allKeys
       .map(
         k =>
@@ -6044,7 +6056,7 @@ Renderer.prototype.language = {
     if (it.dialects) {
       allEntries.push(
         `This language is a family which includes the following dialects: ${it.dialects
-          .sort(SortUtil.ascSortLower)
+          // .sort(SortUtil.ascSortLower)
           .join(
             ', ',
           )}. Creatures that speak different dialects of the same language can communicate with one another.`,
@@ -7603,7 +7615,7 @@ Parser.senseToExplanation = function(senseType) {
 
 Parser.skillProficienciesToFull = function(skillProficiencies) {
   function renderSingle(skProf) {
-    const keys = Object.keys(skProf).sort(SortUtil.ascSortLower);
+    const keys = Object.keys(skProf);
 
     const ixChoose = keys.indexOf('choose');
     if (~ixChoose) keys.splice(ixChoose, 1);
@@ -11562,9 +11574,9 @@ DataUtil = {
                 else {
                   if (typeof spellCategoryOld[kk] === 'object') {
                     if (spellCategoryOld[kk] instanceof Array)
-                      spellCategoryOld[kk] = spellCategoryOld[kk]
-                        .concat(spellCategoryNu[kk])
-                        .sort(SortUtil.ascSortLower);
+                      spellCategoryOld[kk] = spellCategoryOld[kk].concat(
+                        spellCategoryNu[kk],
+                      );
                     else throw new Error(`Object at key ${kk} not an array!`);
                   } else spellCategoryOld[kk] = spellCategoryNu[kk];
                 }
@@ -11613,7 +11625,7 @@ DataUtil = {
           const ix = curSpells[k].indexOf(replaceMeta.replace);
           if (~ix) {
             curSpells[k].splice(ix, 1, ...replaceMeta.with);
-            curSpells[k].sort(SortUtil.ascSortLower);
+            curSpells[k];
           } else
             throw new Error(
               `Could not find spell "${replaceMeta.replace}" to replace`,

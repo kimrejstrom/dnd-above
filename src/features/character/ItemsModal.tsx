@@ -59,7 +59,7 @@ const ItemsModal: React.FC = () => {
         style={{ maxHeight: '25rem' }}
         className="mt-3  overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
       >
-        <div className="px-2">
+        <div className="detailed-entry px-2">
           <DetailedEntry data={selectedEntry} />
         </div>
       </div>

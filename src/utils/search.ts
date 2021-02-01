@@ -51,6 +51,7 @@ export enum ResultType {
   Action,
   Feat,
   Language,
+  Unknown,
 }
 
 export interface SourceDataFuseItem {
@@ -217,11 +218,13 @@ export function findSearchResultSourceData(
   switch (searchResult.type) {
     case ResultType.Spell: {
       const spell = getSpell(searchResult.name);
+      if (!spell) break;
       return { data: spell, renderer: RenderSpell(spell) };
     }
 
     case ResultType.Class: {
       const classElem = getClass(searchResult.name);
+      if (!classElem) break;
       return { data: classElem, jsx: RenderClass(classElem!) };
     }
 
@@ -230,12 +233,14 @@ export function findSearchResultSourceData(
         searchResult.baseName!,
         searchResult.name,
       );
+      if (!feature) break;
       return { data: feature };
     }
 
     case ResultType.Subclass: {
       const classElem = getClass(searchResult.baseName!);
       const subclass = getSubClass(searchResult.baseName!, searchResult.name);
+      if (!classElem || !subclass) break;
       return { data: subclass, jsx: RenderSubClass(classElem!, subclass!) };
     }
 
@@ -244,11 +249,13 @@ export function findSearchResultSourceData(
         searchResult.baseName!,
         searchResult.name,
       );
+      if (!feature) break;
       return { data: feature };
     }
 
     case ResultType.Race: {
       const race = getRace(searchResult.name);
+      if (!race) break;
       return {
         data: race,
         renderer: RenderRace(race!),
@@ -257,6 +264,7 @@ export function findSearchResultSourceData(
 
     case ResultType.RaceFluff: {
       const fluffs = getRacesFluff();
+      if (!fluffs) break;
       return {
         data: fluffs!.find(fluff => fluff.name === searchResult.name),
       };
@@ -264,40 +272,48 @@ export function findSearchResultSourceData(
 
     case ResultType.Subrace: {
       const subrace = getSubRace(searchResult.baseName!, searchResult.name);
+      if (!subrace) break;
       return { data: subrace };
     }
 
     case ResultType.Background: {
       const bg = getBackground(searchResult.name);
+      if (!bg) break;
       return { data: bg };
     }
 
     case ResultType.BackgroundFluff: {
       const bg = getBackgroundFluff(searchResult.name);
+      if (!bg) break;
       return { data: bg };
     }
 
     case ResultType.Item: {
       const item = getItem(searchResult.name);
+      if (!item) break;
       return { data: item, renderer: RenderItem(item) };
     }
 
     case ResultType.Action: {
       const action = getAction(searchResult.name);
+      if (!action) break;
       return { data: action };
     }
 
     case ResultType.Feat: {
       const feat = getFeat(searchResult.name);
+      if (!feat) break;
       return { data: feat };
     }
 
     case ResultType.Language: {
       const lang = getLanguage(searchResult.name);
+      if (!lang) break;
       return { data: lang, renderer: RenderLanguage(lang!) };
     }
 
     default:
       return { data: `No source data found for ${searchResult.name}` };
   }
+  return { data: `No source data found for ${searchResult.name}` };
 }

@@ -70,12 +70,14 @@ export const Spells = ({
     () =>
       spells.map(sp => ({
         ...sp,
-        detailedEntryTrigger: () =>
+        detailedEntryTrigger: () => {
+          console.log('triggered');
           dispatch(
             setDetailedEntry(
               <DangerousHtml extraClassName="tight" data={RenderSpell(sp)} />,
             ),
-          ),
+          );
+        },
       })),
     [spells, dispatch],
   );

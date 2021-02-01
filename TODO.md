@@ -12,7 +12,7 @@
 
 ### Todo
 
-- [ ] Extras: Bestiary + any other "saved entries"  
+- [ ] Bestiary, conditions diseases, Eldritch Invocations  
 - [ ] MultiClassing  
 - [ ] Clickable link thing on all detailed entries  
 - [ ] Custom items (w/ use as base)  

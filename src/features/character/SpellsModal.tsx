@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Spells } from 'components/Spells/Spells';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,23 +29,41 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
     }),
     {},
   );
+
   const [selectedRows, setSelectedRows] = useState<Record<string, boolean>>(
     initialSpells,
   );
 
-  const toggleSpells = (
-    updatedSelectedRows: Record<string, boolean>,
-    updatedSelectedData: any[],
-  ) => {
-    const spells = Object.keys(updatedSelectedRows).map((row, i) => ({
-      row: Number(row),
-      name: updatedSelectedData[i].name,
-    }));
-    if (!_.isEqual(updatedSelectedRows, selectedRows)) {
-      dispatch(updateSpells({ id: character.id, data: spells }));
-      setSelectedRows(updatedSelectedRows);
-    }
-  };
+  const toggleSpells = useCallback(
+    (
+      updatedSelectedRows: Record<string, boolean>,
+      updatedSelectedData: any[],
+    ) => {
+      const spells = Object.keys(updatedSelectedRows).map((row, i) => ({
+        row: Number(row),
+        name: updatedSelectedData[i].name,
+      }));
+      if (!_.isEqual(updatedSelectedRows, selectedRows)) {
+        dispatch(updateSpells({ id: character.id, data: spells }));
+        setSelectedRows(updatedSelectedRows);
+      }
+    },
+    [character.id, selectedRows, dispatch],
+  );
+
+  // const toggleSpells = (
+  //   updatedSelectedRows: Record<string, boolean>,
+  //   updatedSelectedData: any[],
+  // ) => {
+  //   const spells = Object.keys(updatedSelectedRows).map((row, i) => ({
+  //     row: Number(row),
+  //     name: updatedSelectedData[i].name,
+  //   }));
+  //   if (!_.isEqual(updatedSelectedRows, selectedRows)) {
+  //     dispatch(updateSpells({ id: character.id, data: spells }));
+  //     setSelectedRows(updatedSelectedRows);
+  //   }
+  // };
 
   const filteredSpells = spells.filter(spell => {
     if (spell && spell.classes) {
@@ -82,7 +100,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
         style={{ maxHeight: '25rem' }}
         className="mt-3 overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
       >
-        <div className="px-2">
+        <div className="detailed-entry px-2">
           <DetailedEntry data={selectedEntry} />
         </div>
       </div>

@@ -68,7 +68,7 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
       </div>
       <div className="mt-2 flex-grow">
         <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-          <div className="h-full overflow-y-scroll px-2">
+          <div className="detailed-entry h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>
         </div>

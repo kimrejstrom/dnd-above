@@ -13,6 +13,11 @@ import { SpellElement } from 'models/spells';
 import { isDefined } from 'ts-is-present';
 import { filterSources } from 'utils/data';
 
+const compareStrings = (str1: string, str2: string) =>
+  isDefined(str1) &&
+  isDefined(str2) &&
+  str1.toLowerCase() === str2.toLowerCase();
+
 // CLASS UTILS
 export const getPlayableClasses = (): ClassElement[] => {
   const allClasses = getSourceData(store.getState())?.allClasses;
@@ -31,7 +36,7 @@ export const getSubClass = (className: string, subClassName: string) => {
   return baseClass
     ? baseClass.subclasses
         .filter(subclass => filterSources(subclass))
-        .find(subclass => subclass.name === subClassName)
+        .find(subclass => compareStrings(subclass.name, subClassName))
     : undefined;
 };
 
@@ -68,23 +73,28 @@ export const getClassFeatures = (className: string) => {
     .filter(feature =>
       baseClass?.classFeatures.some(feat =>
         typeof feat === 'string'
-          ? parseClassFeatureString(feat) === feature.name
-          : parseClassFeatureString(feat.classFeature) === feature.name,
+          ? compareStrings(parseClassFeatureString(feat), feature.name)
+          : compareStrings(
+              parseClassFeatureString(feat.classFeature),
+              feature.name,
+            ),
       ),
     );
   return relevantClassFeatures;
 };
 
 export const getClassFeature = (className: string, featureName: string) =>
-  getClassFeatures(className)?.find(feature => feature.name === featureName);
+  getClassFeatures(className)?.find(feature =>
+    compareStrings(feature.name, featureName),
+  );
 
 export const getSubClassFeatures = (
   className: string,
   subClassName: string,
 ) => {
   const baseClass = getClass(className);
-  const subclass = baseClass?.subclasses.find(
-    subclass => subclass.name === subClassName,
+  const subclass = baseClass?.subclasses.find(subclass =>
+    compareStrings(subclass.name, subClassName),
   );
   const subclassFeatures = (getSourceData(store.getState())?.allClasses as any)[
     className.toLowerCase()
@@ -92,18 +102,19 @@ export const getSubClassFeatures = (
   const relevantSubClassFeatures = subclassFeatures
     .filter(feature => filterSources(feature))
     .filter(feature =>
-      subclass?.subclassFeatures!.some(
-        feat =>
-          parseSubClassFeatureString(feat).toLowerCase() ===
-          feature.subclassShortName.toLowerCase(),
+      subclass?.subclassFeatures!.some(feat =>
+        compareStrings(
+          parseSubClassFeatureString(feat),
+          feature.subclassShortName,
+        ),
       ),
     );
   return relevantSubClassFeatures;
 };
 
 export const getSubClassFeature = (className: string, featureName: string) =>
-  getAllClassAndSubClassFeatures(className)?.find(
-    feature => feature.name === featureName,
+  getAllClassAndSubClassFeatures(className)?.find(feature =>
+    compareStrings(feature.name, featureName),
   );
 
 const parseClassFeatureString = (featureString: string) =>
@@ -118,10 +129,12 @@ export const getRaces = () => getSourceData(store.getState())?.races;
 export const getRacesFluff = () => getSourceData(store.getState())?.racesFluff;
 
 export const getRace = (raceName: string) =>
-  getRaces()!.find(race => race.name === raceName);
+  getRaces()!.find(race => compareStrings(race.name, raceName));
 
 export const getSubRace = (raceName: string, subRaceName: string) =>
-  getRace(raceName)?.subraces?.find(subrace => subrace.name === subRaceName);
+  getRace(raceName)?.subraces?.find(subrace =>
+    compareStrings(subrace.name!, subRaceName),
+  );
 
 // BACKGROUND UTILS
 export const getBackgrounds = () =>
@@ -131,10 +144,10 @@ export const getBackgroundsFluff = () =>
   getSourceData(store.getState())?.backgroundsFluff;
 
 export const getBackground = (backgroundName: string) =>
-  getBackgrounds()!.find(bg => bg.name === backgroundName);
+  getBackgrounds()!.find(bg => compareStrings(bg.name, backgroundName));
 
 export const getBackgroundFluff = (backgroundName: string) =>
-  getBackgroundsFluff()!.find(bg => bg.name === backgroundName);
+  getBackgroundsFluff()!.find(bg => compareStrings(bg.name, backgroundName));
 
 export const getBackgroundCharacteristics = () =>
   getBackgrounds()!
@@ -163,7 +176,7 @@ export const getBackgroundCharacteristics = () =>
 export const getAllItems = () => getSourceData(store.getState())?.allItems;
 
 export const getItem = (itemName: string): Item | BaseItem | undefined =>
-  getAllItems()!.find(entry => entry.name === itemName);
+  getAllItems()!.find(entry => compareStrings(entry.name, itemName));
 
 // Armor
 export const getArmor = () =>
@@ -185,12 +198,12 @@ export const getOtherItems = () =>
 export const getSpells = () => getSourceData(store.getState())?.spells;
 
 export const getSpell = (spellName: string) =>
-  getSpells()!.find(sp => sp.name === spellName);
+  getSpells()!.find(sp => compareStrings(sp.name, spellName));
 
 export const getSpellFromList = (
   allSpells: SpellElement[],
   spellName: string,
-) => allSpells.find(sp => sp.name === spellName);
+) => allSpells.find(sp => compareStrings(sp.name, spellName));
 
 // MISC UTILS
 export const getActions = () => getSourceData(store.getState())?.actions;
@@ -200,12 +213,10 @@ export const getLanguages = () => getSourceData(store.getState())?.languages;
 export const getFeats = () => getSourceData(store.getState())?.feats;
 
 export const getAction = (actionName: string) =>
-  getActions()!.find(action => action.name === actionName);
+  getActions()!.find(action => compareStrings(action.name, actionName));
 
 export const getLanguage = (languageName: string) =>
-  getLanguages()!.find(
-    lang => lang.name.toLowerCase() === languageName.toLowerCase(),
-  );
+  getLanguages()!.find(lang => compareStrings(lang.name, languageName));
 
 export const getFeat = (featName: string) =>
-  getFeats()!.find(feat => feat.name === featName);
+  getFeats()!.find(feat => compareStrings(feat.name, featName));

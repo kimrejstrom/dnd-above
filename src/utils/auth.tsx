@@ -26,7 +26,7 @@ const netlifyAuth: NetlifyAuth = {
 };
 
 export const isPowerUser = (user: User) =>
-  user.app_metadata.roles.includes('power');
+  user.app_metadata.roles?.includes('power');
 
 // Refresh JWT Token
 netlifyIdentity.on('init', async (user: User | null) => {

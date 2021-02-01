@@ -163,7 +163,7 @@ const RightPanel = ({ searchIndex }: Props) => {
       </div>
       <div className="mt-8 pl-1 pr-3 h-full" style={{ height: '29rem' }}>
         <div className="h-full my-2 custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg">
-          <div className="h-full overflow-y-scroll px-2">
+          <div className="detailed-entry h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />
           </div>
         </div>
