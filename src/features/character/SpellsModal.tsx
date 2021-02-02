@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Spells } from 'components/Spells/Spells';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import { useSelector, useDispatch } from 'react-redux';
