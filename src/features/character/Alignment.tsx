@@ -104,20 +104,20 @@ const Alignment = ({ character, readonly }: Props) => {
           className="z-0 custom-border-xs absolute"
           style={{
             borderLeft: '0',
-            top: '0.25rem',
+            top: '0.35rem',
             right: '-4.1rem',
             width: '5rem',
-            height: '2.5rem',
+            height: '2.45rem',
           }}
         ></div>
         <div
           className="absolute flex flex-col"
-          style={{ top: '0.7rem', right: '-3rem' }}
+          style={{ top: '0.75rem', right: '-3.2rem' }}
         >
           <div className="flex leading-none -mt-0.5 z-20">
             <form
               onSubmit={handleSubmit(onHDSubmit)}
-              className="text-2xl text-center mb-2.5"
+              className="text-2xl text-center mb-2"
             >
               <input
                 disabled={readonly}

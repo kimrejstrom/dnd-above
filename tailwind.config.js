@@ -50,6 +50,10 @@ module.exports = {
       'light-200': '#f3e7dc',
       'light-300': '#efeee9',
       'light-400': '#d4ccc4',
+      'highlight-100': '#c4b7b5',
+      'highlight-200': '#b4a5a6',
+      'highdark-100': '#4d3b3b',
+      'highdark-200': '#3d2f2f',
     }),
     textColor: theme => ({
       ...theme('colors'),

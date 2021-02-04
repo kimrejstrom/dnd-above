@@ -103,7 +103,7 @@ const ACHP = ({ character, readonly }: Props) => {
             >
               <input
                 name="ac"
-                className="text-center w-8 h-6 bg-white dark:bg-dark-200"
+                className="text-center w-8 h-6 bg-light-100 dark:bg-dark-200"
                 onChange={handleSubmit(onACSubmit)}
                 disabled={readonly}
                 ref={register({ required: true })}
@@ -165,7 +165,7 @@ const ACHP = ({ character, readonly }: Props) => {
             <input
               disabled={readonly}
               name="hp"
-              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-white dark:bg-dark-200 custom-border-xs custom-border-thin rounded dark:border-light-100 border-dark-200"
+              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-light-300 dark:bg-dark-200 custom-border-xs custom-border-thin"
               ref={register}
             />
             <button

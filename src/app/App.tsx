@@ -28,6 +28,7 @@ import { Loading } from 'components/Loading/Loading';
 import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 import { SourceDataFuseItem, initializeSearch } from 'utils/search';
 import Settings from 'features/settings/Settings';
+import { getCookie } from 'utils/cookie';
 
 // Google Analytics
 initializeGA();
@@ -65,6 +66,7 @@ const App: React.FC = () => {
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const dispatch = useDispatch();
   const auth = useAuth();
+  const allSources = getCookie('allSources') === 'true';
 
   const [searchIndex, setSearchIndex] = useState<Array<SourceDataFuseItem>>([]);
 
@@ -89,7 +91,7 @@ const App: React.FC = () => {
         <AuthContextProvider>
           <Router>
             <ErrorBoundary>
-              <main className="h-full min-h-screen text-dark-100 dark:text-light-100 bg-light-100 dark:bg-dark-100">
+              <main className="custom-bg h-full min-h-screen text-dark-100 dark:text-light-100 bg-light-100 dark:bg-dark-100">
                 <UpdateNotification />
                 <Header />
                 <div
@@ -98,7 +100,7 @@ const App: React.FC = () => {
                 >
                   <Sidebar />
                   {/* Main content */}
-                  <div className="flex justify-center w-full bg-light-100 dark:bg-dark-100 p-2 md:p-4 h-full">
+                  <div className="flex justify-center w-full p-2 md:p-3 h-full">
                     <div className="w-full flex justify-center max-w-5xl">
                       {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                       <Switch>
@@ -112,7 +114,7 @@ const App: React.FC = () => {
                           <Edit />
                         </PrivateRoute>
                         <PrivateRoute path="/books">
-                          <Books />
+                          {allSources ? <Books /> : 'Nothing here'}
                         </PrivateRoute>
                         <PrivateRoute path="/settings">
                           <Settings />

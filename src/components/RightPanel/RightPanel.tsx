@@ -144,7 +144,10 @@ const RightPanel = ({ searchIndex }: Props) => {
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               {getActions()!.map(actionElement => (
-                <TextBox extraClassName="my-2" key={actionElement.name}>
+                <TextBox
+                  extraClassName="my-2 bg-light-200"
+                  key={actionElement.name}
+                >
                   <Entry entry={actionElement} />
                 </TextBox>
               ))}

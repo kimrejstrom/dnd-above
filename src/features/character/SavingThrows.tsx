@@ -19,8 +19,8 @@ interface Props {
 const SavingThrows = ({ character }: Props) => {
   const classElement = getClass(character.classData.classElement);
   return (
-    <div className="custom-border custom-bg  w-full px-2">
-      <div className="text-xl text-center leading-none my-1">Saving Throws</div>
+    <div className="custom-border custom-bg w-full px-2">
+      <div className="text-xl text-center leading-none">Saving Throws</div>
       <div className="flex flex-wrap">
         {Object.keys(CHARACTER_STATS).map(key => {
           const score = calculateStats(character)[key as StatsTypes];
@@ -34,7 +34,7 @@ const SavingThrows = ({ character }: Props) => {
           return (
             <div
               key={key}
-              className="flex flex-wrap relative p-1"
+              className="flex flex-wrap relative px-1 py-0.5"
               style={{ flex: '0 50%' }}
             >
               <div className="custom-border-xs uppercase flex justify-between items-center w-full h-8 bg-light-200 dark:bg-dark-300">

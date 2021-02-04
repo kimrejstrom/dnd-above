@@ -100,7 +100,7 @@ body.modal-active {
 
 .custom-border-xs {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-image-slice: 40;
   border-width: 0.6rem;
   border-image-repeat: round;
@@ -135,7 +135,7 @@ body.modal-active {
 
 .dark .custom-border-xs {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-image-slice: 40;
   border-width: 0.6rem;
   border-image-repeat: round;

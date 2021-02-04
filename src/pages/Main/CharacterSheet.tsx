@@ -50,7 +50,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
 
   return (
     <div className="flex flex-wrap overflow-hidden">
-      <div className="w-full justify-center md:justify-between flex flex-wrap">
+      <div className="bg-light-100 dark:bg-dark-100 mb-1 w-full justify-center md:justify-between flex flex-wrap">
         <div className="flex flex-col">
           <div className="lg:hidden w-full flex justify-center md:justify-start mr-2">
             <MobileCharacterPortrait character={character} />
@@ -62,11 +62,11 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
         <div className="hidden lg:block ml-2">
           <CharacterPortrait character={character} size={'large'} />
         </div>
-        <div className="mt-1 md:mt-3 flex flex-wrap justify-center md:justify-start w-96 md:w-full">
+        <div className="mt-1 md:mt-2 flex flex-wrap justify-center md:justify-start w-96 md:w-full">
           <Inspiration character={character} />
           <ActionButtons character={character} readonly={readonly} />
         </div>
-        <div className="flex flex-wrap justify-between text-center mt-3 w-full">
+        <div className="flex flex-wrap justify-between text-center mt-1 w-full">
           <div className="w-full md:w-1/2 ">
             <AbilityScores character={character} />
           </div>
@@ -87,7 +87,10 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
         <Skills character={character} readonly={readonly} />
       </div>
       <div className="w-full lg:w-6/12 box-border pl-1">
-        <div className="custom-border pb-10" style={{ height: '49rem' }}>
+        <div
+          className="bg-light-100 dark:bg-dark-100 custom-border pb-10"
+          style={{ height: '43.7rem' }}
+        >
           <Tabs
             selectedIndex={characterTabPanel.selectedIndex}
             onSelect={tabIndex => handleTabChange(tabIndex)}
@@ -131,7 +134,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
       </div>
       {!panelOpen && (
         <div className="w-full mb-4" style={{ height: '10rem' }}>
-          <div className="h-full my-2 custom-border bg-light-200 dark:bg-dark-300 rounded-lg">
+          <div className="h-full my-1 custom-border bg-light-200 dark:bg-dark-300 rounded-lg">
             <div className="detailed-entry h-full overflow-y-scroll px-2">
               <DetailedEntry data={selectedEntry} />
             </div>

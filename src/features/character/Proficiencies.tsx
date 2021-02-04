@@ -18,9 +18,9 @@ const Proficiencies = ({ character }: Props) => {
   return (
     <div
       className="custom-bg custom-border w-full px-2 overflow-y-scroll"
-      style={{ height: '26.25rem' }}
+      style={{ height: '23.55rem' }}
     >
-      <div className="text-xl text-center leading-none mt-1 mb-2">
+      <div className="text-xl text-center leading-none">
         Proficiencies &amp; Languages
       </div>
       <div>
