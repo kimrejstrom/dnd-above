@@ -3,11 +3,9 @@
 
 ### Notes / Ideas
 
-- [ ] Spell Rating / Comments  
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [ ] minimize render.js?  
 - [ ] Lvl up Modal (with multiclass)  
-- [ ] Online/offline (persist list to localStorage)  
 - [ ] Settings page  
 
 ### Todo
@@ -16,6 +14,8 @@
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
+- [ ] Extras: Save any searchIndexEntry  
+- [ ] Online/offline (persist list to localStorage)  
 
 ### In Progress
 

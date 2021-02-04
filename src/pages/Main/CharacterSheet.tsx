@@ -96,14 +96,18 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
             onSelect={tabIndex => handleTabChange(tabIndex)}
             className="h-full"
           >
-            <TabList className="flex justify-between text-center tracking-tight">
-              <Tab>Actions</Tab>
-              {isSpellCaster(character) && <Tab>Spells</Tab>}
-              <Tab>Equipment</Tab>
-              <Tab>Features &amp; Traits</Tab>
-              <Tab>Description</Tab>
-              <Tab>Notes</Tab>
-              <Tab>Extras</Tab>
+            <TabList className="flex md:justify-between text-center tracking-tight">
+              <Tab className="mr-1 md:mr-0 cursor-pointer">Actions</Tab>
+              {isSpellCaster(character) && (
+                <Tab className="mr-1 md:mr-0 cursor-pointer">Spells</Tab>
+              )}
+              <Tab className="mr-1 md:mr-0 cursor-pointer">Equipment</Tab>
+              <Tab className="mr-1 md:mr-0 cursor-pointer">
+                Features &amp; Traits
+              </Tab>
+              <Tab className="mr-1 md:mr-0 cursor-pointer">Description</Tab>
+              <Tab className="mr-1 md:mr-0 cursor-pointer">Notes</Tab>
+              <Tab className="mr-1 md:mr-0 cursor-pointer">Extras</Tab>
             </TabList>
 
             <TabPanel className="overflow-y-scroll px-2">
