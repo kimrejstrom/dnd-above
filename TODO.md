@@ -19,10 +19,11 @@
 
 ### In Progress
 
-- [ ] Bestiary, conditions diseases, Eldritch Invocations  
+- [ ] Beastiary  
 
 ### Done ✓
 
+- [x] conditions diseases, Eldritch Invocations  
 - [x] Clickable link thing on all detailed entries  
 - [x] Equipment Table  
 - [x] Omni search (Fuse) create index when mapping json  

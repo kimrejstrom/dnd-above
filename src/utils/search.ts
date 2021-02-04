@@ -10,6 +10,8 @@ import {
   getClass,
   getClassFeature,
   getClassFeatures,
+  getCondition,
+  getConditions,
   getFeat,
   getFeats,
   getItem,
@@ -33,6 +35,7 @@ import {
   RenderClass,
   RenderItem,
   RenderLanguage,
+  RenderOptionalFeature,
   RenderRace,
   RenderSpell,
   RenderSubClass,
@@ -54,6 +57,7 @@ export enum ResultType {
   Feat,
   Language,
   OptionalFeature,
+  ConditionDisease,
   Unknown,
 }
 
@@ -222,6 +226,16 @@ export function initializeSearch() {
     });
   });
 
+  // Index Conditions Diseases
+  getConditions()?.forEach(condition => {
+    fuseIndex.push({
+      name: condition.name,
+      src: condition.source,
+      page: condition.page ?? 0,
+      type: ResultType.ConditionDisease,
+    });
+  });
+
   return fuseIndex;
 }
 
@@ -328,7 +342,16 @@ export function findSearchResultSourceData(
     case ResultType.OptionalFeature: {
       const optionalFeature = getOptionalFeature(searchResult.name);
       if (!optionalFeature) break;
-      return { data: optionalFeature };
+      return {
+        data: optionalFeature,
+        renderer: RenderOptionalFeature(optionalFeature!),
+      };
+    }
+
+    case ResultType.ConditionDisease: {
+      const condition = getCondition(searchResult.name);
+      if (!condition) break;
+      return { data: condition };
     }
 
     default:

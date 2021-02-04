@@ -8,6 +8,7 @@ import { Race } from 'models/race';
 import ClassBase from 'pages/Create/ClassBase';
 import ClassTable from 'pages/Create/ClassTable';
 import React from 'react';
+import { filterSources } from 'utils/data';
 import { mainRenderer, Parser } from 'utils/mainRenderer';
 import {
   getClassFeatures,
@@ -15,26 +16,22 @@ import {
   getFeat,
 } from 'utils/sourceDataUtils';
 
-const featureBoxCls = 'custom-border-xs my-2 bg-light-200 dark:bg-dark-200';
+const featureBoxCls = 'shadow rounded p-2 my-2 bg-light-200 dark:bg-dark-200';
 
 export const renderClassFeatures = (className: string) => {
   const classFeatures = getClassFeatures(className);
-  return classFeatures.map(feature => {
-    if (!feature.source.includes('UA')) {
-      return (
-        <div
-          key={`${className}-${feature.name}-${feature.level}`}
-          className={featureBoxCls}
-        >
-          <DetailedEntryTrigger data={feature}>
-            {`Level ${feature.level} – ${feature.name}`}
-          </DetailedEntryTrigger>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  });
+  return classFeatures
+    .filter(i => filterSources(i))
+    .map(feature => (
+      <div
+        key={`${className}-${feature.name}-${feature.level}`}
+        className={featureBoxCls}
+      >
+        <DetailedEntryTrigger data={feature}>
+          {`Level ${feature.level} – ${feature.name}`}
+        </DetailedEntryTrigger>
+      </div>
+    ));
 };
 
 export const renderSubClassFeatures = (
@@ -42,22 +39,18 @@ export const renderSubClassFeatures = (
   subClassName: string,
 ) => {
   const subclassFeatures = getSubClassFeatures(className, subClassName);
-  return subclassFeatures.map(feature => {
-    if (!feature.source.includes('UA')) {
-      return (
-        <div
-          key={`${subClassName}-${feature.name}-${feature.level}`}
-          className={featureBoxCls}
-        >
-          <DetailedEntryTrigger data={feature}>
-            {`Level ${feature.level} – ${feature.name}`}
-          </DetailedEntryTrigger>
-        </div>
-      );
-    } else {
-      return undefined;
-    }
-  });
+  return subclassFeatures
+    .filter(i => filterSources(i))
+    .map(feature => (
+      <div
+        key={`${subClassName}-${feature.name}-${feature.level}`}
+        className={featureBoxCls}
+      >
+        <DetailedEntryTrigger data={feature}>
+          {`Level ${feature.level} – ${feature.name}`}
+        </DetailedEntryTrigger>
+      </div>
+    ));
 };
 
 export const renderRaceTraits = (race: Race) => {
@@ -171,7 +164,7 @@ export const RenderLanguage = (lang: LanguageElement) =>
 
 // Language
 export const RenderOptionalFeature = (feat: Optionalfeature) =>
-  mainRenderer.optionalfeatyre.getCompactRenderedString(feat);
+  mainRenderer.optionalfeature.getCompactRenderedString(feat);
 
 // Spells
 export const RenderSpell = (sp: any, subclassLookup?: any) => {

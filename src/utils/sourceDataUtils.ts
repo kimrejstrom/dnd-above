@@ -215,6 +215,9 @@ export const getFeats = () => getSourceData(store.getState())?.feats;
 export const getOptionalFeatures = () =>
   getSourceData(store.getState())?.optionalFeatures;
 
+export const getConditions = () =>
+  getSourceData(store.getState())?.conditionsDiseases;
+
 export const getAction = (actionName: string) =>
   getActions()!.find(action => compareStrings(action.name, actionName));
 
@@ -226,3 +229,8 @@ export const getFeat = (featName: string) =>
 
 export const getOptionalFeature = (featName: string) =>
   getOptionalFeatures()!.find(feat => compareStrings(feat.name, featName));
+
+export const getCondition = (conditionName: string) =>
+  getConditions()!.find(condition =>
+    compareStrings(condition.name, conditionName),
+  );

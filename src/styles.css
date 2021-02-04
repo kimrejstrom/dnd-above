@@ -296,6 +296,7 @@ a.active {
 
 .right-panel {
   transition: all 300ms ease-in-out;
+  transition-property: width, opacity;
 }
 
 .right-panel-open {
@@ -628,7 +629,7 @@ i > i {
   font-weight: bold;
 }
 .rd__h--0 {
-  color: #822000;
+  color: #904848;
   font-variant: small-caps;
   font-weight: 500;
   display: flex;
@@ -637,18 +638,18 @@ i > i {
   font-size: 1.8rem;
 }
 .rd__h--1 {
-  color: #822000;
+  color: #904848;
   font-variant: small-caps;
   font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 1.3rem;
-  border-bottom: 1px solid #822000;
+  border-bottom: 1px solid #904848;
   margin: 0 0 0.2rem;
 }
 .rd__h--2 {
-  color: #822000;
+  color: #904848;
   font-variant: small-caps;
   font-weight: 500;
   display: flex;
@@ -747,7 +748,7 @@ i > i {
   animation-timing-function: linear;
 }
 .rd__comic {
-  color: #1942be;
+  color: #786078;
 }
 .rd__comic--h1 {
   font-size: 140%;
@@ -858,7 +859,7 @@ i > i {
   border-bottom-color: #827e00;
 }
 .divider div {
-  background-color: #822000;
+  background-color: #904848;
   height: 2px;
   margin: 6px 0;
 }
@@ -932,34 +933,34 @@ i > i {
   border-bottom-color: #aa40b4;
 }
 .sourcePHB {
-  color: #4a6898 !important;
-  border-color: #4a6898 !important;
-  -webkit-text-decoration-color: #4a6898 !important;
-  text-decoration-color: #4a6898 !important;
+  color: #904848 !important;
+  border-color: #904848 !important;
+  -webkit-text-decoration-color: #904848 !important;
+  text-decoration-color: #904848 !important;
 }
 .sourceDMG {
-  color: purple !important;
-  border-color: purple !important;
-  -webkit-text-decoration-color: purple !important;
-  text-decoration-color: purple !important;
+  color: #787878 !important;
+  border-color: #787878 !important;
+  -webkit-text-decoration-color: #787878 !important;
+  text-decoration-color: #787878 !important;
 }
 .sourceMM {
-  color: green !important;
-  border-color: green !important;
-  -webkit-text-decoration-color: green !important;
-  text-decoration-color: green !important;
+  color: #786078 !important;
+  border-color: #786078 !important;
+  -webkit-text-decoration-color: #786078 !important;
+  text-decoration-color: #786078 !important;
 }
 .sourceSCAG {
-  color: #76af76 !important;
-  border-color: #76af76 !important;
-  -webkit-text-decoration-color: #76af76 !important;
-  text-decoration-color: #76af76 !important;
+  color: #789078 !important;
+  border-color: #789078 !important;
+  -webkit-text-decoration-color: #789078 !important;
+  text-decoration-color: #789078 !important;
 }
 .sourceVGM {
-  color: grey !important;
-  border-color: grey !important;
-  -webkit-text-decoration-color: grey !important;
-  text-decoration-color: grey !important;
+  color: #909090 !important;
+  border-color: #909090 !important;
+  -webkit-text-decoration-color: #909090 !important;
+  text-decoration-color: #909090 !important;
 }
 .sourceXGE,
 .sourceTTP {
@@ -968,231 +969,20 @@ i > i {
   -webkit-text-decoration-color: #ba7c00 !important;
   text-decoration-color: #ba7c00 !important;
 }
-.sourceHotDQ {
-  color: #ad8eba !important;
-  border-color: #ad8eba !important;
-  -webkit-text-decoration-color: #ad8eba !important;
-  text-decoration-color: #ad8eba !important;
-}
-.sourceRoT {
-  color: #ff2900 !important;
-  border-color: #ff2900 !important;
-  -webkit-text-decoration-color: #ff2900 !important;
-  text-decoration-color: #ff2900 !important;
-}
-.sourceCoS {
-  color: purple !important;
-  border-color: purple !important;
-  -webkit-text-decoration-color: purple !important;
-  text-decoration-color: purple !important;
-}
-.sourceOotA {
-  color: grey !important;
-  border-color: grey !important;
-  -webkit-text-decoration-color: grey !important;
-  text-decoration-color: grey !important;
-}
-.sourceSKT {
-  color: #008b8b !important;
-  border-color: #008b8b !important;
-  -webkit-text-decoration-color: #008b8b !important;
-  text-decoration-color: #008b8b !important;
-}
-.sourcePotA,
 .sourceEEPC {
-  color: #57b6c6 !important;
-  border-color: #57b6c6 !important;
-  -webkit-text-decoration-color: #57b6c6 !important;
-  text-decoration-color: #57b6c6 !important;
-}
-.sourceLMoP {
-  color: #8da851 !important;
-  border-color: #8da851 !important;
-  -webkit-text-decoration-color: #8da851 !important;
-  text-decoration-color: #8da851 !important;
-}
-.sourceTftYP {
-  color: red !important;
-  border-color: red !important;
-  -webkit-text-decoration-color: red !important;
-  text-decoration-color: red !important;
-}
-.sourceHomebrew {
-  color: #8c3b96 !important;
-  border-color: #8c3b96 !important;
-  -webkit-text-decoration-color: #8c3b96 !important;
-  text-decoration-color: #8c3b96 !important;
-}
-.sourceSpicy {
-  color: #1d965d !important;
-  border-color: #1d965d !important;
-  -webkit-text-decoration-color: #1d965d !important;
-  text-decoration-color: #1d965d !important;
-}
-.sourceToA {
-  color: #666f30 !important;
-  border-color: #666f30 !important;
-  -webkit-text-decoration-color: #666f30 !important;
-  text-decoration-color: #666f30 !important;
-}
-.sourceMTF {
-  color: #1f6e7b !important;
-  border-color: #1f6e7b !important;
-  -webkit-text-decoration-color: #1f6e7b !important;
-  text-decoration-color: #1f6e7b !important;
-}
-.sourceWDH {
-  color: #d4af37 !important;
-  border-color: #d4af37 !important;
-  -webkit-text-decoration-color: #d4af37 !important;
-  text-decoration-color: #d4af37 !important;
-}
-.sourceGGR,
-.sourceKKW {
-  color: #bfa76c !important;
-  border-color: #bfa76c !important;
-  -webkit-text-decoration-color: #bfa76c !important;
-  text-decoration-color: #bfa76c !important;
-}
-.sourceWDMM {
-  color: #a2201f !important;
-  border-color: #a2201f !important;
-  -webkit-text-decoration-color: #a2201f !important;
-  text-decoration-color: #a2201f !important;
-}
-.sourceLLK {
-  color: #6e7a71 !important;
-  border-color: #6e7a71 !important;
-  -webkit-text-decoration-color: #6e7a71 !important;
-  text-decoration-color: #6e7a71 !important;
-}
-.sourceGoS {
-  color: #3d695a !important;
-  border-color: #3d695a !important;
-  -webkit-text-decoration-color: #3d695a !important;
-  text-decoration-color: #3d695a !important;
-}
-.sourceAI,
-.sourceOoW {
-  color: #5baf04 !important;
-  border-color: #5baf04 !important;
-  -webkit-text-decoration-color: #5baf04 !important;
-  text-decoration-color: #5baf04 !important;
-}
-.sourceESK,
-.sourceDIP,
-.sourceDC,
-.sourceSDW,
-.sourceSLW {
-  color: #6b909a !important;
-  border-color: #6b909a !important;
-  -webkit-text-decoration-color: #6b909a !important;
-  text-decoration-color: #6b909a !important;
-}
-.sourceBGDIA {
-  color: #752418 !important;
-  border-color: #752418 !important;
-  -webkit-text-decoration-color: #752418 !important;
-  text-decoration-color: #752418 !important;
-}
-.sourceERLW,
-.sourceEFR {
-  color: #983426 !important;
-  border-color: #983426 !important;
-  -webkit-text-decoration-color: #983426 !important;
-  text-decoration-color: #983426 !important;
-}
-.sourceRMR,
-.sourceRMBRE {
-  color: #5c7c27 !important;
-  border-color: #5c7c27 !important;
-  -webkit-text-decoration-color: #5c7c27 !important;
-  text-decoration-color: #5c7c27 !important;
-}
-.sourceMFF {
-  color: #92817f !important;
-  border-color: #92817f !important;
-  -webkit-text-decoration-color: #92817f !important;
-  text-decoration-color: #92817f !important;
-}
-.sourceLR {
-  color: #78613c !important;
-  border-color: #78613c !important;
-  -webkit-text-decoration-color: #78613c !important;
-  text-decoration-color: #78613c !important;
-}
-.sourceIMR {
-  color: #a19364 !important;
-  border-color: #a19364 !important;
-  -webkit-text-decoration-color: #a19364 !important;
-  text-decoration-color: #a19364 !important;
-}
-.sourceSADS {
-  color: #333bab !important;
-  border-color: #333bab !important;
-  -webkit-text-decoration-color: #333bab !important;
-  text-decoration-color: #333bab !important;
-}
-.sourceEGW,
-.sourceFS,
-.sourceDD,
-.sourceUS,
-.sourceToR {
-  color: #855a6e !important;
-  border-color: #855a6e !important;
-  -webkit-text-decoration-color: #855a6e !important;
-  text-decoration-color: #855a6e !important;
-}
-.sourceMOT {
-  color: #556b2e !important;
-  border-color: #556b2e !important;
-  -webkit-text-decoration-color: #556b2e !important;
-  text-decoration-color: #556b2e !important;
-}
-.sourceIDRotF {
-  color: #8fb8c0 !important;
-  border-color: #8fb8c0 !important;
-  -webkit-text-decoration-color: #8fb8c0 !important;
-  text-decoration-color: #8fb8c0 !important;
+  color: #a8a890 !important;
+  border-color: #a8a890 !important;
+  -webkit-text-decoration-color: #a8a890 !important;
+  text-decoration-color: #a8a890 !important;
 }
 .sourceTCE {
-  color: #a24d08 !important;
-  border-color: #a24d08 !important;
-  -webkit-text-decoration-color: #a24d08 !important;
-  text-decoration-color: #a24d08 !important;
-}
-.sourceAL {
-  color: #e50711 !important;
-  border-color: #e50711 !important;
-  -webkit-text-decoration-color: #e50711 !important;
-  text-decoration-color: #e50711 !important;
-}
-.sp__school-A {
-  color: #00b921;
-}
-.sp__school-V {
-  color: #bb0100;
-}
-.sp__school-E {
-  color: #b30083;
-}
-.sp__school-I {
-  color: #006dbd;
-}
-.sp__school-D {
-  color: #00adb3;
-}
-.sp__school-N {
-  color: #6c00cc;
-}
-.sp__school-T {
-  color: #ccbe00;
-}
-.sp__school-C {
-  color: #bd0044;
+  color: #a89078 !important;
+  border-color: #a89078 !important;
+  -webkit-text-decoration-color: #a89078 !important;
+  text-decoration-color: #a89078 !important;
 }
 .rnd-name {
-  color: #822000;
+  color: #904848;
   position: relative;
   font-size: 1.3rem;
   padding: 0.2rem 0.2rem;
@@ -1224,18 +1014,6 @@ i > i {
 }
 .text-sm .rnd-name .stats-source {
   font-size: 0.8rem;
-}
-.dark .sourcePHB {
-  color: #337ab7 !important;
-  border-color: #337ab7 !important;
-  -webkit-text-decoration-color: #337ab7 !important;
-  text-decoration-color: #337ab7 !important;
-}
-.dark .sourceSADS {
-  color: #4f63f5 !important;
-  border-color: #4f63f5 !important;
-  -webkit-text-decoration-color: #4f63f5 !important;
-  text-decoration-color: #4f63f5 !important;
 }
 .dark tr.trait td {
   color: #bbb !important;

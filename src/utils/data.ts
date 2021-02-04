@@ -14,6 +14,8 @@ import { mainRenderer, Parser, SourceUtil } from 'utils/mainRenderer';
 import { SpellElement } from 'models/spells';
 import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
+import { Optionalfeature } from 'models/optional-feature';
+import { Condition, Disease, Status } from 'models/conditions';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const sourceIncludesUA = (source: string) => {
@@ -257,6 +259,7 @@ export const loadMisc = async () => {
     featsData,
     languagesData,
     optionalFeaturesData,
+    conditionsdiseasesData,
   ] = await Promise.all([
     import(/* webpackPrefetch: true */ 'data/actions.json').then(
       data => data.default,
@@ -270,6 +273,9 @@ export const loadMisc = async () => {
     import(/* webpackPrefetch: true */ 'data/optionalfeatures.json').then(
       data => data.default,
     ),
+    import(/* webpackPrefetch: true */ 'data/conditionsdiseases.json').then(
+      data => data.default,
+    ),
   ]);
 
   const actions = actionsData.action as ActionElement[];
@@ -279,7 +285,12 @@ export const loadMisc = async () => {
   ) as LanguageElement[];
   const optionalFeatures = optionalFeaturesData.optionalfeature.filter(i =>
     filterSources(i),
-  );
+  ) as Optionalfeature[];
+  const conditionsDiseases = [
+    ...conditionsdiseasesData.condition.filter(i => filterSources(i)),
+    ...conditionsdiseasesData.disease.filter(i => filterSources(i)),
+    ...conditionsdiseasesData.status.filter(i => filterSources(i)),
+  ] as (Condition | Disease | Status)[];
 
-  return { actions, feats, languages, optionalFeatures };
+  return { actions, feats, languages, optionalFeatures, conditionsDiseases };
 };
