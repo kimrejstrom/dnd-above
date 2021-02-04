@@ -7,6 +7,7 @@ import { BackgroundFluffElement } from 'models/background-fluff';
 import { ClassTypes } from 'models/class';
 import { FeatElement } from 'models/feats';
 import { LanguageElement } from 'models/language';
+import { Optionalfeature } from 'models/optional-feature';
 import { Race } from 'models/race';
 import { RaceFluffElement } from 'models/race-fluff';
 import { SpellElement } from 'models/spells';
@@ -31,6 +32,7 @@ export interface SourceData {
   actions: ActionElement[];
   feats: FeatElement[];
   languages: LanguageElement[];
+  optionalFeatures: Optionalfeature[];
 }
 
 interface SourceDataState {
@@ -52,6 +54,7 @@ const initialState: SourceDataState = {
     actions: [],
     feats: [],
     languages: [],
+    optionalFeatures: [],
   },
 };
 
@@ -71,7 +74,7 @@ export const loadSourceData = createAsyncThunk<
       { races, racesFluff },
       { backgrounds, backgroundsFluff },
       { allItems },
-      { actions, feats, languages },
+      { actions, feats, languages, optionalFeatures },
     ] = await Promise.all([
       loadSpells(),
       loadClasses(),
@@ -92,6 +95,7 @@ export const loadSourceData = createAsyncThunk<
       actions,
       feats,
       languages,
+      optionalFeatures,
     } as SourceData;
   } catch (error) {
     return thunkAPI.rejectWithValue('Error loading SourceData');

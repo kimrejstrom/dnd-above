@@ -24,7 +24,7 @@ const Proficiencies = ({ character }: Props) => {
         Proficiencies &amp; Languages
       </div>
       <div>
-        <div className="flex flex-col my-2">
+        <div className="flex flex-col my-2 capitalize">
           <div className="text-xl">Armor</div>
           <div className="dnd-body">
             {getArmorProficiencies(character).join(', ')}
@@ -44,15 +44,18 @@ const Proficiencies = ({ character }: Props) => {
           <div className="dnd-body">
             {getLanguageProficiencies(character).map((lang, i) => {
               const lastIndex = getLanguageProficiencies(character).length - 1;
+              const currentLang = getLanguage(lang);
               return (
-                <DetailedEntryTrigger
-                  key={`${lang}-${i}`}
-                  extraClassName={'tight inline'}
-                  data={getLanguage(lang)}
-                  renderer={RenderLanguage(getLanguage(lang)!)}
-                >
-                  {i === lastIndex ? `${lang}` : `${lang}, `}
-                </DetailedEntryTrigger>
+                currentLang && (
+                  <DetailedEntryTrigger
+                    key={`${lang}-${i}`}
+                    extraClassName={'tight inline'}
+                    data={currentLang}
+                    renderer={RenderLanguage(currentLang)}
+                  >
+                    {i === lastIndex ? `${lang}` : `${lang}, `}
+                  </DetailedEntryTrigger>
+                )
               );
             })}
           </div>

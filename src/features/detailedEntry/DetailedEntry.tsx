@@ -42,6 +42,8 @@ const DetailedEntry = ({ data }: Props) => {
             return ResultType.Language;
           case 'feats':
             return ResultType.Feat;
+          case 'optionalfeatures':
+            return ResultType.OptionalFeature;
           default:
             return ResultType.Unknown;
         }

@@ -3321,7 +3321,7 @@ Renderer.prototype.background = {
   },
 };
 
-Renderer.optionalfeature = {
+Renderer.prototype.optionalfeature = {
   getListPrerequisiteLevelText(prerequisites) {
     if (!prerequisites || !prerequisites.some(it => it.level)) return '\u2014';
     return prerequisites.find(it => it.level).level.level;
@@ -3361,7 +3361,7 @@ Renderer.optionalfeature = {
       depth: 1,
     });
     renderStack.push(`</td></tr>`);
-    renderStack.push(Renderer.optionalfeature.getPreviouslyPrintedText(it));
+    renderStack.push(renderer.optionalfeature.getPreviouslyPrintedText(it));
 
     return renderStack.join('');
   },

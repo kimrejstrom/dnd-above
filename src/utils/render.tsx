@@ -3,6 +3,7 @@ import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import _ from 'lodash';
 import { ClassElement, ClassSubclass } from 'models/class';
 import { LanguageElement } from 'models/language';
+import { Optionalfeature } from 'models/optional-feature';
 import { Race } from 'models/race';
 import ClassBase from 'pages/Create/ClassBase';
 import ClassTable from 'pages/Create/ClassTable';
@@ -167,6 +168,11 @@ export const RenderItem = (item: any) => {
 // Language
 export const RenderLanguage = (lang: LanguageElement) =>
   mainRenderer.language.getCompactRenderedString(lang);
+
+// Language
+export const RenderOptionalFeature = (feat: Optionalfeature) =>
+  mainRenderer.optionalfeatyre.getCompactRenderedString(feat);
+
 // Spells
 export const RenderSpell = (sp: any, subclassLookup?: any) => {
   const renderStack = [];

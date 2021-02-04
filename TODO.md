@@ -12,18 +12,18 @@
 
 ### Todo
 
-- [ ] Bestiary, conditions diseases, Eldritch Invocations  
 - [ ] MultiClassing  
-- [ ] Clickable link thing on all detailed entries  
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
-- [ ] Mobile bottom bar + views  
+- [ ] Mobile bottom bar + views, plus filtering of character sheet items  
 
 ### In Progress
 
+- [ ] Bestiary, conditions diseases, Eldritch Invocations  
 
 ### Done ✓
 
+- [x] Clickable link thing on all detailed entries  
 - [x] Equipment Table  
 - [x] Omni search (Fuse) create index when mapping json  
 - Split data loading from main js (lazy/suspense) for json  

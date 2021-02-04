@@ -212,6 +212,9 @@ export const getLanguages = () => getSourceData(store.getState())?.languages;
 
 export const getFeats = () => getSourceData(store.getState())?.feats;
 
+export const getOptionalFeatures = () =>
+  getSourceData(store.getState())?.optionalFeatures;
+
 export const getAction = (actionName: string) =>
   getActions()!.find(action => compareStrings(action.name, actionName));
 
@@ -220,3 +223,6 @@ export const getLanguage = (languageName: string) =>
 
 export const getFeat = (featName: string) =>
   getFeats()!.find(feat => compareStrings(feat.name, featName));
+
+export const getOptionalFeature = (featName: string) =>
+  getOptionalFeatures()!.find(feat => compareStrings(feat.name, featName));

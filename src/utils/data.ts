@@ -252,7 +252,12 @@ export const loadItems = async () => {
 
 // MISC
 export const loadMisc = async () => {
-  const [actionsData, featsData, languagesData] = await Promise.all([
+  const [
+    actionsData,
+    featsData,
+    languagesData,
+    optionalFeaturesData,
+  ] = await Promise.all([
     import(/* webpackPrefetch: true */ 'data/actions.json').then(
       data => data.default,
     ),
@@ -262,6 +267,9 @@ export const loadMisc = async () => {
     import(/* webpackPrefetch: true */ 'data/languages.json').then(
       data => data.default,
     ),
+    import(/* webpackPrefetch: true */ 'data/optionalfeatures.json').then(
+      data => data.default,
+    ),
   ]);
 
   const actions = actionsData.action as ActionElement[];
@@ -269,6 +277,9 @@ export const loadMisc = async () => {
   const languages = languagesData.language.filter(i =>
     filterSources(i),
   ) as LanguageElement[];
+  const optionalFeatures = optionalFeaturesData.optionalfeature.filter(i =>
+    filterSources(i),
+  );
 
-  return { actions, feats, languages };
+  return { actions, feats, languages, optionalFeatures };
 };

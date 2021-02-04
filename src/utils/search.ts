@@ -15,6 +15,8 @@ import {
   getItem,
   getLanguage,
   getLanguages,
+  getOptionalFeature,
+  getOptionalFeatures,
   getPlayableClasses,
   getRace,
   getRaces,
@@ -51,6 +53,7 @@ export enum ResultType {
   Action,
   Feat,
   Language,
+  OptionalFeature,
   Unknown,
 }
 
@@ -209,6 +212,16 @@ export function initializeSearch() {
     });
   });
 
+  // Index Optional Features
+  getOptionalFeatures()?.forEach(feat => {
+    fuseIndex.push({
+      name: feat.name,
+      src: feat.source,
+      page: feat.page ?? 0,
+      type: ResultType.OptionalFeature,
+    });
+  });
+
   return fuseIndex;
 }
 
@@ -310,6 +323,12 @@ export function findSearchResultSourceData(
       const lang = getLanguage(searchResult.name);
       if (!lang) break;
       return { data: lang, renderer: RenderLanguage(lang!) };
+    }
+
+    case ResultType.OptionalFeature: {
+      const optionalFeature = getOptionalFeature(searchResult.name);
+      if (!optionalFeature) break;
+      return { data: optionalFeature };
     }
 
     default:
