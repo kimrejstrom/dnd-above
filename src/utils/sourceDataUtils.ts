@@ -234,3 +234,16 @@ export const getCondition = (conditionName: string) =>
   getConditions()!.find(condition =>
     compareStrings(condition.name, conditionName),
   );
+
+// BESTIARY UTILS
+export const getMonsters = () => getSourceData(store.getState())?.bestiary;
+export const getMonstersFluff = () =>
+  getSourceData(store.getState())?.bestiaryFluff;
+
+export const getMonster = (monsterName: string) =>
+  getMonsters()!.find(monster => compareStrings(monster.name, monsterName));
+
+export const getMonsterFluff = (monsterName: string) =>
+  getMonstersFluff()!.find(monster =>
+    compareStrings(monster.name, monsterName),
+  );

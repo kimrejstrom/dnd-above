@@ -4,6 +4,8 @@ import { AppDispatch } from 'app/store';
 import { ActionElement } from 'models/actions';
 import { BackgroundElement } from 'models/background';
 import { BackgroundFluffElement } from 'models/background-fluff';
+import { Monster } from 'models/bestiary';
+import { MonsterFluff } from 'models/bestiary-fluff';
 import { ClassTypes } from 'models/class';
 import { Condition, Disease, Status } from 'models/conditions';
 import { FeatElement } from 'models/feats';
@@ -15,6 +17,7 @@ import { SpellElement } from 'models/spells';
 import {
   CommonItem,
   loadBackgrounds,
+  loadBestiary,
   loadClasses,
   loadItems,
   loadMisc,
@@ -35,6 +38,8 @@ export interface SourceData {
   languages: LanguageElement[];
   optionalFeatures: Optionalfeature[];
   conditionsDiseases: (Condition | Disease | Status)[];
+  bestiary: Monster[];
+  bestiaryFluff: MonsterFluff[];
 }
 
 interface SourceDataState {
@@ -58,6 +63,8 @@ const initialState: SourceDataState = {
     languages: [],
     optionalFeatures: [],
     conditionsDiseases: [],
+    bestiary: [],
+    bestiaryFluff: [],
   },
 };
 
@@ -78,6 +85,7 @@ export const loadSourceData = createAsyncThunk<
       { backgrounds, backgroundsFluff },
       { allItems },
       { actions, feats, languages, optionalFeatures, conditionsDiseases },
+      { bestiary, bestiaryFluff },
     ] = await Promise.all([
       loadSpells(),
       loadClasses(),
@@ -85,6 +93,7 @@ export const loadSourceData = createAsyncThunk<
       loadBackgrounds(),
       loadItems(),
       loadMisc(),
+      loadBestiary(),
     ]);
 
     return {
@@ -100,6 +109,8 @@ export const loadSourceData = createAsyncThunk<
       languages,
       optionalFeatures,
       conditionsDiseases,
+      bestiary,
+      bestiaryFluff,
     } as SourceData;
   } catch (error) {
     return thunkAPI.rejectWithValue('Error loading SourceData');

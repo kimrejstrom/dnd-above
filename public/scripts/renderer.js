@@ -1995,10 +1995,7 @@ function Renderer() {
   };
 
   this._renderLink = function(entry, textStack, meta, options) {
-    // console.log('LINK', entry, textStack);
     let href = this._renderLink_getHref(entry);
-
-    //TODO Render DetailedEntry Trigger for all links
 
     if (this._isIternalLinksDisabled && entry.href.type === 'internal') {
       if (entry.href.hash && entry.href.path) {
@@ -2210,7 +2207,7 @@ Renderer.attackTagToFull = function(tagStr) {
     .filter(it => it)
     .map(it => it.split(''));
   if (tagGroups.length > 1) {
-    const seen = new Set(tagGroups.last());
+    const seen = new Set(tagGroups.slice(-1));
     for (let i = tagGroups.length - 2; i >= 0; --i) {
       tagGroups[i] = tagGroups[i].filter(it => {
         const out = !seen.has(it);
@@ -4035,7 +4032,7 @@ Renderer.cultboon = {
   },
 };
 
-Renderer.monster = {
+Renderer.prototype.monster = {
   getLegendaryActionIntro: (mon, renderer = Renderer.get()) => {
     function getCleanName() {
       if (mon.shortName) return mon.shortName;
@@ -4331,7 +4328,7 @@ Renderer.monster = {
           <tr class="text compact"><td colspan="6">
           ${
             key === 'legendary' && mon.legendary
-              ? `<p>${Renderer.monster.getLegendaryActionIntro(mon)}</p>`
+              ? `<p>${renderer.monster.getLegendaryActionIntro(mon)}</p>`
               : ''
           }
           ${mon[key]
@@ -4354,14 +4351,16 @@ Renderer.monster = {
     }`;
   },
   getSavesPart(mon) {
+    const renderer = Renderer.get();
     return `${Object.keys(mon.save)
       .sort(SortUtil.ascSortAtts)
-      .map(s => Renderer.monster.getSave(Renderer.get(), s, mon.save[s]))
+      .map(s => renderer.monster.getSave(Renderer.get(), s, mon.save[s]))
       .join(', ')}`;
   },
   getSensesPart(mon) {
+    const renderer = Renderer.get();
     return `${
-      mon.senses ? `${Renderer.monster.getRenderedSenses(mon.senses)}, ` : ''
+      mon.senses ? `${renderer.monster.getRenderedSenses(mon.senses)}, ` : ''
     }passive Perception ${mon.passive || '\u2014'}`;
   },
 
@@ -4374,7 +4373,7 @@ Renderer.monster = {
     renderStack.push(`
               ${renderer.utils.getExcludedTr(mon, 'monster')}
               ${renderer.utils.getNameTr(mon, { page: UrlUtil.PG_BESTIARY })}
-              <tr><td colspan="6"><i>${Renderer.monster.getTypeAlignmentPart(
+              <tr><td colspan="6"><i>${renderer.monster.getTypeAlignmentPart(
                 mon,
               )}</i></td></tr>
               <tr><td colspan="6"><div></div></td></tr>
@@ -4388,7 +4387,7 @@ Renderer.monster = {
                       </tr>
                       <tr>
                           <td>${Parser.acToFull(mon.ac)}</td>
-                          <td>${Renderer.monster.getRenderedHp(mon.hp)}</td>
+                          <td>${renderer.monster.getRenderedHp(mon.hp)}</td>
                           <td>${Parser.getSpeedString(mon)}</td>
                           ${
                             isCrHidden
@@ -4467,14 +4466,14 @@ Renderer.monster = {
                   <div class="rd__compact-stat">
                       ${
                         mon.save
-                          ? `<p><b>Saving Throws</b> ${Renderer.monster.getSavesPart(
+                          ? `<p><b>Saving Throws</b> ${renderer.monster.getSavesPart(
                               mon,
                             )}</p>`
                           : ''
                       }
                       ${
                         mon.skill
-                          ? `<p><b>Skills</b> ${Renderer.monster.getSkillsString(
+                          ? `<p><b>Skills</b> ${renderer.monster.getSkillsString(
                               renderer,
                               mon,
                             )}</p>`
@@ -4508,10 +4507,10 @@ Renderer.monster = {
                             )}</p>`
                           : ''
                       }
-                      <p><b>Senses</b> ${Renderer.monster.getSensesPart(
+                      <p><b>Senses</b> ${renderer.monster.getSensesPart(
                         mon,
                       )}</p>
-                      <p><b>Languages</b> ${Renderer.monster.getRenderedLanguages(
+                      <p><b>Languages</b> ${renderer.monster.getRenderedLanguages(
                         mon.languages,
                       )}</p>
                   </div>
@@ -4520,28 +4519,28 @@ Renderer.monster = {
                 mon.trait || mon.spellcasting
                   ? `<tr><td colspan="6"><div></div></td></tr>
               <tr class="text compact"><td colspan="6">
-              ${Renderer.monster
+              ${renderer.monster
                 .getOrderedTraits(mon, renderer)
                 .map(it => it.rendered || renderer.render(it, 2))
                 .join('')}
               </td></tr>`
                   : ''
               }
-              ${Renderer.monster.getCompactRenderedStringSection(
+              ${renderer.monster.getCompactRenderedStringSection(
                 mon,
                 renderer,
                 'Actions',
                 'action',
                 2,
               )}
-              ${Renderer.monster.getCompactRenderedStringSection(
+              ${renderer.monster.getCompactRenderedStringSection(
                 mon,
                 renderer,
                 'Reactions',
                 'reaction',
                 2,
               )}
-              ${Renderer.monster.getCompactRenderedStringSection(
+              ${renderer.monster.getCompactRenderedStringSection(
                 mon,
                 renderer,
                 'Legendary Actions',
@@ -4561,7 +4560,7 @@ Renderer.monster = {
               }
               ${
                 mon.dragonCastingColor
-                  ? Renderer.monster.getDragonCasterVariant(renderer, mon)
+                  ? renderer.monster.getDragonCasterVariant(renderer, mon)
                   : ''
               }
               ${mon.footer ? renderer.render({ entries: mon.footer }) : ''}
@@ -4584,6 +4583,7 @@ Renderer.monster = {
         return `Maximum: ${num * faces + mod}`;
       } else return '';
     }
+    if (!hp) return '';
     if (hp.special != null) return hp.special;
     if (/^\d+d1$/.exec(hp.formula)) {
       return hp.average;
@@ -4612,7 +4612,7 @@ Renderer.monster = {
   getOrderedTraits: (mon, renderer) => {
     let trait = mon.trait ? MiscUtil.copy(mon.trait) : null;
     if (mon.spellcasting) {
-      const spellTraits = Renderer.monster.getSpellcastingRenderedTraits(
+      const spellTraits = renderer.monster.getSpellcastingRenderedTraits(
         mon,
         renderer,
       );
@@ -4705,9 +4705,10 @@ Renderer.monster = {
   },
 
   updateParsed(mon) {
+    const renderer = Renderer.get();
     delete mon._pTypes;
     delete mon._pCr;
-    Renderer.monster.initParsed(mon);
+    renderer.monster.initParsed(mon);
   },
 
   async pPopulateMetaAndLanguages(meta, languages) {
@@ -7310,8 +7311,8 @@ Parser.DRAGON_COLOR_TO_FULL = {
 };
 
 Parser.acToFull = function(ac) {
+  if (!ac) return '';
   if (typeof ac === 'string') return ac; // handle classic format
-
   const renderer = Renderer.get();
   let stack = '';
   let inBraces = false;
@@ -8281,6 +8282,7 @@ Parser.spCasterProgressionToFull = function(type) {
 
 // mon-prefix functions are for parsing monster data, and shared with the roll20 script
 Parser.monTypeToFullObj = function(type) {
+  if (!type) return '';
   const out = { type: '', tags: [], asText: '' };
 
   if (typeof type === 'string') {
@@ -8384,7 +8386,7 @@ Parser.monImmResToFull = function(toParse) {
       out += it;
       out += it.includes(',') || nxt.includes(',') ? '; ' : ', ';
     }
-    out += arr.last();
+    out += arr.slice(-1);
     return out;
   }
 

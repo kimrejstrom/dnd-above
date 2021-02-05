@@ -17,6 +17,8 @@ import {
   getItem,
   getLanguage,
   getLanguages,
+  getMonster,
+  getMonsters,
   getOptionalFeature,
   getOptionalFeatures,
   getPlayableClasses,
@@ -35,6 +37,7 @@ import {
   RenderClass,
   RenderItem,
   RenderLanguage,
+  RenderMonster,
   RenderOptionalFeature,
   RenderRace,
   RenderSpell,
@@ -58,6 +61,8 @@ export enum ResultType {
   Language,
   OptionalFeature,
   ConditionDisease,
+  Monster,
+  MonsterFluff,
   Unknown,
 }
 
@@ -236,6 +241,16 @@ export function initializeSearch() {
     });
   });
 
+  // Index Monsters
+  getMonsters()?.forEach(monster => {
+    fuseIndex.push({
+      name: monster.name,
+      src: monster.source,
+      page: monster.page ?? 0,
+      type: ResultType.Monster,
+    });
+  });
+
   return fuseIndex;
 }
 
@@ -352,6 +367,12 @@ export function findSearchResultSourceData(
       const condition = getCondition(searchResult.name);
       if (!condition) break;
       return { data: condition };
+    }
+
+    case ResultType.Monster: {
+      const monster = getMonster(searchResult.name);
+      if (!monster) break;
+      return { data: monster, renderer: RenderMonster(monster) };
     }
 
     default:

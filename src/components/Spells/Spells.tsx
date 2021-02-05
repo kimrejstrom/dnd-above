@@ -71,7 +71,6 @@ export const Spells = ({
       spells.map(sp => ({
         ...sp,
         detailedEntryTrigger: () => {
-          console.log('triggered');
           dispatch(
             setDetailedEntry(
               <DangerousHtml extraClassName="tight" data={RenderSpell(sp)} />,

@@ -16,6 +16,8 @@ import { getCookie } from 'utils/cookie';
 import { FeatElement } from 'models/feats';
 import { Optionalfeature } from 'models/optional-feature';
 import { Condition, Disease, Status } from 'models/conditions';
+import { Monster } from 'models/bestiary';
+import { MonsterFluff } from 'models/bestiary-fluff';
 
 export const filterSources = (item: any, includeDMG: boolean = true) => {
   const sourceIncludesUA = (source: string) => {
@@ -293,4 +295,122 @@ export const loadMisc = async () => {
   ] as (Condition | Disease | Status)[];
 
   return { actions, feats, languages, optionalFeatures, conditionsDiseases };
+};
+
+// BEASTIARY
+export const loadBestiary = async () => {
+  const [AI, DMG, EGW, ERLW, GGR, MM, MOT, MTF, TCE, VGM] = await Promise.all([
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-ai.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-dmg.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-egw.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-erlw.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-ggr.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-mm.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-mot.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-mtf.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-tce.json').then(
+      data => data.default,
+    ),
+    import(/* webpackPrefetch: true */ 'data/bestiary/bestiary-vgm.json').then(
+      data => data.default,
+    ),
+  ]);
+
+  const bestiary = {
+    AI,
+    DMG,
+    EGW,
+    ERLW,
+    GGR,
+    MM,
+    MOT,
+    MTF,
+    TCE,
+    VGM,
+  };
+
+  const finalBestiary = Object.values(bestiary)
+    .map(source => source.monster)
+    .flat()
+    .filter(entry => filterSources(entry)) as Monster[];
+
+  const [
+    aiFluff,
+    dmgFluff,
+    egwFluff,
+    erlwFluff,
+    ggrFluff,
+    mmFluff,
+    motFluff,
+    mtfFluff,
+    tceFluff,
+    vgmFluff,
+  ] = await Promise.all([
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-ai.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-dmg.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-egw.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-erlw.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-ggr.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-mm.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-mot.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-mtf.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-tce.json'
+    ).then(data => data.default),
+    import(
+      /* webpackPrefetch: true */ 'data/bestiary/fluff-bestiary-vgm.json'
+    ).then(data => data.default),
+  ]);
+
+  const bestiaryFluff = {
+    aiFluff,
+    dmgFluff,
+    egwFluff,
+    erlwFluff,
+    ggrFluff,
+    mmFluff,
+    motFluff,
+    mtfFluff,
+    tceFluff,
+    vgmFluff,
+  };
+
+  const finalBestiaryFluff = Object.values(bestiaryFluff)
+    .map(source => source.monsterFluff)
+    .flat()
+    .filter(entry => filterSources(entry)) as MonsterFluff[];
+
+  return { bestiary: finalBestiary, bestiaryFluff: finalBestiaryFluff };
 };

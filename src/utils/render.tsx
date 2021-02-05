@@ -1,6 +1,7 @@
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import _ from 'lodash';
+import { Monster } from 'models/bestiary';
 import { ClassElement, ClassSubclass } from 'models/class';
 import { LanguageElement } from 'models/language';
 import { Optionalfeature } from 'models/optional-feature';
@@ -112,6 +113,10 @@ export const RenderSubClass = (
 
 export const RenderRace = (race: Race) =>
   mainRenderer.race.getCompactRenderedString(race);
+
+// Monster
+export const RenderMonster = (monster: Monster) =>
+  mainRenderer.monster.getCompactRenderedString(monster);
 
 // Items
 export const RenderItem = (item: any) => {
