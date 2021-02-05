@@ -1,14 +1,19 @@
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import _ from 'lodash';
+import { BackgroundElement } from 'models/background';
+import { BackgroundFluffElement } from 'models/background-fluff';
 import { Monster } from 'models/bestiary';
+import { MonsterFluff } from 'models/bestiary-fluff';
 import { ClassElement, ClassSubclass } from 'models/class';
 import { LanguageElement } from 'models/language';
 import { Optionalfeature } from 'models/optional-feature';
 import { Race } from 'models/race';
+import { RaceFluffElement } from 'models/race-fluff';
 import ClassBase from 'pages/Create/ClassBase';
 import ClassTable from 'pages/Create/ClassTable';
 import React from 'react';
+import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import { filterSources } from 'utils/data';
 import { mainRenderer, Parser } from 'utils/mainRenderer';
 import {
@@ -111,12 +116,80 @@ export const RenderSubClass = (
   </div>
 );
 
-export const RenderRace = (race: Race) =>
-  mainRenderer.race.getCompactRenderedString(race);
+export const RenderBackground = (
+  bg: BackgroundElement,
+  bgFluff?: BackgroundFluffElement,
+) => (
+  <Tabs>
+    <TabList className="flex text-center">
+      <Tab className="mr-2">Traits</Tab>
+      <Tab>Info</Tab>
+    </TabList>
+    <TabPanel>
+      <DangerousHtml
+        extraClassName="tight"
+        data={mainRenderer.background.getCompactRenderedString(bg)}
+      />
+    </TabPanel>
+    <TabPanel>
+      <DangerousHtml
+        extraClassName="tight"
+        data={bgFluff && mainRenderer.render(bgFluff)}
+      />
+    </TabPanel>
+  </Tabs>
+);
+
+export const RenderRace = (
+  race: Race,
+  raceFluff: (RaceFluffElement | undefined)[],
+) => (
+  <Tabs>
+    <TabList className="flex text-center">
+      <Tab className="mr-2">Traits</Tab>
+      <Tab>Info</Tab>
+    </TabList>
+    <TabPanel>
+      <DangerousHtml
+        extraClassName="tight"
+        data={mainRenderer.race.getCompactRenderedString(race)}
+      />
+    </TabPanel>
+    <TabPanel>
+      {raceFluff?.map(fluff => (
+        <DangerousHtml
+          extraClassName="tight"
+          data={fluff && mainRenderer.render(fluff)}
+        />
+      ))}
+    </TabPanel>
+  </Tabs>
+);
 
 // Monster
-export const RenderMonster = (monster: Monster) =>
-  mainRenderer.monster.getCompactRenderedString(monster);
+export const RenderMonster = (
+  monster: Monster,
+  monsterFluff?: MonsterFluff,
+) => (
+  <Tabs>
+    <TabList className="flex text-center">
+      <Tab className="mr-2">Statblock</Tab>
+      <Tab>Info</Tab>
+    </TabList>
+    <TabPanel>
+      <DangerousHtml
+        extraClassName="tight"
+        data={mainRenderer.monster.getCompactRenderedString(monster)}
+      />
+    </TabPanel>
+    <TabPanel>
+      <DangerousHtml
+        extraClassName="tight"
+        data={monsterFluff && mainRenderer.render(monsterFluff)}
+      />
+    </TabPanel>
+  </Tabs>
+);
 
 // Items
 export const RenderItem = (item: any) => {

@@ -131,6 +131,9 @@ export const getRacesFluff = () => getSourceData(store.getState())?.racesFluff;
 export const getRace = (raceName: string) =>
   getRaces()!.find(race => compareStrings(race.name, raceName));
 
+export const getRaceFluff = (raceName: string) =>
+  getRacesFluff()!.find(race => compareStrings(race.name, raceName));
+
 export const getSubRace = (raceName: string, subRaceName: string) =>
   getRace(raceName)?.subraces?.find(subrace =>
     compareStrings(subrace.name!, subRaceName),

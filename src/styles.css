@@ -337,7 +337,20 @@ a.active {
 
 /* Tabs */
 .react-tabs__tab {
-  @apply text-dark-200 cursor-pointer;
+  @apply text-dark-200 cursor-pointer list-none;
+}
+
+.react-tabs ul {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.react-tabs li::before {
+  content: none !important;
+}
+
+.react-tabs li {
+  padding-left: 0 !important;
 }
 
 .react-tabs__tab:hover {
@@ -428,6 +441,10 @@ a.active {
 }
 
 /* Tailwind Typography overrides */
+.tight {
+  margin-top: 0 !important;
+}
+
 .tight td {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -517,6 +534,10 @@ i > i {
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
+}
+.rd__compact-stat p {
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
 }
 .rd__title-link {
   opacity: 0.3;
@@ -1020,4 +1041,67 @@ i > i {
 }
 .dark ::-webkit-scrollbar-thumb {
   background: #475b6b;
+}
+
+.monster .rnd-name .source {
+  position: relative;
+  margin-right: 0.2em;
+}
+.stats {
+  width: 100%;
+  font-size: 0.9em;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+}
+.stats:last-child {
+  margin-bottom: 0;
+}
+.stats.monster {
+  background-size: 100% auto;
+}
+.stats table {
+  width: 100%;
+  margin-bottom: 5px;
+}
+.stats table.statsDataInset {
+  margin: 10px;
+  width: calc(100% - 20px);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 4px 0 #988d7c;
+}
+.stats table caption {
+  margin-left: 5px;
+  padding: 0;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+.mon__cr_slider_wrp--compact {
+  top: 41px;
+}
+.mon__cr_slider {
+  width: 100%;
+}
+.mon__ability-names th {
+  text-align: center;
+  font-weight: bold;
+  color: inherit;
+}
+.mon__ability-scores {
+  text-align: center;
+  width: 16%;
+}
+.mon__sect-header-inner {
+  display: block;
+}
+.mon__sect-row-inner {
+  padding-top: 0.5rem !important;
+}
+.mon__sect-row-inner > *:last-of-type {
+  margin-bottom: 0.5rem !important;
+}
+.mon__stat-header-underline {
+  font-size: 1.2rem;
+  font-variant: small-caps;
+  font-weight: 700;
+  padding-left: 0.2rem;
 }

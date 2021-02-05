@@ -29,6 +29,7 @@ const DangerousHtml = ({
   extraClassName,
   prose = true,
 }: Props) => {
+  if (!data) return <></>;
   if (isTableElement(data)) {
     return (
       <table

@@ -3236,6 +3236,7 @@ Renderer.condition = {
 
 Renderer.prototype.background = {
   getCompactRenderedString(bg) {
+    const renderer = Renderer.get();
     return `
           ${renderer.utils.getExcludedTr(bg, 'background')}
           ${renderer.utils.getNameTr(bg, { page: UrlUtil.PG_BACKGROUNDS })}
@@ -3246,7 +3247,8 @@ Renderer.prototype.background = {
   },
 
   getSkillSummary(skillProfsArr, short, collectIn) {
-    return Renderer.background._summariseProfs(
+    const renderer = Renderer.get();
+    return renderer.background._summariseProfs(
       skillProfsArr,
       short,
       collectIn,
@@ -3255,7 +3257,8 @@ Renderer.prototype.background = {
   },
 
   getToolSummary(toolProfsArray, short, collectIn) {
-    return Renderer.background._summariseProfs(
+    const renderer = Renderer.get();
+    return renderer.background._summariseProfs(
       toolProfsArray,
       short,
       collectIn,
@@ -3263,7 +3266,8 @@ Renderer.prototype.background = {
   },
 
   getLanguageSummary(toolProfsArray, short, collectIn) {
-    return Renderer.background._summariseProfs(
+    const renderer = Renderer.get();
+    return renderer.background._summariseProfs(
       toolProfsArray,
       short,
       collectIn,
@@ -4377,7 +4381,8 @@ Renderer.prototype.monster = {
                 mon,
               )}</i></td></tr>
               <tr><td colspan="6"><div></div></td></tr>
-              <tr><td colspan="6">
+              <tr><td class="divider" colspan="6">
+                  <div></div>
                   <table class="summary-noback" style="position: relative;">
                       <tr>
                           <th>Armor Class</th>
@@ -4422,7 +4427,7 @@ Renderer.prototype.monster = {
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div></div></td></tr>
+              <tr><td class="divider" colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <table class="summary striped-even">
                       <tr>
@@ -4461,7 +4466,7 @@ Renderer.prototype.monster = {
                       </tr>
                   </table>
               </td></tr>
-              <tr><td colspan="6"><div></div></td></tr>
+              <tr><td class="divider" colspan="6"><div></div></td></tr>
               <tr><td colspan="6">
                   <div class="rd__compact-stat">
                       ${

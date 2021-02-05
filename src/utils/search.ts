@@ -6,7 +6,6 @@ import {
   getBackground,
   getBackgroundFluff,
   getBackgrounds,
-  getBackgroundsFluff,
   getClass,
   getClassFeature,
   getClassFeatures,
@@ -18,13 +17,14 @@ import {
   getLanguage,
   getLanguages,
   getMonster,
+  getMonsterFluff,
   getMonsters,
   getOptionalFeature,
   getOptionalFeatures,
   getPlayableClasses,
   getRace,
+  getRaceFluff,
   getRaces,
-  getRacesFluff,
   getSpell,
   getSpells,
   getSubClass,
@@ -34,6 +34,7 @@ import {
 } from 'utils/sourceDataUtils';
 import { filterSources } from 'utils/data';
 import {
+  RenderBackground,
   RenderClass,
   RenderItem,
   RenderLanguage,
@@ -51,10 +52,8 @@ export enum ResultType {
   Subclass,
   SubclassFeature,
   Race,
-  RaceFluff,
   Subrace,
   Background,
-  BackgroundFluff,
   Item,
   Action,
   Feat,
@@ -153,15 +152,6 @@ export function initializeSearch() {
     }
   });
 
-  getRacesFluff()?.forEach(raceFluff => {
-    fuseIndex.push({
-      name: raceFluff.name,
-      src: raceFluff.source,
-      page: 0,
-      type: ResultType.RaceFluff,
-    });
-  });
-
   // Index Backgrounds
   getBackgrounds()?.forEach(background => {
     fuseIndex.push({
@@ -169,15 +159,6 @@ export function initializeSearch() {
       src: background.source,
       page: background.page ?? 0,
       type: ResultType.Background,
-    });
-  });
-
-  getBackgroundsFluff()?.forEach(backgroundFluff => {
-    fuseIndex.push({
-      name: backgroundFluff.name,
-      src: backgroundFluff.source,
-      page: 0,
-      type: ResultType.BackgroundFluff,
     });
   });
 
@@ -298,17 +279,11 @@ export function findSearchResultSourceData(
     case ResultType.Race: {
       const race = getRace(searchResult.name);
       if (!race) break;
+      const raceFluff = getRaceFluff(searchResult.name);
+      const raceFluffBase = getRaceFluff(race._baseName!);
       return {
         data: race,
-        renderer: RenderRace(race!),
-      };
-    }
-
-    case ResultType.RaceFluff: {
-      const fluffs = getRacesFluff();
-      if (!fluffs) break;
-      return {
-        data: fluffs!.find(fluff => fluff.name === searchResult.name),
+        jsx: RenderRace(race, [raceFluff, raceFluffBase]),
       };
     }
 
@@ -320,14 +295,9 @@ export function findSearchResultSourceData(
 
     case ResultType.Background: {
       const bg = getBackground(searchResult.name);
+      const bgFluff = getBackgroundFluff(searchResult.name);
       if (!bg) break;
-      return { data: bg };
-    }
-
-    case ResultType.BackgroundFluff: {
-      const bg = getBackgroundFluff(searchResult.name);
-      if (!bg) break;
-      return { data: bg };
+      return { data: bg, jsx: RenderBackground(bg, bgFluff) };
     }
 
     case ResultType.Item: {
@@ -371,8 +341,9 @@ export function findSearchResultSourceData(
 
     case ResultType.Monster: {
       const monster = getMonster(searchResult.name);
+      const monsterFluff = getMonsterFluff(searchResult.name);
       if (!monster) break;
-      return { data: monster, renderer: RenderMonster(monster) };
+      return { data: monster, jsx: RenderMonster(monster, monsterFluff) };
     }
 
     default:
