@@ -14,15 +14,17 @@
 - [ ] Custom items (w/ use as base)  
 - [ ] Attuned items  
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
-- [ ] Extras: Save any searchIndexEntry  
 - [ ] Online/offline (persist list to localStorage)  
 
 ### In Progress
 
-- [ ] Beastiary  
+- [ ] Extras: Save any searchIndexEntry  
+- [ ] Notes: Heading, type, entry, timestamp (created/updated?)  
+- [ ] Concentration req on spells  
 
 ### Done ✓
 
+- [x] Beastiary  
 - [x] conditions diseases, Eldritch Invocations  
 - [x] Clickable link thing on all detailed entries  
 - [x] Equipment Table  
