@@ -17,6 +17,7 @@ import {
 } from 'utils/search';
 import { useFuse } from 'utils/useFuse';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
+import IconType from 'components/IconType/IconType';
 
 interface Props {
   searchIndex: Array<SourceDataFuseItem>;
@@ -119,10 +120,14 @@ const RightPanel = ({ searchIndex }: Props) => {
                         jsx={jsx}
                       >
                         <div className="py-1 px-2 flex justify-between">
-                          <div>
-                            {`${ResultType[hit.item.type]}: ${hit.item.name} ${
+                          <div className="flex items-center">
+                            <IconType type={hit.item.type} />
+                            <div>{`${hit.item.name} ${
                               hit.item.baseName ? `(${hit.item.baseName})` : ''
-                            }`}
+                            }`}</div>
+                            <div className="text-xs opacity-50 ml-2">
+                              {ResultType[hit.item.type]}
+                            </div>
                           </div>
                           <div>
                             <span

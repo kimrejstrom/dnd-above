@@ -193,7 +193,7 @@ const ConditionsDefenses = ({ character, readonly }: Props) => {
             <ul className="h-12 overflow-y-scroll">
               {character.gameData.defenses.map(defense => (
                 <li
-                  key={defense.name}
+                  key={`${defense.name}-${defense.type}`}
                   className="leading-tight capitalize"
                 >{`${defense.name} (${defense.type})`}</li>
               ))}

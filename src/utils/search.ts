@@ -61,7 +61,6 @@ export enum ResultType {
   OptionalFeature,
   ConditionDisease,
   Monster,
-  MonsterFluff,
   Unknown,
 }
 

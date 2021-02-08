@@ -59,6 +59,17 @@ const customizedMiddleware = getDefaultMiddleware({
 const store = configureStore({
   reducer: persistedReducer,
   middleware: customizedMiddleware,
+  devTools: {
+    actionSanitizer: (action: any) =>
+      action.type === 'detailedEntry/setDetailedEntry' && action.payload
+        ? { ...action, payload: '<<REACT_COMPONENT>>' }
+        : action,
+    stateSanitizer: (state: any) => ({
+      ...state,
+      sourceData: '<<SO_MANY_OBJECTS>>',
+      detailedEntry: '<<REACT_COMPONENT>>',
+    }),
+  },
 });
 
 let persistor = persistStore(store);

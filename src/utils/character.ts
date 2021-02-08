@@ -225,26 +225,111 @@ export const mapArmorProficiencies = (
     }
   });
 
+export const getSpellsKnown = (character: CharacterListItem) => {
+  const classElement = getClass(character.classData.classElement);
+  const subClassElement = getSubClass(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+  const level = character.gameData.level;
+  const spellsKnown = classElement?.classTableGroups?.find(tableGroup =>
+    tableGroup.colLabels.some(label => label.includes('Spells Known')),
+  );
+
+  if (!spellsKnown) {
+    const subClassSpellsKnown = subClassElement?.subclassTableGroups?.find(
+      tableGroup =>
+        tableGroup.colLabels.some(label => label.includes('Spells Known')),
+    );
+    if (!subClassSpellsKnown) {
+      return 'All';
+    }
+    return subClassSpellsKnown.rows[level - 1].length > 1
+      ? subClassSpellsKnown.rows[level - 1][1]
+      : subClassSpellsKnown.rows[level - 1][0];
+  }
+  return spellsKnown.rows[level - 1].length > 1
+    ? spellsKnown.rows[level - 1][1]
+    : spellsKnown.rows[level - 1][0];
+};
+
+export const getCantripsKnown = (character: CharacterListItem) => {
+  const classElement = getClass(character.classData.classElement);
+  const subClassElement = getSubClass(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+  const level = character.gameData.level;
+  const cantripsKnown = classElement?.classTableGroups?.find(tableGroup =>
+    tableGroup.colLabels.some(label => label.includes('Cantrips Known')),
+  );
+
+  if (!cantripsKnown) {
+    const subClassCantripsKnown = subClassElement?.subclassTableGroups?.find(
+      tableGroup =>
+        tableGroup.colLabels.some(label => label.includes('Cantrips Known')),
+    );
+    if (!subClassCantripsKnown) {
+      return 'All';
+    }
+    return subClassCantripsKnown.rows[level - 1][0];
+  }
+  return cantripsKnown.rows[level - 1][0];
+};
+
+export const getWarlockSpellSlots = (character: CharacterListItem) => {
+  const classElement = getClass(character.classData.classElement);
+  const level = character.gameData.level;
+  const spellSlots = classElement?.classTableGroups?.find(tableGroup =>
+    tableGroup.colLabels.some(label => label.includes('Spell Slots')),
+  );
+  return spellSlots!.rows[level - 1][2];
+};
+
 export const getSpellSlotsPerLevel = (character: CharacterListItem) => {
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
     character.classData.classElement,
     character.classData.subClass,
   );
+  const level = character.gameData.level;
 
-  const spellSlots = extractSpellSlots(
-    classElement?.classTableGroups!,
-    character.gameData.level,
-  );
-  const subClassSpellSlots = extractSpellSlots(
-    subClassElement?.subclassTableGroups!,
-    character.gameData.level,
-  );
-  return spellSlots
-    ? spellSlots
-    : subClassSpellSlots
-    ? subClassSpellSlots
-    : undefined;
+  if (classElement?.name.toLowerCase() === 'warlock') {
+    const spellSlots = classElement?.classTableGroups
+      ?.filter(tableGroup => tableGroup.colLabels.includes('Spell Slots'))
+      .map(tableGroup => tableGroup.rows[level - 1]);
+    const baseSlots = {
+      1: -1,
+      2: -1,
+      3: -1,
+      4: -1,
+      5: -1,
+      6: -1,
+      7: -1,
+      8: -1,
+      9: -1,
+      10: -1,
+    };
+    const spellLevel = (spellSlots![0][3] as string)
+      .split('|')[2]
+      .split('=')[1];
+    const convertedSlots = { ...baseSlots, [spellLevel]: spellSlots![0][2] };
+    return convertedSlots;
+  } else {
+    const spellSlots = extractSpellSlots(
+      classElement?.classTableGroups!,
+      level,
+    );
+    const subClassSpellSlots = extractSpellSlots(
+      subClassElement?.subclassTableGroups!,
+      level,
+    );
+    return spellSlots
+      ? spellSlots
+      : subClassSpellSlots
+      ? subClassSpellSlots
+      : undefined;
+  }
 };
 
 export const extractSpellSlots = (

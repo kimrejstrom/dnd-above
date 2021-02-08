@@ -2009,7 +2009,7 @@ function Renderer() {
           entry.text,
         )}</span>`;
       } else {
-        textStack[0] += `<span class="font-bold underline link-entry cursor-pointer">${this.render(
+        textStack[0] += `<span class="font-bold">${this.render(
           entry.text,
         )}</span>`;
       }

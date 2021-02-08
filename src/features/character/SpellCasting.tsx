@@ -15,6 +15,9 @@ import {
   getSpellAttack,
   getSpellSlotsPerLevel,
   getSpellModifier,
+  getSpellsKnown,
+  getCantripsKnown,
+  getWarlockSpellSlots,
 } from 'utils/character';
 import { isDefined } from 'ts-is-present';
 import { Spells } from 'components/Spells/Spells';
@@ -86,7 +89,7 @@ const SpellLevel = ({
   readonly: boolean;
 }) => {
   const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
-  return spellSlotsForLevel > 0 || level === 0 ? (
+  return spellSlotsForLevel > 0 || level === 0 || spellSlotsForLevel === -1 ? (
     <div className="my-2">
       <div className="flex w-full justify-between">
         <div className="text-lg">
@@ -96,6 +99,8 @@ const SpellLevel = ({
           Slots:{' '}
           {level === 0 ? (
             '∞'
+          ) : spellSlotsForLevel === -1 ? (
+            'N/A'
           ) : (
             <SpellSlotCheckBoxes
               character={character}
@@ -130,7 +135,7 @@ const SpellCasting = ({ character, readonly }: Props) => {
   return (
     <>
       <div
-        className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        className="w-full mt-2 relative bg-contain bg-center bg-no-repeat"
         style={{
           height: '5rem',
           backgroundImage: `url(${
@@ -138,12 +143,53 @@ const SpellCasting = ({ character, readonly }: Props) => {
           })`,
         }}
       ></div>
-      <div>
-        <div className="flex justify-around">
-          <div>Ability: {CHARACTER_STATS[getSpellModifier(character)]}</div>
-          <div>Spell Attack: +{getSpellAttack(character)}</div>
-          <div>Spell Save DC: {getSpellSaveDC(character)}</div>
+      <div className="mb-2 flex flex-col custom-bg custom-border-sm custom-border-thin bg-light-200 dark:bg-dark-200">
+        <div className="flex flex-wrap justify-between">
+          <div className="mr-0.5">
+            Ability:{' '}
+            <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+              {CHARACTER_STATS[getSpellModifier(character)]}
+            </div>
+          </div>
+          <div className="mr-0.5">
+            Spell Attack:{' '}
+            <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+              +{getSpellAttack(character)}
+            </div>
+          </div>
+          <div>
+            Spell Save DC:{' '}
+            <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+              {getSpellSaveDC(character)}
+            </div>
+          </div>
         </div>
+        <div className="flex justify-between whitespace-nowrap">
+          <div className="mr-0.5">
+            Cantrips Known:{' '}
+            <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+              {getCantripsKnown(character)}
+            </div>
+          </div>
+          <div className="mr-0.5">
+            Spells Known:{' '}
+            <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+              {getSpellsKnown(character)}
+            </div>
+          </div>
+          {character.classData.classElement === 'Warlock' && (
+            <div className="flex">
+              <div>
+                Spell Slots:{' '}
+                <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+                  {getWarlockSpellSlots(character)}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <div>
         {activeSpells.length ? (
           <PillFilter
             pills={Object.keys(spellLevels).map(key => `level ${key}`)}

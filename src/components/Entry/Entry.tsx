@@ -6,14 +6,16 @@ interface Props {
   entry: any;
   highlight?: string;
   extraClassName?: string;
+  prose?: boolean;
 }
 
-const Entry = ({ entry, highlight, extraClassName }: Props) => {
+const Entry = ({ entry, highlight, extraClassName, prose }: Props) => {
   return (
     <DangerousHtml
       data={mainRenderer.render(entry)}
       highlight={highlight}
       extraClassName={extraClassName}
+      prose={prose}
     />
   );
 };

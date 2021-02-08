@@ -46,6 +46,8 @@ const DetailedEntry = ({ data }: Props) => {
             return ResultType.OptionalFeature;
           case 'conditionsdiseases':
             return ResultType.ConditionDisease;
+          case 'bestiary':
+            return ResultType.Monster;
           default:
             return ResultType.Unknown;
         }

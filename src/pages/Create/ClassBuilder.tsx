@@ -7,22 +7,18 @@ import { useState } from 'react';
 import { ClassElement, Skill } from 'models/class';
 import { filterSources } from 'utils/data';
 import Entry from 'components/Entry/Entry';
-import ClassBase from 'pages/Create/ClassBase';
 import { useForm } from 'react-hook-form';
-import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
-import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import { mainRenderer } from 'utils/mainRenderer';
 import ClassTable from 'pages/Create/ClassTable';
 import _ from 'lodash';
 import {
   getClass,
-  getClassFeatures,
   getPlayableClasses,
   getSubClass,
   getSubClassFeatures,
 } from 'utils/sourceDataUtils';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
+import { RenderClass } from 'utils/render';
 
 const ClassBuilder = () => {
   const dispatch = useDispatch();
@@ -124,7 +120,6 @@ const ClassBuilder = () => {
             </form>
           </div>
           <ClassTable cls={classElement!} subcls={subClass!} />
-          <ClassBase cls={classElement!} />
         </TextBox>
       </div>
     );
@@ -202,39 +197,7 @@ const ClassBuilder = () => {
                   </StyledButton>
                 </summary>
                 <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
-                  <Tabs>
-                    <TabList className="flex text-center">
-                      <Tab className="mr-2">Features</Tab>
-                      <Tab>Info</Tab>
-                    </TabList>
-                    <TabPanel className="overflow-y-scroll px-2">
-                      <Entry entry={classElement} />
-                      <ClassBase cls={classElement} />
-                      {getClassFeatures(classElement.name).map(
-                        (feature, level) => (
-                          <div key={feature.name} className="p-1 my-1">
-                            <div className="font-bold">{`Level ${level + 1} – ${
-                              feature.name
-                            }:`}</div>
-                            {feature.entries.map((entry, index) => {
-                              return <Entry key={index} entry={entry} />;
-                            })}
-                          </div>
-                        ),
-                      )}
-                    </TabPanel>
-                    <TabPanel className="overflow-y-scroll px-2">
-                      <DangerousHtml
-                        data={mainRenderer.render(
-                          {
-                            type: 'entries',
-                            entries: classElement.fluff,
-                          },
-                          1,
-                        )}
-                      />
-                    </TabPanel>
-                  </Tabs>
+                  {RenderClass(classElement)}
                 </div>
               </details>
             ))}

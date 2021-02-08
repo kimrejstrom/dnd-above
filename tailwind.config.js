@@ -63,6 +63,7 @@ module.exports = {
       'light-100': '#f9f3eb',
       'light-200': '#f3e7dc',
       'light-300': '#efeee9',
+      'highlight-100': '#755469',
     }),
     borderColor: theme => ({
       ...theme('colors'),

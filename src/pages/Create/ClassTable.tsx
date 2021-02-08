@@ -12,6 +12,7 @@ import { Parser } from 'utils/mainRenderer';
 import { getAllClassFeatures } from 'utils/sourceDataUtils';
 import { isDefined } from 'ts-is-present';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
+import { generateID } from 'features/createCharacterForm/createCharacterFormSlice';
 
 interface Props {
   cls: ClassElement;
@@ -44,9 +45,9 @@ const renderTableGroupsHeader = (
 ) =>
   tableGroups.map(tableGroup =>
     tableGroup.colLabels.map(lbl => (
-      <th className="text-sm">
+      <th key={lbl} className="text-sm">
         <div>
-          <Entry entry={lbl} />
+          <Entry entry={lbl} prose={false} />
         </div>
       </th>
     )),
@@ -55,8 +56,10 @@ const renderTableGroupsHeader = (
 const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
   const renderTableGroupRow = (tableGroup: ClassTableGroup, ixLvl: number) => {
     const row = tableGroup.rows[ixLvl] || [];
-    const cells = row.map(cell => (
-      <td>{cell === 0 ? '\u2014' : <Entry entry={cell} />}</td>
+    const cells = row.map((cell, i) => (
+      <td key={i}>
+        {cell === 0 ? '\u2014' : <Entry entry={cell} prose={false} />}
+      </td>
     ));
     return cells;
   };
@@ -74,7 +77,10 @@ const renderTableRows = (cls: ClassElement, subcls: ClassSubclass) => {
       .map(feature => (feature.level === ixLvl + 1 ? feature : undefined))
       .filter(isDefined);
     return (
-      <tr className="odd:bg-gray-100 dark:odd:bg-dark-200 text-sm text-center">
+      <tr
+        key={`${ixLvl}-${generateID()}`}
+        className="odd:bg-gray-100 dark:odd:bg-dark-200 text-sm text-center"
+      >
         <td>{Parser.getOrdinalForm(ixLvl + 1)}</td>
         <td className="text-left">
           {lvlFeaturesFiltered.length
@@ -110,14 +116,14 @@ const ClassTable = ({ cls, subcls }: Props) => {
     <div className="my-1">
       <table className="w-full dnd-body">
         <tbody>
-          <tr className="leading-tight">
+          <tr key={'level'} className="leading-tight">
             <th className="text-sm" colSpan={3} />
             {cls?.classTableGroups &&
               renderTableGroupsHeaderTitle(cls.classTableGroups)}
             {subcls?.subclassTableGroups &&
               renderTableGroupsHeaderTitle(subcls.subclassTableGroups)}
           </tr>
-          <tr className="leading-none">
+          <tr key={'features'} className="leading-none">
             <th className="text-sm">Level</th>
             <th className="text-sm text-left">Features</th>
             {cls?.classTableGroups &&

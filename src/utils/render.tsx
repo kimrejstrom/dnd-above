@@ -1,5 +1,4 @@
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import _ from 'lodash';
 import { BackgroundElement } from 'models/background';
 import { BackgroundFluffElement } from 'models/background-fluff';
@@ -10,6 +9,7 @@ import { LanguageElement } from 'models/language';
 import { Optionalfeature } from 'models/optional-feature';
 import { Race } from 'models/race';
 import { RaceFluffElement } from 'models/race-fluff';
+import Entry from 'components/Entry/Entry';
 import ClassBase from 'pages/Create/ClassBase';
 import ClassTable from 'pages/Create/ClassTable';
 import React from 'react';
@@ -22,20 +22,23 @@ import {
   getFeat,
 } from 'utils/sourceDataUtils';
 
-const featureBoxCls = 'shadow rounded p-2 my-2 bg-light-200 dark:bg-dark-200';
+export const addDefaultImageSrc = (ev: any, name: string) => {
+  const fallback = name.includes('custom') ? 'default' : name.split(' ')[0];
+  ev.target.src = `${process.env.PUBLIC_URL}/img/races/${fallback}.png`;
+};
 
 export const renderClassFeatures = (className: string) => {
-  const classFeatures = getClassFeatures(className);
-  return classFeatures
+  return getClassFeatures(className)
     .filter(i => filterSources(i))
-    .map(feature => (
+    .map((feature, index) => (
       <div
-        key={`${className}-${feature.name}-${feature.level}`}
-        className={featureBoxCls}
+        key={`${feature.name}-${index}`}
+        className="dnd-body text-sm p-1 my-1"
       >
-        <DetailedEntryTrigger data={feature}>
-          {`Level ${feature.level} – ${feature.name}`}
-        </DetailedEntryTrigger>
+        <div className="rd__h rd__h--1">{`Level ${feature.level} – ${feature.name}:`}</div>
+        {feature.entries.map((entry, index) => {
+          return <Entry extraClassName="tight" key={index} entry={entry} />;
+        })}
       </div>
     ));
 };
@@ -44,17 +47,17 @@ export const renderSubClassFeatures = (
   className: string,
   subClassName: string,
 ) => {
-  const subclassFeatures = getSubClassFeatures(className, subClassName);
-  return subclassFeatures
+  return getSubClassFeatures(className, subClassName)
     .filter(i => filterSources(i))
-    .map(feature => (
+    .map((feature, index) => (
       <div
-        key={`${subClassName}-${feature.name}-${feature.level}`}
-        className={featureBoxCls}
+        key={`${feature.name}-${index}`}
+        className="dnd-body text-sm p-1 my-1"
       >
-        <DetailedEntryTrigger data={feature}>
-          {`Level ${feature.level} – ${feature.name}`}
-        </DetailedEntryTrigger>
+        <div className="rd__h rd__h--1">{`Level ${feature.level} – ${feature.name}:`}</div>
+        {feature.entries.map((entry, index) => {
+          return <Entry extraClassName="tight" key={index} entry={entry} />;
+        })}
       </div>
     ));
 };
@@ -64,11 +67,21 @@ export const renderRaceTraits = (race: Race) => {
     item => !_.includes(['Age', 'Size', 'Alignment', 'Languages'], item.name),
   );
   return raceTraits?.length ? (
-    raceTraits?.map(trait => (
-      <DetailedEntryTrigger key={trait.name} data={trait}>
-        <div className={featureBoxCls}>{trait.name}</div>
-      </DetailedEntryTrigger>
-    ))
+    raceTraits?.map((trait, index) =>
+      typeof trait === 'string' ? (
+        <div className="dnd-body text-sm p-1 my-1">{trait}</div>
+      ) : (
+        <div
+          key={`${trait.name}-${index}`}
+          className="dnd-body text-sm p-1 my-1"
+        >
+          <div className="rd__h rd__h--1">{`${trait.name}:`}</div>
+          {trait.entries.map((entry, index) => {
+            return <Entry extraClassName="tight" key={index} entry={entry} />;
+          })}
+        </div>
+      ),
+    )
   ) : (
     <p>No racial traits</p>
   );
@@ -76,14 +89,18 @@ export const renderRaceTraits = (race: Race) => {
 
 export const renderFeats = (feats: string[]) => {
   return feats?.length ? (
-    feats?.map(featName => {
+    feats?.map((featName, index) => {
       const feat = getFeat(featName);
       return (
-        <DetailedEntryTrigger data={feat}>
-          <div key={feat?.name} className={featureBoxCls}>
-            {feat?.name}
-          </div>
-        </DetailedEntryTrigger>
+        <div
+          key={`${feat?.name}-${index}`}
+          className="dnd-body text-sm p-1 my-1"
+        >
+          <div className="rd__h rd__h--1">{`${feat?.name}:`}</div>
+          {feat?.entries.map((entry, index) => {
+            return <Entry extraClassName="tight" key={index} entry={entry} />;
+          })}
+        </div>
       );
     })
   ) : (
@@ -97,12 +114,37 @@ export const isTableElement = (data: string) => {
 };
 
 export const RenderClass = (classElem: ClassElement) => (
-  <div className="tight">
-    <DangerousHtml data={mainRenderer.render(classElem)} />
-    <ClassTable cls={classElem} subcls={{} as ClassSubclass} />
-    <ClassBase cls={classElem} />
-    {renderClassFeatures(classElem!.name)}
-  </div>
+  <Tabs>
+    <TabList className="flex text-center">
+      <Tab className="mr-2">Features</Tab>
+      <Tab>Info</Tab>
+    </TabList>
+    <TabPanel className="overflow-y-scroll px-2">
+      <Entry extraClassName="tight" entry={classElem} />
+      <ClassTable cls={classElem} subcls={{} as ClassSubclass} />
+      <ClassBase cls={classElem} />
+      {getClassFeatures(classElem.name).map((feature, index) => (
+        <div key={`${feature.name}-${index}`} className="p-1 my-1">
+          <div className="rd__h rd__h--1">{`Level ${feature.level} – ${feature.name}:`}</div>
+          {feature.entries.map((entry, index) => {
+            return <Entry extraClassName="tight" key={index} entry={entry} />;
+          })}
+        </div>
+      ))}
+    </TabPanel>
+    <TabPanel className="overflow-y-scroll px-2">
+      <DangerousHtml
+        extraClassName="tight"
+        data={mainRenderer.render(
+          {
+            type: 'entries',
+            entries: classElem.fluff,
+          },
+          1,
+        )}
+      />
+    </TabPanel>
+  </Tabs>
 );
 
 export const RenderSubClass = (
@@ -147,7 +189,8 @@ export const RenderRace = (
   <Tabs>
     <TabList className="flex text-center">
       <Tab className="mr-2">Traits</Tab>
-      <Tab>Info</Tab>
+      <Tab className="mr-2">Info</Tab>
+      <Tab>Image</Tab>
     </TabList>
     <TabPanel>
       <DangerousHtml
@@ -162,6 +205,16 @@ export const RenderRace = (
           data={fluff && mainRenderer.render(fluff)}
         />
       ))}
+    </TabPanel>
+    <TabPanel>
+      <img
+        src={`${
+          process.env.PUBLIC_URL
+        }/img/races/${race.name.toLowerCase()}.png`}
+        onError={(ev: any) => addDefaultImageSrc(ev, race.name.toLowerCase())}
+        alt={race.name.toLowerCase()}
+        className="w-full shadow rounded"
+      />
     </TabPanel>
   </Tabs>
 );

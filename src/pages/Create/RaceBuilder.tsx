@@ -7,7 +7,6 @@ import { Race } from 'models/race';
 import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer, Parser } from 'utils/mainRenderer';
-import Entry from 'components/Entry/Entry';
 import { useForm } from 'react-hook-form';
 import {
   CHARACTER_STATS,
@@ -15,9 +14,10 @@ import {
 } from 'features/character/characterListSlice';
 import * as _ from 'lodash';
 import { isBoolean } from 'util';
-import { getRace, getRaces, getRacesFluff } from 'utils/sourceDataUtils';
+import { getRace, getRaces, getRaceFluff } from 'utils/sourceDataUtils';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
+import { addDefaultImageSrc } from 'utils/render';
 
 const RaceBuilder = () => {
   const dispatch = useDispatch();
@@ -295,11 +295,6 @@ const RaceBuilder = () => {
       dispatch(updateFormData({ raceData: data }));
     };
 
-    const addDefaultImageSrc = (ev: any, name: string) => {
-      const fallback = name.includes('custom') ? 'default' : name.split(' ')[0];
-      ev.target.src = `${process.env.PUBLIC_URL}/img/races/${fallback}.png`;
-    };
-
     return (
       <div>
         {getRaces()!.map((race: Race, index) => (
@@ -356,15 +351,14 @@ const RaceBuilder = () => {
                   </div>
                 </TabPanel>
                 <TabPanel className="overflow-y-scroll px-2">
-                  {
-                    <Entry
-                      entry={
-                        getRacesFluff()!.find(
-                          fluff => fluff.name === race.name,
-                        ) || 'No info available'
-                      }
-                    />
-                  }
+                  {[getRaceFluff(race.name), getRaceFluff(race._baseName!)].map(
+                    fluff => (
+                      <DangerousHtml
+                        extraClassName="tight"
+                        data={fluff && mainRenderer.render(fluff)}
+                      />
+                    ),
+                  )}
                 </TabPanel>
               </Tabs>
             </div>

@@ -10,7 +10,6 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
 import { mainRenderer } from 'utils/mainRenderer';
 import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
-import ClassTable from 'pages/Create/ClassTable';
 import {
   renderClassFeatures,
   renderSubClassFeatures,
@@ -42,10 +41,7 @@ const FeaturesTraits = ({ character }: Props) => {
           })`,
         }}
       ></div>
-      <PillFilter pills={['table', 'class', 'race', 'feats']}>
-        <ContentBlock name="table">
-          <ClassTable cls={classElement!} subcls={subClassElement!} />
-        </ContentBlock>
+      <PillFilter pills={['class', 'race', 'feats']}>
         <ContentBlock name="class">
           <div className="text-lg">{classElement!.name} features</div>
           {renderClassFeatures(classElement!.name)}
@@ -70,7 +66,6 @@ const FeaturesTraits = ({ character }: Props) => {
           {renderRaceTraits(race!)}
         </ContentBlock>
         <ContentBlock name="feats">
-          <div className="text-lg">Feats</div>
           {renderFeats(character.gameData.feats)}
         </ContentBlock>
       </PillFilter>

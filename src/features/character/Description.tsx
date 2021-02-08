@@ -26,7 +26,9 @@ const Description = ({ character }: Props) => {
           })`,
         }}
       ></div>
-      <PillFilter pills={['background', 'characteristics', 'personality']}>
+      <PillFilter
+        pills={['background', 'characteristics', 'personality', 'backstory']}
+      >
         <ContentBlock name="background">
           <Background background={character.descriptionData.background} />
         </ContentBlock>
@@ -81,6 +83,13 @@ const Description = ({ character }: Props) => {
               {character.descriptionData.characteristicsFlaw}
             </li>
           </ul>
+        </ContentBlock>
+        <ContentBlock name="backstory">
+          <div className="prose dnd-body">
+            {character.descriptionData.backstory
+              ? character.descriptionData.backstory
+              : 'No backstory written'}
+          </div>
         </ContentBlock>
       </PillFilter>
     </div>
