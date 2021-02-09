@@ -142,7 +142,7 @@ const Actions = ({ character }: Props) => {
                 <div>Spells</div>
                 <Spells
                   spells={getAttackSpells(character, getSpells()!) as any}
-                  columns={['name', 'type', 'range', 'damage', 'notes']}
+                  columns={['name', 'range', 'damage', 'type', 'notes']}
                 />
               </>
             )}

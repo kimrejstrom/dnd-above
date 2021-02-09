@@ -1,5 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CreateCharacterFormState } from 'features/createCharacterForm/createCharacterFormSlice';
+import {
+  CreateCharacterFormState,
+  generateID,
+} from 'features/createCharacterForm/createCharacterFormSlice';
 import { SkillTypes } from 'features/character/Skills';
 import { ArmorEnum, ClassElement } from 'models/class';
 import {
@@ -115,6 +118,7 @@ export interface CharacterGameData {
 }
 
 export interface Note {
+  id: string;
   title: string;
   entry: string;
   createdAt: number;
@@ -699,12 +703,29 @@ const characterListSlice = createSlice({
         entry: string;
       }) => {
         const newNote: Note = {
+          id: generateID(),
           title,
           entry,
           createdAt: Date.now(),
         };
         return { payload: { id, note: newNote } };
       },
+    },
+    removeNote(
+      state,
+      action: PayloadAction<{
+        id: string;
+        noteId: string;
+      }>,
+    ) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character && character.miscData) {
+        character.miscData.notes = character.miscData.notes.filter(
+          note => note.id !== action.payload.noteId,
+        );
+      }
     },
   },
   extraReducers: builder => {
@@ -800,6 +821,7 @@ export const {
   addFeat,
   removeFeat,
   addNote,
+  removeNote,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;
