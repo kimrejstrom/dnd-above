@@ -114,9 +114,23 @@ export interface CharacterGameData {
   };
 }
 
+export interface Note {
+  title: string;
+  entry: string;
+  createdAt: number;
+  updatedAt?: number;
+}
+
+export interface CharacterMiscData {
+  miscData?: {
+    notes: Note[];
+  };
+}
+
 export type CharacterListItem = CharacterBase &
   CharacterCustom &
-  CharacterGameData;
+  CharacterGameData &
+  CharacterMiscData;
 
 export type CharacterList = {
   id: string;
@@ -660,6 +674,38 @@ const characterListSlice = createSlice({
         character.gameData.level = character.gameData.level + 1;
       }
     },
+    addNote: {
+      reducer: (state, action: PayloadAction<{ id: string; note: Note }>) => {
+        const character = state.list.find(
+          chara => chara.id === action.payload.id,
+        );
+        if (character) {
+          if (character.miscData) {
+            character.miscData.notes.push(action.payload.note);
+          } else {
+            character.miscData = {
+              notes: [action.payload.note],
+            };
+          }
+        }
+      },
+      prepare: ({
+        id,
+        title,
+        entry,
+      }: {
+        id: string;
+        title: string;
+        entry: string;
+      }) => {
+        const newNote: Note = {
+          title,
+          entry,
+          createdAt: Date.now(),
+        };
+        return { payload: { id, note: newNote } };
+      },
+    },
   },
   extraReducers: builder => {
     // Reducers for additional action types here, and handle loading state as needed
@@ -753,6 +799,7 @@ export const {
   levelUp,
   addFeat,
   removeFeat,
+  addNote,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

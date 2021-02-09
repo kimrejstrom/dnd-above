@@ -25,6 +25,7 @@ import { CharacterListItem } from 'features/character/characterListSlice';
 import LevelUp from 'features/character/LevelUp';
 import CharacterPortrait from 'features/character/CharacterPortrait';
 import MobileCharacterPortrait from 'features/character/MobileCharacterPortrait';
+import Notes from 'features/character/Notes';
 
 interface Props {
   character: CharacterListItem;
@@ -128,7 +129,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
               <Description character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <div>Notes</div>
+              <Notes character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <div>Extras</div>

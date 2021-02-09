@@ -781,5 +781,19 @@
         }
       }
     }
+  },
+  "miscData": {
+    "$id": "#root/miscData",
+    "title": "Miscdata",
+    "type": "object",
+    "required": ["notes"],
+    "properties": {
+      "notes": {
+        "$id": "#root/miscData/notes",
+        "title": "Notes",
+        "type": "array",
+        "default": []
+      }
+    }
   }
 }
