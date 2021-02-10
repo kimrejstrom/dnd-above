@@ -82,7 +82,7 @@ body.modal-active {
 
 .custom-border {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 35;
   border-image-repeat: round;
@@ -91,7 +91,7 @@ body.modal-active {
 
 .custom-border-sm {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 60;
   border-image-repeat: round;
@@ -109,7 +109,7 @@ body.modal-active {
 
 .custom-border-lg {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;
@@ -117,7 +117,7 @@ body.modal-active {
 }
 .dark .custom-border {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 35;
   border-image-repeat: round;
@@ -126,7 +126,7 @@ body.modal-active {
 
 .dark .custom-border-sm {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 60;
   border-image-repeat: round;
@@ -144,7 +144,7 @@ body.modal-active {
 
 .dark .custom-border-lg {
   border-style: solid;
-  border-radius: 10px 10px 15px 10px;
+  border-radius: 10px 10px 10px 10px;
   border-width: 1rem;
   border-image-slice: 50;
   border-image-repeat: round;

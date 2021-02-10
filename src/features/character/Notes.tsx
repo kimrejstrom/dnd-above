@@ -5,6 +5,7 @@ import {
   removeNote,
   CharacterListItem,
 } from 'features/character/characterListSlice';
+import _ from 'lodash';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -28,6 +29,10 @@ const Notes = ({ character }: Props) => {
     );
     reset();
   };
+  const sortedNotes = _.sortBy(
+    character.miscData?.notes,
+    'createdAt',
+  ).reverse();
   return (
     <div className="mt-2">
       <details>
@@ -69,7 +74,7 @@ const Notes = ({ character }: Props) => {
       </details>
 
       <div className="mt-2">
-        {character.miscData?.notes.map(note => {
+        {sortedNotes.map(note => {
           return (
             <div key={note.createdAt} className="dnd-body py-2">
               <TextBox extraClassName="bg-light-200 dark:bg-dark-200">
