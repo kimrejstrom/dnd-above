@@ -129,7 +129,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
               <Description character={character} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <Notes character={character} />
+              <Notes character={character} readonly={readonly} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
               <div>Extras</div>

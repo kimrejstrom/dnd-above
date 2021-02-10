@@ -13,9 +13,10 @@ import { getRelativeTime } from 'utils/time';
 
 interface Props {
   character: CharacterListItem;
+  readonly: boolean;
 }
 
-const Notes = ({ character }: Props) => {
+const Notes = ({ character, readonly }: Props) => {
   type FormData = {
     title: string;
     entry: string;
@@ -35,43 +36,49 @@ const Notes = ({ character }: Props) => {
   ).reverse();
   return (
     <div className="mt-2">
-      <details>
-        <summary className="flex items-center justify-start bg-light-200 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
-          New Note
-        </summary>
-        <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-400 dark:bg-dark-100">
-          <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-            <label className="block">
-              Title
-              <input
-                type="text"
-                className="form-input"
-                placeholder="Title"
-                name="title"
-                ref={register({ required: true })}
-              />
-              {errors.title && <span className="form-error">{`Required`}</span>}
-            </label>
-            <label className="block">
-              Note
-              <textarea
-                className="form-input"
-                name="entry"
-                placeholder="New Note"
-                rows={5}
-                ref={register({ required: true })}
-              />
-              {errors.entry && <span className="form-error">{`Required`}</span>}
-            </label>
-            <StyledButton
-              extraClassName="mt-2"
-              onClick={handleSubmit(onSubmit)}
-            >
-              Save
-            </StyledButton>
-          </form>
-        </div>
-      </details>
+      {!readonly && (
+        <details>
+          <summary className="flex items-center justify-start bg-light-200 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+            New Note
+          </summary>
+          <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-400 dark:bg-dark-100">
+            <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+              <label className="block">
+                Title
+                <input
+                  type="text"
+                  className="form-input"
+                  placeholder="Title"
+                  name="title"
+                  ref={register({ required: true })}
+                />
+                {errors.title && (
+                  <span className="form-error">{`Required`}</span>
+                )}
+              </label>
+              <label className="block">
+                Note
+                <textarea
+                  className="form-input"
+                  name="entry"
+                  placeholder="New Note"
+                  rows={5}
+                  ref={register({ required: true })}
+                />
+                {errors.entry && (
+                  <span className="form-error">{`Required`}</span>
+                )}
+              </label>
+              <StyledButton
+                extraClassName="mt-2"
+                onClick={handleSubmit(onSubmit)}
+              >
+                Save
+              </StyledButton>
+            </form>
+          </div>
+        </details>
+      )}
 
       <div className="mt-2">
         {sortedNotes.map(note => {
