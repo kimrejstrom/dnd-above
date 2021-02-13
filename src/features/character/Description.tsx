@@ -85,7 +85,7 @@ const Description = ({ character }: Props) => {
           </ul>
         </ContentBlock>
         <ContentBlock name="backstory">
-          <div className="prose dnd-body">
+          <div className="dnd-body whitespace-pre-line text-sm">
             {character.descriptionData.backstory
               ? character.descriptionData.backstory
               : 'No backstory written'}

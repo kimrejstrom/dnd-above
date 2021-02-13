@@ -19,11 +19,11 @@
 ### In Progress
 
 - [ ] Extras: Save any searchIndexEntry  
-- [ ] Notes: Heading, type, entry, timestamp (created/updated?)  
 - [ ] Concentration req on spells  
 
 ### Done ✓
 
+- [x] Notes: Heading, type, entry, timestamp (created/updated?)  
 - [x] Beastiary  
 - [x] conditions diseases, Eldritch Invocations  
 - [x] Clickable link thing on all detailed entries  

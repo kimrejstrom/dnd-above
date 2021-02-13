@@ -58,6 +58,18 @@ const handleSpecialCell = (cell: Cell<object>) => {
   }
 };
 
+const parseSpell = (spell: SpellElement) => {
+  const spellName = spell.duration[0].concentration
+    ? `${spell.name} ✱`
+    : spell.name;
+
+  const upCastLevel = spell.entriesHigherLevel
+    ? `${spell.level} ￪`
+    : spell.level;
+
+  return { ...spell, name: spellName, level: upCastLevel };
+};
+
 export const Spells = ({
   spells,
   columns,
@@ -69,7 +81,7 @@ export const Spells = ({
   const tableData = useMemo(
     () =>
       spells.map(sp => ({
-        ...sp,
+        ...parseSpell(sp),
         detailedEntryTrigger: () => {
           dispatch(
             setDetailedEntry(
