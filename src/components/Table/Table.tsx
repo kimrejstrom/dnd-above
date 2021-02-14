@@ -222,7 +222,9 @@ const Table = ({
             >
               {row.cells.map(cell => (
                 <td
-                  className="truncate"
+                  className={`truncate ${
+                    cell.column.Header === 'Source' ? `source${cell.value}` : ''
+                  }`}
                   style={{ maxWidth: '13rem' }}
                   {...cell.getCellProps()}
                 >

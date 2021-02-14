@@ -1,3 +1,4 @@
+import { RootState } from 'app/rootReducer';
 import StyledButton from 'components/StyledButton/StyledButton';
 import TextBox from 'components/TextBox/TextBox';
 import {
@@ -5,10 +6,13 @@ import {
   removeNote,
   CharacterListItem,
 } from 'features/character/characterListSlice';
+import { ThemeMode } from 'features/theme/themeSlice';
+import skullDividerDark from 'images/skulldivider-dark.png';
+import skullDividerLight from 'images/skulldivider-light.png';
 import _ from 'lodash';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getRelativeTime } from 'utils/time';
 
 interface Props {
@@ -17,6 +21,7 @@ interface Props {
 }
 
 const Notes = ({ character, readonly }: Props) => {
+  const theme = useSelector((state: RootState) => state.theme);
   type FormData = {
     title: string;
     entry: string;
@@ -36,6 +41,15 @@ const Notes = ({ character, readonly }: Props) => {
   ).reverse();
   return (
     <div className="mt-2">
+      <div
+        className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        style={{
+          height: '3rem',
+          backgroundImage: `url(${
+            theme === ThemeMode.DARK ? skullDividerLight : skullDividerDark
+          })`,
+        }}
+      ></div>
       {!readonly && (
         <details>
           <summary className="flex items-center justify-start bg-light-200 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">

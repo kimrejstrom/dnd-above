@@ -105,7 +105,7 @@ const App: React.FC = () => {
                       {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                       <Switch>
                         <PrivateRoute exact path="/">
-                          <Main />
+                          <Main searchIndex={searchIndex} />
                         </PrivateRoute>
                         <PrivateRoute path="/create">
                           <Create />
@@ -120,10 +120,9 @@ const App: React.FC = () => {
                           <Settings />
                         </PrivateRoute>
                         <Route path="/login" component={withTracker(Login)} />
-                        <Route
-                          path="/character/:listId/:characterId"
-                          component={withTracker(PublicCharacter)}
-                        />
+                        <Route path="/character/:listId/:characterId">
+                          <PublicCharacter searchIndex={searchIndex} />
+                        </Route>
                       </Switch>
                     </div>
                   </div>

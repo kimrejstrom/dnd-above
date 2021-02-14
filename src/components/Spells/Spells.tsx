@@ -98,8 +98,8 @@ export const Spells = ({
       'level',
       'time',
       'range',
-      'source',
       'classes',
+      'source',
     ];
     return tableData.length
       ? itemColumns.map(key => ({

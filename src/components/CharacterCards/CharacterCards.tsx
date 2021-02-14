@@ -38,7 +38,7 @@ const ShareModal: React.FC<{ characterId: string }> = ({ characterId }) => {
           setIsCopied(true);
           setTimeout(() => {
             dispatch(toggleModal({ visible: false }));
-          }, 1000);
+          }, 500);
         }}
       >
         {!isCopied ? 'Copy to clipboard' : 'Copied Successfully'}

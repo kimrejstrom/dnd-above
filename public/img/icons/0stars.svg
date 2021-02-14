@@ -1,0 +1,30 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 0 640 640"
+  height="0.9em"
+  width="0.9em"
+>
+  <defs>
+    <path
+      d="M203.26 112.16L300 126.95l-70 71.74L246.52 300 160 252.16 73.48 300 90 198.69l-70-71.74 96.74-14.79L160 20l43.26 92.16z"
+      id="a"
+    />
+    <path
+      d="M523.26 112.16L620 126.95l-70 71.74L566.52 300 480 252.16 393.48 300 410 198.69l-70-71.74 96.74-14.79L480 20l43.26 92.16z"
+      id="b"
+    />
+    <path
+      d="M203.26 432.16L300 446.95l-70 71.74L246.52 620 160 572.16 73.48 620 90 518.69l-70-71.74 96.74-14.79L160 340l43.26 92.16z"
+      id="c"
+    />
+    <path
+      d="M523.26 432.16L620 446.95l-70 71.74L566.52 620 480 572.16 393.48 620 410 518.69l-70-71.74 96.74-14.79L480 340l43.26 92.16z"
+      id="d"
+    />
+  </defs>
+  <use xlink:href="#a" fill-opacity="0" stroke="#333" stroke-width="6" />
+  <use xlink:href="#b" fill-opacity="0" stroke="#333" stroke-width="6" />
+  <use xlink:href="#c" fill-opacity="0" stroke="#333" stroke-width="6" />
+  <use xlink:href="#d" fill-opacity="0" stroke="#333" stroke-width="6" />
+</svg>

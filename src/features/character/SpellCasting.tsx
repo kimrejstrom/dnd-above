@@ -113,7 +113,7 @@ const SpellLevel = ({
       </div>
       <Spells
         spells={spells}
-        columns={['name', 'source', 'level', 'school', 'time', 'range']}
+        columns={['name', 'level', 'time', 'range', 'source']}
       />
     </div>
   ) : (

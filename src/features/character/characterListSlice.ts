@@ -16,6 +16,7 @@ import { BackgroundElement } from 'models/background';
 import { RootState } from 'app/rootReducer';
 import { AppDispatch } from 'app/store';
 import DnDAboveAPI from 'utils/api';
+import { SourceDataFuseItem } from 'utils/search';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -125,9 +126,15 @@ export interface Note {
   updatedAt?: number;
 }
 
+export interface ExtrasItem extends SourceDataFuseItem {
+  userNotes?: string;
+  rating?: number;
+}
+
 export interface CharacterMiscData {
   miscData?: {
     notes: Note[];
+    extras: ExtrasItem[];
   };
 }
 
@@ -333,6 +340,10 @@ const characterListSlice = createSlice({
                 9: { used: 0 },
               }
             : undefined,
+        },
+        miscData: {
+          notes: [],
+          extras: [],
         },
       };
       state.list.push({ ...newCharacter });
@@ -689,6 +700,7 @@ const characterListSlice = createSlice({
           } else {
             character.miscData = {
               notes: [action.payload.note],
+              extras: [],
             };
           }
         }
@@ -724,6 +736,38 @@ const characterListSlice = createSlice({
       if (character && character.miscData) {
         character.miscData.notes = character.miscData.notes.filter(
           note => note.id !== action.payload.noteId,
+        );
+      }
+    },
+    addExtra(state, action: PayloadAction<{ id: string; data: ExtrasItem }>) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character) {
+        if (character.miscData) {
+          const itemIndex = character.miscData.extras.findIndex(
+            item => item.name === action.payload.data.name,
+          );
+          if (itemIndex !== -1) {
+            character.miscData.extras[itemIndex] = action.payload.data;
+          } else {
+            character.miscData.extras.push(action.payload.data);
+          }
+        } else {
+          character.miscData = {
+            notes: [],
+            extras: [action.payload.data],
+          };
+        }
+      }
+    },
+    removeExtra(state, action: PayloadAction<{ id: string; name: string }>) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character && character.miscData) {
+        character.miscData.extras = character.miscData.extras.filter(
+          extra => extra.name !== action.payload.name,
         );
       }
     },
@@ -822,6 +866,8 @@ export const {
   removeFeat,
   addNote,
   removeNote,
+  addExtra,
+  removeExtra,
 } = characterListSlice.actions;
 
 export default characterListSlice.reducer;

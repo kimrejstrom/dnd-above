@@ -9,10 +9,13 @@ import { ThemeMode } from 'features/theme/themeSlice';
 import beholderDark from 'images/beholder-dark.png';
 import beholderLight from 'images/beholder-light.png';
 import { getCookie, setCookie } from 'utils/cookie';
+import { SourceDataFuseItem } from 'utils/search';
 
-interface Props {}
+interface Props {
+  searchIndex: Array<SourceDataFuseItem>;
+}
 
-const PublicCharacter = (props: Props) => {
+const PublicCharacter = ({ searchIndex }: Props) => {
   const dispatch = useDispatch();
   const { listId, characterId } = useParams<{
     listId?: string;
@@ -39,7 +42,11 @@ const PublicCharacter = (props: Props) => {
   return loading === 'pending' ? (
     <Loading />
   ) : character && character.id ? (
-    <CharacterSheet character={character} readonly={true} />
+    <CharacterSheet
+      character={character}
+      readonly={true}
+      searchIndex={searchIndex}
+    />
   ) : (
     <div className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center">
       <div className="p-20 custom-border bg-light-300 dark:bg-dark-300 flex flex-col items-center justify-center">

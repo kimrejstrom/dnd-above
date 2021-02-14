@@ -46,7 +46,7 @@ export const PresetForm: React.FC<{
       // Close modal
       setTimeout(() => {
         dispatch(toggleModal({ visible: false }));
-      }, 1000);
+      }, 500);
     } catch (error) {
       setError(error);
       setSuccess(undefined);

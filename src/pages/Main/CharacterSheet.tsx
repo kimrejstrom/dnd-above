@@ -26,13 +26,20 @@ import LevelUp from 'features/character/LevelUp';
 import CharacterPortrait from 'features/character/CharacterPortrait';
 import MobileCharacterPortrait from 'features/character/MobileCharacterPortrait';
 import Notes from 'features/character/Notes';
+import Extras from 'features/character/Extras';
+import { SourceDataFuseItem } from 'utils/search';
 
 interface Props {
   character: CharacterListItem;
   readonly: boolean;
+  searchIndex: Array<SourceDataFuseItem>;
 }
 
-export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
+export const CharacterSheet: React.FC<Props> = ({
+  character,
+  readonly,
+  searchIndex,
+}) => {
   const dispatch = useDispatch();
 
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
@@ -132,7 +139,7 @@ export const CharacterSheet: React.FC<Props> = ({ character, readonly }) => {
               <Notes character={character} readonly={readonly} />
             </TabPanel>
             <TabPanel className="overflow-y-scroll px-2">
-              <div>Extras</div>
+              <Extras searchIndex={searchIndex} />
             </TabPanel>
           </Tabs>
         </div>

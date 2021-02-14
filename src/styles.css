@@ -330,7 +330,6 @@ a.active {
 }
 
 /* Nav */
-
 .nav-group-link:hover .nav-group {
   display: block !important;
 }
@@ -413,6 +412,26 @@ a.active {
 .breathe {
   transform-origin: center;
   animation: breathe 1.6s infinite;
+}
+
+.rating-0 {
+  color: #904848;
+}
+.rating-1 {
+  color: #ba7c00;
+}
+.rating-2 {
+  color: #656565;
+}
+.rating-3 {
+  color: #1d965d;
+}
+.rating-4 {
+  color: #337ab7;
+}
+
+.dark .rating-icon {
+  filter: invert(1);
 }
 
 @tailwind components;

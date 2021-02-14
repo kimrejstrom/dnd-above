@@ -52,7 +52,7 @@ const LongRestForm: React.FC<ModalProps> = ({ character }) => {
             // Close modal
             setTimeout(() => {
               dispatch(toggleModal({ visible: false }));
-            }, 1000);
+            }, 500);
           }}
         >
           Long Rest
@@ -96,7 +96,7 @@ const ShortRestForm: React.FC<ModalProps> = ({ character }) => {
     // Close modal
     setTimeout(() => {
       dispatch(toggleModal({ visible: false }));
-    }, 1000);
+    }, 500);
   };
 
   return (
