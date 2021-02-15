@@ -31,6 +31,7 @@ import {
   getOtherItems,
   getArmor,
 } from 'utils/sourceDataUtils';
+import { SpellElement } from 'models/spells';
 
 export const getAbilityScoreByType = (
   ability: StatsTypes,
@@ -329,6 +330,25 @@ export const getSpellSlotsPerLevel = (character: CharacterListItem) => {
       : subClassSpellSlots
       ? subClassSpellSlots
       : undefined;
+  }
+};
+
+export const getSpellDamage = (spell: SpellElement) => {
+  if (spell.spellAttack) {
+    const dmgDie = spell.entries.map(entry => {
+      if (typeof entry === 'string') {
+        const match = entry.match(new RegExp(`({@damage.*?})`, 'gi'));
+        if (match) {
+          const damageDice = match[0].split(' ')[1].slice(0, -1);
+          return damageDice;
+        }
+      }
+      return undefined;
+    });
+    return dmgDie.filter(isDefined)[0];
+  }
+  if (spell.scalingLevelDice) {
+    return spell.scalingLevelDice.scaling['1'];
   }
 };
 

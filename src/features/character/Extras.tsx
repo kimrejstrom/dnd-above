@@ -47,7 +47,7 @@ const Extras = ({ searchIndex }: Props) => {
 
   return (
     <div>
-      <div className="mb-3">
+      <div>
         <SearchBar onSearch={onSearch} />
         {hits.length > 0 && (
           <TextBox extraClassName="bg-light-400 dark:bg-dark-200 md:p-2">

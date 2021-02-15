@@ -15,7 +15,7 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
 }) => (
   <>
     <div className="leading-tight w-full custom-border custom-border-thin custom-border-b border-dark-100 dark:border-light-100 text-xl">
-      {name}
+      <div className="-mb-3">{name}</div>
     </div>
     <div className="mt-2 mb-4">{children}</div>
   </>

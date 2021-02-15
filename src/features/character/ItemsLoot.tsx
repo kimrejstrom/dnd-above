@@ -23,7 +23,7 @@ const ItemsLoot = ({ character }: Props) => {
   return (
     <>
       <div
-        className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        className="w-full mt-2 relative bg-contain bg-center bg-no-repeat"
         style={{
           height: '5rem',
           backgroundImage: `url(${

@@ -6,7 +6,7 @@ import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import actionsDark from 'images/actions-dark.png';
 import actionsLight from 'images/actions-light.png';
 import { CharacterListItem } from 'features/character/characterListSlice';
-import { isSpellCaster } from 'utils/character';
+import { getSpellDamage, isSpellCaster } from 'utils/character';
 import {
   getItem,
   getSpellFromList,
@@ -15,11 +15,12 @@ import {
 } from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
-import { mainRenderer } from 'utils/mainRenderer';
+import { mainRenderer, Parser } from 'utils/mainRenderer';
 import { Property } from 'models/item';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 import { SpellElement } from 'models/spells';
+import { RenderSpell } from 'utils/render';
 
 interface Props {
   character: CharacterListItem;
@@ -37,7 +38,7 @@ const getActions = (filterCondition: string) => {
       <DetailedEntryTrigger
         key={actionElem.name}
         data={actionElem}
-        extraClassName="inline mr-1 dnd-body"
+        extraClassName="inline mr-0.5 text-sm dnd-body"
       >
         {`${actionElem.name}, `}
       </DetailedEntryTrigger>
@@ -58,10 +59,16 @@ const getSpellsByCastingTime = (
     .map(sp => (
       <DetailedEntryTrigger
         key={sp.name}
-        extraClassName="inline mr-1 dnd-body"
+        extraClassName="tight"
         data={sp}
+        renderer={RenderSpell(sp)}
       >
-        {`${sp.name}, `}
+        <div className="flex items-center mr-0.5 dnd-body text-sm">
+          <div>{sp.duration[0].concentration ? `${sp.name} ✱` : sp.name}</div>
+          <div className="mx-1 text-xs opacity-50">{` (${Parser.spLevelToFull(
+            sp.level,
+          )}), `}</div>
+        </div>
       </DetailedEntryTrigger>
     ));
 
@@ -83,8 +90,7 @@ const getAttackEquipment = (character: CharacterListItem) =>
             : item?.property?.includes(Property.R)
             ? '10 feet'
             : '5 feet',
-          damage: damage,
-          type: damageType,
+          damage: `${damage} (${damageType})`,
           notes: propertiesTxt,
         };
       } else {
@@ -106,8 +112,9 @@ const getAttackSpells = (
         ...sp,
         name: sp.name,
         range: sp.range,
-        damage: sp.scalingLevelDice?.scaling['1'] || '–',
-        type: sp.damageInflict?.join(', '),
+        damage: `${getSpellDamage(sp) || '–'} (${sp.damageInflict?.join(
+          ', ',
+        )})`,
         notes: `Level ${sp.level}`,
       };
     });
@@ -119,7 +126,7 @@ const Actions = ({ character }: Props) => {
   return (
     <>
       <div
-        className="w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        className="w-full mt-2 relative bg-contain bg-center bg-no-repeat"
         style={{
           height: '5rem',
           backgroundImage: `url(${
@@ -133,7 +140,7 @@ const Actions = ({ character }: Props) => {
           {getAttackEquipment(character).length > 0 && (
             <Items
               items={getAttackEquipment(character) as any}
-              columns={['name', 'range', 'damage', 'type', 'notes']}
+              columns={['name', 'range', 'damage', 'notes']}
             />
           )}
           {isSpellCasterClass &&
@@ -142,7 +149,7 @@ const Actions = ({ character }: Props) => {
                 <div>Spells</div>
                 <Spells
                   spells={getAttackSpells(character, getSpells()!) as any}
-                  columns={['name', 'range', 'damage', 'type', 'notes']}
+                  columns={['name', 'range', 'damage', 'notes']}
                 />
               </>
             )}
@@ -162,7 +169,7 @@ const Actions = ({ character }: Props) => {
               <DetailedEntryTrigger
                 key={actionElem.name}
                 data={actionElem}
-                extraClassName="inline mr-1 dnd-body"
+                extraClassName="inline mr-0.5 dnd-body text-sm"
               >
                 {`${actionElem.name}, `}
               </DetailedEntryTrigger>
@@ -174,7 +181,7 @@ const Actions = ({ character }: Props) => {
           {isSpellCasterClass && (
             <>
               <div>Spells</div>
-              <div className="dnd-body">
+              <div className="dnd-body flex">
                 {getSpellsByCastingTime(character, getSpells()!, 'bonus')}
               </div>
             </>
@@ -186,7 +193,7 @@ const Actions = ({ character }: Props) => {
           {isSpellCasterClass && (
             <>
               <div>Spells</div>
-              <div className="dnd-body">
+              <div className="dnd-body flex">
                 {getSpellsByCastingTime(character, getSpells()!, 'reaction')}
               </div>
             </>

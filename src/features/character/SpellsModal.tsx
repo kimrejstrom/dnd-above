@@ -41,7 +41,7 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
     ) => {
       const spells = Object.keys(updatedSelectedRows).map((row, i) => ({
         row: Number(row),
-        name: updatedSelectedData[i].name,
+        name: updatedSelectedData[i].name.split(' ✱')[0],
       }));
       if (!_.isEqual(updatedSelectedRows, selectedRows)) {
         dispatch(updateSpells({ id: character.id, data: spells }));
