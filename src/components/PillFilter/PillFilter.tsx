@@ -15,7 +15,9 @@ export const ContentBlock: React.FC<ContentBlockProps> = ({
 }) => (
   <>
     <div className="leading-tight w-full custom-border custom-border-thin custom-border-b border-dark-100 dark:border-light-100 text-xl">
-      <div className="-mb-3">{name}</div>
+      <div className="-mb-3 text-highlight-100 dark:text-yellow-500">
+        {name}
+      </div>
     </div>
     <div className="mt-2 mb-4">{children}</div>
   </>
@@ -26,7 +28,7 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
 
   return (
     <div>
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-wrap">
         {['all'].concat(pills).map(pill => (
           <button
             key={pill}
@@ -35,7 +37,7 @@ const PillFilter: React.FC<PillFilterProps> = ({ pills, children }) => {
               selected === pill
                 ? 'text-white dark:text-black bg-dark-100 dark:bg-yellow-500'
                 : 'text-black bg-gray-200 dark:bg-light-100'
-            } tracking-tighter rounded-full p-1 md:px-4 uppercase mx-1 my-2`}
+            } tracking-tighter rounded-full p-1 md:px-4 uppercase mx-1 my-2 whitespace-nowrap`}
           >
             {pill}
           </button>

@@ -26,6 +26,7 @@ import { SpellElement } from 'models/spells';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 import { useForm } from 'react-hook-form';
 import { getSpellFromList } from 'utils/sourceDataUtils';
+import { Parser } from 'utils/mainRenderer';
 
 interface Props {
   character: CharacterListItem;
@@ -90,11 +91,9 @@ const SpellLevel = ({
 }) => {
   const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
   return spellSlotsForLevel > 0 || level === 0 || spellSlotsForLevel === -1 ? (
-    <div className="my-2">
+    <div>
       <div className="flex w-full justify-between">
-        <div className="text-lg">
-          {level === 0 ? 'Cantrips' : `Level ${level}`}
-        </div>
+        <div className="text-lg">{Parser.spLevelToFull(level)}</div>
         <div className="flex items-center">
           Slots:{' '}
           {level === 0 ? (

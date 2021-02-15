@@ -20,7 +20,7 @@ const Background = ({ background }: Props) => {
     <div>
       <DetailedEntryTrigger
         data={backgroundElement}
-        extraClassName="tight text-xl"
+        extraClassName="tight text-md"
       >
         {`${backgroundElement?.name}, ${backgroundElement?.source}  ${backgroundElement?.page}`}
       </DetailedEntryTrigger>

@@ -33,32 +33,32 @@ const Description = ({ character }: Props) => {
           <Background background={character.descriptionData.background} />
         </ContentBlock>
         <ContentBlock name="characteristics">
-          <ul className="mr-2 dnd-body">
-            <li>
+          <ul className="mr-2 dnd-body flex justify-start flex-wrap">
+            <li className="mr-3">
               <strong>Alignment: </strong>
               {(Parser.ALIGNMENTS as any)[character.descriptionData.alignment]}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Age: </strong>
               {character.descriptionData.age}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Hair: </strong>
               {character.descriptionData.hair}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Skin: </strong>
               {character.descriptionData.skin}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Eyes: </strong>
               {character.descriptionData.eyes}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Height: </strong>
               {character.descriptionData.height}
             </li>
-            <li>
+            <li className="mr-3">
               <strong>Weight: </strong>
               {character.descriptionData.weight}
             </li>
@@ -85,7 +85,7 @@ const Description = ({ character }: Props) => {
           </ul>
         </ContentBlock>
         <ContentBlock name="backstory">
-          <div className="dnd-body whitespace-pre-line text-sm">
+          <div className="dnd-body whitespace-pre-line text-md">
             {character.descriptionData.backstory
               ? character.descriptionData.backstory
               : 'No backstory written'}

@@ -137,7 +137,7 @@ const ACHP = ({ character, readonly }: Props) => {
                 left: '0.1rem',
               }}
             >
-              {character.gameData.currentHp}
+              {Math.min(character.gameData.currentHp, getMaxHP(character))}
             </p>
             <p
               className="text-md absolute inset-0 text-center"
@@ -189,15 +189,27 @@ const ACHP = ({ character, readonly }: Props) => {
           }}
         ></div>
         <div
-          className="ml-3 lg:ml-1 relative bg-contain bg-center bg-no-repeat w-32 h-10"
+          className="ml-3 lg:ml-5 relative bg-contain bg-center bg-no-repeat w-32 h-10"
           style={{
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? tempHPLight : tempHPDark
             })`,
           }}
-        ></div>
+        >
+          <p
+            className="text-md absolute inset-0 text-center"
+            style={{
+              top: '0.9rem',
+              left: '0.4rem',
+            }}
+          >
+            {character.gameData.currentHp > getMaxHP(character)
+              ? character.gameData.currentHp - getMaxHP(character)
+              : 0}
+          </p>
+        </div>
         <div
-          className="invisible hidden lg:block lg:visible w-24 h-8 ml-4 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden lg:block lg:visible w-24 h-8 ml-1 relative bg-contain bg-center bg-no-repeat"
           style={{
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? skullIconLight : skullIconDark
