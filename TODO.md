@@ -12,17 +12,17 @@
 
 - [ ] MultiClassing  
 - [ ] Custom items (w/ use as base)  
-- [ ] Attuned items  
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
 - [ ] Online/offline (persist list to localStorage)  
 
 ### In Progress
 
-- [ ] Extras: Save any searchIndexEntry  
-- [ ] Concentration req on spells  
 
 ### Done ✓
 
+- [x] Attuned items  
+- [x] Concentration req on spells  
+- [x] Extras: Save any searchIndexEntry  
 - [x] Notes: Heading, type, entry, timestamp (created/updated?)  
 - [x] Beastiary  
 - [x] conditions diseases, Eldritch Invocations  
