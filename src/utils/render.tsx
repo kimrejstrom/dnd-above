@@ -231,7 +231,7 @@ export const RenderMonster = (
     </TabList>
     <TabPanel>
       <DangerousHtml
-        extraClassName="tight"
+        extraClassName="tight w-full"
         data={mainRenderer.monster.getCompactRenderedString(monster)}
       />
     </TabPanel>

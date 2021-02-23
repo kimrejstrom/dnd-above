@@ -9,6 +9,7 @@ import { RootState } from 'app/rootReducer';
 import { getItem } from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
+import { CommonItem } from 'utils/data';
 
 interface Props {
   character: CharacterListItem;
@@ -19,6 +20,12 @@ const ItemsLoot = ({ character }: Props) => {
   const items = character.equipmentData.items
     .map(itemName => getItem(itemName))
     .filter(isDefined);
+  const normalItems = items.filter(item =>
+    (item as CommonItem)._attunement ? false : true,
+  );
+  const attunementItems = items.filter(item =>
+    (item as CommonItem)._attunement ? true : false,
+  );
 
   return (
     <>
@@ -33,10 +40,10 @@ const ItemsLoot = ({ character }: Props) => {
       ></div>
       <PillFilter pills={['inventory', 'attunement', 'other possessions']}>
         <ContentBlock name="inventory">
-          <Items items={items} />
+          <Items items={normalItems} />
         </ContentBlock>
         <ContentBlock name="attunement">
-          <div>My attunements</div>
+          <Items items={attunementItems} />
         </ContentBlock>
         <ContentBlock name="other possessions">
           <div>My Other Possessions</div>

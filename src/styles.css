@@ -675,7 +675,8 @@ i > i {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.5rem;
+  line-height: 1.75;
+  font-size: 1.35rem;
 }
 .rd__h--1 {
   color: #904848;
@@ -684,7 +685,8 @@ i > i {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
+  line-height: 1.75;
   border-bottom: 1px solid #904848;
   margin: 0 0 0.2rem;
 }
@@ -695,6 +697,7 @@ i > i {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  line-height: 1.75;
   font-size: 1.2rem;
 }
 .rd__h--2-inset {
@@ -1024,11 +1027,12 @@ i > i {
 .rnd-name {
   color: #904848;
   position: relative;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   padding: 0.2rem 0.2rem;
   font-variant: small-caps;
   font-weight: 500;
   text-align: left;
+  line-height: 1.75;
 }
 
 .dark .rnd-name {
