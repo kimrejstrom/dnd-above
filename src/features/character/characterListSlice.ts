@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  isAsyncThunkAction,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import {
   CreateCharacterFormState,
   generateID,
@@ -148,12 +153,14 @@ export type CharacterList = {
   loading: 'idle' | 'pending' | 'error';
   list: Array<CharacterListItem>;
   error?: string;
+  updatedAt: number;
 };
 
 const initialState: CharacterList = {
   id: 'NOT_SAVED_YET',
   loading: 'idle',
   list: [],
+  updatedAt: Date.now() * 1000,
 };
 
 // Async Thunks
@@ -238,6 +245,12 @@ export const getCharacterList = createAsyncThunk<
       }
     },
   },
+);
+
+const isARequestAction = isAsyncThunkAction(
+  getCharacterList,
+  backgroundSave,
+  backgroundCreate,
 );
 
 const characterListSlice = createSlice({
@@ -778,6 +791,7 @@ const characterListSlice = createSlice({
   },
   extraReducers: builder => {
     // Reducers for additional action types here, and handle loading state as needed
+
     // backgroundCreate
     builder.addCase(backgroundCreate.pending, (state, { payload }) => {
       if (state.loading === 'idle') {
@@ -794,11 +808,10 @@ const characterListSlice = createSlice({
     builder.addCase(backgroundCreate.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message
-          ? (payload as any)
-          : 'Unknown error';
+        state.error = payload ? payload?.message : 'Unknown error';
       }
     });
+
     // backgroundSave
     builder.addCase(backgroundSave.pending, (state, { payload }) => {
       if (state.loading === 'idle') {
@@ -813,11 +826,10 @@ const characterListSlice = createSlice({
     builder.addCase(backgroundSave.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message
-          ? (payload as any)
-          : 'Unknown error';
+        state.error = payload ? payload?.message : 'Unknown error';
       }
     });
+
     // getCharacterList
     builder.addCase(getCharacterList.pending, (state, { payload }) => {
       if (state.loading === 'idle') {
@@ -830,16 +842,28 @@ const characterListSlice = createSlice({
       }
       const { ref, data } = payload;
       state.id = ref['@ref'].id;
-      state.list = data.list;
+
+      if (data.updatedAt >= state.updatedAt) {
+        state.list = data.list;
+      } else {
+        console.log('DB data outdated, using persisted data');
+      }
     });
     builder.addCase(getCharacterList.rejected, (state, { payload }) => {
       if (state.loading === 'pending' || state.loading === 'error') {
         state.loading = 'error';
-        state.error = (payload as any).message
-          ? (payload as any)
+        state.error = (payload as any)
+          ? (payload as any).message
           : 'Unknown error';
       }
     });
+    builder.addMatcher(
+      action =>
+        action.type.startsWith('characterList') && !isARequestAction(action),
+      (state, _) => {
+        state.updatedAt = Date.now() * 1000;
+      },
+    );
   },
 });
 
