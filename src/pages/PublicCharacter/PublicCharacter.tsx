@@ -10,6 +10,7 @@ import beholderDark from 'images/beholder-dark.png';
 import beholderLight from 'images/beholder-light.png';
 import { getCookie, setCookie } from 'utils/cookie';
 import { SourceDataFuseItem } from 'utils/search';
+import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 
 interface Props {
   searchIndex: Array<SourceDataFuseItem>;
@@ -33,10 +34,9 @@ const PublicCharacter = ({ searchIndex }: Props) => {
     (state: RootState) => state.publicCharacter,
   );
 
-  // Check if we need to reload with all source material available
   if (character && character.allSources && getCookie('allSources') !== 'true') {
     setCookie('allSources', 'true');
-    window.location.reload();
+    dispatch(loadSourceData());
   }
 
   return loading === 'pending' ? (

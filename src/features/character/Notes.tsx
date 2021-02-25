@@ -115,6 +115,7 @@ const Notes = ({ character, readonly }: Props) => {
                             removeNote({ id: character.id, noteId: note.id }),
                           );
                         }}
+                        disabled={readonly}
                       >
                         <svg
                           className="fill-current dark:text-gray-300 opacity-50"

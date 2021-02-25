@@ -822,8 +822,10 @@ function Renderer() {
   this._renderVariantSub = function(entry, textStack, meta, options) {
     // pretend this is an inline-header'd entry, but set a flag so we know not to add bold
     this._subVariant = true;
-    const fauxEntry = entry;
-    fauxEntry.type = 'entries';
+    const fauxEntry = {
+      ...entry,
+      type: 'entries',
+    };
     const cacheDepth = meta.depth;
     meta.depth = 3;
     this._recursiveRender(fauxEntry, textStack, meta, {

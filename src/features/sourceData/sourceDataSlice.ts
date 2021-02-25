@@ -125,8 +125,8 @@ const sourceDataSlice = createSlice({
     builder.addCase(loadSourceData.fulfilled, (state, { payload }) => {
       if (state.hydrated === false) {
         state.hydrated = true;
-        state.sourceData = payload;
       }
+      state.sourceData = payload;
     });
     builder.addCase(loadSourceData.rejected, (state, { payload }) => {
       state.hydrated = false;

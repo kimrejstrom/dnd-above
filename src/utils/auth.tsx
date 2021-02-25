@@ -3,6 +3,7 @@ import netlifyIdentity, { User } from 'netlify-identity-widget';
 import { store } from 'app/store';
 import { getCharacterList } from 'features/character/characterListSlice';
 import { getCookie, setCookie } from 'utils/cookie';
+import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 
 // Netlify Auth Service
 interface NetlifyAuth {
@@ -41,7 +42,7 @@ netlifyIdentity.on('init', async (user: User | null) => {
     // Check if user is Power user
     if (isPowerUser(user) && !(getCookie('allSources') === 'true')) {
       setCookie('allSources', 'true');
-      window.location.reload();
+      store.dispatch(loadSourceData());
     }
     store.dispatch(getCharacterList());
   }
@@ -77,6 +78,10 @@ function useProvideAuth() {
   const authenticate = (cb: () => void) => {
     return netlifyAuth.authenticate((user: User) => {
       setUser(user);
+      if (isPowerUser(user) && !(getCookie('allSources') === 'true')) {
+        setCookie('allSources', 'true');
+        store.dispatch(loadSourceData());
+      }
       cb();
     });
   };

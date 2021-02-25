@@ -1,6 +1,5 @@
 import React from 'react';
-import { getSelectedCharacter } from 'app/selectors';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import SearchBar from 'components/SearchBar/SearchBar';
 import SearchResults from 'components/SearchResults/SearchResults';
 import { useFuse } from 'utils/useFuse';
@@ -13,17 +12,21 @@ import { toggleModal } from 'components/Modal/modalSlice';
 import ExtrasModal from 'features/character/ExtrasModal';
 import IconType from 'components/IconType/IconType';
 import RatingsLegend from 'components/RatingsLegend/RatingsLegend';
-import { removeExtra } from 'features/character/characterListSlice';
+import {
+  CharacterListItem,
+  removeExtra,
+} from 'features/character/characterListSlice';
 import _ from 'lodash';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
 
 interface Props {
+  character: CharacterListItem;
   searchIndex: Array<SourceDataFuseItem>;
+  readonly: boolean;
 }
 
-const Extras = ({ searchIndex }: Props) => {
+const Extras = ({ character, searchIndex, readonly }: Props) => {
   const dispatch = useDispatch();
-  const character = useSelector(getSelectedCharacter);
   const { hits, query, onSearch } = useFuse(searchIndex, {
     keys: ['name'],
     limit: 10,
@@ -34,7 +37,7 @@ const Extras = ({ searchIndex }: Props) => {
       toggleModal({
         visible: true,
         title: 'Save Entry',
-        content: <ExtrasModal character={character!} item={item} />,
+        content: <ExtrasModal character={character} item={item} />,
       }),
     );
 
@@ -43,28 +46,30 @@ const Extras = ({ searchIndex }: Props) => {
       toggleModal({
         visible: true,
         title: 'Edit Entry',
-        content: <ExtrasModal character={character!} item={item} />,
+        content: <ExtrasModal character={character} item={item} />,
       }),
     );
 
-  const pillTypes = _.groupBy(character?.miscData?.extras, 'type');
+  const pillTypes = _.groupBy(character.miscData?.extras, 'type');
 
   return (
     <div>
+      {!readonly && (
+        <div>
+          <SearchBar onSearch={onSearch} />
+          {hits.length > 0 && (
+            <TextBox extraClassName="bg-light-400 dark:bg-dark-200 md:p-2">
+              <SearchResults
+                hits={hits}
+                query={query}
+                onClick={(item: SourceDataFuseItem) => addExtra(item)}
+              />
+            </TextBox>
+          )}
+        </div>
+      )}
       <div>
-        <SearchBar onSearch={onSearch} />
-        {hits.length > 0 && (
-          <TextBox extraClassName="bg-light-400 dark:bg-dark-200 md:p-2">
-            <SearchResults
-              hits={hits}
-              query={query}
-              onClick={(item: SourceDataFuseItem) => addExtra(item)}
-            />
-          </TextBox>
-        )}
-      </div>
-      <div>
-        {character?.miscData?.extras?.length ? (
+        {character.miscData?.extras?.length ? (
           <div>
             <TextBox extraClassName="mb-3 bg-light-400 dark:bg-dark-300">
               <RatingsLegend />
@@ -111,6 +116,7 @@ const Extras = ({ searchIndex }: Props) => {
                             onClick={() => {
                               editExtra(item);
                             }}
+                            disabled={readonly}
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
@@ -138,6 +144,7 @@ const Extras = ({ searchIndex }: Props) => {
                                 }),
                               );
                             }}
+                            disabled={readonly}
                           >
                             <svg
                               className="fill-current dark:text-gray-300 opacity-50"

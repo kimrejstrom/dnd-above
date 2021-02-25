@@ -5,21 +5,23 @@
 
 - [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [ ] minimize render.js?  
-- [ ] Lvl up Modal (with multiclass)  
-- [ ] Settings page  
+- [ ] Custom items (w/ use as base)  
 
 ### Todo
 
 - [ ] MultiClassing  
-- [ ] Custom items (w/ use as base)  
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
-- [ ] Online/offline (persist list to localStorage)  
+- [ ] Settings page  
+- [ ] Lvl up Modal (with multiclass)  
 
 ### In Progress
 
+- [ ] Online/offline (persist list to localStorage)  
 
 ### Done ✓
 
+- [x] Load characters on login  
+- [x] Fix Books error  
 - [x] Attuned items  
 - [x] Concentration req on spells  
 - [x] Extras: Save any searchIndexEntry  

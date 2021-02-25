@@ -25,7 +25,6 @@ const ExtrasModal = ({ character, item }: Props) => {
   const { data, renderer, jsx } = findSearchResultSourceData(item);
   type FormData = { notes: string; rating: number };
   const onSubmit = (data: FormData) => {
-    console.log(data);
     dispatch(
       addExtra({
         id: character.id,

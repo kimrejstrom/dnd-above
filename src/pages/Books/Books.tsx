@@ -34,7 +34,7 @@ const Books = (props: Props) => {
           .sort()
           .map(([name, data]) => {
             return (
-              <div className="w-56 mb-3">
+              <div key={name} className="w-56 mb-3">
                 <StyledButton
                   extraClassName="h-full"
                   onClick={() => setChosenBook((data as any).data)}
