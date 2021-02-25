@@ -23,31 +23,46 @@ const PublicCharacter = ({ searchIndex }: Props) => {
     characterId?: string;
   }>();
 
-  useEffect(() => {
-    if (listId && characterId) {
-      dispatch(getPublicById({ listId, characterId }));
-    }
-  }, [dispatch, listId, characterId]);
-
   const theme = useSelector((state: RootState) => state.theme);
   const { character, loading } = useSelector(
     (state: RootState) => state.publicCharacter,
   );
+  const sourceData = useSelector((state: RootState) => state.sourceData);
 
-  if (character && character.allSources && getCookie('allSources') !== 'true') {
-    setCookie('allSources', 'true');
-    dispatch(loadSourceData());
-  }
+  // Get public character
+  useEffect(() => {
+    if (!character && listId && characterId) {
+      dispatch(getPublicById({ listId, characterId }));
+    }
+  }, [dispatch, listId, characterId, character]);
 
-  return loading === 'pending' ? (
-    <Loading />
-  ) : character && character.id ? (
+  // Check if allSources needed and refresh sourceData
+  useEffect(() => {
+    if (
+      character &&
+      character.allSources &&
+      getCookie('allSources') !== 'true'
+    ) {
+      setCookie('allSources', 'true');
+      dispatch(loadSourceData());
+    }
+  }, [dispatch, character]);
+
+  // Check if we have everything needed to render
+  const isCharacterReadyForRender =
+    character?.id &&
+    loading === 'idle' &&
+    sourceData.loading === 'idle' &&
+    ((character?.allSources && getCookie('allSources') === 'true') ||
+      !character?.allSources);
+
+  return isCharacterReadyForRender ? (
     <CharacterSheet
-      character={character}
+      character={character!}
       readonly={true}
       searchIndex={searchIndex}
     />
-  ) : (
+  ) : !character && (loading === 'error' || sourceData.loading === 'error') ? (
     <div className="mx-auto mt-8 pt-4 flex flex-col items-center justify-center">
       <div className="p-20 custom-border bg-light-300 dark:bg-dark-300 flex flex-col items-center justify-center">
         <img
@@ -70,6 +85,8 @@ const PublicCharacter = ({ searchIndex }: Props) => {
         </div>
       </div>
     </div>
+  ) : (
+    <Loading />
   );
 };
 

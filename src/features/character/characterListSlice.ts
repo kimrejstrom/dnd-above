@@ -393,7 +393,10 @@ const characterListSlice = createSlice({
         chara => chara.id === action.payload.id,
       );
       if (character) {
-        character.gameData.ac = Number(action.payload.ac);
+        const amount = isNaN(Number(action.payload.ac))
+          ? 0
+          : Number(action.payload.ac);
+        character.gameData.ac = amount;
       }
     },
     setHp(
@@ -403,19 +406,20 @@ const characterListSlice = createSlice({
       const { id, hp, type } = action.payload;
       const character = state.list.find(chara => chara.id === id);
       if (character) {
+        const amount = isNaN(Number(hp)) ? 0 : Number(hp);
         switch (type) {
           case 'heal':
             character.gameData.currentHp =
-              character.gameData.currentHp + Number(hp);
+              character.gameData.currentHp + amount;
             break;
 
           case 'damage':
             character.gameData.currentHp =
-              character.gameData.currentHp - Number(hp);
+              character.gameData.currentHp - amount;
             break;
 
           case 'set':
-            character.gameData.currentHp = Number(hp);
+            character.gameData.currentHp = amount;
             break;
 
           default:
