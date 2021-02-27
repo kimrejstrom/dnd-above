@@ -10,7 +10,7 @@ import { persistStore, persistReducer, createTransform } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import localForage from 'localforage';
 
-import rootReducer, { RootState } from './rootReducer';
+import rootReducer, { RootState } from 'app/rootReducer';
 import {
   backgroundSave,
   BACKGROUND_SAVE_ACTION,

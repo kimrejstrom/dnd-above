@@ -101,95 +101,89 @@ const DEAFULT_CHARACTER: CharacterListItem = {
 
 describe('characterListSlice Reducer', () => {
   let initialState: CharacterList;
+  const UPDATED_AT = 1614439809072;
   beforeEach(() => {
     initialState = {
       id: 'testListId',
       loading: 'idle',
       list: [DEAFULT_CHARACTER],
+      updatedAt: UPDATED_AT,
     };
   });
   it('should handle longRest', () => {
-    expect(
-      characterListSliceReducer(
-        {
-          ...initialState,
-          list: [
-            {
-              ...initialState.list[0],
-              gameData: {
-                ...DEAFULT_CHARACTER.gameData,
-                currentHd: 1,
-                spellSlots: {
-                  1: { used: 1 },
-                  2: { used: 2 },
-                },
+    const newList = characterListSliceReducer(
+      {
+        ...initialState,
+        list: [
+          {
+            ...initialState.list[0],
+            gameData: {
+              ...DEAFULT_CHARACTER.gameData,
+              currentHd: 1,
+              spellSlots: {
+                1: { used: 1 },
+                2: { used: 2 },
               },
             },
-          ],
+          },
+        ],
+      },
+      {
+        type: longRest.type,
+        payload: {
+          id: DEFAULT_ID,
         },
-        {
-          type: longRest.type,
-          payload: {
-            id: DEFAULT_ID,
+      },
+    ).list;
+    expect(newList).toEqual([
+      {
+        ...initialState.list[0],
+        gameData: {
+          ...DEAFULT_CHARACTER.gameData,
+          currentHd: 1,
+          currentHp: 12,
+          spellSlots: {
+            1: { used: 0 },
+            2: { used: 0 },
           },
         },
-      ),
-    ).toEqual({
-      ...initialState,
-      list: [
-        {
-          ...initialState.list[0],
-          gameData: {
-            ...DEAFULT_CHARACTER.gameData,
-            currentHd: 1,
-            currentHp: 12,
-            spellSlots: {
-              1: { used: 0 },
-              2: { used: 0 },
-            },
-          },
-        },
-      ],
-    });
+      },
+    ]);
   });
 
   it('should handle removeDefense', () => {
-    expect(
-      characterListSliceReducer(
-        {
-          ...initialState,
-          list: [
-            {
-              ...initialState.list[0],
-              gameData: {
-                ...DEAFULT_CHARACTER.gameData,
-                defenses: [
-                  { type: DefenseType.Immunity, name: 'cold' },
-                  { type: DefenseType.Vulnerability, name: 'cold' },
-                ],
-              },
+    const newList = characterListSliceReducer(
+      {
+        ...initialState,
+        list: [
+          {
+            ...initialState.list[0],
+            gameData: {
+              ...DEAFULT_CHARACTER.gameData,
+              defenses: [
+                { type: DefenseType.Immunity, name: 'cold' },
+                { type: DefenseType.Vulnerability, name: 'cold' },
+              ],
             },
-          ],
-        },
-        {
-          type: removeDefense.type,
-          payload: {
-            id: DEFAULT_ID,
-            data: { type: DefenseType.Immunity, name: 'cold' },
           },
+        ],
+      },
+      {
+        type: removeDefense.type,
+        payload: {
+          id: DEFAULT_ID,
+          data: { type: DefenseType.Immunity, name: 'cold' },
         },
-      ),
-    ).toEqual({
-      ...initialState,
-      list: [
-        {
-          ...initialState.list[0],
-          gameData: {
-            ...DEAFULT_CHARACTER.gameData,
-            defenses: [{ type: DefenseType.Vulnerability, name: 'cold' }],
-          },
+      },
+    ).list;
+    expect(newList).toEqual([
+      {
+        ...initialState.list[0],
+        gameData: {
+          ...DEAFULT_CHARACTER.gameData,
+          defenses: [{ type: DefenseType.Vulnerability, name: 'cold' }],
         },
-      ],
-    });
+      },
+    ]);
   });
 });

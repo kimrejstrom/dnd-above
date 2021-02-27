@@ -160,7 +160,7 @@ const initialState: CharacterList = {
   id: 'NOT_SAVED_YET',
   loading: 'idle',
   list: [],
-  updatedAt: Date.now() * 1000,
+  updatedAt: Date.now(),
 };
 
 // Async Thunks
@@ -861,7 +861,7 @@ const characterListSlice = createSlice({
       action =>
         action.type.startsWith('characterList') && !isARequestAction(action),
       (state, _) => {
-        state.updatedAt = Date.now() * 1000;
+        state.updatedAt = Date.now();
       },
     );
   },
