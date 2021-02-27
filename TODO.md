@@ -3,7 +3,6 @@
 
 ### Notes / Ideas
 
-- [ ] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [ ] minimize render.js?  
 - [ ] Custom items (w/ use as base)  
 
@@ -13,6 +12,8 @@
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
 - [ ] Settings page  
 - [ ] Lvl up Modal (with multiclass)  
+- [ ] Touch scroll issue  
+- [ ] Undo change  
 
 ### In Progress
 
@@ -20,6 +21,7 @@
 
 ### Done ✓
 
+- [x] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [x] Load characters on login  
 - [x] Fix Books error  
 - [x] Attuned items  

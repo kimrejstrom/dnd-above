@@ -28,6 +28,7 @@ import MobileCharacterPortrait from 'features/character/MobileCharacterPortrait'
 import Notes from 'features/character/Notes';
 import Extras from 'features/character/Extras';
 import { SourceDataFuseItem } from 'utils/search';
+import { getRelativeTime } from 'utils/time';
 
 interface Props {
   character: CharacterListItem;
@@ -43,6 +44,7 @@ export const CharacterSheet: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
+  const { updatedAt } = useSelector((state: RootState) => state.characterList);
   const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { selectedEntry } = useSelector(
@@ -149,7 +151,7 @@ export const CharacterSheet: React.FC<Props> = ({
         </div>
       </div>
       {!panelOpen && (
-        <div className="w-full mb-4" style={{ height: '10rem' }}>
+        <div className="w-full" style={{ height: '10rem' }}>
           <div className="h-full my-1 custom-border bg-light-200 dark:bg-dark-300 rounded-lg">
             <div className="detailed-entry h-full overflow-y-scroll px-2">
               <DetailedEntry data={selectedEntry} />
@@ -157,6 +159,9 @@ export const CharacterSheet: React.FC<Props> = ({
           </div>
         </div>
       )}
+      <div className="flex w-full justify-center mt-4">
+        <div>Last updated: {getRelativeTime(updatedAt)}</div>
+      </div>
     </div>
   );
 };

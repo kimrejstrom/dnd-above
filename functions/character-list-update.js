@@ -27,6 +27,7 @@ exports.handler = async (event, context) => {
     data: {
       list: data.list,
       id: claims.email,
+      updatedAt: data.updatedAt,
     },
   };
 
