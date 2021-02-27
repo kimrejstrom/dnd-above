@@ -841,12 +841,12 @@ const characterListSlice = createSlice({
         state.loading = 'idle';
       }
       const { ref, data } = payload;
-      state.id = ref['@ref'].id;
-
-      if (data.updatedAt >= state.updatedAt) {
-        state.list = data.list;
-      } else {
+      if (state.id === ref['@ref'].id && state.updatedAt > data.updatedAt) {
         console.log('DB data outdated, using persisted data');
+        console.log('Discarded DB data:', data.list);
+      } else {
+        state.id = ref['@ref'].id;
+        state.list = data.list;
       }
     });
     builder.addCase(getCharacterList.rejected, (state, { payload }) => {

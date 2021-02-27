@@ -50,7 +50,17 @@ const RightPanel = ({ searchIndex }: Props) => {
       } hidden z-20 right-panel 2xl:relative absolute right-0 lg:flex flex-shrink-0 flex-col overflow-hidden`}
     >
       <div className="pl-1 pr-3">
-        <SearchBar onSearch={onSearch} />
+        <SearchBar
+          onSearch={e => {
+            onSearch(e);
+            if (tabPanels[TAB_PANELS.RIGHTPANEL].selectedIndex !== 0) {
+              const updatedPanel = {
+                [TAB_PANELS.RIGHTPANEL]: { selectedIndex: 0 },
+              };
+              dispatch(setSelectedIndex(updatedPanel));
+            }
+          }}
+        />
       </div>
       <div style={{ height: '30rem' }}>
         <Tabs
