@@ -16,9 +16,22 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    visible
-      ? document.body.classList.add('overflow-hidden')
-      : document.body.classList.remove('overflow-hidden');
+    if (visible) {
+      const scrollY = document.documentElement.style.getPropertyValue(
+        '--scroll-y',
+      );
+      const body = document.body;
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollY}`;
+      body.classList.add('overflow-hidden');
+    } else {
+      const body = document.body;
+      const scrollY = body.style.top;
+      body.style.position = '';
+      body.style.top = '';
+      body.classList.remove('overflow-hidden');
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
   }, [visible]);
 
   return visible ? (
@@ -29,7 +42,7 @@ export const Modal: React.FC<IModal> = ({ title, content }) => {
       ></div>
 
       <div className="modal-container h-5/6 bg-light-300 dark:bg-dark-200 w-11/12 max-w-4xl rounded shadow-lg z-50 overflow-y-auto">
-        <div className="h-full modal-content py-4 text-left px-6 overflow-y-scroll">
+        <div className="h-full modal-content p-3 md:p-5 text-left overflow-y-scroll">
           <div className="flex justify-between items-center">
             <p className="text-2xl font-bold">{title}</p>
             <div

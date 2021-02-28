@@ -16,10 +16,10 @@
 
 ### In Progress
 
-- [ ] Touch scroll issue  
 
 ### Done ✓
 
+- [x] Touch scroll issue  
 - [x] Character list route  
 - [x] Toggle Inspiration  
 - [x] Online/offline (persist list to localStorage)  
