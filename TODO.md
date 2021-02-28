@@ -16,12 +16,12 @@
 
 ### In Progress
 
-- [ ] Toggle Inspiration  
 - [ ] Character list route  
 - [ ] Touch scroll issue  
 
 ### Done ✓
 
+- [x] Toggle Inspiration  
 - [x] Online/offline (persist list to localStorage)  
 - [x] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [x] Load characters on login  

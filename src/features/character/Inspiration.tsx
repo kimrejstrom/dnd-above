@@ -1,6 +1,9 @@
 import React from 'react';
-import { CharacterListItem } from 'features/character/characterListSlice';
-import { useSelector } from 'react-redux';
+import {
+  CharacterListItem,
+  setInspiration,
+} from 'features/character/characterListSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
 import { getProficiencyBonus } from 'utils/character';
@@ -14,11 +17,12 @@ interface Props {
 }
 
 const Inspiration = ({ character }: Props) => {
+  const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
   return (
     <div className="pb-2 lg:pb-0 flex justify-center w-full md:w-auto flex-wrap">
       <div
-        className="relative bg-contain bg-center bg-no-repeat mr-2"
+        className="cursor-pointer relative bg-contain bg-center bg-no-repeat mr-2"
         style={{
           width: '8.5rem',
           height: '2.5rem',
@@ -26,11 +30,14 @@ const Inspiration = ({ character }: Props) => {
             theme === ThemeMode.DARK ? inspirationLight : inspirationDark
           })`,
         }}
+        onClick={() => dispatch(setInspiration({ id: character.id }))}
       >
-        <div
-          className="absolute rounded-full w-3.5 h-3.5 bg-gray-900 dark:bg-yellow-300"
-          style={{ right: '1rem', top: '0.8rem' }}
-        ></div>
+        {character.gameData.inspiration && (
+          <div
+            className="absolute rounded-full w-3.5 h-3.5 bg-gray-900 dark:bg-yellow-300"
+            style={{ right: '1rem', top: '0.8rem' }}
+          ></div>
+        )}
       </div>
       <div
         className="relative bg-contain bg-center bg-no-repeat"

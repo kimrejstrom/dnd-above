@@ -604,6 +604,12 @@
         "type": "array",
         "default": []
       },
+      "inspiration": {
+        "$id": "#root/gameData/inspiration",
+        "title": "Inspiration",
+        "type": "boolean",
+        "default": [false]
+      },
       "actions": {
         "$id": "#root/gameData/actions",
         "title": "Actions",

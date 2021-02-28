@@ -108,6 +108,7 @@ export interface CharacterGameData {
     conditions: string[];
     defenses: { type: DefenseType; name: string }[];
     spells: { row: number; name: string }[];
+    inspiration: boolean;
     attunements: string[];
     actions: any[];
     extras: any[];
@@ -337,6 +338,7 @@ const characterListSlice = createSlice({
           attunements: [],
           actions: [],
           extras: [],
+          inspiration: false,
           ac: 0,
           currentHp: 10,
           currentHd: 1,
@@ -400,6 +402,14 @@ const characterListSlice = createSlice({
     },
     removeCharacter(state, action: PayloadAction<string>) {
       state.list = state.list.filter(item => item.id !== action.payload);
+    },
+    setInspiration(state, action: PayloadAction<{ id: string }>) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character) {
+        character.gameData.inspiration = !character.gameData.inspiration;
+      }
     },
     setAc(state, action: PayloadAction<{ id: string; ac: number }>) {
       const character = state.list.find(
@@ -874,6 +884,7 @@ export const {
   replaceCharacter,
   setAc,
   setHp,
+  setInspiration,
   setCurrentHd,
   longRest,
   expendHitDie,
