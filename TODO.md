@@ -16,11 +16,11 @@
 
 ### In Progress
 
-- [ ] Character list route  
 - [ ] Touch scroll issue  
 
 ### Done ✓
 
+- [x] Character list route  
 - [x] Toggle Inspiration  
 - [x] Online/offline (persist list to localStorage)  
 - [x] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  

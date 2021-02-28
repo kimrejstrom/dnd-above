@@ -220,6 +220,15 @@ export const Header: React.FC = () => {
               </li>
               <li className="p-2 lg:p-0">
                 <NavLink
+                  exact
+                  to="/characters"
+                  className="inline-block mt-0 hover:text-secondaryfw-100 dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
+                >
+                  Characters
+                </NavLink>
+              </li>
+              <li className="p-2 lg:p-0">
+                <NavLink
                   to="/create"
                   className="inline-block mt-0 hover:text-dark-200 dark:text-yellow-100 dark:hover:text-yellow-400 lg:mr-4"
                 >

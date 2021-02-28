@@ -29,6 +29,7 @@ import { loadSourceData } from 'features/sourceData/sourceDataSlice';
 import { SourceDataFuseItem, initializeSearch } from 'utils/search';
 import Settings from 'features/settings/Settings';
 import { getCookie } from 'utils/cookie';
+import CharacterList from 'pages/Main/CharacterList';
 
 // Google Analytics
 initializeGA();
@@ -106,6 +107,9 @@ const App: React.FC = () => {
                       <Switch>
                         <PrivateRoute exact path="/">
                           <Main searchIndex={searchIndex} />
+                        </PrivateRoute>
+                        <PrivateRoute exact path="/characters">
+                          <CharacterList />
                         </PrivateRoute>
                         <PrivateRoute path="/create">
                           <Create />
