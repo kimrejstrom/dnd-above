@@ -3,24 +3,26 @@
 
 ### Notes / Ideas
 
-- [ ] minimize render.js?  
 - [ ] Custom items (w/ use as base)  
+- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 
 ### Todo
 
-- [ ] MultiClassing  
 - [ ] Mobile bottom bar + views, plus filtering of character sheet items  
-- [ ] Settings page  
-- [ ] Lvl up Modal (with multiclass)  
-- [ ] Touch scroll issue  
 - [ ] Undo change  
+- [ ] Lvl up Modal (with multiclass)  
+- [ ] Settings page  
+- [ ] MultiClassing  
 
 ### In Progress
 
-- [ ] Online/offline (persist list to localStorage)  
+- [ ] Toggle Inspiration  
+- [ ] Character list route  
+- [ ] Touch scroll issue  
 
 ### Done ✓
 
+- [x] Online/offline (persist list to localStorage)  
 - [x] Additional Notes (list of name + additional info) lookup when rendering DetailedEntry  
 - [x] Load characters on login  
 - [x] Fix Books error  
