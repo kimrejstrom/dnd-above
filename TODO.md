@@ -4,7 +4,6 @@
 ### Notes / Ideas
 
 - [ ] Custom items (w/ use as base)  
-- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 
 ### Todo
 
@@ -13,6 +12,8 @@
 - [ ] Lvl up Modal (with multiclass)  
 - [ ] Settings page  
 - [ ] MultiClassing  
+- [ ] Race images  
+- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 
 ### In Progress
 
