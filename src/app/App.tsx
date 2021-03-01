@@ -30,6 +30,8 @@ import { SourceDataFuseItem, initializeSearch } from 'utils/search';
 import Settings from 'features/settings/Settings';
 import { getCookie } from 'utils/cookie';
 import CharacterList from 'pages/Main/CharacterList';
+import MobileNav from 'components/MobileNav/MobileNav';
+import ToolKit from 'components/RightPanel/ToolKit';
 
 // Google Analytics
 initializeGA();
@@ -102,13 +104,13 @@ const App: React.FC = () => {
                   <Sidebar />
                   {/* Main content */}
                   <div className="flex justify-center w-full p-2 md:p-3 h-full">
-                    <div className="w-full flex justify-center max-w-5xl">
+                    <div className="w-full flex justify-center max-w-5xl my-16 md:my-0">
                       {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                       <Switch>
                         <PrivateRoute exact path="/">
                           <Main searchIndex={searchIndex} />
                         </PrivateRoute>
-                        <PrivateRoute exact path="/characters">
+                        <PrivateRoute path="/characters">
                           <CharacterList />
                         </PrivateRoute>
                         <PrivateRoute path="/create">
@@ -123,6 +125,11 @@ const App: React.FC = () => {
                         <PrivateRoute path="/settings">
                           <Settings />
                         </PrivateRoute>
+                        <PrivateRoute path="/tools">
+                          <div className="flex flex-col w-full">
+                            <ToolKit searchIndex={searchIndex} />
+                          </div>
+                        </PrivateRoute>
                         <Route path="/login" component={withTracker(Login)} />
                         <Route path="/character/:listId/:characterId">
                           <PublicCharacter searchIndex={searchIndex} />
@@ -134,6 +141,7 @@ const App: React.FC = () => {
                   {panelOpen && <RightPanel searchIndex={searchIndex} />}
                 </div>
               </main>
+              <MobileNav />
             </ErrorBoundary>
           </Router>
         </AuthContextProvider>

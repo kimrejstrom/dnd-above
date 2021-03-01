@@ -131,6 +131,7 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
                   break;
                 case 'LOAD':
                   dispatch(setSelectedCharacter(char.id));
+                  history.push(`/`);
                   break;
                 default:
                   break;

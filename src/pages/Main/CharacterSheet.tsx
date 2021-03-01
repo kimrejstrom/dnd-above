@@ -159,7 +159,7 @@ export const CharacterSheet: React.FC<Props> = ({
           </div>
         </div>
       )}
-      <div className="flex w-full justify-center mt-4">
+      <div className="flex w-full justify-center mt-3">
         <div>Last updated: {getRelativeTime(updatedAt)}</div>
       </div>
     </div>

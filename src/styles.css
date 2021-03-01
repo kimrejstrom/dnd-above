@@ -287,7 +287,7 @@ pre {
 
 /* Nav */
 a.active {
-  @apply border-b-2 border-dark-100 text-dark-100;
+  @apply border-b-2 border-dark-100 text-highlight-100;
 }
 
 .dark a.active {

@@ -73,6 +73,7 @@ module.exports = {
       'light-100': '#ebe2bc',
       'light-200': '#f3e7dc',
       'light-300': '#efeee9',
+      'light-400': '#d4ccc4',
     }),
   },
   variants: {
