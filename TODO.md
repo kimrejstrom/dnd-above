@@ -7,19 +7,20 @@
 
 ### Todo
 
-- [ ] Mobile bottom bar + views, plus filtering of character sheet items  
 - [ ] Undo change  
 - [ ] Lvl up Modal (with multiclass)  
 - [ ] Settings page  
 - [ ] MultiClassing  
 - [ ] Race images  
-- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
+- [ ] Mobile View CharacterSheet filtering of sections  
 
 ### In Progress
 
+- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 
 ### Done ✓
 
+- [x] Mobile bottom bar + views  
 - [x] Touch scroll issue  
 - [x] Character list route  
 - [x] Toggle Inspiration  

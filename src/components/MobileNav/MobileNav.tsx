@@ -8,7 +8,7 @@ const MobileNav = (props: Props) => {
 
   return (
     <footer className="bg-light-100 dark:bg-dark-100">
-      <nav className="z-50 border-t-2 border-dark-300 dark:border-light-100 bg-light-200 dark:bg-dark-200 fixed bottom-0 w-full md:hidden flex items-center justify-between p-2">
+      <nav className="z-50 border-t-2 border-dark-300 dark:border-light-100 bg-light-200 dark:bg-dark-200 fixed bottom-0 w-full md:hidden flex items-center justify-between p-2 pb-6">
         <button
           className="dark:text-yellow-200"
           type="button"
