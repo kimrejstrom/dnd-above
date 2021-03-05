@@ -16,10 +16,10 @@
 
 ### In Progress
 
-- [ ] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 
 ### Done ✓
 
+- [x] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 - [x] Mobile bottom bar + views  
 - [x] Touch scroll issue  
 - [x] Character list route  

@@ -39,10 +39,10 @@ const FlyOut = ({ character, readonly }: Props) => {
                     <div className="text-md opacity-75 -mt-2">
                       Last updated: {getRelativeTime(updatedAt)}
                     </div>
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-wrap justify-center">
                       <StyledButton
                         disabled={readonly}
-                        extraClassName="mr-2"
+                        extraClassName="mr-0 mb-1 md:mr-2 md:mb-0"
                         onClick={() => {
                           dispatch(loadInitialFormData(character));
                           history.push(`/create/step-1`);
