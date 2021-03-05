@@ -198,6 +198,14 @@ body.modal-active {
   border-radius: 0;
 }
 
+.custom-border-dark {
+  border-image-source: url(./images/border-image-md-dark.png);
+}
+
+.custom-border-light {
+  border-image-source: url(./images/border-image-md-light.png);
+}
+
 /* Headings */
 .heading {
   @apply font-bold tracking-tighter;

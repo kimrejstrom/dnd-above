@@ -92,6 +92,7 @@ const DEAFULT_CHARACTER: CharacterListItem = {
     spells: [],
     attunements: [],
     actions: [],
+    inspiration: false,
     extras: [],
     ac: 0,
     currentHp: 12,

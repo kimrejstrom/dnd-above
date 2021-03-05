@@ -176,7 +176,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="bg-light-100 dark:bg-dark-100">
-      <nav className="z-50 md:z-auto border-b-2 border-dark-300 dark:border-light-100 bg-light-200 dark:bg-dark-200 fixed w-full md:relative flex flex-wrap items-center justify-between p-2 md:px-2 md:py-3 navbar-expand-lg text-dark-100 dark:text-light-100">
+      <nav className="z-50 md:z-auto border-b-2 border-dark-300 dark:border-light-100 bg-light-200 dark:bg-dark-200 fixed w-full md:relative flex flex-wrap items-center justify-between p-2 navbar-expand-lg text-dark-100 dark:text-light-100 shadow-lg">
         <div className="px-4 w-full mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <div className="flex items-center flex-shrink-0 text-dark-100 dark:text-light-100 mr-1 md:mr-6">

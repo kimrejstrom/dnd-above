@@ -13,7 +13,7 @@ interface Props {
 
 const AbilityScores = ({ character }: Props) => {
   return (
-    <div className="dnd-header flex text-center justify-center md:justify-between lg:justify-start flex-wrap lg:flex-nowrap m-auto md:m-0 w-80 lg:w-auto">
+    <div className="dnd-header flex text-center justify-center md:justify-between flex-wrap lg:flex-nowrap m-auto md:m-0 w-80 lg:w-auto">
       {Object.entries(CHARACTER_STATS).map(([key, value]) => {
         const score = calculateStats(character)[key as StatsTypes];
         const mod = getAbilityMod(score);

@@ -21,7 +21,7 @@ import tempHPLight from 'images/temphp-light.png';
 import skullIconDark from 'images/skullicon-dark.png';
 import skullIconLight from 'images/skullicon-light.png';
 import { useForm } from 'react-hook-form';
-import { DEFAULT_BUTTON_STYLE } from 'components/StyledButton/StyledButton';
+import StyledButton from 'components/StyledButton/StyledButton';
 
 interface Props {
   character: CharacterListItem;
@@ -149,33 +149,33 @@ const ACHP = ({ character, readonly }: Props) => {
             </p>
           </div>
         </div>
-        <div className="w-full md:w-auto lg:w-auto mt-4 lg:mt-0 lg:ml-1">
+        <div className="w-full md:w-auto lg:w-auto mt-4 lg:mt-0 lg:ml-3">
           <form
             onSubmit={handleSubmit(onHPSubmit)}
             className="text-xl text-center flex justify-center lg:flex-col"
           >
-            <button
+            <StyledButton
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} w-28 lg:w-24`}
+              extraClassName={`w-24 lg:w-20`}
               onClick={() => onHPChange('heal')}
               type="button"
             >
               Heal
-            </button>
+            </StyledButton>
             <input
               disabled={readonly}
               name="hp"
-              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-24 bg-light-300 dark:bg-dark-200 custom-border-xs custom-border-thin"
+              className="text-center mx-2 lg:mx-0 lg:my-1 h-10 w-28 lg:w-20 bg-light-300 dark:bg-dark-200 custom-border-xs custom-border-thin"
               ref={register}
             />
-            <button
+            <StyledButton
               disabled={readonly}
-              className={`${DEFAULT_BUTTON_STYLE} w-28 lg:w-24`}
+              extraClassName={`w-24 lg:w-20`}
               onClick={() => onHPChange('damage')}
               type="button"
             >
-              Damage
-            </button>
+              DMG
+            </StyledButton>
           </form>
         </div>
       </div>
@@ -209,7 +209,7 @@ const ACHP = ({ character, readonly }: Props) => {
           </p>
         </div>
         <div
-          className="invisible hidden lg:block lg:visible w-24 h-8 ml-1 relative bg-contain bg-center bg-no-repeat"
+          className="invisible hidden lg:block lg:visible w-20 h-8 ml-3 relative bg-contain bg-center bg-no-repeat"
           style={{
             backgroundImage: `url(${
               theme === ThemeMode.DARK ? skullIconLight : skullIconDark

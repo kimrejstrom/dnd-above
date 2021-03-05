@@ -13,7 +13,7 @@ const RightPanel = ({ searchIndex }: Props) => {
 
   return (
     <div
-      style={{ minHeight: 'calc(100% - 5rem)' }}
+      style={{ minHeight: 'calc(100% - 3.6rem)' }}
       className={`${
         panelOpen
           ? 'right-panel-open custom-bg bg-light-400 dark:bg-dark-200 custom-border-lg custom-border-l dark:border-light-100'

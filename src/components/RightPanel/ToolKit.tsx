@@ -53,7 +53,7 @@ const ToolKit = ({ searchIndex }: Props) => {
           }}
         />
       </div>
-      <div style={{ height: '30rem' }}>
+      <div style={{ height: '28rem' }}>
         <Tabs
           selectedIndex={rightPanelTabPanel.selectedIndex}
           onSelect={tabIndex => handleTabChange(tabIndex)}
@@ -95,7 +95,7 @@ const ToolKit = ({ searchIndex }: Props) => {
           </div>
         </Tabs>
       </div>
-      <div className="mt-8 px-1 h-full" style={{ height: '28rem' }}>
+      <div className="mt-8 px-1 h-full" style={{ height: '26.5rem' }}>
         <div className="h-full my-2 custom-border custom-border-heavy bg-light-100 dark:bg-dark-300 rounded-lg">
           <div className="detailed-entry h-full overflow-y-scroll px-2">
             <DetailedEntry data={selectedEntry} />

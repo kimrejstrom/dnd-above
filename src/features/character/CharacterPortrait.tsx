@@ -9,14 +9,14 @@ interface Props {
 const CharacterPortrait: React.FC<Props> = ({ character, size }) => {
   const isLarge = size === 'large';
   const imageSize = {
-    width: isLarge ? '10rem' : '7rem',
-    height: isLarge ? '10rem' : '7rem',
+    width: isLarge ? '8rem' : '7rem',
+    height: isLarge ? '8rem' : '7rem',
     top: '0.25rem',
     left: '0.25rem',
   };
   const containerSize = {
-    width: isLarge ? '10.5rem' : '7.5rem',
-    height: isLarge ? '10.5rem' : '7.5rem',
+    width: isLarge ? '8.5rem' : '7.5rem',
+    height: isLarge ? '8.5rem' : '7.5rem',
   };
   return (
     <div className="flex-shrink-0" style={containerSize}>

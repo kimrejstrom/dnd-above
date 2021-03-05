@@ -17,7 +17,6 @@ import ItemsLoot from 'features/character/ItemsLoot';
 import Actions from 'features/character/Actions';
 import SpellCasting from 'features/character/SpellCasting';
 import { isSpellCaster } from 'utils/character';
-import ActionButtons from 'features/character/ActionButtons';
 import ConditionsDefenses from 'features/character/ConditionsDefenses';
 import DetailedEntry from 'features/detailedEntry/DetailedEntry';
 import Description from 'features/character/Description';
@@ -28,7 +27,7 @@ import MobileCharacterPortrait from 'features/character/MobileCharacterPortrait'
 import Notes from 'features/character/Notes';
 import Extras from 'features/character/Extras';
 import { SourceDataFuseItem } from 'utils/search';
-import { getRelativeTime } from 'utils/time';
+import FlyOut from 'features/character/FlyOut';
 
 interface Props {
   character: CharacterListItem;
@@ -44,7 +43,6 @@ export const CharacterSheet: React.FC<Props> = ({
   const dispatch = useDispatch();
 
   const { tabPanels } = useSelector((state: RootState) => state.tabs);
-  const { updatedAt } = useSelector((state: RootState) => state.characterList);
   const characterTabPanel = tabPanels[TAB_PANELS.CHARACTER];
   const panelOpen = useSelector((state: RootState) => state.settings).panelOpen;
   const { selectedEntry } = useSelector(
@@ -60,21 +58,19 @@ export const CharacterSheet: React.FC<Props> = ({
 
   return (
     <div className="flex flex-wrap overflow-hidden">
-      <div className="bg-light-100 dark:bg-dark-100 mb-1 w-full justify-center md:justify-between flex flex-wrap">
+      <FlyOut character={character} readonly={readonly} />
+      <div className="bg-light-100 dark:bg-dark-100 mt-3 mb-1 w-full justify-center md:justify-between flex flex-wrap">
         <div className="flex flex-col">
-          <div className="lg:hidden w-full flex justify-center md:justify-start mr-2">
+          <div className="lg:hidden w-full flex justify-center md:justify-start mr-2 mb-3">
             <MobileCharacterPortrait character={character} />
           </div>
           <Name character={character} />
           <Alignment character={character} readonly={readonly} />
         </div>
         <ACHP character={character} readonly={readonly} />
-        <div className="hidden lg:block ml-2">
+        <div className="hidden lg:block">
           <CharacterPortrait character={character} size={'large'} />
-        </div>
-        <div className="mt-1 md:mt-2 flex flex-wrap justify-center md:justify-start w-96 md:w-full">
           <Inspiration character={character} />
-          <ActionButtons character={character} readonly={readonly} />
         </div>
         <div className="flex flex-wrap justify-between text-center mt-1 w-full">
           <div className="w-full md:w-1/2 ">
@@ -151,7 +147,7 @@ export const CharacterSheet: React.FC<Props> = ({
         </div>
       </div>
       {!panelOpen && (
-        <div className="w-full" style={{ height: '10rem' }}>
+        <div className="w-full mb-2" style={{ height: '10rem' }}>
           <div className="h-full my-1 custom-border bg-light-200 dark:bg-dark-300 rounded-lg">
             <div className="detailed-entry h-full overflow-y-scroll px-2">
               <DetailedEntry data={selectedEntry} />
@@ -159,9 +155,6 @@ export const CharacterSheet: React.FC<Props> = ({
           </div>
         </div>
       )}
-      <div className="flex w-full justify-center mt-3">
-        <div>Last updated: {getRelativeTime(updatedAt)}</div>
-      </div>
     </div>
   );
 };

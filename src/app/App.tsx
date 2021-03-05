@@ -99,7 +99,7 @@ const App: React.FC = () => {
                 <Header />
                 <div
                   className="flex w-full"
-                  style={{ minHeight: 'calc(100vh - 4rem)' }}
+                  style={{ minHeight: 'calc(100vh - 3.6rem)' }}
                 >
                   <Sidebar />
                   {/* Main content */}

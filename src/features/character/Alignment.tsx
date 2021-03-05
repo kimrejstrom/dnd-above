@@ -2,13 +2,18 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import { ThemeMode } from 'features/theme/themeSlice';
-import alignmentDark from 'images/alignment-dark.png';
-import alignmentLight from 'images/alignment-light.png';
+import alignmentDark from 'images/alignment-dark2.png';
+import alignmentLight from 'images/alignment-light2.png';
 import {
   CharacterListItem,
   setCurrentHd,
 } from 'features/character/characterListSlice';
-import { getHdTotal, getHitDice, parseSpeed } from 'utils/character';
+import {
+  getHdTotal,
+  getHitDice,
+  getProficiencyBonus,
+  parseSpeed,
+} from 'utils/character';
 import { Parser } from 'utils/mainRenderer';
 import { useForm } from 'react-hook-form';
 import { getRace } from 'utils/sourceDataUtils';
@@ -36,33 +41,33 @@ const Alignment = ({ character, readonly }: Props) => {
   const getAlignmentPosition = (alignment: string) => {
     switch ((Parser.ALIGNMENTS as any)[alignment]) {
       case Parser.ALIGNMENTS.LG:
-        return { top: '0.45rem', left: '0.85rem' };
+        return { top: '0.45rem', left: '0.7rem' };
       case Parser.ALIGNMENTS.NG:
-        return { top: '0.45rem', left: '1.8rem' };
+        return { top: '0.45rem', left: '1.7rem' };
       case Parser.ALIGNMENTS.CG:
-        return { top: '0.45rem', left: '2.8rem' };
+        return { top: '0.45rem', left: '2.65rem' };
       case Parser.ALIGNMENTS.LN:
-        return { top: '1.4rem', left: '0.85rem' };
+        return { top: '1.4rem', left: '0.7rem' };
       case Parser.ALIGNMENTS.N:
-        return { top: '1.4rem', left: '1.8rem' };
+        return { top: '1.4rem', left: '1.7rem' };
       case Parser.ALIGNMENTS.CN:
-        return { top: '1.4rem', left: '2.8rem' };
+        return { top: '1.4rem', left: '2.65rem' };
       case Parser.ALIGNMENTS.LE:
-        return { top: '2.3rem', left: '0.85rem' };
+        return { top: '2.3rem', left: '0.7rem' };
       case Parser.ALIGNMENTS.NE:
-        return { top: '2.3rem', left: '1.8rem' };
+        return { top: '2.3rem', left: '1.7rem' };
       case Parser.ALIGNMENTS.CE:
-        return { top: '2.3rem', left: '2.8rem' };
+        return { top: '2.3rem', left: '2.65rem' };
       default:
         break;
     }
   };
   return (
-    <div className="flex justify-start" style={{ width: '22rem' }}>
+    <div className="flex justify-start w-full md:w-96">
       <div
-        className="mt-5 relative bg-contain bg-center bg-no-repeat"
+        className="relative bg-contain bg-center bg-no-repeat"
         style={{
-          width: '17rem',
+          width: '21rem',
           height: '4rem',
           backgroundImage: `url(${
             theme === ThemeMode.DARK ? alignmentLight : alignmentDark
@@ -76,8 +81,8 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.7rem',
-            left: '5.45rem',
+            top: '16.5%',
+            left: '25%',
           }}
         >
           {character.gameData.level}
@@ -85,8 +90,17 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.7rem',
-            left: '9.6rem',
+            top: '16.5%',
+            left: '45%',
+          }}
+        >
+          {getProficiencyBonus(character.gameData.level)}
+        </div>
+        <div
+          className="text-2xl absolute w-8 inset-0 text-center"
+          style={{
+            top: '16.5%',
+            left: '64.5%',
           }}
         >
           {parseSpeed(getRace(character.raceData.race)!.speed)}
@@ -94,14 +108,14 @@ const Alignment = ({ character, readonly }: Props) => {
         <div
           className="text-2xl absolute w-8 inset-0 text-center"
           style={{
-            top: '0.7rem',
-            left: '14rem',
+            top: '16.5%',
+            left: '85.5%',
           }}
         >
           {getHitDice(character)}
         </div>
         <div
-          className="z-0 custom-border-xs absolute"
+          className="hidden md:block z-0 custom-border-xs absolute"
           style={{
             borderLeft: '0',
             top: '0.35rem',
@@ -111,7 +125,7 @@ const Alignment = ({ character, readonly }: Props) => {
           }}
         ></div>
         <div
-          className="absolute flex flex-col"
+          className="hidden absolute md:flex flex-col"
           style={{ top: '0.75rem', right: '-3.2rem' }}
         >
           <div className="flex leading-none -mt-0.5 z-20">

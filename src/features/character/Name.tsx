@@ -14,10 +14,10 @@ const Name = ({ character }: Props) => {
   const theme = useSelector((state: RootState) => state.theme);
   return (
     <div
-      className="hidden lg:block bg-contain bg-left bg-no-repeat mb-2"
+      className="hidden lg:block bg-contain bg-left bg-no-repeat mb-3"
       style={{
-        width: '22rem',
-        height: '5rem',
+        width: '25rem',
+        height: '5.75rem',
         backgroundImage: `url(${
           theme === ThemeMode.DARK ? nameLight : nameDark
         })`,

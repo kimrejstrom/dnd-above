@@ -24,6 +24,7 @@ import { diceRoller } from 'utils/dice';
 import { getAllClassFeatures } from 'utils/sourceDataUtils';
 import ItemsModal from 'features/character/ItemsModal';
 import TextBox from 'components/TextBox/TextBox';
+import skullDividerLight from 'images/skulldivider-light.png';
 
 interface Props {
   character: CharacterListItem;
@@ -188,54 +189,62 @@ const ActionButtons = ({ character, readonly }: Props) => {
       }),
     );
 
-  const actionBtnCls = `md:ml-2 ml-1 mb-1 h-10 custom-border-medium w-28 md:w-auto xl:px-3`;
+  const actionBtnCls = `ml-1 mb-1 h-10 custom-border-medium w-28 md:w-auto xl:px-3`;
 
   return (
-    <div className="flex md:flex-grow flex-wrap justify-center md:justify-between">
-      <StyledButton
-        extraClassName={actionBtnCls}
-        onClick={handleShortRest}
-        disabled={readonly}
-      >
-        Short Rest
-      </StyledButton>
-      <StyledButton
-        extraClassName={actionBtnCls}
-        onClick={handleLongRest}
-        disabled={readonly}
-      >
-        Long Rest
-      </StyledButton>
-      <StyledButton
-        extraClassName={actionBtnCls}
-        onClick={handleAbilityScores}
-        disabled={readonly}
-      >
-        Ability Scores
-      </StyledButton>
-      {isSpellCaster(character) && (
+    <div>
+      <div
+        className="h-10 md:h-12 w-full my-2 relative bg-contain bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${skullDividerLight})`,
+        }}
+      ></div>
+      <div className="flex md:flex-grow flex-wrap justify-center">
         <StyledButton
           extraClassName={actionBtnCls}
-          onClick={handleSpells}
+          onClick={handleShortRest}
           disabled={readonly}
         >
-          Spells
+          Short Rest
         </StyledButton>
-      )}
-      <StyledButton
-        extraClassName={actionBtnCls}
-        onClick={handleEquipment}
-        disabled={readonly}
-      >
-        Equipment
-      </StyledButton>
-      <StyledButton
-        extraClassName={actionBtnCls}
-        onClick={handleFeats}
-        disabled={readonly}
-      >
-        Feats
-      </StyledButton>
+        <StyledButton
+          extraClassName={actionBtnCls}
+          onClick={handleLongRest}
+          disabled={readonly}
+        >
+          Long Rest
+        </StyledButton>
+        <StyledButton
+          extraClassName={actionBtnCls}
+          onClick={handleAbilityScores}
+          disabled={readonly}
+        >
+          Ability Scores
+        </StyledButton>
+        {isSpellCaster(character) && (
+          <StyledButton
+            extraClassName={actionBtnCls}
+            onClick={handleSpells}
+            disabled={readonly}
+          >
+            Spells
+          </StyledButton>
+        )}
+        <StyledButton
+          extraClassName={actionBtnCls}
+          onClick={handleEquipment}
+          disabled={readonly}
+        >
+          Equipment
+        </StyledButton>
+        <StyledButton
+          extraClassName={actionBtnCls}
+          onClick={handleFeats}
+          disabled={readonly}
+        >
+          Feats
+        </StyledButton>
+      </div>
     </div>
   );
 };
