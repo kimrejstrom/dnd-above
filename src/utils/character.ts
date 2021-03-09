@@ -305,13 +305,15 @@ export const getWarlockSpellSlots = (character: CharacterListItem) => {
   return spellSlots!.rows[level - 1][2];
 };
 
-export const getSpellSlotsPerLevel = (character: CharacterListItem) => {
+export const getSpellSlotsPerLevel = (
+  character: CharacterListItem,
+  level: number,
+) => {
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
     character.classData.classElement,
     character.classData.subClass,
   );
-  const level = character.gameData.level;
 
   if (classElement?.name.toLowerCase() === 'warlock') {
     const spellSlots = classElement?.classTableGroups

@@ -148,7 +148,7 @@ const ConditionsModal: React.FC<ModalProps> = ({ character }) => {
       <div>
         <form className="flex flex-col">
           {_.sortBy(Parser.CONDITIONS).map((type: string) => (
-            <label className="inline-flex items-center">
+            <label key={type} className="inline-flex items-center">
               <input
                 className="form-checkbox"
                 type="checkbox"

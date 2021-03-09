@@ -90,7 +90,8 @@ const SpellLevel = ({
   character: CharacterListItem;
   readonly: boolean;
 }) => {
-  const spellSlotsForLevel = getSpellSlotsPerLevel(character)[level] || 0;
+  const spellSlotsForLevel =
+    getSpellSlotsPerLevel(character, character.gameData.level)[level] || 0;
   return spellSlotsForLevel > 0 || level === 0 || spellSlotsForLevel === -1 ? (
     <div>
       <div className="flex w-full justify-between">

@@ -9,7 +9,7 @@ import {
   removeFeat,
 } from 'features/character/characterListSlice';
 import { useForm } from 'react-hook-form';
-import { mainRenderer } from 'utils/mainRenderer';
+import { mainRenderer, Parser } from 'utils/mainRenderer';
 import { getFeats } from 'utils/sourceDataUtils';
 
 interface Props {
@@ -44,13 +44,13 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
           <div className="h-full overflow-y-scroll">
             <form className="ml-3 flex flex-col">
               {getFeats()!.map(feat => (
-                <DetailedEntryTrigger
-                  data={feat}
-                  renderer={mainRenderer.feat.getCompactRenderedString(feat)}
+                <div
+                  key={feat.name}
+                  className="flex justify-start items-center"
                 >
                   <label className="inline-flex items-center">
                     <input
-                      className="form-checkbox"
+                      className="form-checkbox cursor-pointer"
                       type="checkbox"
                       defaultChecked={featsList.includes(feat.name)}
                       name={feat.name}
@@ -58,9 +58,38 @@ const FeatsModal: React.FC<Props> = ({ character }) => {
                       onChange={addFeatToList}
                       ref={register}
                     />
-                    <span className="ml-2">{`${feat.name}`}</span>
+                    <span className="ml-2 font-bold cursor-pointer">{`${feat.name}`}</span>
                   </label>
-                </DetailedEntryTrigger>
+                  <DetailedEntryTrigger
+                    extraClassName="flex-grow"
+                    data={feat}
+                    renderer={mainRenderer.feat.getCompactRenderedString(feat)}
+                  >
+                    <div className="w-full flex justify-start">
+                      <div className="ml-2 inline">
+                        ASI:{' '}
+                        {mainRenderer.getAbilityData(feat.ability).asText
+                          ? mainRenderer.getAbilityData(feat.ability).asText
+                          : 'None'}
+                      </div>
+                      <div className="ml-2 flex-grow">
+                        PreRequisite:{' '}
+                        {mainRenderer.utils.getPrerequisiteText(
+                          feat.prerequisite,
+                          true,
+                        ) || '–'}
+                      </div>
+                      <div
+                        className={`ml-2 source ${Parser.sourceJsonToColor(
+                          feat.source,
+                        )}`}
+                        title={Parser.sourceJsonToFull(feat.source)}
+                      >
+                        {feat.source}
+                      </div>
+                    </div>
+                  </DetailedEntryTrigger>
+                </div>
               ))}
             </form>
           </div>

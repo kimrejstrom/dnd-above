@@ -51,20 +51,6 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
     [character.id, selectedRows, dispatch],
   );
 
-  // const toggleSpells = (
-  //   updatedSelectedRows: Record<string, boolean>,
-  //   updatedSelectedData: any[],
-  // ) => {
-  //   const spells = Object.keys(updatedSelectedRows).map((row, i) => ({
-  //     row: Number(row),
-  //     name: updatedSelectedData[i].name,
-  //   }));
-  //   if (!_.isEqual(updatedSelectedRows, selectedRows)) {
-  //     dispatch(updateSpells({ id: character.id, data: spells }));
-  //     setSelectedRows(updatedSelectedRows);
-  //   }
-  // };
-
   const filteredSpells = spells.filter(spell => {
     if (spell && spell.classes) {
       const mainClass =

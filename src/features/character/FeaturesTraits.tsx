@@ -16,6 +16,7 @@ import {
   renderRaceTraits,
   renderFeats,
 } from 'utils/render';
+import ClassTable from 'pages/Create/ClassTable';
 
 interface Props {
   character: CharacterListItem;
@@ -43,6 +44,8 @@ const FeaturesTraits = ({ character }: Props) => {
       ></div>
       <PillFilter pills={['class', 'race', 'feats']}>
         <ContentBlock name="class">
+          <div className="text-lg">Class Table</div>
+          <ClassTable cls={classElement!} subcls={subClassElement!} />
           <div className="text-lg">{classElement!.name} features</div>
           {renderClassFeatures(classElement!.name)}
           <div className="text-lg">{subClassElement!.name} features</div>

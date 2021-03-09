@@ -8,7 +8,6 @@
 ### Todo
 
 - [ ] Undo change  
-- [ ] Lvl up Modal (with multiclass)  
 - [ ] Settings page  
 - [ ] MultiClassing  
 - [ ] Race images  
@@ -19,6 +18,7 @@
 
 ### Done ✓
 
+- [x] Lvl up Modal  
 - [x] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 - [x] Mobile bottom bar + views  
 - [x] Touch scroll issue  
