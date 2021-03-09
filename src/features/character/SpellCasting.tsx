@@ -18,6 +18,7 @@ import {
   getSpellsKnown,
   getCantripsKnown,
   getWarlockSpellSlots,
+  getPreparedSpells,
 } from 'utils/character';
 import { isDefined } from 'ts-is-present';
 import { Spells } from 'components/Spells/Spells';
@@ -182,6 +183,16 @@ const SpellCasting = ({ character, readonly }: Props) => {
                 Spell Slots:{' '}
                 <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
                   {getWarlockSpellSlots(character)}
+                </div>
+              </div>
+            </div>
+          )}
+          {getPreparedSpells(character) && (
+            <div className="flex">
+              <div>
+                Prepared Spells:{' '}
+                <div className="text-lg inline text-highlight-100 dark:text-yellow-500">
+                  {getPreparedSpells(character)}
                 </div>
               </div>
             </div>

@@ -30,6 +30,7 @@ import {
   getWeapons,
   getOtherItems,
   getArmor,
+  getClassFeatures,
 } from 'utils/sourceDataUtils';
 import { SpellElement } from 'models/spells';
 
@@ -252,6 +253,23 @@ export const getSpellsKnown = (character: CharacterListItem) => {
   return spellsKnown.rows[level - 1].length > 1
     ? spellsKnown.rows[level - 1][1]
     : spellsKnown.rows[level - 1][0];
+};
+
+export const getPreparedSpells = (character: CharacterListItem) => {
+  const classFeatures = getClassFeatures(character.classData.classElement);
+  const level = character.gameData.level;
+  const spellsPrepared = classFeatures
+    .find(feature => feature.name === 'Spellcasting')
+    ?.entries.some(
+      entry =>
+        typeof entry !== 'string' &&
+        entry.name === 'Preparing and Casting Spells',
+    );
+  if (spellsPrepared) {
+    const score = calculateStats(character)[getSpellModifier(character)];
+    const mod = getAbilityMod(score);
+    return mod + level;
+  }
 };
 
 export const getCantripsKnown = (character: CharacterListItem) => {

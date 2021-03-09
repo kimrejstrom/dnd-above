@@ -56,7 +56,7 @@ const FlyOut = ({ character, readonly }: Props) => {
                           history.push(`/edit`);
                         }}
                       >
-                        Character Builder
+                        Character Editor
                       </StyledButton>
                     </div>
                   </div>
