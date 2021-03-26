@@ -819,6 +819,37 @@ function Renderer() {
     textStack[0] += `</${this.wrapperTag}>`;
   };
 
+  this._renderVariantInner = function(entry, textStack, meta, options) {
+    const dataString = this._renderEntriesSubtypes_getDataString(entry);
+
+    this._handleTrackTitles(entry.name);
+    const cachedLastDepthTrackerSource = this._lastDepthTrackerSource;
+    this._handleTrackDepth(entry, 1);
+
+    textStack[0] += `<${this.wrapperTag} class="rd__b-inset-inner" ${dataString}>`;
+    textStack[0] += `<span class="rd__h rd__h--2-inset" data-title-index="${this
+      ._headerIndex++}" ${this._getEnumeratedTitleRel(
+      entry.name,
+    )}><span class="entry-title-inner">${entry.name}</span></span>`;
+    const len = entry.entries.length;
+    for (let i = 0; i < len; ++i) {
+      const cacheDepth = meta.depth;
+      meta.depth = 2;
+      this._recursiveRender(entry.entries[i], textStack, meta, {
+        prefix: '<p>',
+        suffix: '</p>',
+      });
+      meta.depth = cacheDepth;
+    }
+    if (entry.variantSource)
+      textStack[0] += Renderer.utils.getSourceAndPageTrHtml(
+        entry.variantSource,
+      );
+    textStack[0] += `</${this.wrapperTag}>`;
+
+    this._lastDepthTrackerSource = cachedLastDepthTrackerSource;
+  };
+
   this._renderVariantSub = function(entry, textStack, meta, options) {
     // pretend this is an inline-header'd entry, but set a flag so we know not to add bold
     this._subVariant = true;
