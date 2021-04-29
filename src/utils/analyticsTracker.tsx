@@ -4,7 +4,7 @@ import ttiPolyfill from 'tti-polyfill';
 import { useHistory } from 'react-router-dom';
 
 export const initializeGA = () => {
-  ReactGA.initialize('UA-156819290-1');
+  ReactGA.initialize('G-F32NJL8WEY');
 
   ttiPolyfill.getFirstConsistentlyInteractive().then(tti => {
     ReactGA.timing({

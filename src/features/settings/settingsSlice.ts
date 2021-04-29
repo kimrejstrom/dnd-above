@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface SettingsState {
   animations: boolean;
@@ -14,7 +14,7 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState: initialState,
   reducers: {
-    toggleAnimations(state, action) {
+    toggleAnimations(state, action: PayloadAction<boolean>) {
       state.animations = action.payload;
     },
     setPanelOpen(state) {
