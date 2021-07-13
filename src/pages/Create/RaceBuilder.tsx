@@ -299,7 +299,7 @@ const RaceBuilder = () => {
       <div>
         {getRaces()!.map((race: Race, index) => (
           <details key={race.name}>
-            <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+            <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
               <span className="text-xl flex-grow">
                 <img
                   src={`${
