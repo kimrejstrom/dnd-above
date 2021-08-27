@@ -295,6 +295,20 @@ const RaceBuilder = () => {
       dispatch(updateFormData({ raceData: data }));
     };
 
+    const groupByRaceName = (arr: Array<any>, key: string) =>
+      arr.reduce((acc: any, item: any) => {
+        return (
+          (acc[item[key].split(' ')[0]] = [
+            ...(acc[item[key].split(' ')[0]] || []),
+            item,
+          ]),
+          acc
+        );
+      }, {});
+
+    const groupedRaces = groupByRaceName(getRaces()!, 'name');
+    console.log(groupedRaces);
+
     return (
       <div>
         {getRaces()!.map((race: Race, index) => (
@@ -314,7 +328,7 @@ const RaceBuilder = () => {
                 {`${race.name} (${race.source})`}
               </span>
               <StyledButton
-                extraClassName="absolute right-0 mr-2"
+                extraClassName="absolute right-0 mr-2 sm:h-8"
                 onClick={(e: any) => onSelect({ race: race.name }, e)}
               >
                 Select

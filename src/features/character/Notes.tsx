@@ -52,7 +52,7 @@ const Notes = ({ character, readonly }: Props) => {
       ></div>
       {!readonly && (
         <details>
-          <summary className="flex items-center justify-start bg-light-200 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+          <summary className="items-center justify-start bg-light-200 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
             New Note
           </summary>
           <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-400 dark:bg-dark-100">
@@ -84,7 +84,7 @@ const Notes = ({ character, readonly }: Props) => {
                 )}
               </label>
               <StyledButton
-                extraClassName="mt-2"
+                extraClassName="mt-2 sm:h-8"
                 onClick={handleSubmit(onSubmit)}
               >
                 Save

@@ -18,3 +18,5 @@ export const getRelativeTime = (d1: number, d2 = new Date()) => {
     if (Math.abs(elapsed) > units[u] || u === 'second')
       return rtf.format(Math.round(elapsed / units[u]), u as any);
 };
+
+export const parseDate = (dateString: string) => new Date(dateString).getTime();

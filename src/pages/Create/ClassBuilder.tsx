@@ -140,10 +140,10 @@ const ClassBuilder = () => {
               .filter(subclass => filterSources(subclass))
               .map(subclass => (
                 <details key={subclass.name}>
-                  <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2">
+                  <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2">
                     <span className="text-xl flex-grow">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
-                      extraClassName="absolute right-0 mr-2"
+                      extraClassName="absolute right-0 mr-2 sm:h-8"
                       onClick={() =>
                         onSelect({
                           classElement: selectedClass.name,
@@ -175,7 +175,7 @@ const ClassBuilder = () => {
           <div>
             {getPlayableClasses().map((classElement: ClassElement, index) => (
               <details key={index}>
-                <summary className="flex items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+                <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
                   <span className="text-xl flex-grow">
                     <img
                       className="inline w-8 mr-2 rounded bg-contain"
@@ -191,7 +191,7 @@ const ClassBuilder = () => {
                   </span>
                   <StyledButton
                     onClick={() => setselectedClass(classElement)}
-                    extraClassName="absolute right-0 mr-2"
+                    extraClassName="absolute right-0 mr-2 sm:h-8"
                   >
                     Select
                   </StyledButton>
