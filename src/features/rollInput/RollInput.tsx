@@ -47,7 +47,9 @@ export const RollInput = () => {
       setError(undefined);
       dispatch(addRoll(currentRoll));
     } catch (error) {
-      setError(error);
+      if (error instanceof Error) {
+        setError(error);
+      }
     }
   };
 

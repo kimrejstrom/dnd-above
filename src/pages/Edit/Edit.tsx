@@ -45,10 +45,12 @@ const Edit = (props: Props) => {
       );
     } catch (error) {
       setSubmitSuccessful(false);
-      setError('characterJSON', {
-        type: 'validation',
-        message: _.capitalize(error.message),
-      });
+      if (error instanceof Error) {
+        setError('characterJSON', {
+          type: 'validation',
+          message: _.capitalize(error.message),
+        });
+      }
     }
   };
   return (

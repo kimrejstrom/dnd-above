@@ -48,8 +48,10 @@ export const PresetForm: React.FC<{
         dispatch(toggleModal({ visible: false }));
       }, 500);
     } catch (error) {
-      setError(error);
-      setSuccess(undefined);
+      if (error instanceof Error) {
+        setError(error);
+        setSuccess(undefined);
+      }
     }
   };
 
