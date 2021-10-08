@@ -328,7 +328,7 @@ const RaceBuilder = () => {
                 {`${race.name} (${race.source})`}
               </span>
               <StyledButton
-                extraClassName="absolute right-0 mr-2 sm:h-8"
+                extraClassName="absolute right-0 mr-2 sm:h-8 -top-px"
                 onClick={(e: any) => onSelect({ race: race.name }, e)}
               >
                 Select
@@ -368,6 +368,7 @@ const RaceBuilder = () => {
                   {[getRaceFluff(race.name), getRaceFluff(race._baseName!)].map(
                     fluff => (
                       <DangerousHtml
+                        key={fluff?.name}
                         extraClassName="tight"
                         data={fluff && mainRenderer.render(fluff)}
                       />

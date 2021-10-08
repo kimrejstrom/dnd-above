@@ -232,7 +232,7 @@ const Description = () => {
                       return (
                         <>
                           {count > 0 && (
-                            <label className="block">
+                            <label key={i} className="block">
                               {`Choose tool proficiency (${count}):`}
                               <select
                                 multiple={count > 1}
@@ -288,7 +288,7 @@ const Description = () => {
                           {_.keys(_.pickBy(lang, key => isBoolean(key))).join(
                             ', ',
                           )}
-                          <label className="block">
+                          <label key={i} className="block">
                             {`Choose language (${lang.anyStandard}):`}
                             <select
                               className={`form-input`}

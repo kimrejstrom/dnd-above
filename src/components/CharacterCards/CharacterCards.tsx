@@ -137,7 +137,7 @@ const CharacterCards: React.FC<Props> = ({ type }) => {
                   break;
               }
             }}
-            className="text-center h-56 flex justify-evenly items-center flex-col"
+            className="w-full text-center h-56 flex justify-evenly items-center flex-col"
           >
             <img
               className="rounded w-full h-24 object-cover object-top"

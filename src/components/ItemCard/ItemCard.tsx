@@ -16,12 +16,12 @@ const ItemCard = ({ itemName, removeAction }: Props) => {
   const item = getItem(itemName);
   return (
     <DetailedEntryTrigger
-      extraClassName="mr-2 mt-2 tight"
+      extraClassName="mr-2 mt-2 tight md:w-44 w-full my-2"
       key={itemName}
       renderer={RenderItem(item)}
       data={item}
     >
-      <TextBox extraClassName="md:w-40 bg-light-200 h-52 w-full dark:bg-dark-200 px-2 py-2">
+      <TextBox extraClassName="w-full bg-light-200 h-52 dark:bg-dark-200 px-2 py-2">
         {isDefined(removeAction) && (
           <div className="flex justify-end w-full -mt-1">
             <button

@@ -84,10 +84,10 @@ const ClassBuilder = () => {
               className="flex flex-col dnd-body"
             >
               <h3>Skill Proficiencies</h3>
-              {classProficiencies.map(prof => {
+              {classProficiencies.map((prof, i) => {
                 const count = prof.choose.count || 1;
                 return (
-                  <label className="block">
+                  <label key={i} className="block">
                     {`Choose skill proficiency (${count}):`}
                     <select
                       className={`form-input`}
@@ -140,10 +140,10 @@ const ClassBuilder = () => {
               .filter(subclass => filterSources(subclass))
               .map(subclass => (
                 <details key={subclass.name}>
-                  <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2">
+                  <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-3 my-2">
                     <span className="text-xl flex-grow">{`${subclass.name} (${subclass.source})`}</span>
                     <StyledButton
-                      extraClassName="absolute right-0 mr-2 sm:h-8"
+                      extraClassName="absolute right-0 mr-2 sm:h-8 -top-0.5"
                       onClick={() =>
                         onSelect({
                           classElement: selectedClass.name,
@@ -191,7 +191,7 @@ const ClassBuilder = () => {
                   </span>
                   <StyledButton
                     onClick={() => setselectedClass(classElement)}
-                    extraClassName="absolute right-0 mr-2 sm:h-8"
+                    extraClassName="absolute right-0 mr-2 sm:h-8 -top-px"
                   >
                     Select
                   </StyledButton>

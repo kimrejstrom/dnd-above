@@ -1067,6 +1067,9 @@ i > i {
 .text-sm .rnd-name .stats-source {
   font-size: 0.8rem;
 }
+.text-sm .rnd-name .stats-name {
+  line-height: 1;
+}
 .dark tr.trait td {
   color: #bbb !important;
 }

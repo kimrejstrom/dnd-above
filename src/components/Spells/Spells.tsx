@@ -39,13 +39,15 @@ const handleSpecialCell = (cell: Cell<object>) => {
     case 'classes':
       return (
         <div>
-          {mainClass
-            .concat(cell.value.fromClassListVariant)
-            .filter(
-              (elem: any) => isDefined(elem) && !elem.source.includes('UA'),
-            )
-            .map((elem: any) => elem.name)
-            .join(', ')}
+          {cell.value
+            ? mainClass
+                .concat(cell.value.fromClassListVariant)
+                .filter(
+                  (elem: any) => isDefined(elem) && !elem.source.includes('UA'),
+                )
+                .map((elem: any) => elem.name)
+                .join(', ')
+            : ''}
         </div>
       );
 

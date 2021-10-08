@@ -63,21 +63,48 @@ const SpellsModal: React.FC<Props> = ({ character }) => {
         spell.classes.fromClassListVariant!.some(
           entry => entry.name === character.classData.classElement,
         );
-      return mainClass || variantClass;
+      const subClass =
+        spell.classes.fromSubclass &&
+        spell.classes.fromSubclass!.some(
+          entry =>
+            entry.class.name === character.classData.classElement ||
+            entry.subclass.name === character.classData.subClass,
+        );
+      return mainClass || variantClass || subClass;
+    }
+    if (spell && spell.backgrounds) {
+      const backgrounds =
+        spell.backgrounds &&
+        spell.backgrounds.some(
+          entry => entry.name === character.descriptionData.background,
+        );
+      return backgrounds;
     } else {
       return false;
     }
   });
 
+  const [spellList, setSpellList] = useState(filteredSpells);
+  const [show, setShow] = useState(true);
+
   return (
     <div className="flex flex-col">
-      <div>Currently Known Spells</div>
+      <div className="flex justify-between">
+        <div>Currently Known Spells</div>
+        <button
+          onClick={() => {
+            setSpellList(show ? spells : filteredSpells);
+            setShow(!show);
+          }}
+        >{`${show ? 'Show All' : 'Show Class'}`}</button>
+      </div>
+
       <div
         style={{ height: '20rem' }}
         className="mt-2 overflow-y-scroll custom-border custom-border-thin bg-light-100 dark:bg-dark-300 rounded-lg"
       >
         <Spells
-          spells={filteredSpells}
+          spells={spellList}
           selectedRows={selectedRows}
           onSelectedRowsChange={toggleSpells}
         />
