@@ -1,12 +1,11 @@
 import _ from 'lodash';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   useTable,
   TableOptions,
   Cell,
   useSortBy,
   useRowSelect,
-  useMountedLayoutEffect,
   useFilters,
 } from 'react-table';
 import { isDefined } from 'ts-is-present';
@@ -99,6 +98,7 @@ const Table = ({
   onRowButtonClick,
 }: Props) => {
   // Use the state and functions returned from useTable to build your UI
+  const selectedRowsChangedKey = useRef<number>();
   const {
     getTableProps,
     getTableBodyProps,
@@ -114,6 +114,17 @@ const Table = ({
           initialState: {
             ...tableData.initialState,
             selectedRowIds: selectedRows,
+          },
+          stateReducer: (newState, action, prevState) => {
+            if (
+              ['toggleRowSelected', 'toggleAllRowsSelected'].includes(
+                action.type,
+              )
+            ) {
+              selectedRowsChangedKey.current = Date.now();
+            }
+
+            return newState;
           },
         }
       : { ...tableData },
@@ -179,11 +190,12 @@ const Table = ({
 
   // Keep parent/store state in sync with local state
   // No need to update on mount since we are passing initial state
-  useMountedLayoutEffect(() => {
+  useEffect(() => {
     const selectedData = selectedFlatRows.map(d => d.original);
     isDefined(onSelectedRowsChange) &&
       onSelectedRowsChange(selectedRowIds, selectedData);
-  }, [onSelectedRowsChange, selectedRowIds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedRowsChangedKey.current]);
 
   // Render the UI for your table
   return (

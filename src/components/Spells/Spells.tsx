@@ -12,7 +12,7 @@ import { RenderSpell } from 'utils/render';
 interface Props {
   spells: SpellElement[];
   columns?: string[];
-  selectedRows?: Record<string, boolean>;
+  selectedSpells?: string[];
   onSelectedRowsChange?: any;
 }
 
@@ -75,7 +75,7 @@ const parseSpell = (spell: SpellElement) => {
 export const Spells = ({
   spells,
   columns,
-  selectedRows,
+  selectedSpells,
   onSelectedRowsChange,
 }: Props) => {
   const dispatch = useDispatch();
@@ -111,28 +111,32 @@ export const Spells = ({
       : [];
   }, [columns, tableData]);
 
+  const currentlySelectedRows = selectedSpells
+    ? selectedSpells.reduce((acc: Record<string, boolean>, curr: string) => {
+        const index = spells.findIndex(sp => sp.name === curr);
+        return index > -1
+          ? {
+              ...acc,
+              [spells.findIndex(sp => sp.name === curr)]: true,
+            }
+          : acc;
+      }, {})
+    : undefined;
+
   const MemoTable = useMemo(
     () => (
       <Table
         cellRenderer={handleSpecialCell}
-        selectedRows={selectedRows}
+        selectedRows={currentlySelectedRows}
         onSelectedRowsChange={onSelectedRowsChange}
         tableData={{
           columns: tableColumns,
           data: tableData,
           autoResetSortBy: false,
-          initialState: {
-            sortBy: [
-              {
-                id: 'name',
-                desc: false,
-              },
-            ],
-          },
         }}
       />
     ),
-    [tableColumns, tableData, selectedRows, onSelectedRowsChange],
+    [tableColumns, tableData, currentlySelectedRows, onSelectedRowsChange],
   );
 
   return (

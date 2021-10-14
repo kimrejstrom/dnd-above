@@ -107,7 +107,7 @@ export interface CharacterGameData {
     feats: string[];
     conditions: string[];
     defenses: { type: DefenseType; name: string }[];
-    spells: { row: number; name: string }[];
+    spells: string[];
     inspiration: boolean;
     attunements: string[];
     actions: any[];
@@ -668,7 +668,7 @@ const characterListSlice = createSlice({
       state,
       action: PayloadAction<{
         id: string;
-        data: { row: number; name: string }[];
+        data: string[];
       }>,
     ) {
       const character = state.list.find(
@@ -856,7 +856,21 @@ const characterListSlice = createSlice({
         console.log('Discarded DB data:', data.list);
       } else {
         state.id = ref['@ref'].id;
-        state.list = data.list;
+        if (data.list) {
+          // patch stored spells
+          const patched = data.list.map((character: CharacterListItem) => ({
+            ...character,
+            gameData: {
+              ...character.gameData,
+              spells: character.gameData.spells.map((sp: any) =>
+                typeof sp === 'string' ? sp : sp.name,
+              ),
+            },
+          }));
+          state.list = patched;
+        } else {
+          state.list = data.list;
+        }
       }
     });
     builder.addCase(getCharacterList.rejected, (state, { payload }) => {

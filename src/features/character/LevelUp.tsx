@@ -91,7 +91,7 @@ const LevelUpModal = () => {
             </div>
           </TextBox>
 
-          <SpellsModal character={character!} />
+          <SpellsModal />
         </div>
       )}
     </div>

@@ -51,7 +51,7 @@ const getSpellsByCastingTime = (
   filterCondition: string,
 ) =>
   character.gameData.spells
-    .map(sp => getSpellFromList(spells, sp.name))
+    .map(sp => getSpellFromList(spells, sp))
     .filter(isDefined)
     .filter(
       sp => sp.time.filter(entry => entry.unit === filterCondition).length,
@@ -104,7 +104,7 @@ const getAttackSpells = (
   spells: SpellElement[],
 ) =>
   character.gameData.spells
-    .map(sp => getSpellFromList(spells, sp.name))
+    .map(sp => getSpellFromList(spells, sp))
     .filter(isDefined)
     .filter(sp => sp?.spellAttack !== undefined)
     .map(sp => {

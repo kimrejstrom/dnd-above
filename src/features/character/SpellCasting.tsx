@@ -129,7 +129,7 @@ const SpellCasting = ({ character, readonly }: Props) => {
   ).sourceData;
 
   const activeSpells = character.gameData.spells
-    .map(spell => getSpellFromList(spells, spell.name))
+    .map(spell => getSpellFromList(spells, spell))
     .filter(isDefined);
   const spellLevels = _.groupBy(activeSpells, 'level');
 

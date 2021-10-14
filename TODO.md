@@ -3,7 +3,9 @@
 
 ### Notes / Ideas
 
-- [ ] Custom items (w/ use as base)  
+- [ ] Selected spells, save name only, pass in names with data, match to selectedRows on Table component initialization
+- [ ] fix cantrips known
+- [ ] Change CRA to Vite
 
 ### Todo
 
