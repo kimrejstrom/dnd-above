@@ -167,7 +167,7 @@ const ActionButtons = ({ character, readonly }: Props) => {
       toggleModal({
         visible: true,
         title: 'Your Spells',
-        content: <SpellsModal character={character} />,
+        content: <SpellsModal />,
       }),
     );
 

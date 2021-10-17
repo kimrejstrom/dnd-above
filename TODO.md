@@ -3,7 +3,7 @@
 
 ### Notes / Ideas
 
-- [ ] Custom items (w/ use as base)  
+- [ ] Change CRA to Vite  
 
 ### Todo
 
@@ -18,6 +18,10 @@
 
 ### Done ✓
 
+- [x] fix cantrips known  
+- [x] Update schema  
+- [x] Fauna migrations for spell change  
+- [x] Selected spells, save name only, pass in names with data, match to selectedRows on Table component initialization  
 - [x] Lvl up Modal  
 - [x] Unify buttons to a Manage Button, create XL Modal size, redesign Character sheet to have Long Rest, Short Rest, Manage and Undo buttons  
 - [x] Mobile bottom bar + views  

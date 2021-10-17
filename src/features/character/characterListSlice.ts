@@ -22,6 +22,7 @@ import { RootState } from 'app/rootReducer';
 import { AppDispatch } from 'app/store';
 import DnDAboveAPI from 'utils/api';
 import { SourceDataFuseItem } from 'utils/search';
+import { doMigrations } from 'utils/migrations';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -107,7 +108,7 @@ export interface CharacterGameData {
     feats: string[];
     conditions: string[];
     defenses: { type: DefenseType; name: string }[];
-    spells: { row: number; name: string }[];
+    spells: string[];
     inspiration: boolean;
     attunements: string[];
     actions: any[];
@@ -668,7 +669,7 @@ const characterListSlice = createSlice({
       state,
       action: PayloadAction<{
         id: string;
-        data: { row: number; name: string }[];
+        data: string[];
       }>,
     ) {
       const character = state.list.find(
@@ -856,7 +857,13 @@ const characterListSlice = createSlice({
         console.log('Discarded DB data:', data.list);
       } else {
         state.id = ref['@ref'].id;
-        state.list = data.list;
+        if (data.list) {
+          // do data migrations
+          const migratedDataList = doMigrations(data.list);
+          state.list = migratedDataList;
+        } else {
+          state.list = data.list;
+        }
       }
     });
     builder.addCase(getCharacterList.rejected, (state, { payload }) => {

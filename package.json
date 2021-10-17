@@ -86,6 +86,11 @@
       "prettier/prettier": "error"
     }
   },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-native|my-project|redux-persist)/)"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",

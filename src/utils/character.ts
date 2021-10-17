@@ -279,21 +279,29 @@ export const getCantripsKnown = (character: CharacterListItem) => {
     character.classData.subClass,
   );
   const level = character.gameData.level;
-  const cantripsKnown = classElement?.classTableGroups?.find(tableGroup =>
-    tableGroup.colLabels.some(label => label.includes('Cantrips Known')),
-  );
+  let labelIndex = 0;
+  const cantripsKnown = classElement?.classTableGroups?.find(tableGroup => {
+    labelIndex = tableGroup.colLabels.findIndex(label =>
+      label.includes('Cantrips Known'),
+    );
+    return labelIndex > -1;
+  });
 
   if (!cantripsKnown) {
     const subClassCantripsKnown = subClassElement?.subclassTableGroups?.find(
-      tableGroup =>
-        tableGroup.colLabels.some(label => label.includes('Cantrips Known')),
+      tableGroup => {
+        labelIndex = tableGroup.colLabels.findIndex(label =>
+          label.includes('Cantrips Known'),
+        );
+        return labelIndex > -1;
+      },
     );
     if (!subClassCantripsKnown) {
       return 'All';
     }
-    return subClassCantripsKnown.rows[level - 1][0];
+    return subClassCantripsKnown.rows[level - 1][labelIndex];
   }
-  return cantripsKnown.rows[level - 1][0];
+  return cantripsKnown.rows[level - 1][labelIndex];
 };
 
 export const getWarlockSpellSlots = (character: CharacterListItem) => {
