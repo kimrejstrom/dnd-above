@@ -22,6 +22,7 @@ import { RootState } from 'app/rootReducer';
 import { AppDispatch } from 'app/store';
 import DnDAboveAPI from 'utils/api';
 import { SourceDataFuseItem } from 'utils/search';
+import { doMigrations } from 'utils/migrations';
 
 export const CHARACTER_STATS = {
   str: 'Strength',
@@ -857,17 +858,9 @@ const characterListSlice = createSlice({
       } else {
         state.id = ref['@ref'].id;
         if (data.list) {
-          // patch stored spells
-          const patched = data.list.map((character: CharacterListItem) => ({
-            ...character,
-            gameData: {
-              ...character.gameData,
-              spells: character.gameData.spells.map((sp: any) =>
-                typeof sp === 'string' ? sp : sp.name,
-              ),
-            },
-          }));
-          state.list = patched;
+          // do data migrations
+          const migratedDataList = doMigrations(data.list);
+          state.list = migratedDataList;
         } else {
           state.list = data.list;
         }
