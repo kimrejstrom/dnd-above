@@ -45,7 +45,7 @@ const initialState: CreateCharacterFormState = {
       background: '',
       alignment: '',
       characteristicsSource: '',
-      imageUrl: `${process.env.PUBLIC_URL}/img/races/default.png`,
+      imageUrl: ``,
       hair: '',
       skin: '',
       eyes: '',

@@ -4,12 +4,9 @@ import { getClass, getRace, getSubClass } from 'utils/sourceDataUtils';
 import { ThemeMode } from 'features/theme/themeSlice';
 import characterDark from 'images/character-dark.png';
 import characterLight from 'images/character-light.png';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from 'app/rootReducer';
 import PillFilter, { ContentBlock } from 'components/PillFilter/PillFilter';
-import DangerousHtml from 'components/DangerousHtml/DangerousHtml';
-import { mainRenderer } from 'utils/mainRenderer';
-import { setDetailedEntry } from 'features/detailedEntry/detailedEntrySlice';
 import {
   renderClassFeatures,
   renderSubClassFeatures,
@@ -23,7 +20,6 @@ interface Props {
 }
 
 const FeaturesTraits = ({ character }: Props) => {
-  const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.theme);
   const classElement = getClass(character.classData.classElement);
   const subClassElement = getSubClass(
@@ -42,30 +38,21 @@ const FeaturesTraits = ({ character }: Props) => {
           })`,
         }}
       ></div>
-      <PillFilter pills={['class', 'race', 'feats']}>
-        <ContentBlock name="class">
-          <div className="text-lg">Class Table</div>
+      <PillFilter pills={['class', 'subclass', 'race', 'feats']}>
+        <ContentBlock
+          name="class"
+          heading={`Class - ${classElement!.name} features`}
+        >
           <ClassTable cls={classElement!} subcls={subClassElement!} />
-          <div className="text-lg">{classElement!.name} features</div>
           {renderClassFeatures(classElement!.name)}
-          <div className="text-lg">{subClassElement!.name} features</div>
+        </ContentBlock>
+        <ContentBlock
+          name="subclass"
+          heading={`Subclass - ${subClassElement!.name} features`}
+        >
           {renderSubClassFeatures(classElement!.name, subClassElement!.name)}
         </ContentBlock>
-        <ContentBlock name="race">
-          <div
-            className="text-lg cursor-pointer"
-            onClick={() =>
-              dispatch(
-                setDetailedEntry(
-                  <DangerousHtml
-                    data={mainRenderer.race.getCompactRenderedString(race)}
-                  />,
-                ),
-              )
-            }
-          >
-            {race!.name} traits
-          </div>
+        <ContentBlock name="race" heading={`Race - ${race!.name} traits`}>
           {renderRaceTraits(race!)}
         </ContentBlock>
         <ContentBlock name="feats">

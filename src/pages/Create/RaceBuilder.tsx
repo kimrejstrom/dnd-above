@@ -366,9 +366,9 @@ const RaceBuilder = () => {
                 </TabPanel>
                 <TabPanel className="overflow-y-scroll px-2">
                   {[getRaceFluff(race.name), getRaceFluff(race._baseName!)].map(
-                    fluff => (
+                    (fluff, i) => (
                       <DangerousHtml
-                        key={fluff?.name}
+                        key={`${fluff?.name}-${i}`}
                         extraClassName="tight"
                         data={fluff && mainRenderer.render(fluff)}
                       />

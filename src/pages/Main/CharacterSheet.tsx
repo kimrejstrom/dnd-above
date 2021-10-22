@@ -147,7 +147,7 @@ export const CharacterSheet: React.FC<Props> = ({
         </div>
       </div>
       {!panelOpen && (
-        <div className="w-full mb-2" style={{ height: '10rem' }}>
+        <div className="w-full mb-2 h-60">
           <div className="h-full my-1 custom-border bg-light-200 dark:bg-dark-300 rounded-lg">
             <div className="detailed-entry h-full overflow-y-scroll px-2">
               <DetailedEntry data={selectedEntry} />

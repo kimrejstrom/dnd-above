@@ -7,16 +7,18 @@ interface PillFilterProps {
 
 interface ContentBlockProps {
   name: string;
+  heading?: string;
 }
 
 export const ContentBlock: React.FC<ContentBlockProps> = ({
   name,
+  heading,
   children,
 }) => (
   <>
     <div className="leading-tight w-full custom-border custom-border-thin custom-border-b border-dark-100 dark:border-light-100 text-xl">
       <div className="-mb-3 text-highlight-100 dark:text-yellow-500">
-        {name}
+        {heading ?? name}
       </div>
     </div>
     <div className="mt-2 mb-4">{children}</div>

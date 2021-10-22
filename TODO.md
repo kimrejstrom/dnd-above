@@ -3,6 +3,7 @@
 
 ### Notes / Ideas
 
+- [ ] Prof&Lang as clickable  
 - [ ] Change CRA to Vite  
 
 ### Todo
@@ -10,7 +11,6 @@
 - [ ] Undo change  
 - [ ] Settings page  
 - [ ] MultiClassing  
-- [ ] Race images  
 - [ ] Mobile View CharacterSheet filtering of sections  
 
 ### In Progress
@@ -18,6 +18,7 @@
 
 ### Done ✓
 
+- [x] Race images  
 - [x] fix cantrips known  
 - [x] Update schema  
 - [x] Fauna migrations for spell change  

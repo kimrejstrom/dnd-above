@@ -12,37 +12,71 @@ import {
   getSpellFromList,
   getSpells,
   getActions as getActionsData,
+  getAllClassFeatures,
 } from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
-import { mainRenderer, Parser } from 'utils/mainRenderer';
+import { mainRenderer, Parser, search } from 'utils/mainRenderer';
 import { Property } from 'models/item';
 import DetailedEntryTrigger from 'features/detailedEntry/DetailedEntryTrigger';
 import { Spells } from 'components/Spells/Spells';
 import { SpellElement } from 'models/spells';
 import { RenderSpell } from 'utils/render';
+import { Unit } from 'models/actions';
 
 interface Props {
   character: CharacterListItem;
 }
 
-const getActions = (filterCondition: string) => {
-  return getActionsData()!
-    .filter(
-      actionElem =>
-        actionElem.time?.filter(
-          time => typeof time !== 'string' && time.unit === filterCondition,
-        ).length,
-    )
-    .map(actionElem => (
+const getActions = (filterCondition: Unit) => {
+  const actions = getActionsData()!.filter(
+    actionElem =>
+      actionElem.time?.filter(time =>
+        filterCondition === Unit.Action
+          ? time === 'Varies' ||
+            (typeof time !== 'string' && time.unit === filterCondition)
+          : typeof time !== 'string' && time.unit === filterCondition,
+      ).length,
+  );
+  const lastIndex = actions.length - 1;
+  return actions.map((actionElem, i) => {
+    return (
       <DetailedEntryTrigger
         key={actionElem.name}
         data={actionElem}
         extraClassName="inline mr-0.5 text-sm dnd-body"
       >
-        {`${actionElem.name}, `}
+        {i === lastIndex ? `${actionElem.name}` : `${actionElem.name}, `}
       </DetailedEntryTrigger>
-    ));
+    );
+  });
+};
+
+const getClassFeatures = (
+  character: CharacterListItem,
+  filterCondition: string,
+) => {
+  const features = getAllClassFeatures(
+    character.classData.classElement,
+    character.classData.subClass,
+  );
+  const relevantEntryNames = search(features, [filterCondition]).map(
+    (entry: any, i) => entry.name,
+  );
+  const relevantFeatures = features.filter(feature =>
+    relevantEntryNames.includes(feature.name),
+  );
+
+  const lastIndex = relevantFeatures.length - 1;
+  return relevantFeatures.map((feature, i) => (
+    <DetailedEntryTrigger
+      key={feature.name}
+      data={feature}
+      extraClassName="inline mr-0.5 text-sm dnd-body"
+    >
+      {i === lastIndex ? `${feature.name}` : `${feature.name}, `}
+    </DetailedEntryTrigger>
+  ));
 };
 
 const getSpellsByCastingTime = (
@@ -156,40 +190,25 @@ const Actions = ({ character }: Props) => {
         </ContentBlock>
         <ContentBlock name="action">
           <div>Actions in Combat</div>
-          {getActionsData()!
-            .filter(
-              actionElem =>
-                actionElem.time?.filter(
-                  time =>
-                    (typeof time !== 'string' && time.unit === 'action') ||
-                    time === 'Varies',
-                ).length,
-            )
-            .map(actionElem => (
-              <DetailedEntryTrigger
-                key={actionElem.name}
-                data={actionElem}
-                extraClassName="inline mr-0.5 dnd-body text-sm"
-              >
-                {`${actionElem.name}, `}
-              </DetailedEntryTrigger>
-            ))}
+          {getActions(Unit.Action)}
         </ContentBlock>
         <ContentBlock name="bonus action">
           <div>Actions in combat</div>
-          {getActions('bonus')}
+          {getActions(Unit.Bonus)}
           {isSpellCasterClass && (
             <>
-              <div>Spells</div>
+              <div className="mt-2">Spells</div>
               <div className="dnd-body flex">
                 {getSpellsByCastingTime(character, getSpells()!, 'bonus')}
               </div>
             </>
           )}
+          <div className="mt-2">Class features</div>
+          {getClassFeatures(character, 'bonus action')}
         </ContentBlock>
         <ContentBlock name="reaction">
           <div>Actions in combat</div>
-          {getActions('reaction')}
+          {getActions(Unit.Reaction)}
           {isSpellCasterClass && (
             <>
               <div>Spells</div>
@@ -198,6 +217,8 @@ const Actions = ({ character }: Props) => {
               </div>
             </>
           )}
+          <div className="mt-2">Class features</div>
+          {getClassFeatures(character, 'reaction')}
         </ContentBlock>
       </PillFilter>
     </>
