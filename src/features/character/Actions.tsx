@@ -13,6 +13,7 @@ import {
   getSpells,
   getActions as getActionsData,
   getAllClassFeatures,
+  getRace,
 } from 'utils/sourceDataUtils';
 import Items from 'components/Items/Items';
 import { isDefined } from 'ts-is-present';
@@ -55,12 +56,13 @@ const getActions = (filterCondition: Unit) => {
 const getClassFeatures = (
   character: CharacterListItem,
   filterCondition: string,
+  not?: string,
 ) => {
   const features = getAllClassFeatures(
     character.classData.classElement,
     character.classData.subClass,
   );
-  const relevantEntryNames = search(features, [filterCondition]).map(
+  const relevantEntryNames = search(features, [filterCondition], not).map(
     (entry: any, i) => entry.name,
   );
   const relevantFeatures = features.filter(feature =>
@@ -68,29 +70,68 @@ const getClassFeatures = (
   );
 
   const lastIndex = relevantFeatures.length - 1;
-  return relevantFeatures.map((feature, i) => (
-    <DetailedEntryTrigger
-      key={feature.name}
-      data={feature}
-      extraClassName="inline mr-0.5 text-sm dnd-body"
-    >
-      {i === lastIndex ? `${feature.name}` : `${feature.name}, `}
-    </DetailedEntryTrigger>
-  ));
+  return lastIndex >= 0 ? (
+    relevantFeatures.map((feature, i) => (
+      <DetailedEntryTrigger
+        key={feature.name}
+        data={feature}
+        extraClassName="inline mr-0.5 text-sm dnd-body"
+      >
+        {i === lastIndex ? `${feature.name}` : `${feature.name}, `}
+      </DetailedEntryTrigger>
+    ))
+  ) : (
+    <span className="text-sm dnd-body">None</span>
+  );
+};
+
+const getRaceTraits = (
+  character: CharacterListItem,
+  filterCondition: string,
+  not?: string,
+) => {
+  const traits = getRace(character.raceData.race)?.entries;
+  if (traits) {
+    const relevantEntryNames = search(traits, [filterCondition], not).map(
+      (entry: any, i) => entry.name,
+    );
+
+    const relevantTraits = traits.filter(trait =>
+      relevantEntryNames.includes(trait.name),
+    );
+
+    const lastIndex = relevantTraits.length - 1;
+    return lastIndex >= 0 ? (
+      relevantTraits.map((trait, i) => (
+        <DetailedEntryTrigger
+          key={trait.name}
+          data={trait}
+          extraClassName="inline mr-0.5 text-sm dnd-body"
+        >
+          {i === lastIndex ? `${trait.name}` : `${trait.name}, `}
+        </DetailedEntryTrigger>
+      ))
+    ) : (
+      <span className="text-sm dnd-body">None</span>
+    );
+  }
+  return <div>None</div>;
 };
 
 const getSpellsByCastingTime = (
   character: CharacterListItem,
   spells: SpellElement[],
   filterCondition: string,
-) =>
-  character.gameData.spells
+) => {
+  const relevantSpells = character.gameData.spells
     .map(sp => getSpellFromList(spells, sp))
     .filter(isDefined)
     .filter(
       sp => sp.time.filter(entry => entry.unit === filterCondition).length,
-    )
-    .map(sp => (
+    );
+  const lastIndex = relevantSpells.length - 1;
+  return lastIndex >= 0 ? (
+    relevantSpells.map((sp, i) => (
       <DetailedEntryTrigger
         key={sp.name}
         extraClassName="tight"
@@ -99,12 +140,17 @@ const getSpellsByCastingTime = (
       >
         <div className="flex items-center mr-0.5 dnd-body text-sm">
           <div>{sp.duration[0].concentration ? `${sp.name} ✱` : sp.name}</div>
-          <div className="mx-1 text-xs opacity-50">{` (${Parser.spLevelToFull(
-            sp.level,
-          )}), `}</div>
+          <div className="mx-1 text-xs opacity-50">
+            {` (${Parser.spLevelToFull(sp.level)})`}
+            {i === lastIndex ? `` : `, `}
+          </div>
         </div>
       </DetailedEntryTrigger>
-    ));
+    ))
+  ) : (
+    <span className="text-sm dnd-body">None</span>
+  );
+};
 
 const getAttackEquipment = (character: CharacterListItem) =>
   character.equipmentData.items
@@ -191,6 +237,10 @@ const Actions = ({ character }: Props) => {
         <ContentBlock name="action">
           <div>Actions in Combat</div>
           {getActions(Unit.Action)}
+          <div className="mt-2">Class features</div>
+          {getClassFeatures(character, ' action ', 'bonus action')}
+          <div className="mt-2">Race traits</div>
+          {getRaceTraits(character, ' action ', 'bonus action')}
         </ContentBlock>
         <ContentBlock name="bonus action">
           <div>Actions in combat</div>
@@ -205,6 +255,8 @@ const Actions = ({ character }: Props) => {
           )}
           <div className="mt-2">Class features</div>
           {getClassFeatures(character, 'bonus action')}
+          <div className="mt-2">Race traits</div>
+          {getRaceTraits(character, 'bonus action')}
         </ContentBlock>
         <ContentBlock name="reaction">
           <div>Actions in combat</div>
@@ -219,6 +271,8 @@ const Actions = ({ character }: Props) => {
           )}
           <div className="mt-2">Class features</div>
           {getClassFeatures(character, 'reaction')}
+          <div className="mt-2">Race traits</div>
+          {getRaceTraits(character, 'reaction')}
         </ContentBlock>
       </PillFilter>
     </>
