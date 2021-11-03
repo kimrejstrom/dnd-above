@@ -128,7 +128,7 @@ const RaceBuilder = () => {
             })}
             <h2 className="text-lg mb-2 mt-3">Skill Proficiencies</h2>
             {skillProficiencies.length
-              ? skillProficiencies.map(prof => {
+              ? skillProficiencies.map((prof, i) => {
                   if (prof.choose) {
                     const hasToolOption =
                       typeof _.last(prof.choose.from) !== 'string';
@@ -199,7 +199,7 @@ const RaceBuilder = () => {
                     );
                   } else {
                     return (
-                      <div>
+                      <div key={i}>
                         {_.keys(_.pickBy(prof, key => isBoolean(key))).join(
                           ', ',
                         )}
@@ -290,11 +290,82 @@ const RaceBuilder = () => {
     );
   };
 
-  const RaceInfo = () => {
+  const RaceEntry = ({ race }: { race: Race }) => {
     const onSelect = (data: { race: string }, e?: React.BaseSyntheticEvent) => {
       dispatch(updateFormData({ raceData: data }));
     };
 
+    return (
+      <details key={race.name}>
+        <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+          <span className="text-xl flex-grow">
+            <img
+              src={`${
+                process.env.PUBLIC_URL
+              }/img/races/${race.name.toLowerCase()}.png`}
+              onError={(ev: any) =>
+                addDefaultImageSrc(ev, race.name.toLowerCase())
+              }
+              alt={race.name.toLowerCase()}
+              className="inline h-8 mr-2 rounded bg-contain"
+            />
+            {`${race.name} (${race.source})`}
+          </span>
+          <StyledButton
+            extraClassName="absolute right-0 mr-2 sm:h-8 -top-px"
+            onClick={(e: any) => onSelect({ race: race.name }, e)}
+          >
+            Select
+          </StyledButton>
+        </summary>
+        <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
+          <Tabs>
+            <TabList className="flex text-center py-1">
+              <Tab className="mr-2">Traits</Tab>
+              <Tab>Info</Tab>
+            </TabList>
+
+            <TabPanel className="overflow-y-scroll px-2">
+              <div className="wrap-image">
+                <div className="pl-0 md:pl-3 bg-light-100 dark:bg-dark-100 float-right">
+                  <img
+                    src={`${
+                      process.env.PUBLIC_URL
+                    }/img/races/${race.name.toLowerCase()}.png`}
+                    onError={(ev: any) =>
+                      addDefaultImageSrc(ev, race.name.toLowerCase())
+                    }
+                    alt={race.name.toLowerCase()}
+                    className="w-80 shadow rounded"
+                  />
+                </div>
+
+                <div>
+                  <DangerousHtml
+                    key={race.name}
+                    data={mainRenderer.race.getCompactRenderedString(race)}
+                  />
+                </div>
+              </div>
+            </TabPanel>
+            <TabPanel className="overflow-y-scroll px-2">
+              {[getRaceFluff(race.name), getRaceFluff(race._baseName!)].map(
+                (fluff, i) => (
+                  <DangerousHtml
+                    key={`${fluff?.name}-${i}`}
+                    extraClassName="tight"
+                    data={fluff && mainRenderer.render(fluff)}
+                  />
+                ),
+              )}
+            </TabPanel>
+          </Tabs>
+        </div>
+      </details>
+    );
+  };
+
+  const RaceInfo = () => {
     const groupByRaceName = (arr: Array<any>, key: string) =>
       arr.reduce((acc: any, item: any) => {
         return (
@@ -307,78 +378,48 @@ const RaceBuilder = () => {
       }, {});
 
     const groupedRaces = groupByRaceName(getRaces()!, 'name');
-    console.log(groupedRaces);
 
     return (
       <div>
-        {getRaces()!.map((race: Race, index) => (
-          <details key={race.name}>
-            <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
-              <span className="text-xl flex-grow">
-                <img
-                  src={`${
-                    process.env.PUBLIC_URL
-                  }/img/races/${race.name.toLowerCase()}.png`}
-                  onError={(ev: any) =>
-                    addDefaultImageSrc(ev, race.name.toLowerCase())
-                  }
-                  alt={race.name.toLowerCase()}
-                  className="inline h-8 mr-2 rounded bg-contain"
-                />
-                {`${race.name} (${race.source})`}
-              </span>
-              <StyledButton
-                extraClassName="absolute right-0 mr-2 sm:h-8 -top-px"
-                onClick={(e: any) => onSelect({ race: race.name }, e)}
-              >
-                Select
-              </StyledButton>
-            </summary>
-            <div className="dnd-body rounded p-4 mx-2 -mt-3 bg-light-100 dark:bg-dark-100">
-              <Tabs>
-                <TabList className="flex text-center py-1">
-                  <Tab className="mr-2">Traits</Tab>
-                  <Tab>Info</Tab>
-                </TabList>
-
-                <TabPanel className="overflow-y-scroll px-2">
-                  <div className="wrap-image">
-                    <div className="pl-0 md:pl-3 bg-light-100 dark:bg-dark-100 float-right">
-                      <img
-                        src={`${
-                          process.env.PUBLIC_URL
-                        }/img/races/${race.name.toLowerCase()}.png`}
-                        onError={(ev: any) =>
-                          addDefaultImageSrc(ev, race.name.toLowerCase())
-                        }
-                        alt={race.name.toLowerCase()}
-                        className="w-80 shadow rounded"
-                      />
-                    </div>
-
-                    <div>
-                      <DangerousHtml
-                        key={index}
-                        data={mainRenderer.race.getCompactRenderedString(race)}
-                      />
-                    </div>
-                  </div>
-                </TabPanel>
-                <TabPanel className="overflow-y-scroll px-2">
-                  {[getRaceFluff(race.name), getRaceFluff(race._baseName!)].map(
-                    (fluff, i) => (
-                      <DangerousHtml
-                        key={`${fluff?.name}-${i}`}
-                        extraClassName="tight"
-                        data={fluff && mainRenderer.render(fluff)}
-                      />
-                    ),
-                  )}
-                </TabPanel>
-              </Tabs>
-            </div>
-          </details>
-        ))}
+        {Object.entries(groupedRaces).map(([key, value]) => {
+          const name = key;
+          const races = value as Race[];
+          if (races.length === 1) {
+            return <RaceEntry key={name} race={races[0]} />;
+          } else {
+            return (
+              <details key={name}>
+                <summary className="items-center justify-start bg-light-100 dark:bg-dark-100 relative custom-border-sm custom-border-thin px-2 my-2 cursor-pointer">
+                  <span className="text-xl flex-grow">
+                    <img
+                      src={`${
+                        process.env.PUBLIC_URL
+                      }/img/races/${name.toLowerCase()}.png`}
+                      onError={(ev: any) =>
+                        addDefaultImageSrc(ev, name.toLowerCase())
+                      }
+                      alt={name.toLowerCase()}
+                      className="inline h-8 mr-2 rounded bg-contain"
+                    />
+                    {`${name}* (Subraces)`}
+                  </span>
+                  <StyledButton
+                    disabled
+                    extraClassName="absolute right-0 mr-2 sm:h-8 -top-px"
+                    onClick={_.noop}
+                  >
+                    Select
+                  </StyledButton>
+                </summary>
+                <div className="pl-4">
+                  {races.map(race => (
+                    <RaceEntry key={race.name} race={race} />
+                  ))}
+                </div>
+              </details>
+            );
+          }
+        })}
       </div>
     );
   };

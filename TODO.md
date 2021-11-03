@@ -15,6 +15,7 @@
 
 ### In Progress
 
+- [ ] Race selection grouping  
 
 ### Done ✓
 
