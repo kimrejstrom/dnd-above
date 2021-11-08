@@ -3,7 +3,6 @@
 
 ### Notes / Ideas
 
-- [ ] Prof&Lang as clickable  
 - [ ] Change CRA to Vite  
 
 ### Todo
@@ -15,10 +14,12 @@
 
 ### In Progress
 
-- [ ] Race selection grouping  
 
 ### Done ✓
 
+- [x] Prof&Lang as clickable  
+- [x] Editable Notes  
+- [x] Race selection grouping  
 - [x] Race images  
 - [x] fix cantrips known  
 - [x] Update schema  

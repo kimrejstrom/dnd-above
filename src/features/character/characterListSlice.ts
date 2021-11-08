@@ -751,6 +751,19 @@ const characterListSlice = createSlice({
         return { payload: { id, note: newNote } };
       },
     },
+    updateNote(state, action: PayloadAction<{ id: string; note: Note }>) {
+      const character = state.list.find(
+        chara => chara.id === action.payload.id,
+      );
+      if (character && character.miscData) {
+        const noteIndex = character.miscData.notes.findIndex(
+          note => note.id === action.payload.note.id,
+        );
+        if (noteIndex !== -1) {
+          character.miscData.notes[noteIndex] = action.payload.note;
+        }
+      }
+    },
     removeNote(
       state,
       action: PayloadAction<{
@@ -911,6 +924,7 @@ export const {
   addFeat,
   removeFeat,
   addNote,
+  updateNote,
   removeNote,
   addExtra,
   removeExtra,
