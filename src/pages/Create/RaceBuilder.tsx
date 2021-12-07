@@ -71,7 +71,9 @@ const RaceBuilder = () => {
     const abilities = race?.ability || [];
     const skillProficiencies = race?.skillProficiencies || [];
     const languages = race?.languageProficiencies || [];
-    const abilityAmount = abilities[0].choose?.amount || 1;
+    const abilityAmount = abilities.length
+      ? abilities[0].choose?.amount || 1
+      : 1;
 
     return (
       <div>
@@ -94,7 +96,7 @@ const RaceBuilder = () => {
             className="flex flex-col dnd-body"
           >
             <h2 className="text-lg mb-2 mt-3">Ability Scores</h2>
-            {mainRenderer.getAbilityData(abilities).asText}
+            {mainRenderer.getAbilityData(abilities).asText ?? 'None'}
             {abilities.map(ab => {
               if (ab.choose) {
                 const count = ab.choose.count || 1;
