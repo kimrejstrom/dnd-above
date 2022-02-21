@@ -14,7 +14,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   return (
-    <div className="bg-dark-300 flex-none w-24 p-6 hidden xl:block font-sans">
+    <div className="bg-dark-300 w-20 py-4 px-3 hidden xl:flex xl:flex-col font-sans">
       {characterList.map(character => (
         <button
           key={character.id}
@@ -22,7 +22,7 @@ const Sidebar = () => {
             dispatch(setSelectedCharacter(character.id));
             history.push(`/`);
           }}
-          className="mb-4"
+          className="mb-4 mx-auto"
         >
           <div
             className={`${
@@ -32,7 +32,7 @@ const Sidebar = () => {
             } bg-white flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden`}
           >
             <img
-              className="h-12 w-12 object-cover object-top"
+              className="h-10 w-10 object-cover object-top"
               src={character.descriptionData.imageUrl}
               alt="character"
               onError={(ev: any) => {
@@ -52,7 +52,7 @@ const Sidebar = () => {
           history.push(`/create/step-1`);
         }}
       >
-        <div className="bg-white opacity-25 h-12 w-12 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
+        <div className="bg-white opacity-25 h-10 w-10 flex items-center justify-center text-black text-2xl font-semibold rounded-lg mb-1 overflow-hidden">
           <svg
             className="fill-current h-10 w-10 block"
             xmlns="http://www.w3.org/2000/svg"
