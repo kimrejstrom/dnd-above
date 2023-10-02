@@ -92,6 +92,7 @@ export interface CharacterCustom {
     customArmorProficiencies: Array<ArmorEnum>;
     customWeaponProficiencies: string[];
     customToolProficiencies: string[];
+    customSavingThrowProficiencies: StatsTypes[];
     customLanguages: string[];
   };
 }
@@ -328,6 +329,7 @@ const characterListSlice = createSlice({
           customArmorProficiencies: [],
           customWeaponProficiencies: [],
           customToolProficiencies: [],
+          customSavingThrowProficiencies: [],
           customLanguages: [],
         },
         gameData: {

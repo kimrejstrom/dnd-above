@@ -9,7 +9,6 @@ import {
   getAbilityMod,
   getProficiencyBonus,
 } from 'utils/character';
-import { SpellcastingAbility } from 'models/class';
 import { getClass } from 'utils/sourceDataUtils';
 
 interface Props {
@@ -24,9 +23,11 @@ const SavingThrows = ({ character }: Props) => {
       <div className="flex flex-wrap">
         {Object.keys(CHARACTER_STATS).map(key => {
           const score = calculateStats(character)[key as StatsTypes];
-          const proficient = classElement?.proficiency.includes(
-            key as SpellcastingAbility,
-          );
+          const proficient =
+            classElement?.proficiency.includes(key) ||
+            character.customData.customSavingThrowProficiencies.includes(
+              key as StatsTypes,
+            );
           const abilityMod = getAbilityMod(score);
           const savingThrowMod = proficient
             ? abilityMod + getProficiencyBonus(character.gameData.level)
