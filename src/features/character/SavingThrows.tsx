@@ -25,7 +25,7 @@ const SavingThrows = ({ character }: Props) => {
           const score = calculateStats(character)[key as StatsTypes];
           const proficient =
             classElement?.proficiency.includes(key) ||
-            character.customData.customSavingThrowProficiencies.includes(
+            character.customData.customSavingThrowProficiencies?.includes(
               key as StatsTypes,
             );
           const abilityMod = getAbilityMod(score);
